@@ -1,3 +1,9 @@
-import R from "../js/Renderer.js"
-R.canvas = document.getElementById('canvas');
-R.canvas.style.border = "1px solid black";
+import R from "./Graphics/Renderer.js"
+import MyClient from "./Networking/MyClient.js"
+
+var client = new MyClient(io());
+io = undefined;
+
+window.client = client;
+
+R.setup();
