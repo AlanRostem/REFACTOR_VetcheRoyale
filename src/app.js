@@ -1,4 +1,4 @@
-// Main entry point of the app-side application
+// Main entry point of the server-side application
 
 var path = require('path');
 var express = require('express');
@@ -6,6 +6,9 @@ var app = express();
 var server = require('http').Server(app);
 
 app.use(express.static(path.join(__dirname)));
+
+// All these app.get calls send the following
+// directories to the client.
 
 app.get('/client/js/', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
@@ -25,5 +28,5 @@ console.log("Vetche Royale online!");
 
 var io = require('socket.io').listen(server);
 var WebSocket = require('./server/Networking/WebSocket.js');
-var socket = new WebSocket(io);
+var mainSocket = new WebSocket(io);
 
