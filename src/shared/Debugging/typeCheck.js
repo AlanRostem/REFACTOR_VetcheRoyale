@@ -1,7 +1,7 @@
 // Pass in a class/type and then a parameter that
 // is going to be checked. If the data type doesn't
 // match the correct ones an error is thrown.
-export default class dataCheck {
+export default class typeCheck {
     static object(dataType, parameter) {
         if (!(parameter instanceof dataType)) {
             throw new DataTypeError(dataType);

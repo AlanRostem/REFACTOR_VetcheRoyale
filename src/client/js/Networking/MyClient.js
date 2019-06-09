@@ -1,4 +1,4 @@
-import InputListener from "./InputListener.js"
+import InputListener from "../InputListener.js"
 export default class MyClient {
 
     id = null;
@@ -6,10 +6,16 @@ export default class MyClient {
     constructor(socket) {
         this.socket = socket;
         this.inputListener = new InputListener(this);
-        this.addKeyEmitter(32);
+        this.addKeyEmitter(32, keyState => {
+            //console.log(keyState);
+        }); // TEST
         this.defineEmitEvents();
     }
 
+    // Map a key code to the input listener with a
+    // callback. This mapping function's difference
+    // is that upon the key state the key state data
+    // is sent to the server.
     addKeyEmitter(keyCode, callback) {
         if (callback === undefined) {
             this.inputListener.addMapping(keyCode, keyState => {
@@ -32,6 +38,8 @@ export default class MyClient {
     }
 
     defineEmitEvents() {
+        // Establishes a full connection using a promise.
+        // The server is then notified of a proper connection.
         const connectedPromise = new Promise(resolve => {
             this.socket.on('connectClient', data => {
                 this.id = data.id;

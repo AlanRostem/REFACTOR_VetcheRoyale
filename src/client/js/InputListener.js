@@ -1,4 +1,4 @@
-import dataCheck from "../../../shared/Debugging/dataCheck.js"
+import typeCheck from "../../shared/Debugging/typeCheck.js"
 
 export default class InputListener {
     constructor() {
@@ -11,12 +11,22 @@ export default class InputListener {
         this.listenTo();
     }
 
+    // Set a callback function mapped to a key code.
+    // Remember that one key code can have multiple
+    // callbacks mapped to it, and they're all called
+    // simultaneously.
     addMapping(keyCode, callback) {
-        dataCheck.primitive(0, keyCode);
-        dataCheck.object(Function, callback);
-        this.keyCallbacks[keyCode] = callback;
+        typeCheck.primitive(0, keyCode);
+        typeCheck.object(Function, callback);
+        if (this.keyCallbacks[keyCode]) {
+            this.keyCallbacks[keyCode].push(callback);
+        } else {
+            this.keyCallbacks[keyCode] = [callback];
+        }
     }
 
+    // Sets the key state once per key press/release
+    // and calls the respective callback function.
     handleEvent(event) {
         const {keyCode} = event;
         if (!this.keyCallbacks.hasOwnProperty(keyCode)) {
@@ -28,7 +38,9 @@ export default class InputListener {
             return;
         }
         this.keyStates[keyCode] = keyState;
-        this.keyCallbacks[keyCode](keyState);
+        for (var callback of this.keyCallbacks[keyCode]) {
+            callback(keyState);
+        }
     }
 
     listenTo() {

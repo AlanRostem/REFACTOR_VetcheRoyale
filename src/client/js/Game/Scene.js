@@ -1,5 +1,7 @@
 // All game rendering and UI elements
 // should loop here.
+
+import R from "../Graphics/Renderer.js"
 export default class Scene {
     static start = false;
 
@@ -13,7 +15,7 @@ export default class Scene {
     }
 
     static draw() {
-
+        R.clear();
     }
 
     static tick() {

@@ -1,7 +1,7 @@
 import Vector2D from "../../../shared/Math/Vector2D.js"
-import dataCheck from "../../../shared/Debugging/dataCheck.js"
+import typeCheck from "../../../shared/Debugging/typeCheck.js"
 export default class Camera {
-    constructor(boundVec2D = new Vector2D(0, 0), offsetX, offsetY) {
+    constructor(offsetX, offsetY, boundVec2D = new Vector2D(0, 0)) {
         this.boundPos = boundVec2D;
         this.pos = {
             x: -(this.boundPos.x - offsetX),
@@ -14,7 +14,7 @@ export default class Camera {
     }
 
     set boundPosition(vec2D) {
-        dataCheck.object(Vector2D, vec2D);
+        typeCheck.object(Vector2D, vec2D);
         this.boundPos = vec2D;
     }
 

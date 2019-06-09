@@ -7,3 +7,5 @@ io = undefined;
 window.client = client;
 
 R.setup();
+
+R.drawRect("blue", 10, 10, 32, 32);

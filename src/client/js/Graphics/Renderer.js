@@ -1,7 +1,8 @@
 import Camera from "./Camera.js"
+import Vector2D from "../../../shared/Math/Vector2D.js";
 export default class R {
 
-    static camera = new Camera();
+    static camera = new Camera(0, 0);
 
     static resolution = 160;
     static aspectRatio = {
@@ -34,6 +35,7 @@ export default class R {
         R.canvas.height = R.screenDimensions.y;
 
         R.canvas.style.backgroundColor = "black";
+        R.canvas.style.imageRendering = "pixelated";
 
         window.onresize = e => {
             R.screenDimensions.x = R.aspectRatio.x * R.resolution;
@@ -69,6 +71,45 @@ export default class R {
     static get screenSize() {
         return R.screenDimensions;
     }
-}
 
-window.R = R;
+    static clear() {
+        R.context.clearRect(0, 0, R.canvas.width, R.canvas.height);
+    }
+
+    static drawText(str, x, y, color = "white", useCamera = false, size = 16) {
+        R.context.save();
+        //R.ctx.font = size + "px EXEPixelPerfect";
+        R.context.fillStyle = color;
+        R.context.fillText(str,
+            x + useCamera ? R.camera.pos.x : 0,
+            y + useCamera ? R.camera.pos.y : 0,
+        );
+        R.context.restore();
+    }
+
+    static drawLine(startPos, endPos, thickness = 1, color = "white", dotSpace = 1, useCamera = false) {
+        var a = Vector2D.angle(startPos, endPos) | 0;
+        var d = Vector2D.distance(startPos, endPos) | 0;
+        R.context.fillStyle = color;
+        for (var i = 0; i < d; i+= dotSpace) {
+            var x = startPos.x + i * Math.cos(a);
+            var y = startPos.y + i * Math.sin(a);
+            R.context.fillRect(
+                x + useCamera ? R.camera.pos.x : 0,
+                y + useCamera ? R.camera.pos.y : 0,
+                thickness, thickness);
+        }
+    }
+
+    static drawRect(color, x, y, width, height, useCamera = false) {
+        R.context.save();
+        R.context.fillStyle = color;
+        R.context.fillRect(
+            x + useCamera ? R.camera.pos.x : 0,
+            y + useCamera ? R.camera.pos.y : 0,
+            width,
+            height
+        );
+        R.ctx.restore();
+    }
+}
