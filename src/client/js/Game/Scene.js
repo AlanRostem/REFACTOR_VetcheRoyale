@@ -16,11 +16,12 @@ export default class Scene {
 
     static draw() {
         R.clear();
+        R.drawRect("blue", 100, 50, 32, 32); // Single call test
     }
 
     static tick() {
         Scene.update();
         Scene.draw();
-        requestAnimationFrame(tick);
+        requestAnimationFrame(Scene.tick);
     }
 }
