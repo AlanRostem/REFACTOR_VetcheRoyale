@@ -24,7 +24,7 @@ class Client {
     defineEmitEvents(data) {
         this.self.emit("connectClient", {id: data.id});
         this.self.on("connectClientCallback", data => {
-            console.log("Client <" + data.id + "> successfully connected!");
+            console.log("Client [ " + data.id + " ] successfully connected!");
         });
     }
 }
@@ -67,7 +67,7 @@ class WebSocket {
 
     defineEmitEvents() {
         this.socket.on("connection", client => {
-            console.log("Establishing connection... Client ID: <" + client.id + ">");
+            console.log("Establishing connection... Client ID: [ " + client.id + " ]");
             this.clientList.addClient(client.id, new Client(client));
         });
     }

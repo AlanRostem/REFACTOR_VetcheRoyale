@@ -4,6 +4,10 @@ export default class MyClient {
 
     constructor(socket) {
         this.socket = socket;
+        this.defineEmitEvents();
+    }
+
+    defineEmitEvents() {
         const connectedPromise = new Promise(resolve => {
             this.socket.on('connectClient', data => {
                 this.id = data.id;
@@ -11,5 +15,7 @@ export default class MyClient {
                 resolve();
             });
         });
+
+
     }
 }
