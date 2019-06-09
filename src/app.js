@@ -30,3 +30,10 @@ var io = require('socket.io').listen(server);
 var WebSocket = require('./server/Networking/WebSocket.js');
 var mainSocket = new WebSocket(io);
 
+// TODO: Refactor this test code:
+
+setInterval(() => {
+   for (var id in mainSocket.clientList.getContainer()) {
+      var client = mainSocket.clientList.getContainer()[id];
+   }
+}, 1000/20);

@@ -2,11 +2,21 @@ class Client {
     constructor(socket, clientList) {
         // Object given by socket.io
         this.socket = socket;
-        this.defineEmitEvents(self, clientList);
+
+        this.socket.emit("connectClient", {id: socket.id});
+        // Holds all key states of corresponding key codes
+        this.keyStates = {
+            32: false
+        };
+        this.defineEmitEvents(socket, clientList);
     }
 
     get id() {
         return this.socket.id;
+    }
+
+    getKeyState(keyCode) {
+        return this.keyStates[keyCode];
     }
 
     emit(eventType, data) {
@@ -18,7 +28,6 @@ class Client {
     }
 
     defineEmitEvents(socket, clientList) {
-        this.socket.emit("connectClient", {id: socket.id});
         this.socket.on("connectClientCallback", data => {
             console.log("Client [ " + data.id + " ] successfully connected!");
         });
@@ -27,12 +36,20 @@ class Client {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
         });
+
+        this.socket.on("keyEvent", data => {
+            this.keyStates[data.keyCode] = data.keyState;
+        })
     }
 }
 
 class ClientList {
     constructor() {
         this.container = {};
+    }
+
+    getContainer() {
+        return this.container;
     }
 
     getClient(id) {
