@@ -92,6 +92,8 @@ export default class Vector2D {
     }
 }
 
+window.vec2 = Vector2D;
+
 try {
     module.exports = Vector2D;
 } catch(e) {

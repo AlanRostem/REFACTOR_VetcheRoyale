@@ -15,7 +15,7 @@ export default class typeCheck {
     // Pass in a primitive data value and a parameter
     // to check if their data types match.
     static primitive(testValue, parameter) {
-        if (typeof testValue !== typeof parameter) {
+        if (typeof testValue !== typeof parameter || isNaN(parameter)) {
             throw new DataTypeError({name: typeof testValue});
         }
     }
