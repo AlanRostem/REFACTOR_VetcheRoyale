@@ -24,11 +24,6 @@ server.listen(3000);
 console.log("Vetche Royale online!");
 
 var io = require('socket.io').listen(server);
-io.on("connection", client => {
-   console.log("Establishing connection... Client ID: <" + client.id + ">");
-   client.emit("connectClient", {id: client.id});
-   client.on("connectClientCallback", data => {
-      console.log("Client <" + data.id + "> successfully connected!");
-   });
-});
+var WebSocket = require('./server/Networking/WebSocket.js');
+var socket = new WebSocket(io);
 

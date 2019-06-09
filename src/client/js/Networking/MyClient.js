@@ -8,11 +8,8 @@ export default class MyClient {
             this.socket.on('connectClient', data => {
                 this.id = data.id;
                 this.socket.emit("connectClientCallback", {id: this.id});
-                console.log('Connected to server!');
                 resolve();
             });
         });
-
-        
     }
 }
