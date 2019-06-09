@@ -24,24 +24,24 @@ export default class Vector2D {
     }
 
     add(vec) {
-        typeCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         this.x += vec.x;
         this.y += vec.y;
     }
 
     set(vec) {
-        typeCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         this.x = vec.x;
         this.y = vec.y;
     }
 
     dot(vec) {
-        typeCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         return this.x * vec.x + this.y * vec.y;
     }
 
     scale(val) {
-        typeCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         this.x *= val;
         this.y *= val;
     }
@@ -53,8 +53,8 @@ export default class Vector2D {
     }
 
     static angle(a, b) {
-        typeCheck.object(Vector2D, a);
-        typeCheck.object(Vector2D, b);
+        typeCheck.instance(Vector2D, a);
+        typeCheck.instance(Vector2D, b);
         let x = b.x - a.x;
         let y = b.y - a.y;
         return Math.atan2(y, x)
@@ -62,10 +62,10 @@ export default class Vector2D {
 
     static intersect(a, b, c, d)
     {
-        typeCheck.object(Vector2D, a);
-        typeCheck.object(Vector2D, b);
-        typeCheck.object(Vector2D, c);
-        typeCheck.object(Vector2D, d);
+        typeCheck.instance(Vector2D, a);
+        typeCheck.instance(Vector2D, b);
+        typeCheck.instance(Vector2D, c);
+        typeCheck.instance(Vector2D, d);
 
         const r = new Vector2D (b.x - a.x, b.y - a.y);
         const s = new Vector2D (d.x - c.x, d.y- c.y);
@@ -78,10 +78,10 @@ export default class Vector2D {
 
     static getIntersectedPos(a, b, c, d)
     {
-        typeCheck.object(Vector2D, a);
-        typeCheck.object(Vector2D, b);
-        typeCheck.object(Vector2D, c);
-        typeCheck.object(Vector2D, d);
+        typeCheck.instance(Vector2D, a);
+        typeCheck.instance(Vector2D, b);
+        typeCheck.instance(Vector2D, c);
+        typeCheck.instance(Vector2D, d);
 
         const r = new Vector2D (b.x - a.x, b.y - a.y);
         const s = new Vector2D (d.x - c.x, d.y- c.y);

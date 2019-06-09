@@ -3,10 +3,10 @@ import typeCheck from "../../shared/Debugging/typeCheck.js"
 export default class InputListener {
     constructor() {
         // Holds the current state of the key (up or down).
-        this.keyStates = {};
+        this._keyStates = {};
 
         // Holds callback functions for each key code.
-        this.keyCallbacks = {};
+        this._keyCallbacks = {};
 
         this.listenTo();
     }
@@ -17,11 +17,11 @@ export default class InputListener {
     // simultaneously.
     addMapping(keyCode, callback) {
         typeCheck.primitive(0, keyCode);
-        typeCheck.object(Function, callback);
-        if (this.keyCallbacks[keyCode]) {
-            this.keyCallbacks[keyCode].push(callback);
+        typeCheck.instance(Function, callback);
+        if (this._keyCallbacks[keyCode]) {
+            this._keyCallbacks[keyCode].push(callback);
         } else {
-            this.keyCallbacks[keyCode] = [callback];
+            this._keyCallbacks[keyCode] = [callback];
         }
     }
 
@@ -29,16 +29,16 @@ export default class InputListener {
     // and calls the respective callback function.
     handleEvent(event) {
         const {keyCode} = event;
-        if (!this.keyCallbacks.hasOwnProperty(keyCode)) {
+        if (!this._keyCallbacks.hasOwnProperty(keyCode)) {
             return;
         }
         event.preventDefault();
         const keyState = event.type === "keydown"; // Pressed = true, released = false
-        if (this.keyStates[keyCode] === keyState) {
+        if (this._keyStates[keyCode] === keyState) {
             return;
         }
-        this.keyStates[keyCode] = keyState;
-        for (var callback of this.keyCallbacks[keyCode]) {
+        this._keyStates[keyCode] = keyState;
+        for (var callback of this._keyCallbacks[keyCode]) {
             callback(keyState);
         }
     }

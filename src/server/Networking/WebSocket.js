@@ -1,44 +1,48 @@
 class Client {
     constructor(socket, clientList) {
-        // Object given by socket.io
-        this.socket = socket;
+        // Object given by _socket.io
+        this._socket = socket;
 
-        this.socket.emit("connectClient", {id: socket.id});
+        this._socket.emit("connectClient", {id: socket.id});
         // Holds all key states of corresponding key codes
-        this.keyStates = {
+        this._keyStates = {
             32: false
         };
         this.defineEmitEvents(socket, clientList);
     }
 
     get id() {
-        return this.socket.id;
+        return this._socket.id;
+    }
+
+    get socket() {
+        return this._socket;
     }
 
     getKeyState(keyCode) {
-        return this.keyStates[keyCode];
+        return this._keyStates[keyCode];
     }
 
     emit(eventType, data) {
-        this.socket.emit(eventType, data);
+        this._socket.emit(eventType, data);
     }
 
     on(eventType, callback) {
-        this.socket.on(eventType, callback);
+        this._socket.on(eventType, callback);
     }
 
     defineEmitEvents(socket, clientList) {
-        this.socket.on("connectClientCallback", data => {
+        this._socket.on("connectClientCallback", data => {
             console.log("Client [ " + data.id + " ] successfully connected!");
         });
 
-        this.socket.on("disconnect", data => {
+        this._socket.on("disconnect", data => {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
         });
 
-        this.socket.on("keyEvent", data => {
-            this.keyStates[data.keyCode] = data.keyState;
+        this._socket.on("keyEvent", data => {
+            this._keyStates[data.keyCode] = data.keyState;
         })
     }
 }
@@ -77,7 +81,7 @@ class WebSocket {
     constructor(socket) {
        this.socket = socket;
         if (this.socket === null || this.socket === undefined) {
-            throw new Error("WebSocket class is missing an 'io' object. The application is terminated.");
+            throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
         this.clientList = new ClientList();
         this.defineEmitEvents();

@@ -4,8 +4,8 @@ export default class MyClient {
     id = null;
 
     constructor(socket) {
-        this.socket = socket;
-        this.inputListener = new InputListener(this);
+        this._socket = socket;
+        this._inputListener = new InputListener(this);
         this.addKeyEmitter(32, keyState => {
             //console.log(keyState);
         }); // TEST
@@ -18,11 +18,11 @@ export default class MyClient {
     // is sent to the server.
     addKeyEmitter(keyCode, callback) {
         if (callback === undefined) {
-            this.inputListener.addMapping(keyCode, keyState => {
+            this._inputListener.addMapping(keyCode, keyState => {
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
             });
         } else {
-            this.inputListener.addMapping(keyCode, keyState => {
+            this._inputListener.addMapping(keyCode, keyState => {
                 callback(keyState);
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
             });
@@ -30,20 +30,20 @@ export default class MyClient {
     }
 
     emit(eventType, data) {
-        this.socket.emit(eventType, data);
+        this._socket.emit(eventType, data);
     }
 
     on(eventType, callback) {
-        this.socket.on(eventType, callback);
+        this._socket.on(eventType, callback);
     }
 
     defineEmitEvents() {
         // Establishes a full connection using a promise.
         // The server is then notified of a proper connection.
         const connectedPromise = new Promise(resolve => {
-            this.socket.on('connectClient', data => {
+            this._socket.on('connectClient', data => {
                 this.id = data.id;
-                this.socket.emit("connectClientCallback", {id: this.id});
+                this._socket.emit("connectClientCallback", {id: this.id});
                 resolve();
             });
         });
