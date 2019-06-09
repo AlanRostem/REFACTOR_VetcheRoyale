@@ -1,30 +1,31 @@
 class Client {
-    constructor(self) {
+    constructor(socket, clientList) {
         // Object given by socket.io
-        this.self = self;
-        this.defineEmitEvents(self);
+        this.socket = socket;
+        this.defineEmitEvents(self, clientList);
     }
 
     get id() {
-        return this.self.id;
-    }
-
-    get clientObject() {
-        return this.self;
+        return this.socket.id;
     }
 
     emit(eventType, data) {
-        this.self.emit(eventType, data);
+        this.socket.emit(eventType, data);
     }
 
     on(eventType, callback) {
-        this.self.on(eventType, callback);
+        this.socket.on(eventType, callback);
     }
 
-    defineEmitEvents(data) {
-        this.self.emit("connectClient", {id: data.id});
-        this.self.on("connectClientCallback", data => {
+    defineEmitEvents(socket, clientList) {
+        this.socket.emit("connectClient", {id: socket.id});
+        this.socket.on("connectClientCallback", data => {
             console.log("Client [ " + data.id + " ] successfully connected!");
+        });
+
+        this.socket.on("disconnect", data => {
+            clientList.removeClient(this.id);
+            console.log("Disconnected [ " + this.id + " ]");
         });
     }
 }
@@ -68,7 +69,7 @@ class WebSocket {
     defineEmitEvents() {
         this.socket.on("connection", client => {
             console.log("Establishing connection... Client ID: [ " + client.id + " ]");
-            this.clientList.addClient(client.id, new Client(client));
+            this.clientList.addClient(client.id, new Client(client, this.clientList));
         });
     }
 }

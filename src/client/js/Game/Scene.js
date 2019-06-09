@@ -3,6 +3,11 @@
 export default class Scene {
     static start = false;
 
+    static run() {
+        // TODO: Setup calls here.
+        Scene.tick();
+    }
+
     static update() {
 
     }

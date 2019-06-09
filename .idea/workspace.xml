@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66402bba-6f9c-441e-a674-432fcd96e254" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/client/js/Game/Scene.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/js/Networking/MyClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/Networking/MyClient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/js/Game/Scene.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/Game/Scene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/js/Networking/InputListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/Networking/InputListener.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/Networking/WebSocket.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/Networking/WebSocket.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -16,12 +18,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/html/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+            <state relative-caret-position="210">
+              <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -29,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/js/VetcheRoyale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+            <state relative-caret-position="42">
+              <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -41,7 +43,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Renderer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
+            <state relative-caret-position="1533">
               <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
             </state>
           </provider>
@@ -50,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Camera.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+            <state relative-caret-position="168">
+              <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -59,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/js/Networking/InputListener.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+            <state relative-caret-position="210">
+              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -71,17 +73,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/js/Networking/MyClient.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
+            <state relative-caret-position="378">
               <caret line="18" selection-start-line="18" selection-end-line="18" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/js/Game/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+            <state relative-caret-position="273">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -92,8 +94,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/Networking/WebSocket.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
-              <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
+            <state relative-caret-position="-206">
+              <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -101,7 +103,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/shared/Debugging/errorHandling.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
+            <state relative-caret-position="42">
               <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
             </state>
           </provider>
@@ -110,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+            <state relative-caret-position="445">
+              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -147,15 +149,15 @@
         <option value="$PROJECT_DIR$/src/client/js/Graphics/Renderer.js" />
         <option value="$PROJECT_DIR$/src/client/js/Graphics/Camera.js" />
         <option value="$PROJECT_DIR$/src/client/html/index.html" />
-        <option value="$PROJECT_DIR$/src/client/js/Networking/InputListener.js" />
         <option value="$PROJECT_DIR$/src/client/js/VetcheRoyale.js" />
         <option value="$PROJECT_DIR$/src/shared/Networking/ConnectionEstablisher.js" />
         <option value="$PROJECT_DIR$/src/shared/Networking/WebSocket.js" />
-        <option value="$PROJECT_DIR$/src/app.js" />
         <option value="$PROJECT_DIR$/src/shared/Debugging/errorHandling.js" />
-        <option value="$PROJECT_DIR$/src/server/Networking/WebSocket.js" />
         <option value="$PROJECT_DIR$/src/client/js/Networking/MyClient.js" />
         <option value="$PROJECT_DIR$/src/client/js/Game/Scene.js" />
+        <option value="$PROJECT_DIR$/src/server/Networking/WebSocket.js" />
+        <option value="$PROJECT_DIR$/src/app.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Networking/InputListener.js" />
       </list>
     </option>
   </component>
@@ -170,77 +172,52 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="html" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="Game" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="shared" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VetcheRoyale" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="shared" type="462c0819:PsiDirectoryNode" />
-              <item name="Debugging" type="462c0819:PsiDirectoryNode" />
+              <item name="Networking" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="11.13.0" />
+    <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../VetcheRoyale" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -284,16 +261,18 @@
       <option name="presentableId" value="Default" />
       <updated>1560076484180</updated>
       <workItem from="1560076486387" duration="16185000" />
+      <workItem from="1560095283323" duration="5427000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16185000" />
+    <option name="totallyTimeSpent" value="21612000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="npm" side_tool="true" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24973656" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
@@ -318,16 +297,8 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/client/html/test.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/nodejs/11.13.0/node-typings/node_modules/@types/node/globals.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/html/test.js" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/nodejs/11.13.0/node-typings/node_modules/@types/node/globals.d.ts" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
@@ -335,24 +306,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/serverSetup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/serverSetup.js" />
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
           <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/html/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -373,75 +331,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app.js">
+    <entry file="file://$PROJECT_DIR$/src/client/html/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/js/Networking/InputListener.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+        <state relative-caret-position="210">
+          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/VetcheRoyale.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+        <state relative-caret-position="42">
+          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shared/Debugging/errorHandling.js">
+    <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Renderer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        <state relative-caret-position="1533">
+          <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Camera.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+        <state relative-caret-position="168">
+          <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Renderer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/Networking/WebSocket.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/Networking/MyClient.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
+        <state relative-caret-position="378">
           <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/Debugging/errorHandling.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/Game/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        <state relative-caret-position="273">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/Networking/WebSocket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-206">
+          <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/js/Networking/InputListener.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
