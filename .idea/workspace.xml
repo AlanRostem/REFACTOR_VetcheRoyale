@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="66402bba-6f9c-441e-a674-432fcd96e254" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/shared/Debugging/typeCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Debugging/typeCheck.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/Math/Vector2D.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Math/Vector2D.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -52,8 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/shared/Debugging/typeCheck.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="17" column="68" selection-start-line="17" selection-start-column="68" selection-end-line="17" selection-end-column="68" />
+            <state relative-caret-position="273">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -305,7 +304,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32931000" />
+    <option name="totallyTimeSpent" value="32986000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -452,8 +451,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/shared/Debugging/typeCheck.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="17" column="68" selection-start-line="17" selection-start-column="68" selection-end-line="17" selection-end-column="68" />
+        <state relative-caret-position="273">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

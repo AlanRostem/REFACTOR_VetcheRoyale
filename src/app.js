@@ -33,7 +33,7 @@ var mainSocket = new WebSocket(io);
 // TODO: Refactor this test code:
 
 setInterval(() => {
-   for (var id in mainSocket.clientList.getContainer()) {
-      var client = mainSocket.clientList.getContainer()[id];
+   for (var id in mainSocket._clientList.getContainer()) {
+      var client = mainSocket._clientList.getContainer()[id];
    }
 }, 1000/20);

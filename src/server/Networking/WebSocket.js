@@ -49,28 +49,28 @@ class Client {
 
 class ClientList {
     constructor() {
-        this.container = {};
+        this._container = {};
     }
 
     getContainer() {
-        return this.container;
+        return this._container;
     }
 
     getClient(id) {
-        if (!this.container.hasOwnProperty(id)) {
+        if (!this._container.hasOwnProperty(id)) {
             console.log("WARNING: Client list is returning undefined on 'getClient'");
         }
-        return this.container[id];
+        return this._container[id];
     }
 
     addClient(id, client) {
-        this.container[id] = client;
+        this._container[id] = client;
         return client;
     }
 
     removeClient(id) {
-        if (this.container.hasOwnProperty(id)) {
-            delete this.container[id];
+        if (this._container.hasOwnProperty(id)) {
+            delete this._container[id];
         } else {
             console.log("WARNING: Attempted to delete a non-existent client.")
         }
@@ -79,18 +79,18 @@ class ClientList {
 
 class WebSocket {
     constructor(socket) {
-       this.socket = socket;
-        if (this.socket === null || this.socket === undefined) {
+       this._socket = socket;
+        if (this._socket === null || this._socket === undefined) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
-        this.clientList = new ClientList();
+        this._clientList = new ClientList();
         this.defineEmitEvents();
     }
 
     defineEmitEvents() {
-        this.socket.on("connection", client => {
+        this._socket.on("connection", client => {
             console.log("Establishing connection... Client ID: [ " + client.id + " ]");
-            this.clientList.addClient(client.id, new Client(client, this.clientList));
+            this._clientList.addClient(client.id, new Client(client, this._clientList));
         });
     }
 }

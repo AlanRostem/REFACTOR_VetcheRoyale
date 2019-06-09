@@ -10,7 +10,7 @@ export default class typeCheck {
         }
     }
 
-    // TODO: Add a method to check an objects last class
+    // TODO: Add a method to check an object's last class
 
     // Pass in a primitive data value and a parameter
     // to check if their data types match.
