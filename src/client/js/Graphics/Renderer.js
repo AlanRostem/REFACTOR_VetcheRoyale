@@ -1,5 +1,5 @@
 import Camera from "./Camera.js"
-import Vector2D from "../../../shared/Math/Vector2D.js";
+import Vector2D from "../../../shared/Math/CVector2D.js";
 export default class R {
 
     static _camera = new Camera(0, 0);
@@ -30,6 +30,7 @@ export default class R {
         document.body.style.margin = 0;
 
         R._canvas.style.width = "100%";
+        R._canvas.style.height = "100%";
 
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;
@@ -37,24 +38,29 @@ export default class R {
         R._canvas.style.backgroundColor = "black";
         R._canvas.style.imageRendering = "pixelated";
 
+        this.calibrateScreen();
         window.onresize = e => {
-            R._aspectRatio.x = window.innerWidth / window.innerHeight;
-            R._aspectRatio.y = 1;
-
-            R._screenDimensions.x = R._aspectRatio.x * R._resolution;
-            R._screenDimensions.y = R._aspectRatio.y * R._resolution;
-
-            if (R._screenDimensions.x > 360) {
-                R._screenDimensions.x = 320;
-                R._screenDimensions.y = 160;
-            }
-
-            R._canvas.width = R._screenDimensions.x;
-            R._canvas.height = R._screenDimensions.y;
-
-            //R._camera._offset.x = R._screenDimensions.x / 2;
-            //R._camera._offset.y = R._screenDimensions.y / 2;
+            this.calibrateScreen();
         };
+    }
+
+    static calibrateScreen() {
+        R._aspectRatio.x = window.innerWidth / window.innerHeight;
+        R._aspectRatio.y = 1;
+
+        R._screenDimensions.x = R._aspectRatio.x * R._resolution;
+        R._screenDimensions.y = R._aspectRatio.y * R._resolution;
+
+        if (R._screenDimensions.x > 360) {
+            R._screenDimensions.x = 320;
+            R._screenDimensions.y = 160;
+        }
+
+        R._canvas.width = R._screenDimensions.x;
+        R._canvas.height = R._screenDimensions.y;
+
+        //R._camera._offset.x = R._screenDimensions.x / 2;
+        //R._camera._offset.y = R._screenDimensions.y / 2;
     }
 
     static get context() {

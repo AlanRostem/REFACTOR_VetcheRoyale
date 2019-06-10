@@ -1,7 +1,7 @@
 // Pass in a class/type and then a parameter that
 // is going to be checked. If the data type doesn't
 // match the correct ones an error is thrown.
-export default class typeCheck {
+class typeCheck {
     // Pass in a class constructor to check if
     // the parameter is in the same instance.
     static instance(dataType, parameter) {
@@ -26,3 +26,5 @@ class DataTypeError extends Error {
         super("Data type mismatch, the corresponding type must be of instance " + dataType.name);
     }
 }
+
+module.exports = typeCheck;

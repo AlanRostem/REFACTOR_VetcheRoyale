@@ -30,6 +30,8 @@ var io = require('socket.io').listen(server);
 var WebSocket = require('./server/Networking/WebSocket.js');
 var mainSocket = new WebSocket(io);
 
+var SEntity = require("./server/Game/Entity/SEntity.js");
+
 // TODO: Refactor this test code:
 
 setInterval(() => {

@@ -1,4 +1,4 @@
-import typeCheck from "../Debugging/typeCheck.js"
+import typeCheck from "../Debugging/CtypeCheck.js"
 export default class Vector2D {
     constructor(x, y) {
         this._x = x;
@@ -90,12 +90,4 @@ export default class Vector2D {
         var t = ((c.x - a.x) * s.y - (c.y - a.y) * s.x) / dd;
         return new Vector2D(a.x + t * r.x, a.y + t * r.y);
     }
-}
-
-window.vec2 = Vector2D;
-
-try {
-    module.exports = Vector2D;
-} catch(e) {
-
 }

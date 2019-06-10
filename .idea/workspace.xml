@@ -2,9 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66402bba-6f9c-441e-a674-432fcd96e254" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/server/Game/Entity/EntityManager.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/Game/Entity/SEntity.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/Debugging/StypeCheck.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/Math/SVector2D.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DevDocs.docx" beforeDir="false" afterPath="$PROJECT_DIR$/DevDocs.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/js/Game/Scene.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/Game/Scene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/js/Graphics/Camera.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/Graphics/Camera.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/js/Graphics/Renderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/Graphics/Renderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/js/InputListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/InputListener.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/js/VetcheRoyale.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/js/VetcheRoyale.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/Debugging/errorHandling.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/Debugging/typeCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Debugging/CtypeCheck.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/Math/Vector2D.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Math/CVector2D.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,46 +30,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/client/js/VetcheRoyale.js">
+        <entry file="file://$PROJECT_DIR$/src/shared/Math/CVector2D.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="252">
+              <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Renderer.js">
+        <entry file="file://$PROJECT_DIR$/src/shared/Math/SVector2D.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="55" column="14" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/shared/Math/Vector2D.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1405">
-              <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/shared/Debugging/typeCheck.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state relative-caret-position="445">
+              <caret line="94" column="26" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -65,8 +50,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Camera.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+            <state relative-caret-position="189">
+              <caret line="9" column="24" lean-forward="true" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -75,19 +60,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/client/js/InputListener.js">
+        <entry file="file://$PROJECT_DIR$/src/shared/Debugging/CtypeCheck.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/client/js/Game/Scene.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+            <state relative-caret-position="529">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -96,19 +72,65 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/shared/Debugging/errorHandling.js">
+        <entry file="file://$PROJECT_DIR$/src/shared/Debugging/StypeCheck.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+            <state relative-caret-position="445">
+              <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/server/Networking/WebSocket.js">
+        <entry file="file://$PROJECT_DIR$/src/client/js/InputListener.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="61" column="9" lean-forward="true" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="9" />
+            <state>
+              <caret column="18" selection-start-column="18" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/client/js/Game/Scene.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/server/Game/Entity/SEntity.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="42" selection-start-column="42" selection-end-column="42" />
+              <folding>
+                <element signature="n#!!block;n#width#0;n#SEntity#0" />
+                <element signature="n#!!block;n#width#1;n#SEntity#0" />
+                <element signature="n#!!block;n#topLeft#0;n#SEntity#0" />
+                <element signature="n#!!block;n#topRight#0;n#SEntity#0" />
+                <element signature="n#!!block;n#bottomLeft#0;n#SEntity#0" />
+                <element signature="n#!!block;n#bottomRight#0;n#SEntity#0" />
+                <element signature="n#!!block;n#pos#0;n#SEntity#0" />
+                <element signature="n#!!block;n#pos#1;n#SEntity#0" />
+                <element signature="n#!!block;n#pos#1;n#SEntity#0" />
+                <element signature="n#!!block;n#vel#1;n#SEntity#0" />
+                <element signature="n#!!block;n#pos#1;n#SEntity#0" />
+                <element signature="n#!!block;n#acc#1;n#SEntity#0" />
+                <element signature="n#!!block;n#acc#2;n#SEntity#0" />
+                <element signature="n#!!block;n#acc#3;n#SEntity#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/server/Game/Entity/EntityManager.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="42">
+              <caret line="2" column="23" lean-forward="true" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -116,8 +138,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+            <state relative-caret-position="319">
+              <caret line="32" column="48" selection-start-line="32" selection-start-column="48" selection-end-line="32" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -160,16 +182,30 @@
         <option value="$PROJECT_DIR$/src/shared/Debugging/errorHandling.js" />
         <option value="$PROJECT_DIR$/src/client/js/Networking/InputListener.js" />
         <option value="$PROJECT_DIR$/src/server/Networking/Client.js" />
-        <option value="$PROJECT_DIR$/src/app.js" />
-        <option value="$PROJECT_DIR$/src/client/js/InputListener.js" />
         <option value="$PROJECT_DIR$/src/client/js/Networking/MyClient.js" />
         <option value="$PROJECT_DIR$/src/server/Networking/WebSocket.js" />
-        <option value="$PROJECT_DIR$/src/client/js/Graphics/Camera.js" />
-        <option value="$PROJECT_DIR$/src/shared/Math/Vector2D.js" />
-        <option value="$PROJECT_DIR$/src/shared/Debugging/typeCheck.js" />
         <option value="$PROJECT_DIR$/src/client/js/Graphics/Renderer.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Game/Entity/Player.js" />
+        <option value="$PROJECT_DIR$/src/server/Game/Entity/Player.js" />
+        <option value="$PROJECT_DIR$/src/server/Game/Entity/Entity.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Game/Entity/Entity.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Game/Entity/EntityManager.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Game/Entity/CEntityManager.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Game/Entity/CEntity.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Game/Entity/EntityDataReceiver.js" />
         <option value="$PROJECT_DIR$/src/client/js/VetcheRoyale.js" />
         <option value="$PROJECT_DIR$/src/client/js/Game/Scene.js" />
+        <option value="$PROJECT_DIR$/src/client/js/Graphics/Camera.js" />
+        <option value="$PROJECT_DIR$/src/client/js/InputListener.js" />
+        <option value="$PROJECT_DIR$/src/app.js" />
+        <option value="$PROJECT_DIR$/src/shared/Debugging/typeCheck.js" />
+        <option value="$PROJECT_DIR$/src/shared/Debugging/StypeCheck.js" />
+        <option value="$PROJECT_DIR$/src/shared/Math/Vector2D.js" />
+        <option value="$PROJECT_DIR$/src/shared/Debugging/CtypeCheck.js" />
+        <option value="$PROJECT_DIR$/src/shared/Math/SVector2D.js" />
+        <option value="$PROJECT_DIR$/src/shared/Math/CVector2D.js" />
+        <option value="$PROJECT_DIR$/src/server/Game/Entity/EntityManager.js" />
+        <option value="$PROJECT_DIR$/src/server/Game/Entity/SEntity.js" />
       </list>
     </option>
   </component>
@@ -216,6 +252,23 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="Game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="Game" type="462c0819:PsiDirectoryNode" />
+              <item name="Entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
               <item name="Graphics" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -237,7 +290,42 @@
               <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="Game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="Game" type="462c0819:PsiDirectoryNode" />
+              <item name="Entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="Networking" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Debugging" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="REFACTOR_VetcheRoyale" type="b2602c69:ProjectViewProjectNode" />
+              <item name="REFACTOR_VetcheRoyale" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="Math" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -250,7 +338,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../VetcheRoyale" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/shared/Math" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -263,6 +351,11 @@
     <property name="ts.external.directory.path" value="D:\Program Files (External)\WebStorm\WebStorm 2019.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Dev\REFACTOR_VetcheRoyale\src\shared\Math" />
+      <recent name="C:\Dev\REFACTOR_VetcheRoyale\src\shared\Debugging" />
+      <recent name="C:\Dev\REFACTOR_VetcheRoyale\src\client\js\Game\Entity" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Dev\REFACTOR_VetcheRoyale\src\client\js" />
       <recent name="D:\Dev\REFACTORED PROJECTS\VetcheRoyale\src\server" />
@@ -299,7 +392,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33191000" />
+    <option name="totallyTimeSpent" value="42991000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -369,37 +462,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/server/Networking/Client.js" />
-    <entry file="file://$PROJECT_DIR$/src/client/js/Networking/MyClient.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" column="29" lean-forward="true" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Camera.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/js/InputListener.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/server/Networking/WebSocket.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="56">
@@ -409,25 +471,41 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Renderer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="55" column="14" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="14" />
+        <state relative-caret-position="361">
+          <caret line="43" column="10" lean-forward="true" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shared/Math/Vector2D.js">
+    <entry file="file://$PROJECT_DIR$/src/client/js/Game/Entity/Player.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/Game/Entity/Player.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/js/Game/Entity/CEntity.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1405">
-          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+        <state relative-caret-position="252">
+          <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shared/Debugging/typeCheck.js">
+    <entry file="file://$PROJECT_DIR$/src/client/js/Networking/MyClient.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        <state>
+          <caret column="47" lean-forward="true" selection-start-column="47" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/js/Game/Entity/EntityDataReceiver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="58" column="11" lean-forward="true" selection-start-line="58" selection-start-column="11" selection-end-line="58" selection-end-column="11" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -436,20 +514,105 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/VetcheRoyale.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+        <state relative-caret-position="210">
+          <caret line="10" column="30" lean-forward="true" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/js/Graphics/Camera.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="24" lean-forward="true" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/js/InputListener.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="32" column="48" selection-start-line="32" selection-start-column="48" selection-end-line="32" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/js/Game/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="357">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/Debugging/StypeCheck.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/Game/Entity/EntityManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="23" lean-forward="true" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/Math/SVector2D.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="94" column="26" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/Math/CVector2D.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/Debugging/CtypeCheck.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/Game/Entity/SEntity.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="42" selection-start-column="42" selection-end-column="42" />
+          <folding>
+            <element signature="n#!!block;n#width#0;n#SEntity#0" />
+            <element signature="n#!!block;n#width#1;n#SEntity#0" />
+            <element signature="n#!!block;n#topLeft#0;n#SEntity#0" />
+            <element signature="n#!!block;n#topRight#0;n#SEntity#0" />
+            <element signature="n#!!block;n#bottomLeft#0;n#SEntity#0" />
+            <element signature="n#!!block;n#bottomRight#0;n#SEntity#0" />
+            <element signature="n#!!block;n#pos#0;n#SEntity#0" />
+            <element signature="n#!!block;n#pos#1;n#SEntity#0" />
+            <element signature="n#!!block;n#pos#1;n#SEntity#0" />
+            <element signature="n#!!block;n#vel#1;n#SEntity#0" />
+            <element signature="n#!!block;n#pos#1;n#SEntity#0" />
+            <element signature="n#!!block;n#acc#1;n#SEntity#0" />
+            <element signature="n#!!block;n#acc#2;n#SEntity#0" />
+            <element signature="n#!!block;n#acc#3;n#SEntity#0" />
           </folding>
         </state>
       </provider>

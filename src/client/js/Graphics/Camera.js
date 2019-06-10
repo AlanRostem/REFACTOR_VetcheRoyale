@@ -1,5 +1,5 @@
-import Vector2D from "../../../shared/Math/Vector2D.js"
-import typeCheck from "../../../shared/Debugging/typeCheck.js"
+import Vector2D from "../../../shared/Math/CVector2D.js"
+import {typeCheck} from "../../../shared/Debugging/CtypeCheck.js"
 export default class Camera {
     constructor(offsetX, offsetY, boundVec2D = new Vector2D(0, 0)) {
         this._boundPos = boundVec2D;

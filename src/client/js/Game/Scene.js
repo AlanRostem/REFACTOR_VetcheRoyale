@@ -3,10 +3,20 @@
 
 import R from "../Graphics/Renderer.js"
 export default class Scene {
-    static start = false;
+    static _start = false;
+    static _deltaTime = 0;
+    static _lastTime = 0;
+    static _entityManager = null;
 
-    static run() {
-        // TODO: Setup calls here.
+    static get deltaTime() {
+        if (Scene._deltaTime === 0) {
+            console.log("WARNING: Attempted to retrieve a delta time of zero.");
+        }
+        return Scene._deltaTime;
+    }
+
+    static run(entityManager) {
+        Scene._entityManager = entityManager;
         Scene.tick();
     }
 
@@ -16,12 +26,19 @@ export default class Scene {
 
     static draw() {
         R.clear();
-        R.drawRect("blue", 100, 50, 32, 32); // Single call test
+        Scene._entityManager.drawEntities();
     }
 
-    static tick() {
+    static tick(time) {
+        if (time > 0)
+            Scene._deltaTime = (time - Scene._lastTime)/1000;
+
         Scene.update();
         Scene.draw();
+
+        if (time > 0)
+            Scene._lastTime = time;
+
         requestAnimationFrame(Scene.tick);
     }
 }
