@@ -31,19 +31,19 @@ class ClientList {
 }
 
 class WebSocket {
-    constructor(socket) {
+    constructor(socket, entityManager) {
        this._socket = socket;
         if (this._socket === null || this._socket === undefined) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
         this._clientList = new ClientList();
-        this.defineSocketEvents();
+        this.defineSocketEvents(entityManager);
     }
 
-    defineSocketEvents() {
+    defineSocketEvents(entityManager) {
         this._socket.on("connection", client => {
             console.log("Establishing connection... Client ID: [ " + client.id + " ]");
-            this._clientList.addClient(client.id, new Client(client, this._clientList));
+            this._clientList.addClient(client.id, new Client(client, this._clientList, entityManager));
         });
     }
 

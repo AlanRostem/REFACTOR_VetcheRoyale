@@ -10,12 +10,27 @@ class EntityManager {
         return this._container;
     }
 
+    update() {
+        this.updateEntities();
+        this.refreshEntityDataPacks();
+    }
+
+    refreshEntityDataPacks() {
+        for (var id in this._container) {
+            if (this.exists(id)) {
+                var entity = this._container[id];
+                entity.updateDataPack();
+            }
+        }
+    }
+
     updateEntities() {
         for (var id in this._container) {
             if (this.exists(id)) {
                 var entity = this._container[id];
                 if (entity.toRemove) {
                     this.removeEntity(entity.id);
+                    continue;
                 }
                 entity.update(this);
             }
@@ -35,7 +50,6 @@ class EntityManager {
     // Spawns an existing entity into the game world
     // on a given position.
     spawnEntity(x, y, entity) {
-        // TODO: Add the ability to spawn an entity based on class type
         this._container[entity.id] = entity;
         entity.initFromEntityManager(this);
         entity.pos.x = x;

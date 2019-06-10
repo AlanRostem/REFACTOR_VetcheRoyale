@@ -2,6 +2,8 @@
 // should loop here.
 
 import R from "../Graphics/Renderer.js"
+import EntityDataReceiver from "./Entity/EntityDataReceiver.js"
+
 export default class Scene {
     static _start = false;
     static _deltaTime = 0;
@@ -31,7 +33,7 @@ export default class Scene {
 
     static tick(time) {
         if (time > 0)
-            Scene._deltaTime = (time - Scene._lastTime)/1000;
+            Scene._deltaTime = (time - Scene._lastTime) / 1000;
 
         Scene.update();
         Scene.draw();

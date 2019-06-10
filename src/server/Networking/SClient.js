@@ -1,7 +1,7 @@
 Player = require("../Game/Entity/Player/SPlayer.js");
 
 class Client {
-    constructor(socket, clientList) {
+    constructor(socket, clientList, entityManager) {
         // Object given by _socket.io
         this._socket = socket;
 
@@ -12,6 +12,7 @@ class Client {
         };
 
         this._player = new Player(0, 0, this);
+        entityManager.spawnEntity(100, Math.random() * 100, this._player);
 
         this.defineSocketEvents(socket, clientList);
     }
@@ -56,7 +57,7 @@ class Client {
     }
 
     update(entityManager) {
-        this.emit("updateEntity", this._player.entitiesInProximity);
+        this.emit("updateEntity", this._player.entitiesInProximity.exportDataPack());
     }
 }
 

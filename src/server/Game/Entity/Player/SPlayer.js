@@ -1,5 +1,5 @@
 Entity = require("../SEntity.js");
-EntityManager = require("../EntityManager.js");
+ProximityEntityManager = require("./ProximityEntityManager.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 
 class Player extends Entity {
@@ -7,28 +7,28 @@ class Player extends Entity {
         super(x, y, 8, 12);
         this._id = client.id;
         this._clientRef = client;
-        this._entitiesInProximity = new EntityManager();
+        this._entitiesInProximity = new ProximityEntityManager();
     }
 
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
-        this.getProximityEntityData(entityManager);
+        this._entitiesInProximity.getProximityEntityData(this.center, entityManager);
+        this._clientRef.emit("initEntity", this._entitiesInProximity.exportDataPack())
     }
 
     get entitiesInProximity() {
-        return this._entitiesInProximity.container;
+        return this._entitiesInProximity;
     }
 
-    // Called only when player spawns in the world
-    getProximityEntityData(entityManager) {
-        entityManager.forEach(entity => {
-            if (entity.id !== this.id) {
-                if (Vector2D.distance(this.center, entity.center) < Player.clientSpawnProximity) {
-                    this._entitiesInProximity.spawnEntity(entity);
-                }
-            }
-        });
+    proximityForLoop(entity) {
+        if (!this.entitiesInProximity.exists(entity.id)) {
+        }
     }
+
+    update(entityManager) {
+        this.entitiesInProximity.forEach(this.proximityForLoop);
+    }
+
 }
 
 // Static variables:

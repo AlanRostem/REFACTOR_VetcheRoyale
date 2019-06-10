@@ -10,6 +10,8 @@ class SEntity {
         this._width = width;
         this._height = height;
         this._id = Math.random();
+        this._removed = false;
+        this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
 
         // TODO: Add scalable function to add data pack
         // TODO: constants in the constructor.
@@ -17,7 +19,8 @@ class SEntity {
             pos: this.pos, // Storing the reference is a good idea since
             vel: this.vel, // we don't have to waste performance with assignment
             width: this._width,
-            height: this._height
+            height: this._height,
+            color: this._color
         }
     }
 
@@ -35,10 +38,17 @@ class SEntity {
 
     updateDataPack() {
         // TODO: Add updates if needed
-        return this._dataPack;
     }
 
     // Getters and setters
+
+    getDataPack() {
+        return this._dataPack;
+    }
+
+    get toRemove() {
+        return this._removed;
+    }
 
     get id() {
         return this._id;

@@ -29,9 +29,18 @@ export default class EntityDataReceiver {
         // Receives an array of entities in the proximity of the
         // client player object, and spawns them here as the player
         // connects.
-        client.on('initEntity', array => {
-            for (var entityData of array) {
+        client.on('initEntity', dataPack => {
+            for (var id in dataPack) {
+                var entityData = dataPack[id];
                 this.addEntityFromDataPack(entityData);
+            }
+        });
+
+        client.on('removeEntity', id => {
+            if (this.existsOnClient(id)) {
+                this.removeEntity(id);
+            } else {
+                console.log("Attempted to remove a non existent entity. Something's wrong here...")
             }
         });
 
@@ -50,14 +59,7 @@ export default class EntityDataReceiver {
         client.on('spawnEntity', entityData => {
             this.addEntityFromDataPack(entityData);
         });
-        
-        client.on('removeEntity', id => {
-            if (this.existsOnClient(id)) {
-                this.removeEntity(id);
-            } else {
-                console.log("Attempted to remove a non existent entity. Something's wrong here...")
-            }
-        });
+
     }
 
     drawEntities() {
