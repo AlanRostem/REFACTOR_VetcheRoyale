@@ -1,4 +1,4 @@
-import dataCheck from "../Debugging/dataCheck.js"
+import typeCheck from "../Debugging/CtypeCheck.js"
 export default class Vector2D {
     constructor(x, y) {
         this._x = x;
@@ -6,12 +6,12 @@ export default class Vector2D {
     }
 
     set x(val) {
-        dataCheck.primitive( 0, val);
+        typeCheck.primitive( 0, val);
         this._x = val;
     }
 
     set y(val) {
-        dataCheck.primitive( 0, val);
+        typeCheck.primitive( 0, val);
         this._y = val;
     }
 
@@ -24,24 +24,24 @@ export default class Vector2D {
     }
 
     add(vec) {
-        dataCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         this.x += vec.x;
         this.y += vec.y;
     }
 
     set(vec) {
-        dataCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         this.x = vec.x;
         this.y = vec.y;
     }
 
     dot(vec) {
-        dataCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         return this.x * vec.x + this.y * vec.y;
     }
 
     scale(val) {
-        dataCheck.object(Vector2D, vec);
+        typeCheck.instance(Vector2D, vec);
         this.x *= val;
         this.y *= val;
     }
@@ -53,8 +53,8 @@ export default class Vector2D {
     }
 
     static angle(a, b) {
-        dataCheck.object(Vector2D, a);
-        dataCheck.object(Vector2D, b);
+        typeCheck.instance(Vector2D, a);
+        typeCheck.instance(Vector2D, b);
         let x = b.x - a.x;
         let y = b.y - a.y;
         return Math.atan2(y, x)
@@ -62,10 +62,10 @@ export default class Vector2D {
 
     static intersect(a, b, c, d)
     {
-        dataCheck.object(Vector2D, a);
-        dataCheck.object(Vector2D, b);
-        dataCheck.object(Vector2D, c);
-        dataCheck.object(Vector2D, d);
+        typeCheck.instance(Vector2D, a);
+        typeCheck.instance(Vector2D, b);
+        typeCheck.instance(Vector2D, c);
+        typeCheck.instance(Vector2D, d);
 
         const r = new Vector2D (b.x - a.x, b.y - a.y);
         const s = new Vector2D (d.x - c.x, d.y- c.y);
@@ -78,10 +78,10 @@ export default class Vector2D {
 
     static getIntersectedPos(a, b, c, d)
     {
-        dataCheck.object(Vector2D, a);
-        dataCheck.object(Vector2D, b);
-        dataCheck.object(Vector2D, c);
-        dataCheck.object(Vector2D, d);
+        typeCheck.instance(Vector2D, a);
+        typeCheck.instance(Vector2D, b);
+        typeCheck.instance(Vector2D, c);
+        typeCheck.instance(Vector2D, d);
 
         const r = new Vector2D (b.x - a.x, b.y - a.y);
         const s = new Vector2D (d.x - c.x, d.y- c.y);
@@ -90,10 +90,4 @@ export default class Vector2D {
         var t = ((c.x - a.x) * s.y - (c.y - a.y) * s.x) / dd;
         return new Vector2D(a.x + t * r.x, a.y + t * r.y);
     }
-}
-
-try {
-    module.exports = Vector2D;
-} catch(e) {
-
 }
