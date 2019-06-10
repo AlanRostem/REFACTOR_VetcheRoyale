@@ -27,15 +27,6 @@ server.listen(3000);
 console.log("Vetche Royale online!");
 
 var io = require('socket.io').listen(server);
-var WebSocket = require('./server/Networking/WebSocket.js');
-var mainSocket = new WebSocket(io);
-
-var SEntity = require("./server/Game/Entity/SEntity.js");
-
-// TODO: Refactor this test code:
-
-setInterval(() => {
-   for (var id in mainSocket._clientList.getContainer()) {
-      var client = mainSocket._clientList.getContainer()[id];
-   }
-}, 1000/20);
+var Game = require("./server/Game/Game.js");
+var game = new Game(io);
+game.start();

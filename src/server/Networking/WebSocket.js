@@ -1,51 +1,4 @@
-class Client {
-    constructor(socket, clientList) {
-        // Object given by _socket.io
-        this._socket = socket;
-
-        this._socket.emit("connectClient", {id: socket.id});
-        // Holds all key states of corresponding key codes
-        this._keyStates = {
-            32: false
-        };
-        this.defineEmitEvents(socket, clientList);
-    }
-
-    get id() {
-        return this._socket.id;
-    }
-
-    get socket() {
-        return this._socket;
-    }
-
-    getKeyState(keyCode) {
-        return this._keyStates[keyCode];
-    }
-
-    emit(eventType, data) {
-        this._socket.emit(eventType, data);
-    }
-
-    on(eventType, callback) {
-        this._socket.on(eventType, callback);
-    }
-
-    defineEmitEvents(socket, clientList) {
-        this._socket.on("connectClientCallback", data => {
-            console.log("Client [ " + data.id + " ] successfully connected!");
-        });
-
-        this._socket.on("disconnect", data => {
-            clientList.removeClient(this.id);
-            console.log("Disconnected [ " + this.id + " ]");
-        });
-
-        this._socket.on("keyEvent", data => {
-            this._keyStates[data.keyCode] = data.keyState;
-        })
-    }
-}
+Client = require("./SClient.js");
 
 class ClientList {
     constructor() {
@@ -84,14 +37,18 @@ class WebSocket {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
         this._clientList = new ClientList();
-        this.defineEmitEvents();
+        this.defineSocketEvents();
     }
 
-    defineEmitEvents() {
+    defineSocketEvents() {
         this._socket.on("connection", client => {
             console.log("Establishing connection... Client ID: [ " + client.id + " ]");
             this._clientList.addClient(client.id, new Client(client, this._clientList));
         });
+    }
+
+    get clientList() {
+        return this._clientList.getContainer();
     }
 }
 

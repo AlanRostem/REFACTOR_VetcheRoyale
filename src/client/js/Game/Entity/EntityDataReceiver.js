@@ -35,8 +35,9 @@ export default class EntityDataReceiver {
             }
         });
 
-        client.on('updateEntity', array => {
-            for (var entityData of array) {
+        client.on('updateEntity', dataPack => {
+            for (var id in dataPack) {
+                var entityData = dataPack[id];
                 if (this.existsOnClient(entityData.id)) {
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.update(entityData);
