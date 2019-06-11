@@ -1,4 +1,6 @@
 import typeCheck from "../Debugging/CtypeCheck.js"
+import {sqrt} from "./CCustomMath.js"
+
 export default class Vector2D {
     constructor(x, y) {
         this._x = x;
@@ -49,7 +51,7 @@ export default class Vector2D {
     static distance(a, b) {
         var x = b.x - a.x;
         var y = b.y - a.y;
-        return Math.sqrt(x**2 + y**2);
+        return sqrt(x**2 + y**2);
     }
 
     static angle(a, b) {
