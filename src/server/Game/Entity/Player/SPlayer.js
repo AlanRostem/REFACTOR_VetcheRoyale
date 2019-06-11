@@ -27,7 +27,7 @@ class Player extends IPlayer {
         return this._clientRef;
     }
 
-    update(entityManager) {
+    update(entityManager, deltaTime) {
         this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
 
         var keys = this._clientRef._keyStates;

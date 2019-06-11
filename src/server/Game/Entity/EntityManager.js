@@ -8,8 +8,8 @@ class EntityManager {
         return this._container;
     }
 
-    update() {
-        this.updateEntities();
+    update(deltaTime) {
+        this.updateEntities(deltaTime);
         this.refreshEntityDataPacks();
         for (var i = 0; i < this._entitiesQueuedToDelete.length; i++) {
            delete this._container[this._entitiesQueuedToDelete[i]];
@@ -26,7 +26,7 @@ class EntityManager {
         }
     }
 
-    updateEntities() {
+    updateEntities(deltaTime) {
         for (var id in this._container) {
             if (this.exists(id)) {
                 var entity = this._container[id];
@@ -34,7 +34,7 @@ class EntityManager {
                     this.removeEntity(entity.id);
                     continue;
                 }
-                entity.update(this);
+                entity.update(this, deltaTime);
             }
         }
     }

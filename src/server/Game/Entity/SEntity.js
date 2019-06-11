@@ -33,7 +33,7 @@ class SEntity {
 
     }
 
-    update(entityManager) {
+    update(entityManager, deltaTime) {
 
     }
 
