@@ -27,22 +27,25 @@ class Player extends IPlayer {
         return this._clientRef;
     }
 
+    get keys() {
+        return this._clientRef._keyStates;
+    }
+
     update(entityManager, deltaTime) {
         this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
 
-        var keys = this._clientRef._keyStates;
-        if (keys[32]) {
+        if (this.keys[32]) {
             this.pos.y--;
         }
 
-        if (keys[83]) {
+        if (this.keys[83]) {
             this.pos.y++;
         }
-        if (keys[68]) {
+        if (this.keys[68]) {
             this.pos.x++;
         }
 
-        if (keys[65]) {
+        if (this.keys[65]) {
             this.pos.x--;
         }
 

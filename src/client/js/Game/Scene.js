@@ -9,6 +9,7 @@ export default class Scene {
     static _deltaTime = 0;
     static _lastTime = 0;
     static _entityManager = null;
+    static _clientRef = null;
 
     static get deltaTime() {
         if (Scene._deltaTime === 0) {
@@ -17,13 +18,14 @@ export default class Scene {
         return Scene._deltaTime;
     }
 
-    static run(entityManager) {
+    static run(entityManager, client) {
+        Scene._clientRef = client;
         Scene._entityManager = entityManager;
         Scene.tick();
     }
 
     static update() {
-
+        Scene._clientRef.update();
     }
 
     static draw() {

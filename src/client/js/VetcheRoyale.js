@@ -8,4 +8,4 @@ io = undefined; // Restricting console from using this function.
 var entityDataReceiver = new EntityDataReceiver(client);
 
 R.setup();
-Scene.run(entityDataReceiver);
+Scene.run(entityDataReceiver, client);

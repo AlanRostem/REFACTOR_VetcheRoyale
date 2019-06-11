@@ -55,6 +55,11 @@ class Client {
         this._socket.on("keyEvent", data => {
             this._keyStates[data.keyCode] = data.keyState;
         });
+
+        var _this = this;
+        this.on('_ping', function() {
+            _this.emit('_pong');
+        });
     }
 
     update(entityManager) {
