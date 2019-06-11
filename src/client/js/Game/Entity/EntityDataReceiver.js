@@ -45,12 +45,16 @@ export default class EntityDataReceiver {
         });
 
         client.on('updateEntity', dataPack => {
+
+            //console.log(Object.keys(dataPack).length, Object.keys(this._container).length);
+
             for (var id in dataPack) {
                 var entityData = dataPack[id];
-                if (this.existsOnClient(entityData.id)) {
+                if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.update(entityData);
                 } else {
+                    console.log(dataPack);
                     console.log("Attempted to update a non existent entity. There's a hole in your programming...");
                 }
             }

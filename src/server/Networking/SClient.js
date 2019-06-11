@@ -14,7 +14,7 @@ class Client {
         this._player = new Player(0, 0, this);
         entityManager.spawnEntity(100, Math.random() * 100, this._player);
 
-        this.defineSocketEvents(socket, clientList);
+        this.defineSocketEvents(socket, clientList, entityManager);
     }
 
     get player() {
@@ -41,13 +41,14 @@ class Client {
         this._socket.on(eventType, callback);
     }
 
-    defineSocketEvents(socket, clientList) {
+    defineSocketEvents(socket, clientList, entityManager) {
         this._socket.on("connectClientCallback", data => {
             console.log("Client [ " + data.id + " ] successfully connected!");
         });
 
         this._socket.on("disconnect", data => {
             clientList.removeClient(this.id);
+            entityManager.removeEntity(this.player.id);
             console.log("Disconnected [ " + this.id + " ]");
         });
 

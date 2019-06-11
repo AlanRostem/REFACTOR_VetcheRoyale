@@ -1,13 +1,15 @@
 Entity = require("../SEntity.js");
+IPlayer = require("./IPlayer.js");
 ProximityEntityManager = require("./ProximityEntityManager.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 
-class Player extends Entity {
+class Player extends IPlayer {
     constructor(x, y, client) {
         super(x, y, 8, 12);
         this._id = client.id;
+        this._dataPack.id = this._id;
         this._clientRef = client;
-        this._entitiesInProximity = new ProximityEntityManager();
+        this._entitiesInProximity = new ProximityEntityManager(this);
     }
 
     initFromEntityManager(entityManager) {
@@ -20,19 +22,18 @@ class Player extends Entity {
         return this._entitiesInProximity;
     }
 
-    proximityForLoop(entity) {
-        if (!this.entitiesInProximity.exists(entity.id)) {
-        }
+    get client() {
+        return this._clientRef;
     }
 
     update(entityManager) {
-        this.entitiesInProximity.forEach(this.proximityForLoop);
+        this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
     }
 
 }
 
 // Static variables:
 
-Player.clientSpawnProximity = 320; // TODO: Fix this test value
+Player.clientSpawnProximity = ProximityEntityManager.clientSpawnProximity; // TODO: Fix this test value
 
 module.exports = Player;

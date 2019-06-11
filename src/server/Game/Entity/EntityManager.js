@@ -1,9 +1,7 @@
-var Vector2D = require("../../../shared/Math/SVector2D.js");
-
 class EntityManager {
     constructor() {
         this._container = {};
-
+        this._entitiesQueuedToDelete = [];
     }
 
     get container() {
@@ -13,6 +11,10 @@ class EntityManager {
     update() {
         this.updateEntities();
         this.refreshEntityDataPacks();
+        for (var i = 0; i < this._entitiesQueuedToDelete.length; i++) {
+           delete this._container[this._entitiesQueuedToDelete[i]];
+           this._entitiesQueuedToDelete.splice(i);
+        }
     }
 
     refreshEntityDataPacks() {
@@ -61,7 +63,8 @@ class EntityManager {
     }
 
     removeEntity(id) {
-        delete this._container[id];
+        this.getEntity(id).remove();
+        this._entitiesQueuedToDelete.push(id);
     }
 }
 

@@ -16,6 +16,7 @@ class SEntity {
         // TODO: Add scalable function to add data pack
         // TODO: constants in the constructor.
         this._dataPack = {
+            id: this._id,
             pos: this.pos, // Storing the reference is a good idea since
             vel: this.vel, // we don't have to waste performance with assignment
             width: this._width,
@@ -38,6 +39,10 @@ class SEntity {
 
     updateDataPack() {
         // TODO: Add updates if needed
+    }
+
+    remove() {
+        this._removed = true;
     }
 
     // Getters and setters

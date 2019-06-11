@@ -9,7 +9,7 @@ class Game {
 
     update() {
         // Update the entities, then create data packs
-        this.entityManager.updateEntities();
+        this.entityManager.update();
         for (var id in this.mainSocket.clientList) {
             var client = this.mainSocket.clientList[id];
             // After the entities have been updated and
