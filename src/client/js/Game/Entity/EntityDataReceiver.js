@@ -52,7 +52,7 @@ export default class EntityDataReceiver {
                 var entityData = dataPack[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntity(entityData);
-                    existingEntity.update(entityData);
+                    existingEntity.updateFromDataPack(entityData);
                 } else {
                     console.log(dataPack);
                     console.log("Attempted to update a non existent entity. There's a hole in your programming...");
@@ -64,6 +64,12 @@ export default class EntityDataReceiver {
             this.addEntityFromDataPack(entityData);
         });
 
+    }
+
+    updateEntities(deltaTime) {
+        for (var id in this._container) {
+            this._container[id].update(deltaTime);
+        }
     }
 
     drawEntities() {

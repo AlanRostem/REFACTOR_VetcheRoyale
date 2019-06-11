@@ -5,17 +5,21 @@ import Vector2D from "../../../../shared/Math/CVector2D.js";
 export default class CEntity {
     constructor(initDataPack) {
         this._disPlayPos = new Vector2D(0, 0);
+        this._target = new Vector2D(0, 0); // Interpolation position
         for (var key in initDataPack) {
             this[key] = initDataPack[key];
         }
     }
 
-    update(dataPack) {
+    // This function is run from the client emit callback.
+    updateFromDataPack(dataPack) {
         for (var key in dataPack) {
             this[key] = dataPack[key];
         }
-        this._disPlayPos.x = this.pos._x | 0;
-        this._disPlayPos.y = this.pos._y | 0;
+    }
+
+    update(deltaTime) {
+        // TODO: Add interpolation
     }
 
     draw() {
