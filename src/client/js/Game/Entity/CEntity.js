@@ -20,5 +20,14 @@ export default class CEntity {
 
     draw() {
         R.drawRect(this.color, this._disPlayPos.x, this._disPlayPos.y, this.width, this.height);
+
+        // TEST:
+        R.context.save();
+        R.context.beginPath();
+        R.context.arc(this._disPlayPos.x + this.width / 2, this._disPlayPos.y + this.width / 2, this.t_entityProximity, 0, Math.PI * 2);
+        R.context.strokeStyle = "yellow";
+        R.context.lineWidth = 2;
+        R.context.stroke();
+        R.context.restore();
     }
 }

@@ -25,7 +25,7 @@ class ProximityEntityManager extends EntityManager {
             if (this._playerRef.id !== entityCloseToPlayer.id) {
                 if (!this.exists(id)) {
                     if (Vector2D.distance(this._playerRef.center, entityCloseToPlayer.center)
-                        < ProximityEntityManager.clientSpawnProximity) {
+                        < ProximityEntityManager.clientSpawnRange) {
                         this.spawnEntity(
                             undefined,
                             undefined,
@@ -35,8 +35,9 @@ class ProximityEntityManager extends EntityManager {
                     }
 
                 } else {
-                    if (entityCloseToPlayer.toRemove || !entityManager.exists(id)) {
-
+                    if (entityCloseToPlayer.toRemove || !entityManager.exists(id) ||
+                        Vector2D.distance(this._playerRef.center, entityCloseToPlayer.center)
+                        > ProximityEntityManager.clientSpawnRange) {
                         this.removeEntity(entityCloseToPlayer.id);
                         this._playerRef.client.emit("removeEntity", entityCloseToPlayer.id);
                     }
@@ -50,7 +51,7 @@ class ProximityEntityManager extends EntityManager {
     getProximityEntityData(position, entityManager) {
         entityManager.forEach(entity => {
             if (entity.id !== this.id) {
-                if (Vector2D.distance(position, entity.center) < ProximityEntityManager.clientSpawnProximity) {
+                if (Vector2D.distance(position, entity.center) < ProximityEntityManager.clientSpawnRange) {
                     this.spawnEntity(entity.pos.x, entity.pos.y, entity);
                 }
             }
@@ -60,8 +61,9 @@ class ProximityEntityManager extends EntityManager {
     exportDataPack() {
         for (var id in this.container) {
             var entityData = this.container[id].getDataPack();
-            if (entityData.removed) {
-                if (this._dataBox[id]) {
+            if (this._dataBox[id]) {
+                if (entityData.removed || Vector2D.distance(this._playerRef.center, this.getEntity(entityData.id).center)
+                    > ProximityEntityManager.clientSpawnRange) {
                     delete this._dataBox[id];
                     continue;
                 }
@@ -72,6 +74,6 @@ class ProximityEntityManager extends EntityManager {
     }
 }
 
-ProximityEntityManager.clientSpawnProximity = 320; // TODO: Create a proper value (currently for testing)
+ProximityEntityManager.clientSpawnRange = 48; // TODO: Create a proper value (currently for testing)
 
 module.exports = ProximityEntityManager;

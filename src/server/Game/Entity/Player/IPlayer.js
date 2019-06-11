@@ -12,6 +12,4 @@ class IPlayer extends Entity {
     }
 }
 
-IPlayer.clientSpawnProximity = 320;
-
 module.exports = IPlayer;
