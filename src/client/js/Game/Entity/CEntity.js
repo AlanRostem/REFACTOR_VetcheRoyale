@@ -16,10 +16,18 @@ export default class CEntity {
         for (var key in dataPack) {
             this[key] = dataPack[key];
         }
+        this._target.x = this.pos._x | 0;
+        this._target.y = this.pos._y | 0;
     }
 
     update(deltaTime) {
-        // TODO: Add interpolation
+        this.pos._x += ((this._target.x - this.pos._x) * deltaTime) | 0;
+        this.pos._y += ((this._target.y - this.pos._y) * deltaTime) | 0;
+
+        //console.log(((this._target.x - this.pos._x) * deltaTime) | 0, ((this._target.y - this.pos._y) * deltaTime) | 0);
+
+        this._disPlayPos.x = this.pos._x | 0;
+        this._disPlayPos.y = this.pos._y | 0;
     }
 
     draw() {
