@@ -6,9 +6,11 @@ export default class MyClient {
     constructor(socket) {
         this._socket = socket;
         this._inputListener = new InputListener(this);
-        this.addKeyEmitter(32, keyState => {
-            //console.log(keyState);
-        }); // TEST
+
+        [32, 83, 68, 65].forEach(keyCode => {
+            this.addKeyEmitter(keyCode);
+        });
+
         this.defineSocketEvents();
         this._startTime = Date.now();
         this._latency = Date.now() - this._startTime;
@@ -59,5 +61,4 @@ export default class MyClient {
             this._latency = Date.now() - this._startTime;
         });
     }
-
 }
