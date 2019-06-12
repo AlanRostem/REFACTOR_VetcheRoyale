@@ -8,7 +8,7 @@ class Player extends IPlayer {
         super(x, y, 8, 12);
         this._id = client.id;
         this._dataPack.id = this._id;
-        this._dataPack.t_entityProximity = ProximityEntityManager.clientSpawnRange;
+        this._dataPack.t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
         this._clientRef = client;
         this._entitiesInProximity = new ProximityEntityManager(this);
     }
@@ -55,6 +55,6 @@ class Player extends IPlayer {
 
 // Static variables:
 
-Player.clientSpawnProximity = ProximityEntityManager.clientSpawnRange; // TODO: Fix this test value
+Player.clientSpawnProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE; // TODO: Fix this test value
 
 module.exports = Player;

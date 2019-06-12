@@ -26,7 +26,7 @@ class ProximityEntityManager extends EntityManager {
             if (this._playerRef.id !== entityCloseToPlayer.id) {
                 if (!this.exists(id)) {
                     if (Vector2D.distance(this._playerRef.center, entityCloseToPlayer.center)
-                        < ProximityEntityManager.clientSpawnRange) {
+                        < ProximityEntityManager.CLIENT_SPAWN_RANGE) {
                         this.addEntity(
                             entityCloseToPlayer,
                         );
@@ -36,7 +36,7 @@ class ProximityEntityManager extends EntityManager {
                 } else {
                     if (entityCloseToPlayer.toRemove || !entityManager.exists(id) ||
                         Vector2D.distance(this._playerRef.center, entityCloseToPlayer.center)
-                        > ProximityEntityManager.clientSpawnRange) {
+                        > ProximityEntityManager.CLIENT_SPAWN_RANGE) {
                         this.removeEntity(entityCloseToPlayer.id);
                         this._playerRef.client.emit("removeEntity", entityCloseToPlayer.id);
                     }
@@ -50,7 +50,7 @@ class ProximityEntityManager extends EntityManager {
     getProximityEntityData(position, entityManager) {
         entityManager.forEach(entity => {
             if (entity.id !== this.id) {
-                if (Vector2D.distance(position, entity.center) < ProximityEntityManager.clientSpawnRange) {
+                if (Vector2D.distance(position, entity.center) < ProximityEntityManager.CLIENT_SPAWN_RANGE) {
                     this.addEntity(entity);
                 }
             }
@@ -65,6 +65,6 @@ class ProximityEntityManager extends EntityManager {
     }
 }
 
-ProximityEntityManager.clientSpawnRange = 48; // TODO: Create a proper value (currently for testing)
+ProximityEntityManager.CLIENT_SPAWN_RANGE = 48; // TODO: Create a proper value (currently for testing)
 
 module.exports = ProximityEntityManager;
