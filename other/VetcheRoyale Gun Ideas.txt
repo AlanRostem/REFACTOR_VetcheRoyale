@@ -1,0 +1,85 @@
+Name: "KE-L"
+Description: "Compressed kinetic energy pistol."
+Level: 1
+Primary Fire: "Kinetic orbs": Automatic pistol that fires bouncy projectiles
+Mod: "Kinetic energy": Fire a wave of kinetic energy that knocks enemies far back
+Super: "Kinetic bubble": Launch a big projectile that moves enemies caught in it in its moving direction
+                         It moves through walls.
+
+Name: "KE-6H"
+Description: "Compressed kinetic energy rifle, predecessor to the KE-L."
+Level: 3
+Primary Attack: "Kinetic bomb": Explosive projectile
+Mod (Ability): "Kinetic matrix": Create a square shield around yourself.
+Super (Ultimate): "Kinetic scatter blast": Fire a slow projectile that scatters many small low damage bouncy projectiles upon detonation.
+
+
+Name: "M1-Falcon"
+Description: "Rocket powered hunting rifle."
+Level: 2
+Primary Attack: "Semi-automatic rifle": Fire bullets at a moderate fire rate with moderate damage.
+Mod: "Rocket bayonet charge": Charge towards an enemy in only one ground direction at high speed and deal high damage with your bayonet upon contect.
+Super: "Rocket bayonet overcharge": Your primary fire is replaced with infinite bayonet charges that can launch in any direction for a short time.
+
+
+Name: "B.I.G Motorizer"
+Description: "Motor driven death machine."
+Level: 3
+Primary Attack: "Charged salvo": Fully automatic with charge-up time light machine gun that fires
+                 20mm light explosive rounds with slow travel time and harmonic movement.
+Mod: "Thunder pulse": Charge up and fire a thunder laser from the motor that stuns enemies hit by it.
+Super: "Transform": Transform the weapon up to 3 times to give it upgrades.
+1st form: Precision Choke - Rounds travel directly
+2nd form: Turbo Engine - No charge-up time but fire at a slow fire rate that builds up as you fire
+3nd form: EMP Engine - Use Thunder Pulse as you fire
+
+
+Name: "SG-BackFire"
+Description: "Incendiary shotgun."
+Level 1:
+Primary Attack: "Dragon's Breath": Fire close range shotgun shells that knock you back slightly when fired
+Mod: "Incendiary Wave": Unleash a wave of fire that burns an enemy when in very close proximity. Deals damage over time.
+Super: "Napalm Blast": Blanket a large area of fire.
+
+
+Name: "Hamilton P336"
+Description: "Advanced tech tactical pistol."
+Level: 1
+Primary Attack: "Semi-automatic pistol": Slow firing low damage pistol.
+Mod: "Select fire": Toggle fire mode to rapid full auto.
+Super: "Smart split-barrel": Lock on to multiple targets and fire at them simultaneously.
+
+
+Name: "Holy Grail"
+Description: "Ancient blessed hand-cannon."
+Level: 2
+Primary attack: "":
+Mod: "Blessing": Start health regeneration at a higher speed
+Super: "Afterlife gate": Become invulnerable and move faster but unable to attack
+
+
+Name: "90-Cal":
+Description: "Anti-tank rifle"
+Level: 2
+Primary Attack: "Heavy bolt-action rifle": Fire a large fast arcing projectile dealing high damage
+Mod: "Enhanced zoom scope": Zoom out and see a larger portion of the map
+Super: "Heavy rifling": Mount the weapon to the ground to fire a single hit-scan shot that instantly kills an enemy
+                        and does collateral damage.
+
+Name: "Hadron Rail-Gun"
+Description: "Hadron particle cannon"
+Level: 3
+Primary Attack: "Hadron beam": Hit-scan constant limited beam
+Mod: "Charged zoom": Zoom out and see a larger portion of the map while charging up a long range beam that deals more
+                     damage the more it's charged
+Super: "":
+
+
+Name "WorldLine"
+Description: "Space-time manipulator"
+Level: 4
+Primary Attack: "Wormhole": Fire an arcing projectile that creates a wormhole on tile impact only. Reload every shot.
+                            The wormhole lasts for 2 seconds and deals damage over time on enemies caught in it.
+Mod: "Space-time tunnel": Place a portal wherever you see on the map. Uses one ammo.
+Super: "World shift": Travel to another dimension for 5 seconds. You are invulnerable but unable to see the map terrain,
+                      enemies and teammates. 
