@@ -60,5 +60,9 @@ export default class MyClient {
         this.on('_pong', () => {
             this._latency = Date.now() - this._startTime;
         });
+
+        this.on('broadcast-newPlayer', data => {
+           console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
+        });
     }
 }

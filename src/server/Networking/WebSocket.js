@@ -9,6 +9,10 @@ class ClientList {
         return this._container;
     }
 
+    get length() {
+        return Object.keys(this._container).length;
+    }
+
     getClient(id) {
         if (!this._container.hasOwnProperty(id)) {
             console.log("WARNING: Client list is returning undefined on 'getClient'");

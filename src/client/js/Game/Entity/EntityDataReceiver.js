@@ -2,7 +2,10 @@
 // This singleton class also renders those entities.
 import CEntity from "./CEntity.js"
 export default class EntityDataReceiver {
+
+    _previousDataContainer = {};
     _container = {};
+
     static _entityTypeSpawner = {}; // Map container with class constructors mapped to respective entities
     constructor(client) {
         this.defineSocketEvents(client) // Used for composing the socket emit events here

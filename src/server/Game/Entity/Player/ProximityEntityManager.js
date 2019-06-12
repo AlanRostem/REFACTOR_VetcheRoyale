@@ -16,7 +16,7 @@ class ProximityEntityManager extends EntityManager {
     }
 
     removeEntity(id) {
-        delete this.container[id];
+        delete this._container[id];
     }
 
     checkPlayerProximityEntities(entityManager) {
@@ -61,13 +61,11 @@ class ProximityEntityManager extends EntityManager {
     exportDataPack() {
         for (var id in this.container) {
             var entityData = this.container[id].getDataPack();
-            if (this._dataBox[id]) {
-                if (entityData.removed ||
-                    Vector2D.distance(this._playerRef.center, this.getEntity(entityData.id).center)
-                    > ProximityEntityManager.clientSpawnRange) {
-                    delete this._dataBox[id];
-                    continue;
-                }
+            if (this.getEntity(entityData.id).toRemove ||
+                Vector2D.distance(this._playerRef.center, this.getEntity(entityData.id).center)
+                > ProximityEntityManager.clientSpawnRange) {
+                delete this._dataBox[id];
+                continue;
             }
             this._dataBox[id] = entityData;
         }

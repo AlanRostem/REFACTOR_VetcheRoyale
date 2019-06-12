@@ -44,6 +44,10 @@ class Client {
     defineSocketEvents(socket, clientList, entityManager) {
         this._socket.on("connectClientCallback", data => {
             console.log("Client [ " + data.id + " ] successfully connected!");
+            this._socket.broadcast.emit("broadcast-newPlayer", {
+                id: this.id,
+                playerCount: clientList.length
+            })
         });
 
         this._socket.on("disconnect", data => {
