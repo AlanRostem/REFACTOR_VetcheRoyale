@@ -48,6 +48,7 @@ class SEntity {
     // Getters and setters
 
     getDataPack() {
+        this._dataPack.removed = this._removed;
         return this._dataPack;
     }
 
