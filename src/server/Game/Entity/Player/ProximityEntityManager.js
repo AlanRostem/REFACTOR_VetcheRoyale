@@ -59,13 +59,7 @@ class ProximityEntityManager extends EntityManager {
 
     exportDataPack() {
         for (let id in this.container) {
-            var entityData = this.container[id].getDataPack();
-            if (Vector2D.distance(this._playerRef.center, this.getEntity(entityData.id).center)
-                > ProximityEntityManager.clientSpawnRange) {
-                delete this._dataBox[id];
-                continue;
-            }
-            this._dataBox[id] = entityData;
+            this._dataBox[id] =  this.container[id].getDataPack();
         }
         return this._dataBox;
     }
