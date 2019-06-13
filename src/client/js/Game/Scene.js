@@ -2,7 +2,7 @@
 // should loop here.
 
 import R from "../Graphics/Renderer.js"
-import EntityDataReceiver from "./Entity/EntityDataReceiver.js"
+import EntityDataReceiver from "./Entity/Management/EntityDataReceiver.js"
 
 export default class Scene {
     static _start = false;
@@ -26,7 +26,6 @@ export default class Scene {
 
     static update() {
         Scene._clientRef.update();
-        Scene._entityManager.t_UpdateEntityData(Scene.deltaTime);
         Scene._entityManager.updateEntities(Scene.deltaTime);
     }
 

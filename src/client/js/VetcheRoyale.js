@@ -1,7 +1,7 @@
 import R from "./Graphics/Renderer.js"
 import MyClient from "./Networking/MyClient.js"
 import Scene from "./Game/Scene.js"
-import EntityDataReceiver from "./Game/Entity/EntityDataReceiver.js"
+import EntityDataReceiver from "./Game/Entity/Management/EntityDataReceiver.js"
 
 var client = new MyClient(io());
 io = undefined; // Restricting console from using this function.

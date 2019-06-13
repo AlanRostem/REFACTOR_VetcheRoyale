@@ -1,6 +1,6 @@
 // Manages inbound entity data packs from the server.
 // This singleton class also renders those entities.
-import CEntity from "./CEntity.js"
+import CEntity from "../CEntity.js"
 export default class EntityDataReceiver {
 
     _previousDataContainer = {};
@@ -68,12 +68,6 @@ export default class EntityDataReceiver {
             this.addEntityFromDataPack(entityData);
         });
 
-    }
-
-    t_UpdateEntityData(deltaTime) {
-        for (var id in this._container) {
-            this._container[id].updateReceivedData(deltaTime)
-        }
     }
 
     updateEntities(deltaTime) {

@@ -13,15 +13,16 @@ class SEntity {
         this._removed = false;
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
 
-        // TODO: Add scalable function to add data pack
-        // TODO: constants in the constructor.
+        // TODO: Add scalable function/class to create data packs
+        // TODO: with constants and variable data in the constructor.
         this._dataPack = {
             id: this._id,
             pos: this.pos, // Storing the reference is a good idea since
             vel: this.vel, // we don't have to waste performance with assignment
             width: this._width,
             height: this._height,
-            color: this._color
+            color: this._color,
+            serverTickDeltaTime: 0
         }
     }
 
@@ -42,11 +43,10 @@ class SEntity {
     }
 
     update(entityManager, deltaTime) {
-
     }
 
     updateDataPack() {
-        // TODO: Add updates if needed
+        this._dataPack.serverTickDeltaTime = deltaTime;
     }
 
     remove() {

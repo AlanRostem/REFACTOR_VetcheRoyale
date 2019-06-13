@@ -3,9 +3,15 @@
 import R from "../../Graphics/Renderer.js"
 import Vector2D from "../../../../shared/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../shared/Math/CCustomMath.js";
+import EntityDataBuffer from "./Management/EntityDataBuffer.js";
+import Constants from "../../../../shared/Constants";
+
 
 export default class CEntity {
     constructor(initDataPack) {
+
+        this._dataBuffer = new EntityDataBuffer(Constants.MAX_ENTITY_BUFFER_SIZE);
+
         this._disPlayPos = new Vector2D(0, 0);
         this._targetState = initDataPack;
 
@@ -19,9 +25,15 @@ export default class CEntity {
     // This function is run from the client emit callback.
     updateFromDataPack(dataPack) {
         this._targetState = dataPack;
+        this._dataBuffer.update(dataPack, dataPack.serverTickDeltaTime);
     }
 
-    updateReceivedData(deltaTime) {
+    // Lag compensation
+    clientProcessCorrection() {
+        var latestData = this._dataBuffer.get(this._dataBuffer.length - 1);
+
+        var currentPos = latestData.pos;
+
 
     }
 
