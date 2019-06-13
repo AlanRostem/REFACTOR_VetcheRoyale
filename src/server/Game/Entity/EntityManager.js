@@ -10,18 +10,18 @@ class EntityManager {
 
     update(deltaTime) {
         this.updateEntities(deltaTime);
-        this.refreshEntityDataPacks();
+        this.refreshEntityDataPacks(deltaTime);
         for (var i = 0; i < this._entitiesQueuedToDelete.length; i++) {
            delete this._container[this._entitiesQueuedToDelete[i]];
            this._entitiesQueuedToDelete.splice(i);
         }
     }
 
-    refreshEntityDataPacks() {
+    refreshEntityDataPacks(deltaTime) {
         for (var id in this._container) {
             if (this.exists(id)) {
                 var entity = this._container[id];
-                entity.updateDataPack();
+                entity.updateDataPack(deltaTime);
             }
         }
     }

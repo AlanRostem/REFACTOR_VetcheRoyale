@@ -45,7 +45,7 @@ class SEntity {
     update(entityManager, deltaTime) {
     }
 
-    updateDataPack() {
+    updateDataPack(deltaTime) {
         this._dataPack.serverTickDeltaTime = deltaTime;
     }
 

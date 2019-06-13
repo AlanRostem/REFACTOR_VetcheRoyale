@@ -4,7 +4,7 @@ import R from "../../Graphics/Renderer.js"
 import Vector2D from "../../../../shared/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../shared/Math/CCustomMath.js";
 import EntityDataBuffer from "./Management/EntityDataBuffer.js";
-import Constants from "../../../../shared/Constants";
+import Constants from "../../../../shared/Constants.js";
 
 
 export default class CEntity {

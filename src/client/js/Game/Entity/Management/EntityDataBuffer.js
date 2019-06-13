@@ -2,7 +2,7 @@
 // from the server. Composed in an entity.
 
 import Constants from "../../../../../shared/Constants.js";
-class EntityDataBuffer {
+export default class EntityDataBuffer {
     constructor(size) {
         this._size = size;
         this._container = [];
