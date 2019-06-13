@@ -33,6 +33,14 @@ class SEntity {
 
     }
 
+    moveX(x, deltaTime) {
+        this._pos._x += (x * deltaTime);
+    }
+
+    moveY(y, deltaTime) {
+        this._pos._y += (y * deltaTime);
+    }
+
     update(entityManager, deltaTime) {
 
     }

@@ -34,19 +34,21 @@ class Player extends IPlayer {
     update(entityManager, deltaTime) {
         this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
 
+        var s = 240;
+
         if (this.keys[32]) {
-            this.pos.y--;
+            this.moveY(-s, deltaTime);
         }
 
         if (this.keys[83]) {
-            this.pos.y++;
+            this.moveY(s, deltaTime);
         }
         if (this.keys[68]) {
-            this.pos.x++;
+            this.moveX(s, deltaTime);
         }
 
         if (this.keys[65]) {
-            this.pos.x--;
+            this.moveX(-s, deltaTime);
         }
 
     }
