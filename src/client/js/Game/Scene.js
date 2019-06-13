@@ -26,6 +26,7 @@ export default class Scene {
 
     static update() {
         Scene._clientRef.update();
+        Scene._entityManager.t_UpdateEntityData(Scene.deltaTime);
         Scene._entityManager.updateEntities(Scene.deltaTime);
     }
 

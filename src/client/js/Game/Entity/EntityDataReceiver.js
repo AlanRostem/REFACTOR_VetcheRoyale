@@ -54,6 +54,7 @@ export default class EntityDataReceiver {
             for (var id in dataPack) {
                 var entityData = dataPack[id];
                 if (this.existsOnClient(id)) {
+                    entityData.latency = client._latency;
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.updateFromDataPack(entityData);
                 } else {
@@ -67,6 +68,12 @@ export default class EntityDataReceiver {
             this.addEntityFromDataPack(entityData);
         });
 
+    }
+
+    t_UpdateEntityData(deltaTime) {
+        for (var id in this._container) {
+            this._container[id].updateReceivedData(deltaTime)
+        }
     }
 
     updateEntities(deltaTime) {

@@ -33,6 +33,10 @@ export default class MyClient {
         }
     }
 
+    static get ping() {
+        return this._latency;
+    }
+
     update() {
         this._startTime = Date.now();
         this.emit("_ping");
