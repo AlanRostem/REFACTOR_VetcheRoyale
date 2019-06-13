@@ -82,4 +82,4 @@ Primary Attack: "Wormhole": Fire an arcing projectile that creates a wormhole on
                             The wormhole lasts for 2 seconds and deals damage over time on enemies caught in it.
 Mod: "Space-time tunnel": Place a portal wherever you see on the map. Uses one ammo.
 Super: "World shift": Travel to another dimension for 5 seconds. You are invulnerable but unable to see the map terrain,
-                      enemies and teammates. 
+                      enemies and teammates.
