@@ -68,5 +68,6 @@ export default class MyClient {
         this.on('broadcast-newPlayer', data => {
            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
+
     }
 }

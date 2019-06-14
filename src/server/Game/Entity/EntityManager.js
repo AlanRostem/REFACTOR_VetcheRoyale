@@ -1,7 +1,14 @@
+TileMap = require("../TileBased/TileMap.js");
+
 class EntityManager {
     constructor() {
         this._container = {};
         this._entitiesQueuedToDelete = [];
+        this._tileMap = new TileMap();
+    }
+
+    get tileMap() {
+        return this._tileMap;
     }
 
     get container() {

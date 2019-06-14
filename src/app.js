@@ -10,6 +10,10 @@ app.use(express.static(path.join(__dirname)));
 // All these app.get calls send the following
 // directories to the client.
 
+app.get('/client/public', (req, res) => {
+   res.sendFile(path.join(__dirname + "/"));
+});
+
 app.get('/client/js/', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
@@ -17,6 +21,7 @@ app.get('/client/js/', (req, res) => {
 app.get('/shared', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
+
 
 app.get('/', (req, res) => {
    res.sendFile(path.join(__dirname + "/client/html/index.html"));
