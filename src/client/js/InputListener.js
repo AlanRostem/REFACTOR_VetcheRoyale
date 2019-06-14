@@ -29,14 +29,12 @@ export default class InputListener {
     // and calls the respective callback function.
     handleEvent(event) {
         const {keyCode} = event;
-        if (!this._keyCallbacks.hasOwnProperty(keyCode)) {
-            return;
-        }
+        if (!this._keyCallbacks.hasOwnProperty(keyCode)) return;
+
         event.preventDefault();
         const keyState = event.type === "keydown"; // Pressed = true, released = false
-        if (this._keyStates[keyCode] === keyState) {
-            return;
-        }
+        if (this._keyStates[keyCode] === keyState) return;
+
         this._keyStates[keyCode] = keyState;
         for (var callback of this._keyCallbacks[keyCode]) {
             callback(keyState);
