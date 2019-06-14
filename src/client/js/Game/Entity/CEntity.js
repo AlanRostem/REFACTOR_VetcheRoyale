@@ -12,7 +12,7 @@ export default class CEntity {
 
         this._dataBuffer = new EntityDataBuffer(Constants.MAX_ENTITY_BUFFER_SIZE);
 
-        this._disPlayPos = new Vector2D(0, 0);
+        this._displayPos = new Vector2D(0, 0);
         this._targetState = initDataPack;
 
         // TODO: Initialize constants in a better way
@@ -32,23 +32,23 @@ export default class CEntity {
     clientProcessCorrection() {
         var latestData = this._dataBuffer.get(this._dataBuffer.length - 1);
 
-        var currentPos = latestData.pos;
+        var serverPos = latestData.pos;
 
 
     }
 
     update(deltaTime) {
-        this._disPlayPos.x = this._targetState.pos._x | 0;
-        this._disPlayPos.y = this._targetState.pos._y | 0;
+        this._displayPos.x = this._targetState.pos._x | 0;
+        this._displayPos.y = this._targetState.pos._y | 0;
     }
 
     draw() {
-        R.drawRect(this.color, this._disPlayPos.x, this._disPlayPos.y, this.width, this.height);
+        R.drawRect(this.color, this._displayPos.x, this._displayPos.y, this.width, this.height);
 
         // TEST:
         R.context.save();
         R.context.beginPath();
-        R.context.arc(this._disPlayPos.x + this.width / 2, this._disPlayPos.y + this.width / 2, this.t_entityProximity, 0, Math.PI * 2);
+        R.context.arc(this._displayPos.x + this.width / 2, this._displayPos.y + this.width / 2, this.t_entityProximity, 0, Math.PI * 2);
         R.context.strokeStyle = "yellow";
         R.context.lineWidth = 2;
         R.context.stroke();

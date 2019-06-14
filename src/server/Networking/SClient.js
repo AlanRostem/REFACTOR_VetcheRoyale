@@ -7,9 +7,7 @@ class Client {
 
         this._socket.emit("connectClient", {id: socket.id});
         // Holds all key states of corresponding key codes
-        this._keyStates = {
-            32: false
-        };
+        this._keyStates = {};
 
         this._player = new Player(0, 0, this);
         entityManager.spawnEntity(100, Math.random() * 100, this._player);
@@ -47,7 +45,7 @@ class Client {
             this._socket.broadcast.emit("broadcast-newPlayer", {
                 id: this.id,
                 playerCount: clientList.length
-            })
+            });
         });
 
         this._socket.on("disconnect", data => {

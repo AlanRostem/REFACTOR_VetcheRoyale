@@ -5,7 +5,7 @@ class SEntity {
     constructor(x, y, width, height) {
         this._pos = new Vector2D(x, y);
         this._vel = new Vector2D(0, 0);
-        this._fric = new Vector2D(1, 1);
+        this._fric = new Vector2D(0, 0);
         this._acc = new Vector2D(0, 0);
         this._width = width;
         this._height = height;
@@ -43,6 +43,7 @@ class SEntity {
     }
 
     update(entityManager, deltaTime) {
+
     }
 
     updateDataPack(deltaTime) {
@@ -83,21 +84,21 @@ class SEntity {
     get topRight() {
         return {
             x: this._pos.x + this._width,
-            y : this._pos.y
+            y: this._pos.y
         };
     }
 
     get bottomLeft() {
         return {
             x: this._pos.x,
-            y : this._pos.y + this._height
+            y: this._pos.y + this._height
         };
     }
 
     get bottomRight() {
         return {
             x: this._pos.x + this._width,
-            y : this._pos.y + this._height
+            y: this._pos.y + this._height
         };
     }
 
