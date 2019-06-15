@@ -11,6 +11,9 @@ class Player extends IPlayer {
         this._dataPack.t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
         this._clientRef = client;
         this._entitiesInProximity = new ProximityEntityManager(this);
+        this._jumping = false;
+
+        this.acc.y = 320;
     }
 
     initFromEntityManager(entityManager) {
@@ -31,27 +34,39 @@ class Player extends IPlayer {
         return this._clientRef._keyStates;
     }
 
-    update(entityManager, deltaTime) {
-        //super.update(entityManager, deltaTime);
-        this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
 
-        var s = 240;
+    update(entityManager, deltaTime) {
+        var s = 120;
+
+        if (!this.side.bottom) {
+            this._jumping = true;
+        }
 
         if (this.keys[32]) {
-            this.moveY(-s, deltaTime);
+            if (!this._jumping) {
+                this.vel.y = -s * 1.3;
+                this._jumping = true;
+            }
         }
 
-        if (this.keys[83]) {
-            this.moveY(s, deltaTime);
-        }
+        this.vel.x = 0;
+
         if (this.keys[68]) {
-            this.moveX(s, deltaTime);
+            this.vel.x = s;
         }
 
         if (this.keys[65]) {
-            this.moveX(-s, deltaTime);
+            this.vel.x = -s;
         }
 
+        super.update(entityManager, deltaTime);
+        this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
+
+        if (this.side.bottom) {
+            this._jumping = false;
+        }
+
+        console.log(this.side.bottom)
     }
 
 }

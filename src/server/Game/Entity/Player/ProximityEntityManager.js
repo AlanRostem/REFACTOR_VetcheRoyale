@@ -65,6 +65,6 @@ class ProximityEntityManager extends EntityManager {
     }
 }
 
-ProximityEntityManager.CLIENT_SPAWN_RANGE = 48; // TODO: Create a proper value (currently for testing)
+ProximityEntityManager.CLIENT_SPAWN_RANGE = 120; // TODO: Create a proper value (currently for testing)
 
 module.exports = ProximityEntityManager;

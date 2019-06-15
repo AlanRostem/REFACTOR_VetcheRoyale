@@ -44,10 +44,10 @@ export default class Scene {
         R.clear();
 
         if (AssetManager.done()) {
-            Scene._entityManager.drawEntities();
             if (Scene.t_ts) {
                 Scene.t_ts.draw(Scene._t_tm.t_array);
             }
+            Scene._entityManager.drawEntities();
         } else {
             var str = "Loading " +
                 (((AssetManager.successCount + AssetManager.errorCount) / AssetManager.downloadQueue.length) * 100 | 0)

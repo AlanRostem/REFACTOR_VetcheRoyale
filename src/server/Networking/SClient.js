@@ -1,4 +1,6 @@
 Player = require("../Game/Entity/Player/SPlayer.js");
+Tile = require("../Game/TileBased/Tile.js");
+
 
 class Client {
     constructor(socket, clientList, entityManager) {
@@ -10,7 +12,7 @@ class Client {
         this._keyStates = {};
 
         this._player = new Player(0, 0, this);
-        entityManager.spawnEntity(100, Math.random() * 100, this._player);
+        entityManager.spawnEntity(145 * Tile.SIZE, 202 * Tile.SIZE, this._player);
 
         this.defineSocketEvents(socket, clientList, entityManager);
     }

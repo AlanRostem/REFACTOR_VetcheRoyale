@@ -2,7 +2,7 @@ var typeCheck = require("../../../shared/Debugging/StypeCheck.js");
 var Tile = require("./Tile.js");
 
 class STileMap {
-    constructor(arr = new Uint8Array(), w = 240, h = 136) {
+    constructor(arr = new Uint8Array(), w = 480, h = 272) {
         this.array = arr;
         this.w = w;
         this.h = h;
@@ -17,7 +17,7 @@ class STileMap {
     }
 
     getID(cx, cy) {
-        return this._array[cy * this.w + cx]
+        return this.array[cy * this.w + cx]
     }
 
     isSolid(id) {
@@ -34,6 +34,10 @@ class STileMap {
 
     set array(arr) {
         this._array = Uint8Array.from(arr);
+    }
+
+    get array() {
+        return this._array;
     }
 }
 
