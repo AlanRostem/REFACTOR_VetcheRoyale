@@ -31,13 +31,16 @@ class AssetManager {
                         for (var fun of _this.downloadCallbacks) {
                             fun();
                         }
+                        console.log('%cThe program loaded in ' + (_this.successCount) + ' assets.', 'color: green; font-weight: bold;');
+                        if(_this.errorCount>0) console.error(_this.errorCount + " error(s).");
+                        else console.warn(_this.errorCount + " error(s).");
                     }, false);
                     break;
                 default:
                     alert("error");
             }
         };
-        rawFile.send(null);
+            rawFile.send(null);
     }
 
     download(downloadCallback) {
