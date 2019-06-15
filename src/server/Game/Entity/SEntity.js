@@ -82,11 +82,10 @@ class SEntity {
         var cx =  Math.floor(this.pos.x / Tile.SIZE);
         var cy =  Math.floor(this.pos.y / Tile.SIZE);
 
-        var proxy = 2;
+        var proxy = 2; // Amount of margin of tiles around entity
 
         var tileX = Math.floor(this.width / Tile.SIZE) + proxy;
         var tileY = Math.floor(this.height / Tile.SIZE) + proxy;
-
 
         for (var y = -proxy; y < tileY; y++) {
             for (var x = -proxy; x < tileX; x++) {
@@ -121,7 +120,7 @@ class SEntity {
         var cx =  Math.floor(this.pos.x / Tile.SIZE);
         var cy =  Math.floor(this.pos.y / Tile.SIZE);
 
-        var proxy = 2;
+        var proxy = 2; // Amount of margin of tiles around entity
 
         var tileX = Math.floor(this.width / Tile.SIZE) + proxy;
         var tileY = Math.floor(this.height / Tile.SIZE) + proxy;
