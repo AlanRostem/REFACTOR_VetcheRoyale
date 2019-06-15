@@ -49,15 +49,6 @@ Primary Attack: "Semi-automatic pistol": Slow firing low damage pistol.
 Mod: "Select fire": Toggle fire mode to rapid full auto.
 Super: "Smart split-barrel": Lock on to multiple targets and fire at them simultaneously.
 
-
-Name: "Holy Grail"
-Description: "Ancient blessed hand-cannon."
-Level: 2
-Primary attack: "":
-Mod: "Blessing": Start health regeneration at a higher speed
-Super: "Afterlife gate": Become invulnerable and move faster but unable to attack
-
-
 Name: "90-Cal":
 Description: "Anti-tank rifle"
 Level: 2
@@ -83,3 +74,19 @@ Primary Attack: "Wormhole": Fire an arcing projectile that creates a wormhole on
 Mod: "Space-time tunnel": Place a portal wherever you see on the map. Uses one ammo.
 Super: "World shift": Travel to another dimension for 5 seconds. You are invulnerable but unable to see the map terrain,
                       enemies and teammates.
+
+Name: "SEW-230"
+Description: "Electric Missile Launcher"
+Level: 3
+Ammo Capacity: 1
+Primary Attack: "Sphere Missile": Launch a sphere which follows the cursor. Electric discharge on impact, damaging nearby players.
+Mod: "Zoomed missile": Sphere follows your mouse, and outside camera boundaries. Lasts for 5 seconds.
+Super: "Short-Circuting": Electric overload. Electric beams stream from the launcher damaging nearby players. Controllable.
+
+Name: "LiqAK"
+Description: "Automatic Rifle"
+Level: 2
+Ammo Capacity: 25
+Primary Attack: "Automatic Shooting": Shoot fast medium-medium bullets with high recoil.
+Mod: "Fan the gun": All bullets in the magazine fired at once. Higher recoil. Less damage.
+Super: "Heavy Metal": Ammo Capacity set to 100 and autofilled with bullets. No recoil. Shoots automaticly every round. Super fast.
