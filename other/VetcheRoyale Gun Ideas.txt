@@ -61,8 +61,8 @@ Name: "Hadron Rail-Gun"
 Description: "Hadron particle cannon"
 Level: 3
 Primary Attack: "Hadron beam": Hit-scan constant limited beam
-Mod: "Charged zoom": Zoom out and see a larger portion of the map while charging up a long range beam that deals more
-                     damage the more it's charged
+Mod: "Charged zoom": Zoom out and see a larger portion of the map while charging up a long range single shot
+                     beam that deals more damage the more it's charged.
 Super: "":
 
 
@@ -70,9 +70,12 @@ Name "WorldLine"
 Description: "Space-time manipulator"
 Level: 4
 Primary Attack: "Wormhole": Fire an arcing projectile that creates a wormhole on tile impact only. Reload every shot.
-                            The wormhole lasts for 2 seconds and deals damage over time on enemies caught in it.
-Mod: "Space-time tunnel": Place a portal wherever you see on the map. Uses one ammo.
-Super: ""
+                            The wormhole lasts for 1 second and deals damage over time on enemies while
+                            slowing them down.
+Mod: "Space-time tunnel": Transfer all incoming fire to a different dimension, then launch them back to your enemies.
+                          The more damage absorbed, the less the ability lasts, and when reaching the absorption limit
+                          you take all the damage yourself.
+Super: "Instant transmission": Instantly move to a position you see on the map.
 
 Name: "SEW-230"
 Description: "Electric Missile Launcher"

@@ -5,7 +5,7 @@ Vector2D = require("../../../../shared/Math/SVector2D.js");
 
 class Player extends IPlayer {
     constructor(x, y, client) {
-        super(x, y, 8, 16);
+        super(x, y, 6, 12);
         this._id = client.id;
         this._dataPack.id = this._id;
         this._dataPack.t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
@@ -13,7 +13,14 @@ class Player extends IPlayer {
         this._entitiesInProximity = new ProximityEntityManager(this);
         this._jumping = false;
 
-        this.acc.y = 320;
+        this._speed = {
+            ground: 65,
+            jump: -180,
+        };
+
+        this._gravity = 500;
+
+        this.acc.y = this._gravity;
     }
 
     initFromEntityManager(entityManager) {
@@ -36,15 +43,13 @@ class Player extends IPlayer {
 
 
     update(entityManager, deltaTime) {
-        var s = 120;
-
         if (!this.side.bottom) {
             this._jumping = true;
         }
 
         if (this.keys[32]) {
             if (!this._jumping) {
-                this.vel.y = -s * 1.3;
+                this.vel.y = this._speed.jump;
                 this._jumping = true;
             }
         }
@@ -52,11 +57,11 @@ class Player extends IPlayer {
         this.vel.x = 0;
 
         if (this.keys[68]) {
-            this.vel.x = s;
+            this.vel.x = this._speed.ground;
         }
 
         if (this.keys[65]) {
-            this.vel.x = -s;
+            this.vel.x = -this._speed.ground;
         }
 
         super.update(entityManager, deltaTime);

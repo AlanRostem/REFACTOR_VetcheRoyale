@@ -42,11 +42,5 @@ export default class CEntity {
         R.context.lineWidth = 2;
         R.context.stroke();
         R.context.restore();
-
-
-        for (var key in this._targetState.tileTests) {
-            var tile = this._targetState.tileTests[key];
-            R.drawRect("rgba(255, 0, 0, 0.5)", tile.x, tile.y, 8, 8, true);
-        }
     }
 }

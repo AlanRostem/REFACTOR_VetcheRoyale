@@ -42,8 +42,6 @@ class SEntity {
             color: this._color,
             serverTickDeltaTime: 0
         };
-
-        this._dataPack.tileTests = {};
     }
 
     initFromEntityManager(entityManager) {
@@ -84,12 +82,14 @@ class SEntity {
         var cx =  Math.floor(this.pos.x / Tile.SIZE);
         var cy =  Math.floor(this.pos.y / Tile.SIZE);
 
-        var tileX = Math.floor(this.width / Tile.SIZE) + 1;
-        var tileY = Math.floor(this.height / Tile.SIZE) + 1;
+        var proxy = 2;
+
+        var tileX = Math.floor(this.width / Tile.SIZE) + proxy;
+        var tileY = Math.floor(this.height / Tile.SIZE) + proxy;
 
 
-        for (var y = -1; y < tileY; y++) {
-            for (var x = -1; x < tileX; x++) {
+        for (var y = -proxy; y < tileY; y++) {
+            for (var x = -proxy; x < tileX; x++) {
                 var xx = cx + x;
                 var yy = cy + y;
 
@@ -121,24 +121,23 @@ class SEntity {
         var cx =  Math.floor(this.pos.x / Tile.SIZE);
         var cy =  Math.floor(this.pos.y / Tile.SIZE);
 
-        var tileX = Math.floor(this.width / Tile.SIZE) + 1;
-        var tileY = Math.floor(this.height / Tile.SIZE) + 1;
+        var proxy = 2;
 
-        for (var y = -1; y < tileY; y++) {
-            for (var x = -1; x < tileX; x++) {
+        var tileX = Math.floor(this.width / Tile.SIZE) + proxy;
+        var tileY = Math.floor(this.height / Tile.SIZE) + proxy;
+
+        for (var y = -proxy; y < tileY; y++) {
+            for (var x = -proxy; x < tileX; x++) {
                 var xx = cx + x;
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
 
-                // TODO: Remove test
-                this._dataPack.tileTests[x + ", " + y] = tile;
-
                 if (tileMap.withinRange(xx, yy)) {
                     if (tileMap.isSolid(tileMap.getID(xx, yy))) {
                         if (this.overlapTile(tile)) {
                             if (this.vel.y > 0) {
-                                if (this.pos.y + this.width > tile.y) {
+                                if (this.pos.y + this.height > tile.y) {
                                     this.onBottomCollision(tile);
                                     this.side.bottom = true;
                                 }
@@ -146,7 +145,7 @@ class SEntity {
                             if (this.vel.y < 0) {
                                 if (this.pos.y < tile.y + Tile.SIZE) {
                                     this.onTopCollision(tile);
-                                    this.side.top = true;
+                                    this.side.top= true;
                                 }
                             }
                         }
@@ -162,11 +161,6 @@ class SEntity {
     onBottomCollision(tile) { if (this._collisionConfig.stop) this.vel.y = 0; this.pos.y = tile.y - this.height; }
 
     physics(entityManager, deltaTime) {
-        if (!this._collisionConfig.static)
-            this.moveX(this._vel.x, deltaTime);
-        if (this._collisionConfig.collision)
-            this.tileCollisionX(entityManager.tileMap, deltaTime);
-
         if (this._collisionConfig.gravity)
             if (!this.side.bottom)
                 this.accelerateY(this._acc.y, deltaTime);
@@ -174,10 +168,14 @@ class SEntity {
         this.side.reset();
 
         if (!this._collisionConfig.static){}
-            this.moveY(this._vel.y, deltaTime);
+        this.moveY(this._vel.y, deltaTime);
         if (this._collisionConfig.collision)
             this.tileCollisionY(entityManager.tileMap, deltaTime);
 
+        if (!this._collisionConfig.static)
+            this.moveX(this._vel.x, deltaTime);
+        if (this._collisionConfig.collision)
+            this.tileCollisionX(entityManager.tileMap, deltaTime);
     }
 
     update(entityManager, deltaTime) {
