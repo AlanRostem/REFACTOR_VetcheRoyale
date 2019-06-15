@@ -24,6 +24,10 @@ export default class EntityDataReceiver {
         return this._container[entityData.id];
     }
 
+    getEntityByID(id) {
+        return this._container[id];
+    }
+
     removeEntity(id) {
         delete this._container[id];
     }

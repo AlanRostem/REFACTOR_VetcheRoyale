@@ -7,10 +7,16 @@ export default class Camera {
             x: -(this._boundPos.x - offsetX),
             y: -(this._boundPos.y - offsetY)
         };
+
         this._offset = {
             x: offsetX,
             y: offsetY,
-        }
+        };
+    }
+
+    update(pos) {
+        this._boundPos.x = -(pos._x - this._offset.x);
+        this._boundPos.y = -(pos._y - this._offset.y);
     }
 
     set boundPos(vec2D) {

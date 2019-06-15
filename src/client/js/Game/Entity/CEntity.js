@@ -29,7 +29,7 @@ export default class CEntity {
     }
 
     draw() {
-        R.drawRect(this.color, this._displayPos.x, this._displayPos.y, this.width, this.height);
+        R.drawRect(this.color, this._displayPos.x, this._displayPos.y, this.width, this.height, true);
 
         // TEST:
         R.context.save();

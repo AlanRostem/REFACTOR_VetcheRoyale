@@ -35,7 +35,7 @@ export default class Scene {
 
     static update() {
         if (AssetManager.done()) {
-            Scene._clientRef.update();
+            Scene._clientRef.update(Scene._entityManager);
             Scene._entityManager.updateEntities(Scene.deltaTime);
         }
     }

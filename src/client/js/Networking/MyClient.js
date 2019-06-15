@@ -1,10 +1,11 @@
 import InputListener from "../InputListener.js"
+import R from "../Graphics/Renderer.js";
 export default class MyClient {
 
-    id = null;
 
     constructor(socket) {
         this._socket = socket;
+        this.id = socket.id;
         this._inputListener = new InputListener(this);
 
         [32, 83, 68, 65].forEach(keyCode => {
@@ -37,9 +38,13 @@ export default class MyClient {
         return this._latency;
     }
 
-    update() {
+    update(entityManager) {
         this._startTime = Date.now();
         this.emit("_ping");
+        var e = entityManager.getEntityByID(this.id);
+        if (e) {
+            R.camera.update(e._targetState.pos);
+        }
     }
 
     emit(eventType, data) {
