@@ -2,14 +2,16 @@
 // should loop here.
 
 import R from "../Graphics/Renderer.js"
-import EntityDataReceiver from "./Entity/Management/EntityDataReceiver.js"
+import AssetManager from "../AssetManager/AssetManager.js"
+import TileSheet from "../AssetManager/Classes/TileSheet.js";
+import CTileMap from "./CTileMap.js";
 
 export default class Scene {
-    static _start = false;
     static _deltaTime = 0;
     static _lastTime = 0;
     static _entityManager = null;
     static _clientRef = null;
+    static _t_tm = new CTileMap();
 
     static get deltaTime() {
         if (Scene._deltaTime === 0) {
@@ -18,20 +20,43 @@ export default class Scene {
         return Scene._deltaTime;
     }
 
+    static setup() {
+        AssetManager.addDownloadCallback(() => {
+            Scene.t_ts = new TileSheet("tileSet.png", 8);
+        });
+    }
+
     static run(entityManager, client) {
         Scene._clientRef = client;
         Scene._entityManager = entityManager;
+        Scene.setup();
         Scene.tick();
     }
 
     static update() {
-        Scene._clientRef.update();
-        Scene._entityManager.updateEntities(Scene.deltaTime);
+        if (AssetManager.done()) {
+            Scene._clientRef.update();
+            Scene._entityManager.updateEntities(Scene.deltaTime);
+        }
     }
 
     static draw() {
         R.clear();
-        Scene._entityManager.drawEntities();
+
+        if (AssetManager.done()) {
+            Scene._entityManager.drawEntities();
+            if (Scene.t_ts) {
+                Scene.t_ts.draw(Scene._t_tm.t_array);
+            }
+        } else {
+            var str = "Loading " +
+                (((AssetManager.successCount + AssetManager.errorCount) / AssetManager.downloadQueue.length) * 100 | 0)
+                + "%";
+            R.drawText(str,
+                (R.screenSize.x / 2 | 0) - R.context.measureText(str).width / 2,
+                R.screenSize.y / 2 | 0,
+                "white");
+        }
     }
 
     static tick(time) {

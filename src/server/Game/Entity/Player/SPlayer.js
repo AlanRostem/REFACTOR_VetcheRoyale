@@ -32,6 +32,8 @@ class Player extends IPlayer {
     }
 
     update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
+
         this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
 
         var s = 240;

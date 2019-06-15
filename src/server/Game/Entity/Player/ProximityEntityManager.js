@@ -6,7 +6,7 @@ Vector2D = require("../../../../shared/Math/SVector2D.js");
 
 class ProximityEntityManager extends EntityManager {
     constructor(player) {
-        super();
+        super(false);
         this._dataBox = {};
         this._playerRef = player;
     }
