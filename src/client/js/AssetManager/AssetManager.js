@@ -31,6 +31,8 @@ class AssetManager {
                         for (var fun of _this.downloadCallbacks) {
                             fun();
                         }
+                        console.log("The program loaded in " + (_this.successCount + _this.errorCount) + " assets.");
+                        console.log(_this.errorCount + " error(s).");
                     }, false);
                     break;
                 default:
