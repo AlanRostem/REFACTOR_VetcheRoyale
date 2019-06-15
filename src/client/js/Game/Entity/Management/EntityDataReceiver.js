@@ -47,7 +47,7 @@ export default class EntityDataReceiver {
             if (this.existsOnClient(id)) {
                 this.removeEntity(id);
             } else {
-                console.log("Attempted to remove a non existent entity. Something's wrong here...")
+                console.warn("Attempted to remove a non existent entity. Something's wrong here...")
             }
         });
 
@@ -62,8 +62,7 @@ export default class EntityDataReceiver {
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.updateFromDataPack(entityData);
                 } else {
-                    console.log(dataPack);
-                    console.log("Attempted to update a non existent entity. There's a hole in your programming...");
+                    console.warn("Attempted to update a non existent entity. There's a hole in your programming...");
                 }
             }
         });

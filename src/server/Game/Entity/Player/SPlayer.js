@@ -5,7 +5,7 @@ Vector2D = require("../../../../shared/Math/SVector2D.js");
 
 class Player extends IPlayer {
     constructor(x, y, client) {
-        super(x, y, 8, 12);
+        super(x, y, 8, 16);
         this._id = client.id;
         this._dataPack.id = this._id;
         this._dataPack.t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
@@ -65,10 +65,7 @@ class Player extends IPlayer {
         if (this.side.bottom) {
             this._jumping = false;
         }
-
-        console.log(this.side.bottom)
     }
-
 }
 
 // Static variables:

@@ -20,8 +20,8 @@ export default class TileSheet extends SpriteSheet {
 
         for (var y = startY; y <= endY; y++) {
             for (var x = startX; x <= endX; x++) {
-                if (map[y * map.w + x] > map.dontDrawID && map.withinRange(x, y)) {
-                    var tile = map[y * map.w + x];
+                if (map.getID(x, y) > map.dontDrawID && map.withinRange(x, y)) {
+                    var tile = map.getID(x, y);
                     var tileRow = Math.floor(tile / this.tilesPerRow);
                     var tileCol = Math.floor(tile % this.tilesPerRow);
                     tileCol--;

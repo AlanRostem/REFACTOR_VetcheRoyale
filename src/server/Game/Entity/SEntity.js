@@ -41,7 +41,9 @@ class SEntity {
             height: this._height,
             color: this._color,
             serverTickDeltaTime: 0
-        }
+        };
+
+        this._dataPack.tileTests = {};
     }
 
     initFromEntityManager(entityManager) {
@@ -64,18 +66,18 @@ class SEntity {
         this.vel.y += y * deltaTime;
     }
 
-    overlap(e) {
+    overlapEntity(e) {
         return this.pos.y + this.height > e.pos.y
             &&  this.pos.y < (e.pos.y + e.height)
             && this.pos.x + this.width > e.pos.x
             &&  this.pos.x < (e.pos.x + e.width);
     }
 
-    overlapTile(cx, cy) {
-        return this.pos.y + this.height > cy * Tile.SIZE
-            &&  this.pos.y < (cy * Tile.SIZE + Tile.SIZE)
-            && this.pos.x + this.width > cx * Tile.SIZE
-            &&  this.pos.x < (cx * Tile.SIZE + Tile.SIZE);
+    overlapTile(e) {
+        return this.pos.y + this.height > e.y
+            &&  this.pos.y < (e.y + Tile.SIZE)
+            && this.pos.x + this.width > e.x
+            &&  this.pos.x < (e.x + Tile.SIZE);
     }
 
     tileCollisionX(tileMap, deltaTime) {
@@ -84,6 +86,7 @@ class SEntity {
 
         var tileX = Math.floor(this.width / Tile.SIZE) + 1;
         var tileY = Math.floor(this.height / Tile.SIZE) + 1;
+
 
         for (var y = -1; y < tileY; y++) {
             for (var x = -1; x < tileX; x++) {
@@ -94,8 +97,7 @@ class SEntity {
 
                 if (tileMap.withinRange(xx, yy)) {
                     if (tileMap.isSolid(tileMap.getID(xx, yy))) {
-
-                        if (this.overlapTile(xx, yy)) {
+                        if (this.overlapTile(tile)) {
                             if (this.vel.x > 0) {
                                 if (this.pos.x + this.width > tile.x) {
                                     this.onRightCollision(tile);
@@ -129,9 +131,12 @@ class SEntity {
 
                 var tile = Tile.toPos(xx, yy);
 
+                // TODO: Remove test
+                this._dataPack.tileTests[x + ", " + y] = tile;
+
                 if (tileMap.withinRange(xx, yy)) {
                     if (tileMap.isSolid(tileMap.getID(xx, yy))) {
-                        if (this.overlapTile(xx, yy)) {
+                        if (this.overlapTile(tile)) {
                             if (this.vel.y > 0) {
                                 if (this.pos.y + this.width > tile.y) {
                                     this.onBottomCollision(tile);

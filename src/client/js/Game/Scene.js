@@ -15,7 +15,7 @@ export default class Scene {
 
     static get deltaTime() {
         if (Scene._deltaTime === 0) {
-            console.log("WARNING: Attempted to retrieve a delta time of zero.");
+            console.warn("Attempted to retrieve a delta time of zero.");
         }
         return Scene._deltaTime;
     }
@@ -45,7 +45,7 @@ export default class Scene {
 
         if (AssetManager.done()) {
             if (Scene.t_ts) {
-                Scene.t_ts.draw(Scene._t_tm.t_array);
+                Scene.t_ts.draw(Scene._t_tm);
             }
             Scene._entityManager.drawEntities();
         } else {

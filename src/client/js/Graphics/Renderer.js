@@ -94,8 +94,8 @@ export default class R {
         R._ctx.font = size + "px EXEPixelPerfect";
         R.context.fillStyle = color;
         R.context.fillText(str,
-            x + (useCamera ? R._camera._pos.x : 0),
-            y + (useCamera ? R._camera._pos.y : 0),
+            (x + (useCamera ? R._camera._pos.x : 0) | 0),
+            (y + (useCamera ? R._camera._pos.y : 0) | 0),
         );
         R.context.restore();
     }
@@ -108,8 +108,8 @@ export default class R {
             var x = startPos.x + i * Math.cos(a);
             var y = startPos.y + i * Math.sin(a);
             R.context.fillRect(
-                x + (useCamera ? R._camera._pos.x : 0),
-                y + (useCamera ? R._camera._pos.y : 0),
+                (x + (useCamera ? R._camera._pos.x : 0) | 0),
+                    (y + (useCamera ? R._camera._pos.y : 0) | 0),
                 thickness, thickness);
         }
     }
@@ -118,8 +118,8 @@ export default class R {
         R.context.save();
         R.context.fillStyle = color;
         R.context.fillRect(
-            x + (useCamera ? R.camera.boundPos.x : 0),
-            y + (useCamera ? R.camera.boundPos.y : 0),
+            (x + (useCamera ? R.camera.boundPos.x : 0) | 0),
+            (y + (useCamera ? R.camera.boundPos.y : 0) | 0),
             width, height
         );
         R.context.restore();
