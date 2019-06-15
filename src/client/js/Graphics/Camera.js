@@ -13,12 +13,12 @@ export default class Camera {
         }
     }
 
-    set boundPosition(vec2D) {
+    set boundPos(vec2D) {
         typeCheck.instance(Vector2D, vec2D);
         this._boundPos = vec2D;
     }
 
-    get boundPosition() {
+    get boundPos() {
         return this._boundPos;
     }
 

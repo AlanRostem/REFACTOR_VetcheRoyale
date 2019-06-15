@@ -14,6 +14,11 @@ app.get('/client/public', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
 
+app.get('/res/tileMap', (req, res) => {
+   res.sendFile(path.join(__dirname + "/"));
+   console.log((__dirname + "/"))
+});
+
 app.get('/client/js/', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
@@ -21,7 +26,6 @@ app.get('/client/js/', (req, res) => {
 app.get('/shared', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
-
 
 app.get('/', (req, res) => {
    res.sendFile(path.join(__dirname + "/client/html/index.html"));

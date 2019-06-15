@@ -3,7 +3,7 @@ var WebSocket = require("../Networking/WebSocket.js");
 
 class Game {
     constructor(socket) {
-        this.entityManager = new EntityManager();
+        this.entityManager = new EntityManager(true);
         this.mainSocket = new WebSocket(socket, this.entityManager);
         this._deltaTime = 0;
         this._lastTime = 0;

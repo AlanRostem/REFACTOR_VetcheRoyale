@@ -1,10 +1,13 @@
-TileMap = require("../TileBased/TileMap.js");
+STileMap = require("../TileBased/STileMap.js");
+testMap = require("../../../res/tileMaps/testMap.js");
 
 class EntityManager {
-    constructor() {
+    constructor(singleton = false) {
         this._container = {};
         this._entitiesQueuedToDelete = [];
-        this._tileMap = new TileMap();
+        if (singleton) {
+            this._tileMap = new STileMap(testMap);
+        }
     }
 
     get tileMap() {

@@ -164,7 +164,6 @@ class SEntity {
             this.moveY(this.pos.y, deltaTime);
         if (this._config.collision)
             this.tileCollisionY(entityManager.tileMap, deltaTime);
-
     }
 
     update(entityManager, deltaTime) {

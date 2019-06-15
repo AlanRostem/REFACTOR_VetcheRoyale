@@ -63,6 +63,10 @@ export default class R {
         //R._camera._offset.y = R._screenDimensions.y / 2;
     }
 
+    static get camera() {
+        return R._camera;
+    }
+
     static get context() {
         if (R._ctx === null) {
             throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
@@ -87,7 +91,7 @@ export default class R {
 
     static drawText(str, x, y, color = "white", useCamera = false, size = 16) {
         R.context.save();
-        //R._ctx.font = size + "px EXEPixelPerfect";
+        R._ctx.font = size + "px EXEPixelPerfect";
         R.context.fillStyle = color;
         R.context.fillText(str,
             x + (useCamera ? R._camera._pos.x : 0),
