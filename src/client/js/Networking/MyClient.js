@@ -2,6 +2,7 @@ import InputListener from "../InputListener.js"
 import R from "../Graphics/Renderer.js";
 export default class MyClient {
 
+    static _ping = 1;
 
     constructor(socket) {
         this._socket = socket;
@@ -32,6 +33,10 @@ export default class MyClient {
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
             });
         }
+    }
+
+    static getPing() {
+        return MyClient._ping;
     }
 
     static get ping() {
@@ -68,6 +73,7 @@ export default class MyClient {
 
         this.on('_pong', () => {
             this._latency = Date.now() - this._startTime;
+            MyClient._ping = this._latency;
         });
 
         this.on('broadcast-newPlayer', data => {

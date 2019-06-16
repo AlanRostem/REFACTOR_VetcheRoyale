@@ -7,6 +7,7 @@ class Game {
         this.mainSocket = new WebSocket(socket, this.entityManager);
         this._deltaTime = 0;
         this._lastTime = 0;
+        this._tickRate = 30; // Hz
     }
 
     update() {
@@ -29,7 +30,7 @@ class Game {
     }
 
     start() {
-        setInterval(() => this.update(), 1000/30);
+        setInterval(() => this.update(), 1000/this._tickRate);
         // Server tick rate of 30hz. We will create a state
         // predictor system on the client making movement
         // smooth only on the client.
