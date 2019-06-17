@@ -27,9 +27,6 @@ export default class CEntity {
     }
 
     update(deltaTime) {
-
-        var maxDelta = 8; // Test value, set to tile size
-
         var deltaX = (this._targetState.pos._x - this._displayPos.x);
         this._displayPos.x += deltaX * deltaTime * 10 | 0;
 

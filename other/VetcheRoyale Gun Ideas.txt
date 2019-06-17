@@ -1,6 +1,7 @@
 Name: "KE-L"
 Description: "Compressed kinetic energy pistol."
 Level: 1
+Ammo Capacity: 10
 Primary Fire: "Kinetic orbs": Automatic pistol that fires bouncy projectiles
 Mod: "Kinetic energy": Fire a wave of kinetic energy that knocks enemies far back
 Super: "Kinetic bubble": Launch a big projectile that moves enemies caught in it in its moving direction
@@ -9,14 +10,16 @@ Super: "Kinetic bubble": Launch a big projectile that moves enemies caught in it
 Name: "KE-6H"
 Description: "Compressed kinetic energy rifle, predecessor to the KE-L."
 Level: 3
+Ammo Capacity: 5
 Primary Attack: "Kinetic bomb": Explosive projectile
-Mod (Ability): "Kinetic matrix": Create a square shield around yourself.
-Super (Ultimate): "Kinetic scatter blast": Fire a slow projectile that scatters many small low damage bouncy projectiles upon detonation.
+Mod: "Kinetic matrix": Create a square shield around yourself.
+Super: "Kinetic scatter blast": Fire a slow projectile that scatters many small low damage bouncy projectiles upon detonation.
 
 
-Name: "M1-Falcon"
+Name: "M1G1-Falcon"
 Description: "Rocket powered hunting rifle."
 Level: 2
+Ammo Capacity: 12
 Primary Attack: "Semi-automatic rifle": Fire bullets at a moderate fire rate with moderate damage.
 Mod: "Rocket bayonet charge": Charge towards an enemy in only one ground direction at high speed and deal high damage with your bayonet upon contect.
 Super: "Rocket bayonet overcharge": Your primary fire is replaced with infinite bayonet charges that can launch in any direction for a short time.
@@ -25,6 +28,7 @@ Super: "Rocket bayonet overcharge": Your primary fire is replaced with infinite 
 Name: "B.I.G Motorizer"
 Description: "Motor driven death machine."
 Level: 3
+Ammo Capacity: 40
 Primary Attack: "Charged salvo": Fully automatic with charge-up time light machine gun that fires
                  20mm light explosive rounds with slow travel time and harmonic movement.
 Mod: "Thunder pulse": Charge up and fire a thunder laser from the motor that stuns enemies hit by it.
@@ -37,6 +41,7 @@ Super: "Transform": Transform the weapon up to 3 times to give it upgrades.
 Name: "SG-BackFire"
 Description: "Incendiary shotgun."
 Level 1:
+Ammo Capacity: 4
 Primary Attack: "Dragon's Breath": Fire close range shotgun shells that knock you back slightly when fired
 Mod: "Incendiary Wave": Unleash a wave of fire that burns an enemy when in very close proximity. Deals damage over time.
 Super: "Napalm Blast": Blanket a large area of fire.
@@ -45,6 +50,7 @@ Super: "Napalm Blast": Blanket a large area of fire.
 Name: "Hamilton P336"
 Description: "Advanced tech tactical pistol."
 Level: 1
+Ammo Capacity: 14
 Primary Attack: "Semi-automatic pistol": Slow firing low damage pistol.
 Mod: "Select fire": Toggle fire mode to rapid full auto.
 Super: "Smart split-barrel": Lock on to multiple targets and fire at them simultaneously.
@@ -52,6 +58,7 @@ Super: "Smart split-barrel": Lock on to multiple targets and fire at them simult
 Name: "90-Cal":
 Description: "Anti-tank rifle"
 Level: 2
+Ammo Capacity: 10
 Primary Attack: "Heavy bolt-action rifle": Fire a large fast arcing projectile dealing high damage
 Mod: "Enhanced zoom scope": Zoom out and see a larger portion of the map
 Super: "Heavy rifling": Mount the weapon to the ground to fire a single hit-scan shot that instantly kills an enemy
@@ -60,6 +67,7 @@ Super: "Heavy rifling": Mount the weapon to the ground to fire a single hit-scan
 Name: "Hadron Rail-Gun"
 Description: "Hadron particle cannon"
 Level: 3
+Ammo Capacity: 5
 Primary Attack: "Hadron beam": Hit-scan constant limited beam
 Mod: "Charged zoom": Zoom out and see a larger portion of the map while charging up a long range single shot
                      beam that deals more damage the more it's charged.
@@ -69,13 +77,14 @@ Super: "":
 Name "WorldLine"
 Description: "Space-time manipulator"
 Level: 4
-Primary Attack: "Wormhole": Fire an arcing projectile that creates a wormhole on tile impact only. Reload every shot.
+Ammo Capacity: 1
+Primary Attack: "Wormhole": Fire an arcing projectile that creates a wormhole on tile impact only.
                             The wormhole lasts for 1 second and deals damage over time on enemies while
                             slowing them down.
 Mod: "Space-time tunnel": Transfer all incoming fire to a different dimension, then launch them back to your enemies.
                           The more damage absorbed, the less the ability lasts, and when reaching the absorption limit
-                          you take all the damage yourself.
-Super: "Instant transmission": Instantly move to a position you see on the map.
+                          you take all the damage yourself. Uses ammo.
+Super: "Instant transmission": Fire a projectile that instantly teleports you to its landing location. Uses ammo.
 
 Name: "SEW-230"
 Description: "Electric Missile Launcher"
@@ -86,9 +95,9 @@ Mod: "Zoomed missile": Sphere follows your mouse, and outside camera boundaries.
 Super: "Short-Circuiting": Electric overload. Electric beams stream from the launcher damaging nearby players. Controllable.
 
 Name: "LiqAK"
-Description: "Automatic Rifle"
+Description: "Powerful automatic Rifle"
 Level: 2
 Ammo Capacity: 25
 Primary Attack: "Automatic Shooting": Shoot fast medium-bullets with high recoil.
 Mod: "Cargo bolt": All bullets in the magazine fired at once. Higher recoil. Less damage per shot.
-Super: "Heavy Metal": Ammo Capacity set to 100 and autofilled with bullets. No recoil. Shoots automatically every round. Super fast.
+Super: "Heavy Metal": Ammo Capacity set to 100 and autofilled with bullets, no recoil and high fire rate. 
