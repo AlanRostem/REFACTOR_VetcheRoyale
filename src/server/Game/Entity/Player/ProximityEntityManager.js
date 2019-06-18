@@ -1,4 +1,4 @@
-EntityManager = require("../EntityManager.js");
+EntityManager = require("../Management/EntityManager.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 
 // Composition class for the player. Manages outbound

@@ -1,6 +1,7 @@
 Vector2D = require("../../../shared/Math/SVector2D");
 typeCheck = require("../../../shared/Debugging/StypeCheck.js");
 Tile = require("../TileBased/Tile.js");
+SnapShotGenerator = require("./Management/SnapShotGenerator.js");
 
 class SEntity {
     constructor(x, y, width, height) {
@@ -13,6 +14,21 @@ class SEntity {
         this._id = Math.random();
         this._removed = false;
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
+
+        this._snapShotGenerator = new SnapShotGenerator(this,
+        [
+            "_id",
+            "_pos",
+            "_vel",
+            "_width",
+            "_height",
+            "_color",
+        ],
+        [
+            "_removed"
+        ]);
+
+
 
         this._collisionConfig = {
             collision: true, // Tile collision
@@ -29,18 +45,6 @@ class SEntity {
             reset : () => {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
-        };
-
-        // TODO: Add scalable function/class to create data packs
-        // TODO: with constants and variable data in the constructor.
-        this._dataPack = {
-            id: this._id,
-            pos: this.pos, // Storing the reference is a good idea since
-            vel: this.vel, // we don't have to waste performance with assignment
-            width: this._width,
-            height: this._height,
-            color: this._color,
-            serverTickDeltaTime: 0
         };
     }
 
@@ -181,8 +185,8 @@ class SEntity {
         this.physics(entityManager, deltaTime);
     }
 
-    updateDataPack(deltaTime) {
-        this._dataPack.serverTickDeltaTime = deltaTime;
+    updateDataPack(entityManager, deltaTime) {
+        this._snapShotGenerator.update(entityManager, this, deltaTime);
     }
 
     remove() {
@@ -192,8 +196,7 @@ class SEntity {
     // Getters and setters
 
     getDataPack() {
-        this._dataPack.removed = this._removed;
-        return this._dataPack;
+        return this._snapShotGenerator.export();
     }
 
     get toRemove() {

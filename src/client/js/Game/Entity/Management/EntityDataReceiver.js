@@ -17,11 +17,11 @@ export default class EntityDataReceiver {
 
     addEntityFromDataPack(dataPack) {
         // TODO: Add the ability to spawn an entity based on class type
-        this._container[dataPack.id] = new CEntity(dataPack);
+        this._container[dataPack._id] = new CEntity(dataPack);
     }
 
     getEntity(entityData) {
-        return this._container[entityData.id];
+        return this._container[entityData._id];
     }
 
     getEntityByID(id) {
@@ -52,8 +52,6 @@ export default class EntityDataReceiver {
         });
 
         client.on('updateEntity', dataPack => {
-
-            //console.log(Object.keys(dataPack).length, Object.keys(this._container).length);
 
             for (var id in dataPack) {
                 var entityData = dataPack[id];
