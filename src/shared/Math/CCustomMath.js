@@ -25,8 +25,8 @@ function linearInterpolation(p, n, t) {
 
 function vectorLinearInterpolation(v, tv, t) {
     return {
-        x: linearInterpolation(v.x, tv.x, t),
-        y: linearInterpolation(v.y, tv.y, t)
+        _x: linearInterpolation(v._x, tv._x, t),
+        _y: linearInterpolation(v._y, tv._y, t)
     };
 }
 

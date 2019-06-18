@@ -15,7 +15,7 @@ export default class CEntity {
         this._serverState = initDataPack;
         this._targetState = initDataPack;
 
-        this._dataBuffer = new EntitySnapshotBuffer(Constants.MAX_ENTITY_BUFFER_SIZE);
+        this._dataBuffer = new EntitySnapshotBuffer(Constants.MAX_ENTITY_BUFFER_SIZE, initDataPack);
 
         // TODO: Initialize constants in a better way
         this._t_entityProximity = this._targetState._t_entityProximity;
@@ -42,11 +42,12 @@ export default class CEntity {
 
     // This function is run from the client emit callback.
     updateFromDataPack(dataPack) {
+        //this._dataBuffer.updateFromServerFrame(dataPack, this)
         this._targetState = dataPack;
-        this._dataBuffer.updateFromServerFrame(dataPack, this)
     }
 
     update(deltaTime) {
+        //this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined);
         /*
         var deltaX = (this._targetState.pos._x - this._displayPos.x);
         this._displayPos.x += deltaX * deltaTime * 10 | 0;

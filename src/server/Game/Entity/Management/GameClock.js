@@ -15,7 +15,7 @@ class GameClock {
     }
 
     get timeStamp() {
-        return this._currentTime;
+        return this._currentTime | 0;
     }
 }
 

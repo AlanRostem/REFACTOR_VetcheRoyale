@@ -7,7 +7,7 @@ class Game {
         this.mainSocket = new WebSocket(socket, this.entityManager);
         this._deltaTime = 0;
         this._lastTime = 0;
-        this._tickRate = 30; // Hz
+        this._tickRate = 60; // Hz
     }
 
     update() {
