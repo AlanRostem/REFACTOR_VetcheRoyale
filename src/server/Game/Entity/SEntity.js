@@ -179,6 +179,9 @@ class SEntity {
             this.moveX(this._vel.x, deltaTime);
         if (this._collisionConfig.collision)
             this.tileCollisionX(entityManager.tileMap, deltaTime);
+
+        this.pos.x = Math.round(this.pos.x);
+        this.pos.y = Math.round(this.pos.y);
     }
 
     update(entityManager, deltaTime) {

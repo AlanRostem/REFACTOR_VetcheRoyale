@@ -2,24 +2,20 @@ import SpriteSheet from "./SpriteSheet.js";
 import R from "../../Graphics/Renderer.js";
 
 export default class TileSheet extends SpriteSheet {
-    constructor(src, tileSize) {
+    constructor(src, tileSize, map) {
         super(src);
         this.tileSize = tileSize;
         this.tilesPerRow = this.img.width / tileSize | 0;
+        this.image = this.paintImage(map);
     }
 
-    draw(map) {
-        var width = Math.floor(R.screenSize.x / this.tileSize);
-        var height = Math.floor(R.screenSize.y / this.tileSize);
-
-        var startX = Math.floor((-R.camera.boundPos.x + R.camera.offset.x) / this.tileSize - width / 2) - 1;
-        var startY = Math.floor((-R.camera.boundPos.y + R.camera.offset.y) / this.tileSize - height / 2) - 1;
-
-        var endX = startX + width + 2;
-        var endY = startY + height + 2;
-
-        for (var y = startY; y <= endY; y++) {
-            for (var x = startX; x <= endX; x++) {
+    paintImage(map) {
+        var canvas = document.createElement('canvas');
+        canvas.width = map.w * this.tileSize;
+        canvas.height = map.h * this.tileSize;
+        var ctx = canvas.getContext('2d');
+        for (var y = 0; y <= map.h; y++) {
+            for (var x = 0; x <= map.w; x++) {
                 if (map.getID(x, y) > map.dontDrawID && map.withinRange(x, y)) {
                     var tile = map.getID(x, y);
                     var tileRow = Math.floor(tile / this.tilesPerRow);
@@ -30,9 +26,14 @@ export default class TileSheet extends SpriteSheet {
                         (y * this.tileSize + R.camera.boundPos.y) | 0,
                         this.tileSize, this.tileSize,
                         (tileCol * this.tileSize), (tileRow * this.tileSize),
-                        this.tileSize, this.tileSize);
+                        this.tileSize, this.tileSize, ctx);
                 }
             }
         }
+        return canvas;
+    }
+
+    draw(map) {
+        R.context.drawImage(this.image, R.camera.boundPos.x | 0, R.camera.boundPos.y | 0, map.w * this.tileSize, map.h * this.tileSize);
     }
 }

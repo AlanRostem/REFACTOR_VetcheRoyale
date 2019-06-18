@@ -47,14 +47,14 @@ export default class SpriteSheet {
         this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
     }
 
-    drawCropped(x, y, w, h, cropX, cropY, cropW, cropH) {
-        R.context.drawImage(this.img, cropX, cropY, cropW, cropH, x, y, w, h);
+    drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
+        ctx.drawImage(this.img, cropX, cropY, cropW, cropH, x, y, w, h);
     }
 
-    drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h) {
+    drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h, ctx = R.context) {
         if (!this.img.isLoaded) return;
         var rect = this.offsetRects.get(name);
-        R.context.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
+        ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
     }
 
     getWidth(name) {

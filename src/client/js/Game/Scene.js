@@ -22,7 +22,7 @@ export default class Scene {
 
     static setup() {
         AssetManager.addDownloadCallback(() => {
-            Scene.t_ts = new TileSheet("tileSet.png", 8);
+            Scene.t_ts = new TileSheet("tileSet.png", 8, Scene._t_tm);
         });
     }
 

@@ -62,17 +62,5 @@ export default class CEntity {
 
     draw() {
         R.drawRect(this._color, this._targetState._pos._x, this._targetState._pos._y, this._width, this._height, true);
-
-        // TEST:
-        R.context.save();
-        R.context.beginPath();
-        R.context.arc(
-            this._targetState._pos.x + R.camera.boundPos.x + this._width / 2,
-            this._targetState._pos.y + R.camera.boundPos.y + this._width / 2,
-            this._t_entityProximity, 0, Math.PI * 2);
-        R.context.strokeStyle = "yellow";
-        R.context.lineWidth = 2;
-        R.context.stroke();
-        R.context.restore();
     }
 }

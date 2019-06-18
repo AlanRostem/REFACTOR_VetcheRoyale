@@ -69,6 +69,7 @@ class Player extends IPlayer {
             this.vel.x = -this._speed.ground;
         }
 
+
         super.update(entityManager, deltaTime);
         this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
 
