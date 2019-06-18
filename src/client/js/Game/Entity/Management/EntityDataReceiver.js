@@ -5,6 +5,7 @@ export default class EntityDataReceiver {
 
     _previousDataContainer = {};
     _container = {};
+    _isClient = false;
 
     static _entityTypeSpawner = {}; // Map container with class constructors mapped to respective entities
     constructor(client) {
@@ -15,13 +16,20 @@ export default class EntityDataReceiver {
         return this._container.hasOwnProperty(id);
     }
 
-    addEntityFromDataPack(dataPack) {
+    addEntityFromDataPack(dataPack, client) {
         // TODO: Add the ability to spawn an entity based on class type
-        this._container[dataPack.id] = new CEntity(dataPack);
+        this._container[dataPack._id] = new CEntity(dataPack);
+        if (dataPack._id === client.id) {
+            this._isClient = true;
+        }
+    }
+
+    get isClient() {
+        return this._isClient;
     }
 
     getEntity(entityData) {
-        return this._container[entityData.id];
+        return this._container[entityData._id];
     }
 
     getEntityByID(id) {
@@ -39,7 +47,7 @@ export default class EntityDataReceiver {
         client.on('initEntity', dataPack => {
             for (var id in dataPack) {
                 var entityData = dataPack[id];
-                this.addEntityFromDataPack(entityData);
+                this.addEntityFromDataPack(entityData, client);
             }
         });
 
@@ -52,8 +60,6 @@ export default class EntityDataReceiver {
         });
 
         client.on('updateEntity', dataPack => {
-
-            //console.log(Object.keys(dataPack).length, Object.keys(this._container).length);
 
             for (var id in dataPack) {
                 var entityData = dataPack[id];
@@ -68,7 +74,7 @@ export default class EntityDataReceiver {
         });
 
         client.on('spawnEntity', entityData => {
-            this.addEntityFromDataPack(entityData);
+            this.addEntityFromDataPack(entityData, client);
         });
 
     }

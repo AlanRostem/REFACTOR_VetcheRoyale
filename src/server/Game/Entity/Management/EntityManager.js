@@ -1,5 +1,7 @@
-STileMap = require("../TileBased/STileMap.js");
-testMap = require("../../../res/tileMaps/testMap.js");
+STileMap = require("../../TileBased/STileMap.js");
+testMap = require("../../../../res/tileMaps/testMap.js");
+GameClock = require("../../Entity/Management/GameClock.js");
+
 
 class EntityManager {
     constructor(singleton = false) {
@@ -7,7 +9,12 @@ class EntityManager {
         this._entitiesQueuedToDelete = [];
         if (singleton) {
             this._tileMap = new STileMap(testMap);
+            this._gameClock = new GameClock(0);
         }
+    }
+
+    get timeStamp() {
+        return this._gameClock.timeStamp;
     }
 
     get tileMap() {
@@ -19,6 +26,7 @@ class EntityManager {
     }
 
     update(deltaTime) {
+        this._gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime);
         for (var i = 0; i < this._entitiesQueuedToDelete.length; i++) {
@@ -31,7 +39,7 @@ class EntityManager {
         for (var id in this._container) {
             if (this.exists(id)) {
                 var entity = this._container[id];
-                entity.updateDataPack(deltaTime);
+                entity.updateDataPack(this, deltaTime);
             }
         }
     }
