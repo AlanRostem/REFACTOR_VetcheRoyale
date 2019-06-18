@@ -74,6 +74,13 @@ export default class R {
         return R._ctx;
     }
 
+    static get ctx() {
+        if (R._ctx === null) {
+            throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
+        }
+        return R._ctx;
+    }
+
     static get canvasElement() {
         if (R._canvas === null) {
             throw new Error("Canvas element context is not defined! Maybe you forgot to set up the renderer.");
@@ -125,5 +132,3 @@ export default class R {
         R.context.restore();
     }
 }
-
-window.R = R;
