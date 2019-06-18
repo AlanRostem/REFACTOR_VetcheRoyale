@@ -34,6 +34,10 @@ export default class TileSheet extends SpriteSheet {
     }
 
     draw(map) {
-        R.context.drawImage(this.image, R.camera.boundPos.x | 0, R.camera.boundPos.y | 0, map.w * this.tileSize, map.h * this.tileSize);
+        R.context.drawImage(this.image, R.camera.boundPos.x, R.camera.boundPos.y);
+        /*
+        R.context.drawImage(this.image,
+            -R.camera.boundPos.x, -R.camera.boundPos.y, R.screenSize.x | 0, R.screenSize.y | 0, 0, 0, R.screenSize.x | 0, R.screenSize.y | 0);
+        */
     }
 }
