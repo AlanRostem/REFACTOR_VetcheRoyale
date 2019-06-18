@@ -23,4 +23,6 @@ try {
 } catch (e) {
 }
 
-var ui = new UI();
+const ui = new UI();
+
+export default ui
