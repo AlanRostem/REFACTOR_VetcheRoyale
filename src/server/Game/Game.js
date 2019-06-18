@@ -1,4 +1,4 @@
-var EntityManager = require("./Entity/EntityManager.js");
+var EntityManager = require("./Entity/Management/EntityManager.js");
 var WebSocket = require("../Networking/WebSocket.js");
 
 class Game {

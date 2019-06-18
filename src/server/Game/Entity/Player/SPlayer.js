@@ -7,8 +7,13 @@ class Player extends IPlayer {
     constructor(x, y, client) {
         super(x, y, 6, 12);
         this._id = client.id;
-        this._dataPack.id = this._id;
-        this._dataPack.t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
+        this._t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
+
+        this._snapShotGenerator._snapShot._id = this._id;
+        this._snapShotGenerator.addReferenceValues(this, [
+            "_t_entityProximity"
+        ]);
+
         this._clientRef = client;
         this._entitiesInProximity = new ProximityEntityManager(this);
         this._jumping = false;
