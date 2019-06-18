@@ -14,7 +14,7 @@ class EntityManager {
     }
 
     get timeStamp() {
-        return this._gameClock.timeStamp;_
+        return this._gameClock.timeStamp;
     }
 
     get tileMap() {

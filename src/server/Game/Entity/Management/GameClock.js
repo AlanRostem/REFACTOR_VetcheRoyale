@@ -7,7 +7,11 @@ class GameClock {
     }
 
     update(deltaTime) {
-        this._currentTime += deltaTime;
+        if (deltaTime < 1) {
+            this._currentTime += deltaTime;
+        } else {
+            console.warn("HIGH THROTTLING");
+        }
     }
 
     get timeStamp() {
