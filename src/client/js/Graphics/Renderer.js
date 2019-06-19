@@ -59,8 +59,8 @@ export default class R {
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;
 
-        R._camera._offset.x = R._screenDimensions.x / 2;
-        R._camera._offset.y = R._screenDimensions.y / 2;
+        R._camera._offset.x = R._screenDimensions.x / 2 | 0;
+        R._camera._offset.y = R._screenDimensions.y / 2 | 0;
     }
 
     static get camera() {
@@ -68,6 +68,13 @@ export default class R {
     }
 
     static get context() {
+        if (R._ctx === null) {
+            throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
+        }
+        return R._ctx;
+    }
+
+    static get ctx() {
         if (R._ctx === null) {
             throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
         }
@@ -125,5 +132,3 @@ export default class R {
         R.context.restore();
     }
 }
-
-window.R = R;

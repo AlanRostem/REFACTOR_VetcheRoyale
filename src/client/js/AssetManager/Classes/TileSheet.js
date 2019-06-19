@@ -22,8 +22,8 @@ export default class TileSheet extends SpriteSheet {
                     var tileCol = Math.floor(tile % this.tilesPerRow);
                     tileCol--;
                     this.drawCropped(
-                        (x * this.tileSize + R.camera.boundPos.x) | 0,
-                        (y * this.tileSize + R.camera.boundPos.y) | 0,
+                        (x * this.tileSize + R.camera.boundPos.x),
+                        (y * this.tileSize + R.camera.boundPos.y),
                         this.tileSize, this.tileSize,
                         (tileCol * this.tileSize), (tileRow * this.tileSize),
                         this.tileSize, this.tileSize, ctx);
