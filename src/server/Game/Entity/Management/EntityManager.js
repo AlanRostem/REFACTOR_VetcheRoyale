@@ -1,7 +1,9 @@
 STileMap = require("../../TileBased/STileMap.js");
+Tile = require("../../TileBased/Tile.js");
 testMap = require("../../../../res/tileMaps/testMap.js");
 GameClock = require("../../Entity/Management/GameClock.js");
-
+QuadTree = require("./QuadTree.js");
+Entity = require("../SEntity.js");
 
 class EntityManager {
     constructor(singleton = false) {
@@ -10,6 +12,15 @@ class EntityManager {
         if (singleton) {
             this._tileMap = new STileMap(testMap);
             this._gameClock = new GameClock(0);
+
+            this._qt = new QuadTree(0, 0, this._tileMap.w * Tile.SIZE, this._tileMap.h * Tile.SIZE, 0);
+
+            // TODO: Remove test
+            for (var i = 0; i < 50; i++) {
+                var w = this._tileMap.w * Tile.SIZE;
+                var h = this._tileMap.h * Tile.SIZE;
+                this.spawnEntity(Math.random() * w, Math.random() * h, new Entity(0, 0, 32, 32));
+            }
         }
     }
 
@@ -74,6 +85,9 @@ class EntityManager {
         entity.initFromEntityManager(this);
         entity.pos.x = x;
         entity.pos.y = y;
+
+        // TODO: Remove test:
+        this._qt.insert(entity);
     }
 
     getEntity(id) {

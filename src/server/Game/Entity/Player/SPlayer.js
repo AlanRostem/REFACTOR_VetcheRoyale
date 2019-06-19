@@ -18,9 +18,16 @@ class Player extends IPlayer {
         this._entitiesInProximity = new ProximityEntityManager(this);
         this._jumping = false;
 
+
+        // TODO: Remove this test after being done with quad trees
+        //this._collisionConfig.static = true;
+        //this._collisionConfig.collision = false;
+        //this._collisionConfig.gravity = false;
+
+
         this._speed = {
             ground: 65,
-            jump: -180,
+            jump: -190,
         };
 
         this._gravity = 500;
@@ -69,6 +76,18 @@ class Player extends IPlayer {
             this.vel.x = -this._speed.ground;
         }
 
+
+        if (!this._collisionConfig.collision) {
+            this.vel.y = 0;
+
+            if (this.keys[87]) {
+                this.vel.y = -this._speed.ground;
+            }
+
+            if (this.keys[83]) {
+                this.vel.y = this._speed.ground;
+            }
+        }
 
         super.update(entityManager, deltaTime);
         this.entitiesInProximity.checkPlayerProximityEntities(entityManager);

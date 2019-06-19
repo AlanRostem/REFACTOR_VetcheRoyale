@@ -1,6 +1,6 @@
 Player = require("../Game/Entity/Player/SPlayer.js");
 Tile = require("../Game/TileBased/Tile.js");
-
+QuadTree = require("../Game/Entity/Management/QuadTree.js");
 
 class Client {
     constructor(socket, clientList, entityManager) {
@@ -12,7 +12,11 @@ class Client {
         this._keyStates = {};
 
         this._player = new Player(0, 0, this);
-        entityManager.spawnEntity(145 * Tile.SIZE, 202 * Tile.SIZE, this._player);
+        entityManager.spawnEntity(
+            //0, 0,
+            145 * Tile.SIZE,
+            202 * Tile.SIZE,
+            this._player);
 
         this.defineSocketEvents(socket, clientList, entityManager);
     }
@@ -68,6 +72,7 @@ class Client {
 
     update(entityManager) {
         this.emit("updateEntity", this._player.entitiesInProximity.exportDataPack());
+        this.emit("t_getQuadTree", QuadTree.rects);
     }
 }
 

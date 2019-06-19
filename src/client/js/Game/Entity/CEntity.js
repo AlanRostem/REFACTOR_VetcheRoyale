@@ -10,7 +10,7 @@ import Scene from "../Scene.js"
 
 
 export default class CEntity {
-    constructor(initDataPack) {
+        constructor(initDataPack) {
         this._displayPos = new Vector2D(initDataPack._pos._x, initDataPack._pos._y);
 
         this._serverState = initDataPack;
@@ -42,7 +42,7 @@ export default class CEntity {
     }
 
     // This function is run from the client emit callback.
-    updateFromDataPack(dataPack) {
+    updateFromDataPack(dataPack, client) {
         //this._dataBuffer.updateFromServerFrame(dataPack, this)
         this._targetState = dataPack;
     }

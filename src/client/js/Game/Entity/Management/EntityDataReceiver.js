@@ -66,7 +66,7 @@ export default class EntityDataReceiver {
                 if (this.existsOnClient(id)) {
                     entityData.latency = client._latency;
                     var existingEntity = this.getEntity(entityData);
-                    existingEntity.updateFromDataPack(entityData);
+                    existingEntity.updateFromDataPack(entityData, client);
                 } else {
                     console.warn("Attempted to update a non existent entity. There's a hole in your programming...");
                 }

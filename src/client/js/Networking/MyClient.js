@@ -9,7 +9,7 @@ export default class MyClient {
         this.id = socket.id;
         this._inputListener = new InputListener(this);
 
-        [32, 83, 68, 65].forEach(keyCode => {
+        [32, 83, 68, 65, 87].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
         });
 
@@ -80,5 +80,11 @@ export default class MyClient {
            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
 
+
+        // TODO: Remove test
+        this.on("t_getQuadTree", data => {
+            MyClient._qt = data;
+            window.quadTrees = data; // TODO: Remove test
+        });
     }
 }

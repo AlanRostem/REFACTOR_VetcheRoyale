@@ -8,6 +8,7 @@ import TileSheet from "./AssetManager/Classes/TileSheet.js";
 var client = new MyClient(io());
 io = undefined; // Restricting console from using this function.
 var entityDataReceiver = new EntityDataReceiver(client);
+window.entities = entityDataReceiver;
 
 window.AssetManager = AssetManager;
 AssetManager.queue("client/config/assets.cfg");

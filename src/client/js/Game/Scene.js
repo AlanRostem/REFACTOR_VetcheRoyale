@@ -5,6 +5,7 @@ import R from "../Graphics/Renderer.js"
 import AssetManager from "../AssetManager/AssetManager.js"
 import TileSheet from "../AssetManager/Classes/TileSheet.js";
 import CTileMap from "./CTileMap.js";
+import MyClient from "../Networking/MyClient.js";
 
 export default class Scene {
     static _deltaTime = 0;
@@ -48,6 +49,19 @@ export default class Scene {
                 Scene.t_ts.draw(Scene._t_tm);
             }
             Scene._entityManager.drawEntities();
+
+            if (MyClient._qt)
+            for (var rect of MyClient._qt) {
+                R.context.strokeStyle = "lime";
+                R.context.lineWidth = 2;
+                R.context.strokeRect(
+                    rect.x
+                    + R.camera.boundPos.x,
+                    rect.y
+                    + R.camera.boundPos.y,
+                    rect.w, rect.h);
+            }
+
         } else {
             var str = "Loading " +
                 (((AssetManager.successCount + AssetManager.errorCount) / AssetManager.downloadQueue.length) * 100 | 0)
