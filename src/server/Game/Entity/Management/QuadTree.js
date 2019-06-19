@@ -36,6 +36,28 @@ class QuadTree {
             &&  this.pos.x < (e.pos.x + e.width);
     }
 
+    // Range is a bounding rectangle (SRect)
+    query(range) {
+        let found = [];
+        if (!this.withinBoundary(range)) {
+            return found; //Empty array
+        } else {
+            for (var id of this._entities) {
+                var entity = this._entities[id];
+                if (range.overlapEntity(entity)) {
+                    found.push(entity);
+                }
+            }
+
+            if (this._divided) {
+                for (var qt of this._nodes) {
+                    found.concat(qt.query(range))
+                }
+            }
+            return found;
+        }
+    }
+
     subdivide() {
         var subWidth = this._w / 2;
         var subHeight = this._h / 2;
