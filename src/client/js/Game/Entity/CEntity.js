@@ -6,6 +6,7 @@ import {vectorLinearInterpolation} from "../../../../shared/Math/CCustomMath.js"
 import Constants from "../../../../shared/Constants.js";
 import MyClient from "../../Networking/MyClient.js"
 import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
+import Scene from "../Scene.js"
 
 
 export default class CEntity {
@@ -61,6 +62,9 @@ export default class CEntity {
     }
 
     draw() {
-        R.drawRect(this._color, this._targetState._pos._x, this._targetState._pos._y, this._width, this._height, true);
+        R.drawRect(this._color,
+            this._targetState._pos._x + (this._targetState._vel._x * Scene.deltaTime | 0),
+            this._targetState._pos._y + (this._targetState._vel._y * Scene.deltaTime | 0),
+            this._width, this._height, true);
     }
 }
