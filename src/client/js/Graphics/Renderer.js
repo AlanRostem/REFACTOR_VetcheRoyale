@@ -15,8 +15,6 @@ export default class R {
         y: R._aspectRatio.y * R._resolution
     };
 
-    static _renderDistance = null; // TODO: Multiply an amount of tiles with tile size
-
     static _canvas = null;
     static _ctx = null;
 
@@ -31,6 +29,8 @@ export default class R {
 
         R._canvas.style.width = "100%";
         R._canvas.style.height = "100%";
+
+        R._canvas.style.backgroundSize = "cover";
 
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;
