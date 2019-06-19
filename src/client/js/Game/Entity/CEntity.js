@@ -63,8 +63,8 @@ export default class CEntity {
 
     draw() {
         R.drawRect(this._color,
-            this._targetState._pos._x + (this._targetState._vel._x * Scene.deltaTime | 0),
-            this._targetState._pos._y + (this._targetState._vel._y * Scene.deltaTime | 0),
+            this._targetState._pos._x /*+ (this._targetState._vel._x * Scene.deltaTime | 0) */,
+            this._targetState._pos._y /*+ (this._targetState._vel._y * Scene.deltaTime | 0) */,
             this._width, this._height, true);
     }
 }
