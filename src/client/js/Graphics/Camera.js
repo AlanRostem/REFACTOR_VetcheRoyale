@@ -31,8 +31,4 @@ export default class Camera {
     get offset() {
         return this._offset;
     }
-
-    shift() {
-        // TODO: Update position based on the client's player position
-    }
 }
