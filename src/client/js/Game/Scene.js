@@ -6,6 +6,8 @@ import AssetManager from "../AssetManager/AssetManager.js"
 import TileSheet from "../AssetManager/Classes/TileSheet.js";
 import CTileMap from "./CTileMap.js";
 import MyClient from "../Networking/MyClient.js";
+import UI from "../UI/UI.js";
+import MiniMap from "../UI/MiniMap.js";
 
 export default class Scene {
     static _deltaTime = 0;
@@ -24,12 +26,18 @@ export default class Scene {
     static setup() {
         AssetManager.addDownloadCallback(() => {
             Scene.t_ts = new TileSheet("tileSet.png", 8, Scene._t_tm);
+            UI.setup(() => {
+                UI.append(new MiniMap(Scene._t_tm));
+            });
+            UI.init();
         });
+
     }
 
     static run(entityManager, client) {
         Scene._clientRef = client;
         Scene._entityManager = entityManager;
+
         Scene.setup();
         Scene.tick();
     }
@@ -37,6 +45,7 @@ export default class Scene {
     static update() {
         if (AssetManager.done()) {
             Scene._clientRef.update(Scene._entityManager);
+            UI.update(Scene._clientRef);
             Scene._entityManager.updateEntities(Scene.deltaTime);
         }
     }
@@ -47,6 +56,7 @@ export default class Scene {
         if (AssetManager.done()) {
             if (Scene.t_ts) {
                 Scene.t_ts.draw(Scene._t_tm);
+                UI.draw(undefined);
             }
             Scene._entityManager.drawEntities();
 

@@ -1,11 +1,16 @@
-class Minimap extends UIElement {
+import R from "../Graphics/Renderer.js";
+import UIElement from "./UIElement.js";
+
+export default class MiniMap extends UIElement {
     constructor(tileMap) {
         super("minimap", R.WIDTH - 33, 1, 1, 1);
         this.color = "Blue";
         this.tiles = 32;
+        this.tileSize = tileMap.tileSize;
         this.tileSizeW = tileMap.w / this.tiles;
         this.tileSizeH = tileMap.h / this.tiles;
         this.toggle = true;
+        this.p_Pos = {_x: 0, _y:0};
 
         this.events = {};
 
@@ -24,20 +29,15 @@ class Minimap extends UIElement {
 
     update(client) {
         this.pos.x = R.WIDTH - 33;
-        if (client.keys) {
-            if (client.keys[77]) {
-                if (!client.onePressKeys[77]) {
-                    this.toggle = !this.toggle;
-                    client.activateOnePressKey(77);
-                }
-            } else {
-                client.resetOnePressKey(77);
-            }
+        if (client.player) {
+            this.p_Pos = client.player._targetState._pos;
         }
+        // TODO: Add toggle
         this.updateEvent();
     }
 
     draw() {
+        console.warn(true);
         var p_Pos = client.player.pos;
 
         try {
@@ -45,6 +45,8 @@ class Minimap extends UIElement {
             var py = p_Pos.y / (this.tileSizeH * Game.tileMap.tileSize) | 0;
         } catch (e) {
         }
+        var px = this.p_Pos._x / (this.tileSizeW * this.tileSize) | 0;
+        var py = this.p_Pos._y / (this.tileSizeH * this.tileSize) | 0;
 
         for (var i = 0; i < this.tiles; i++)
             for (var j = 0; j < this.tiles; j++) {
