@@ -43,7 +43,6 @@ export default class KelvinBar extends UIElement {
     }
 
     draw() {
-
         console.warn("meh");
         var gun = ClientEntity.getEntity(this.equippedGunID);
 
