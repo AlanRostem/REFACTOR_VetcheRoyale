@@ -1,24 +1,14 @@
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 typeCheck = require("../../../../shared/Debugging/StypeCheck.js");
 Entity = require("../SEntity.js");
+Rect = require("./QTRect.js");
 
 class QuadTree {
-    constructor(cx, cy, w, h, level) {
-        this._level = level; //
-        this._entities = {}; // Entity container with ID-mapping
-        this._length = 0; // Amount of entities inserted in the container
-        this._pos = new Vector2D(cx * w, cy * h); // Cell positions to coordinates
-        this._w = w;
-        this._h = h;
-        this._cell = {x: cx, y: cy};
-        this._nodes = []; // Holds subdivisions
+    constructor(rect) {
+        this._boundary = rect;
+        this._entities = [];
         this._divided = false;
-        QuadTree.rects.push({
-            x: this.pos.x,
-            y: this.pos.y,
-            w: this._w,
-            h: this._h,
-        });
+        QuadTree.rects.push(this._boundary);
     }
 
     get width() {
@@ -29,100 +19,96 @@ class QuadTree {
         return this._h;
     }
 
-    withinBoundary(e) {
-        return this.pos.y + this.height > e.pos.y
-            &&  this.pos.y < (e.pos.y + e.height)
-            && this.pos.x + this.width > e.pos.x
-            &&  this.pos.x < (e.pos.x + e.width);
-    }
-
     // Range is a bounding rectangle (SRect)
-    query(range) {
-        let found = [];
-        if (!this.withinBoundary(range)) {
-            return found; //Empty array
-        } else {
-            for (var id of this._entities) {
-                var entity = this._entities[id];
-                if (range.overlapEntity(entity)) {
-                    found.push(entity);
-                }
-            }
+    query(range, found) {
+        if (!found) {
+            found = [];
+        }
 
-            if (this._divided) {
-                for (var qt of this._nodes) {
-                    found.concat(qt.query(range))
-                }
-            }
+        if (!range.intersects(this._boundary)) {
             return found;
         }
+
+        for (let e of this._entities) {
+            if (range.contains(e)) {
+                found.push(e);
+            }
+        }
+        if (this._divided) {
+            this.northwest.query(range, found);
+            this.northeast.query(range, found);
+            this.southwest.query(range, found);
+            this.southeast.query(range, found);
+        }
+
+        return found;
     }
 
     subdivide() {
-        var subWidth = this._w / 2;
-        var subHeight = this._h / 2;
+        let x = this._boundary.x;
+        let y = this._boundary.y;
+        let w = this._boundary.w / 2;
+        let h = this._boundary.h / 2;
 
-        this._nodes[0] = new QuadTree(this._cell.x, this._cell.y, subWidth, subHeight, this._level + 1);
-        this._nodes[1] = new QuadTree(this._cell.x + 1, this._cell.y, subWidth, subHeight, this._level + 1);
-        this._nodes[2] = new QuadTree(this._cell.x, this._cell.y + 1, subWidth, subHeight, this._level + 1);
-        this._nodes[3] = new QuadTree(this._cell.x + 1, this._cell.y + 1, subWidth, subHeight, this._level + 1);
+        let ne = new Rect(x + w, y - h, w, h);
+        this.northeast = new QuadTree(ne);
+        let nw = new Rect(x - w, y - h, w, h);
+        this.northwest = new QuadTree(nw);
+        let se = new Rect(x + w, y + h, w, h);
+        this.southeast = new QuadTree(se);
+        let sw = new Rect(x - w, y + h, w, h);
+        this.southwest = new QuadTree(sw);
 
         this._divided = true;
-
-        this._nodes.forEach(node => {
-            console.log('\x1b[36m%s\x1b[0m', 'SUBDIVISION SUCCESS', node.pos);
-        });
     }
 
     // TODO: Maybe store the ID in the QuadTree instead.
     // Places a reference to an entity in the container
     // Subdivides if we reach the max count
     insert(entity) {
-        // We don't want to insert an entity that isn't
-        // in the boundaries.
-        if (!this.withinBoundary(entity)) {
-            console.log('\x1b[36m%s\x1b[0m', 'OUT OF BOUNDS:', entity._id);
+        if (!this._boundary.contains(entity)) {
             return false;
         }
 
-        if (this._length < QuadTree.MAX_ENTITIES) {
-            this._length++;
+        if (this._entities.length < QuadTree.MAX_ENTITIES) {
             typeCheck.instance(Entity, entity);
-            this._entities[entity.id] = entity;
+            this._entities.push(entity);
             return true;
         } else {
             if (!this._divided) {
                 this.subdivide();
             }
-            for (var node of this._nodes) {
-                // Preventing duplicate insertion
-                if (node.insert(entity)) {
-                    return true;
-                }
-            }
-        }
 
-        console.log('\x1b[36m%s\x1b[0m', 'COUNT:', this._length);
+            if (this.northeast.insert(entity)) {
+                return true;
+            }
+
+            if (this.northwest.insert(entity)) {
+                return true;
+            }
+
+            if (this.southeast.insert(entity)) {
+                return true;
+            }
+
+            if (this.southwest.insert(entity)) {
+                return true;
+            }
+
+        }
     }
 
     remove(entity) {
         delete this._entities[entity.id];
     }
 
-    get pos() {
-        return this._pos;
-    }
-
     get bounds() {
-        return {
-            x: this._w,
-            y: this._h,
-        };
+        return this._boundary;
     }
 
 }
 
-QuadTree.MAX_ENTITIES = 1; // TODO: Set it back to 10. This is a test value for now.
+QuadTree.MAX_ENTITIES = 1; // TODO: Set it back to 10 (or 4). This is a test value for now.
 QuadTree.MAX_LEVEL = 5;
 QuadTree.MAX_NODE_COUNT = 4;
 QuadTree.UNBOUND = -1;

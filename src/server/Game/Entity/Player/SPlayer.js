@@ -2,6 +2,7 @@ Entity = require("../SEntity.js");
 IPlayer = require("./IPlayer.js");
 ProximityEntityManager = require("./ProximityEntityManager.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
+Rect = require("../Management/QTRect.js");
 
 class Player extends IPlayer {
     constructor(x, y, client) {
@@ -17,18 +18,23 @@ class Player extends IPlayer {
         this._clientRef = client;
         this._entitiesInProximity = new ProximityEntityManager(this);
         this._jumping = false;
+        this._qtBounds = new Rect(x, y, 160, 80);
 
 
         // TODO: Remove this test after being done with quad trees
         //this._collisionConfig.static = true;
-        //this._collisionConfig.collision = false;
-        //this._collisionConfig.gravity = false;
-
+        this._collisionConfig.collision = false;
+        this._collisionConfig.gravity = false;
 
         this._speed = {
             ground: 65,
             jump: -190,
         };
+
+        if (!this._collisionConfig.collision) {
+            this._speed.ground = 600;
+        }
+
 
         this._gravity = 500;
 
@@ -55,6 +61,10 @@ class Player extends IPlayer {
 
 
     update(entityManager, deltaTime) {
+
+        this._qtBounds.x = this.center.x;
+        this._qtBounds.y = this.center.y;
+
         if (!this.side.bottom) {
             this._jumping = true;
         }

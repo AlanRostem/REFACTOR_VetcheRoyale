@@ -52,7 +52,6 @@ export default class Scene {
 
     static draw() {
         R.clear();
-
         if (AssetManager.done()) {
             if (Scene.t_ts) {
                 Scene.t_ts.draw(Scene._t_tm);
@@ -62,14 +61,25 @@ export default class Scene {
 
             if (MyClient._qt)
             for (var rect of MyClient._qt) {
-                R.context.strokeStyle = "lime";
-                R.context.lineWidth = 2;
-                R.context.strokeRect(
-                    rect.x
-                    + R.camera.boundPos.x,
-                    rect.y
-                    + R.camera.boundPos.y,
-                    rect.w, rect.h);
+                if (rect.normal) {
+                    R.context.strokeStyle = "red";
+                    R.context.lineWidth = 2;
+                    R.context.strokeRect(
+                        rect.x
+                        + R.camera.boundPos.x,
+                        rect.y
+                        + R.camera.boundPos.y,
+                        rect.w, rect.h);
+                } else {
+                    R.context.strokeStyle = "lime";
+                    R.context.lineWidth = 2;
+                    R.context.strokeRect(
+                        rect.x - rect.w
+                        + R.camera.boundPos.x,
+                        rect.y - rect.h
+                        + R.camera.boundPos.y,
+                        rect.w * 2, rect.h * 2);
+                }
             }
 
         } else {
