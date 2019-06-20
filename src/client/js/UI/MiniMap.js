@@ -37,14 +37,7 @@ export default class MiniMap extends UIElement {
     }
 
     draw() {
-        console.warn(true);
-        var p_Pos = client.player.pos;
 
-        try {
-            var px = p_Pos.x / (this.tileSizeW * Game.tileMap.tileSize) | 0;
-            var py = p_Pos.y / (this.tileSizeH * Game.tileMap.tileSize) | 0;
-        } catch (e) {
-        }
         var px = this.p_Pos._x / (this.tileSizeW * this.tileSize) | 0;
         var py = this.p_Pos._y / (this.tileSizeH * this.tileSize) | 0;
 
