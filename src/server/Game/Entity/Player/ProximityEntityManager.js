@@ -53,7 +53,7 @@ class ProximityEntityManager extends EntityManager {
                     this.addEntity(e);
                 } else {
                     if (e.toRemove || !entityManager.exists(e.id) || !this._playerRef._qtBounds.contains(e)) {
-                        this.removeEntity(e.id)
+                        this.removeEntity(e.id);
                     }
                 }
             }
