@@ -32,6 +32,10 @@ class EntityManager {
         }
     }
 
+    get quadTree() {
+        return this._qt;
+    }
+
     get timeStamp() {
         return this._gameClock.timeStamp;
     }

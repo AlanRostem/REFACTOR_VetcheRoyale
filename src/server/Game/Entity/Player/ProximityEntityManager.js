@@ -20,7 +20,7 @@ class ProximityEntityManager extends EntityManager {
         delete this._dataBox[id];
     }
 
-    checkPlayerProximityEntities(entityManager) {
+    /*checkPlayerProximityEntities(entityManager) {
         for (var id in entityManager.container) {
             var entityCloseToPlayer = entityManager.container[id];
             if (this._playerRef.id !== entityCloseToPlayer.id) {
@@ -43,24 +43,40 @@ class ProximityEntityManager extends EntityManager {
                 }
             }
         }
+    }*/
 
+    checkPlayerProximityEntities(entityManager) {
+        var entities = entityManager.quadTree.query(this._playerRef._qtBounds);
+        for (var e of entities) {
+            if (e !== this._playerRef) {
+                if (!this.exists(e.id)) {
+                    this.addEntity(e);
+                } else {
+                    if (e.toRemove || !entityManager.exists(e.id) || !this._playerRef._qtBounds.contains(e)) {
+                        this.removeEntity(e.id)
+                    }
+                }
+            }
+        }
+
+        console.log(Object.keys(this._container).length);
     }
 
     // Called only when player spawns in the world
     getProximityEntityData(position, entityManager) {
-        entityManager.forEach(entity => {
-            if (entity.id !== this.id) {
-                if (Vector2D.distance(position, entity.center) < ProximityEntityManager.CLIENT_SPAWN_RANGE) {
-                    this.addEntity(entity);
-                }
+        var entities = entityManager.quadTree.query(this._playerRef._qtBounds);
+        for (var e of entities) {
+            if (e !== this._playerRef) {
+                this.addEntity(e);
             }
-        });
+        }
     }
 
     exportDataPack() {
         for (let id in this.container) {
-            this._dataBox[id] =  this.container[id].getDataPack();
+            this._dataBox[id] = this.container[id].getDataPack();
         }
+        this._dataBox[this._playerRef.id] = this._playerRef.getDataPack();
         return this._dataBox;
     }
 }

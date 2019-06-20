@@ -32,13 +32,6 @@ class QuadTree {
         for (let e of this._entities) {
             if (range.contains(e)) {
                 found.push(e);
-                QuadTree.rects.push({
-                    x: e.pos.x,
-                    y: e.pos.y,
-                    w: e.width,
-                    h: e.height,
-                    normal: true
-                })
             }
         }
         if (this._divided) {
