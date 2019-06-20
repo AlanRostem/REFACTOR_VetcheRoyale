@@ -47,13 +47,15 @@ export default class R {
         R._aspectRatio.x = window.innerWidth / window.innerHeight;
         R._aspectRatio.y = 1;
 
-        R._screenDimensions.x = R._aspectRatio.x * R._resolution;
-        R._screenDimensions.y = R._aspectRatio.y * R._resolution;
+        R._screenDimensions.x = 1920;// R._aspectRatio.x * R._resolution;
+        R._screenDimensions.y = 1080;//R._aspectRatio.y * R._resolution;
 
+        /*
         if (R._screenDimensions.x > 360) {
             R._screenDimensions.x = 320;
             R._screenDimensions.y = 160;
         }
+        */
 
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;

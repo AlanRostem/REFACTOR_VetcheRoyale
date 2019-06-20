@@ -21,14 +21,18 @@ class Player extends IPlayer {
 
         // TODO: Remove this test after being done with quad trees
         //this._collisionConfig.static = true;
-        //this._collisionConfig.collision = false;
-        //this._collisionConfig.gravity = false;
-
+        this._collisionConfig.collision = false;
+        this._collisionConfig.gravity = false;
 
         this._speed = {
             ground: 65,
             jump: -190,
         };
+
+        if (!this._collisionConfig.collision) {
+            this._speed.ground = 600;
+        }
+
 
         this._gravity = 500;
 
