@@ -37,6 +37,7 @@ export default class MiniMap extends UIElement {
     }
 
     draw() {
+
         var px = this.p_Pos._x / (this.tileSizeW * this.tileSize) | 0;
         var py = this.p_Pos._y / (this.tileSizeH * this.tileSize) | 0;
 
