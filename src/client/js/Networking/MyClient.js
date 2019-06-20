@@ -43,7 +43,14 @@ export default class MyClient {
         return this._latency;
     }
 
+    get player() {
+        return this._eMgr.getEntityByID(this.id);
+    }
+
     update(entityManager) {
+        if (!this._eMgr) {
+            this._eMgr = entityManager;
+        }
         this._startTime = Date.now();
         this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);

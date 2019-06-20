@@ -1,12 +1,15 @@
-class Annoucement extends UIElement {
+import R from "../Graphics/Renderer.js";
+import UIElement from "./UIElement.js";
+
+export default class Announcement extends UIElement {
     constructor() {
-        super("annoucement", R.WIDTH / 2 - 64, 1, 128, 16);
+        super("announcement", R.WIDTH / 2 - 64, 1, 128, 16);
         this.color = "Red";
         this.annoucements = [];
-        this.activAnnoucement = 0;
+        this.activeAnnoucement = 0;
     }
 
-    static Annouce = class {
+    static Announce = class {
         constructor(string, life) {
             this.wholeString = string;
             this.life = life;
@@ -43,13 +46,13 @@ class Annoucement extends UIElement {
         }
     };
 
-    addAnnoucement(string, life) {
+    addAnnouncement(string, life) {
         this.annoucements.push(new Annoucement.Annouce(string, life));
         console.log(this.annoucements);
     }
 
     drawAnnouncement() {
-        var a = this.annoucements[this.activAnnoucement];
+        var a = this.annoucements[this.activeAnnoucement];
         if (a !== undefined) {
             R.drawText(a.string,
                 (this.pos.x + this.width) - a.x,
@@ -61,18 +64,18 @@ class Annoucement extends UIElement {
 
     update() {
         this.pos.x = R.WIDTH / 2 - 64;
-        var a = this.annoucements[this.activAnnoucement];
+        var a = this.annoucements[this.activeAnnoucement];
         if (a !== undefined) {
             a.update(this.width);
             if (a.outOfscreen === true) {
                 console.log(a);
                 if (a.life <= 0)
-                    delete this.annoucements.splice(this.activAnnoucement, 1);
+                    delete this.annoucements.splice(this.activeAnnoucement, 1);
                 else
-                    this.activAnnoucement++;
+                    this.activeAnnoucement++;
             }
-            if (this.activAnnoucement >= this.annoucements.length)
-                this.activAnnoucement = 0;
+            if (this.activeAnnoucement >= this.annoucements.length)
+                this.activeAnnoucement = 0;
         }
     }
 

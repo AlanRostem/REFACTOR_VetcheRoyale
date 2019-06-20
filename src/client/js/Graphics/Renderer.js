@@ -87,6 +87,14 @@ export default class R {
         return R._canvas;
     }
 
+    static get WIDTH() {
+        return R._screenDimensions.x;
+    }
+
+    static get HEIGHT() {
+        return R._screenDimensions.y;
+    }
+
     static get screenSize() {
         return R._screenDimensions;
     }
