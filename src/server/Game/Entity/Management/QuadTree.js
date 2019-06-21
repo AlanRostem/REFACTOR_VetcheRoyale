@@ -1,6 +1,5 @@
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 typeCheck = require("../../../../shared/Debugging/StypeCheck.js");
-Entity = require("../SEntity.js");
 Rect = require("./QTRect.js");
 
 class QuadTree {
@@ -74,7 +73,6 @@ class QuadTree {
         }
 
         if (this._entities.length < QuadTree.MAX_ENTITIES) {
-            typeCheck.instance(Entity, entity);
             this._entities.push(entity);
             return true;
         } else {

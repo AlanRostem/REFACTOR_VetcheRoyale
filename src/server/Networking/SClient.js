@@ -4,7 +4,7 @@ QuadTree = require("../Game/Entity/Management/QuadTree.js");
 
 class Client {
     constructor(socket, clientList, entityManager) {
-        // Object given by _socket.io
+        // Object given by socket.io
         this._socket = socket;
 
         this._socket.emit("connectClient", {id: socket.id});

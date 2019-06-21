@@ -1,5 +1,7 @@
 var EntityManager = require("./Entity/Management/EntityManager.js");
 var WebSocket = require("../Networking/WebSocket.js");
+var Entity = require("./Entity/SEntity.js");
+var Tile = require("./TileBased/Tile");
 
 class Game {
     constructor(socket) {
@@ -16,6 +18,15 @@ class Game {
         was way more stable with 30 Hz. We can also try
         50 Hz if possible.
          */
+
+        // TODO: Remove test
+        for (var i = 0; i < 50; i++) {
+            this.entityManager.spawnEntity(
+                this.entityManager.tileMap.w * Tile.SIZE * Math.random(),
+                this.entityManager.tileMap.h * Tile.SIZE * Math.random(),
+                new Entity(0, 0, 32, 32)
+            );
+        }
     }
 
     update() {

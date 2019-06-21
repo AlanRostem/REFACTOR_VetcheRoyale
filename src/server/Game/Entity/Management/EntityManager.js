@@ -3,14 +3,13 @@ Tile = require("../../TileBased/Tile.js");
 testMap = require("../../../../res/tileMaps/testMap.js");
 GameClock = require("../../Entity/Management/GameClock.js");
 QuadTree = require("./QuadTree.js");
-Entity = require("../SEntity.js");
 Rect = require("./QTRect.js");
 
 class EntityManager {
     constructor(singleton = false) {
         this._container = {};
-        this._entitiesQueuedToDelete = [];
         if (singleton) {
+            this._entitiesQueuedToDelete = [];
             this._tileMap = new STileMap(testMap);
             this._gameClock = new GameClock(0);
 
@@ -20,15 +19,6 @@ class EntityManager {
                 this._tileMap.w * Tile.SIZE / 2,
                 this._tileMap.h * Tile.SIZE / 2,
             ));
-
-            // TODO: Remove test
-            for (var i = 0; i < 50; i++) {
-                var w = this._tileMap.w * Tile.SIZE;
-                var h = this._tileMap.h * Tile.SIZE;
-                this.spawnEntity(Math.random() * w, Math.random() * h, new Entity(0, 0, 32, 32));
-            }
-
-            var arr = this._qt.query(new Rect(0, 0, 1920, 1080));
         }
     }
 

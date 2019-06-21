@@ -1,6 +1,6 @@
 Entity = require("../SEntity.js");
 IPlayer = require("./IPlayer.js");
-ProximityEntityManager = require("../Management/ProximityEntityManager.js");
+ClientPEM = require("./ClientPEM.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 Rect = require("../Management/QTRect.js");
 
@@ -13,7 +13,7 @@ class Player extends IPlayer {
 
 
         this._clientRef = client;
-        this._entitiesInProximity = new ProximityEntityManager(this);
+        this._entitiesInProximity = new ClientPEM(this);
         this._jumping = false;
 
         // TODO: Remove this test after being done with quad trees
@@ -101,9 +101,5 @@ class Player extends IPlayer {
         }
     }
 }
-
-// Static variables:
-
-Player.clientSpawnProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE; // TODO: Fix this test value
 
 module.exports = Player;
