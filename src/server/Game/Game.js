@@ -24,8 +24,7 @@ class Game {
             this.entityManager.spawnEntity(
                 this.entityManager.tileMap.w * Tile.SIZE * Math.random(),
                 this.entityManager.tileMap.h * Tile.SIZE * Math.random(),
-                new Entity(0, 0, 32, 32)
-            );
+                new Entity(0, 0, 16, 16));
         }
     }
 
