@@ -8,6 +8,14 @@ class Game {
         this._deltaTime = 0;
         this._lastTime = 0;
         this._tickRate = 60; // Hz
+        /*IDEA
+        Having the tick rate at 30 hz benefits the
+        server when reaching a very high entity count
+        because the tick rate is held consistently.
+        I tested this with 500 entities and the server
+        was way more stable with 30 Hz. We can also try
+        50 Hz if possible.
+         */
     }
 
     update() {
@@ -27,6 +35,7 @@ class Game {
 
         if (Date.now() > 0)
             this._lastTime = Date.now();
+
     }
 
     start() {

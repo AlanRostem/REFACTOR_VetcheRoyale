@@ -47,15 +47,13 @@ export default class R {
         R._aspectRatio.x = window.innerWidth / window.innerHeight;
         R._aspectRatio.y = 1;
 
-        R._screenDimensions.x = 1280;// R._aspectRatio.x * R._resolution;
-        R._screenDimensions.y = 720;//R._aspectRatio.y * R._resolution;
+        R._screenDimensions.x = R._aspectRatio.x * R._resolution;
+        R._screenDimensions.y = R._aspectRatio.y * R._resolution;
 
-        /*
         if (R._screenDimensions.x > 360) {
             R._screenDimensions.x = 320;
             R._screenDimensions.y = 160;
         }
-        */
 
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;
@@ -110,8 +108,8 @@ export default class R {
         R._ctx.font = size + "px EXEPixelPerfect";
         R.context.fillStyle = color;
         R.context.fillText(str,
-            (x + (useCamera ? R._camera._pos.x : 0) | 0),
-            (y + (useCamera ? R._camera._pos.y : 0) | 0),
+            (x + (useCamera ? R._camera.boundPos.x : 0) | 0),
+            (y + (useCamera ? R._camera.boundPos.y : 0) | 0),
         );
         R.context.restore();
     }

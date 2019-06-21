@@ -8,7 +8,6 @@ class QuadTree {
         this._boundary = rect;
         this._entities = [];
         this._divided = false;
-        QuadTree.rects.push(this._boundary);
     }
 
     get width() {
@@ -19,18 +18,15 @@ class QuadTree {
         return this._h;
     }
 
-    // Range is a bounding rectangle (SRect)
-    query(range, found) {
-        if (!found) {
-            found = [];
-        }
+    // Range is a bounding rectangle (QTRect)
+    query(range, found = []) {
 
         if (!range.intersects(this._boundary)) {
             return found;
         }
 
         for (let e of this._entities) {
-            if (range.contains(e)) {
+            if (range.myContains(e)) {
                 found.push(e);
             }
         }
@@ -66,7 +62,14 @@ class QuadTree {
     // Places a reference to an entity in the container
     // Subdivides if we reach the max count
     insert(entity) {
-        if (!this._boundary.contains(entity)) {
+        if (!this._boundary.myContains(entity)) {
+            if (this._entities.indexOf(entity) !== -1) {
+                this.remove(entity);
+            }
+            return false;
+        }
+
+        if (this._entities.indexOf(entity) !== -1) {
             return false;
         }
 
@@ -99,7 +102,22 @@ class QuadTree {
     }
 
     remove(entity) {
-        delete this._entities[entity.id];
+        if (this._entities.indexOf(entity) !== -1) {
+            this._entities.splice(this._entities.indexOf(entity));
+            if (this._divided) {
+                this.northeast.remove(entity);
+                this.northwest.remove(entity);
+                this.southeast.remove(entity);
+                this.southwest.remove(entity);
+            }
+        } else {
+            if (this._divided) {
+                this.northeast.remove(entity);
+                this.northwest.remove(entity);
+                this.southeast.remove(entity);
+                this.southwest.remove(entity);
+            }
+        }
     }
 
     get bounds() {
@@ -108,11 +126,10 @@ class QuadTree {
 
 }
 
-QuadTree.MAX_ENTITIES = 1; // TODO: Set it back to 10 (or 4). This is a test value for now.
+QuadTree.MAX_ENTITIES = 10; // TODO: Find a decent max value.
 QuadTree.MAX_LEVEL = 5;
 QuadTree.MAX_NODE_COUNT = 4;
 QuadTree.UNBOUND = -1;
 
-QuadTree.rects = [];
 
 module.exports = QuadTree;

@@ -90,8 +90,7 @@ export default class MyClient {
 
         // TODO: Remove test
         this.on("t_getQuadTree", data => {
-            MyClient._qt = data;
-            window.quadTrees = data; // TODO: Remove test
+
         });
     }
 }

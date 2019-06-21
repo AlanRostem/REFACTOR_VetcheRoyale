@@ -22,7 +22,7 @@ class EntityManager {
             ));
 
             // TODO: Remove test
-            for (var i = 0; i < 500; i++) {
+            for (var i = 0; i < 50; i++) {
                 var w = this._tileMap.w * Tile.SIZE;
                 var h = this._tileMap.h * Tile.SIZE;
                 this.spawnEntity(Math.random() * w, Math.random() * h, new Entity(0, 0, 32, 32));
@@ -53,8 +53,9 @@ class EntityManager {
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime);
         for (var i = 0; i < this._entitiesQueuedToDelete.length; i++) {
-           delete this._container[this._entitiesQueuedToDelete[i]];
-           this._entitiesQueuedToDelete.splice(i);
+            this.quadTree.remove(this._container[this._entitiesQueuedToDelete[i]]);
+            delete this._container[this._entitiesQueuedToDelete[i]];
+            this._entitiesQueuedToDelete.splice(i);
         }
     }
 
@@ -98,7 +99,6 @@ class EntityManager {
         entity.pos.x = x;
         entity.pos.y = y;
 
-        // TODO: Remove test:
         this._qt.insert(entity);
     }
 

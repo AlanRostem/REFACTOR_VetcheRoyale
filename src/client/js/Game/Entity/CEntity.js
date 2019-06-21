@@ -62,6 +62,14 @@ export default class CEntity {
     }
 
     draw() {
+        if (this._targetState._qtBounds) {
+            var rect = this._targetState._qtBounds;
+            R.ctx.strokeStyle = "red";
+            R.ctx.strokeRect(
+                rect.x - rect.w + R.camera.boundPos.x,
+                rect.y - rect.h + R.camera.boundPos.y,
+                rect.w * 2, rect.h * 2);
+        }
         R.drawRect(this._color,
             this._targetState._pos._x /*+ (this._targetState._vel._x * Scene.deltaTime | 0) */,
             this._targetState._pos._y /*+ (this._targetState._vel._y * Scene.deltaTime | 0) */,

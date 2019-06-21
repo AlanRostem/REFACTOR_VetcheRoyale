@@ -22,10 +22,11 @@ class SEntity {
             "_vel",
             "_width",
             "_height",
-            "_color",
         ],
         [
-            "_removed"
+            "_removed",
+            "_color",
+
         ]);
 
 
@@ -182,6 +183,9 @@ class SEntity {
 
         this.pos.x = Math.round(this.pos.x);
         this.pos.y = Math.round(this.pos.y);
+    }
+
+    onEntityCollision(entity) {
     }
 
     update(entityManager, deltaTime) {

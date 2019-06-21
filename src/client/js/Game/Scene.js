@@ -59,29 +59,6 @@ export default class Scene {
             }
             Scene._entityManager.drawEntities();
 
-            if (MyClient._qt)
-            for (var rect of MyClient._qt) {
-                if (rect.normal) {
-                    R.context.strokeStyle = "red";
-                    R.context.lineWidth = 2;
-                    R.context.strokeRect(
-                        rect.x
-                        + R.camera.boundPos.x,
-                        rect.y
-                        + R.camera.boundPos.y,
-                        rect.w, rect.h);
-                } else {
-                    R.context.strokeStyle = "lime";
-                    R.context.lineWidth = 2;
-                    R.context.strokeRect(
-                        rect.x - rect.w
-                        + R.camera.boundPos.x,
-                        rect.y - rect.h
-                        + R.camera.boundPos.y,
-                        rect.w * 2, rect.h * 2);
-                }
-            }
-
         } else {
             var str = "Loading " +
                 (((AssetManager.successCount + AssetManager.errorCount) / AssetManager.downloadQueue.length) * 100 | 0)
@@ -91,6 +68,10 @@ export default class Scene {
                 R.screenSize.y / 2 | 0,
                 "white");
         }
+    }
+
+    static stop() {
+        window.cancelAnimationFrame(Scene.tick);
     }
 
     static tick(time) {
@@ -106,3 +87,5 @@ export default class Scene {
         requestAnimationFrame(Scene.tick);
     }
 }
+
+window.Scene = Scene; // TODO: Remove debug

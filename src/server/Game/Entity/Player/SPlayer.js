@@ -1,6 +1,6 @@
 Entity = require("../SEntity.js");
 IPlayer = require("./IPlayer.js");
-ProximityEntityManager = require("./ProximityEntityManager.js");
+ProximityEntityManager = require("../Management/ProximityEntityManager.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 Rect = require("../Management/QTRect.js");
 
@@ -8,23 +8,18 @@ class Player extends IPlayer {
     constructor(x, y, client) {
         super(x, y, 6, 12);
         this._id = client.id;
-        this._t_entityProximity = ProximityEntityManager.CLIENT_SPAWN_RANGE;
 
         this._snapShotGenerator._snapShot._id = this._id;
-        this._snapShotGenerator.addReferenceValues(this, [
-            "_t_entityProximity"
-        ]);
+
 
         this._clientRef = client;
         this._entitiesInProximity = new ProximityEntityManager(this);
         this._jumping = false;
-        this._qtBounds = new Rect(x, y, 160, 80);
-
 
         // TODO: Remove this test after being done with quad trees
         //this._collisionConfig.static = true;
-        this._collisionConfig.collision = false;
-        this._collisionConfig.gravity = false;
+        //this._collisionConfig.collision = false;
+        //this._collisionConfig.gravity = false;
 
         this._speed = {
             ground: 65,
@@ -43,7 +38,7 @@ class Player extends IPlayer {
 
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
-        this._entitiesInProximity.getProximityEntityData(this.center, entityManager);
+        this._entitiesInProximity.initProximityEntityData(entityManager);
         this._clientRef.emit("initEntity", this._entitiesInProximity.exportDataPack())
     }
 
@@ -59,12 +54,11 @@ class Player extends IPlayer {
         return this._clientRef._keyStates;
     }
 
+    onEntityCollision(e) {
+
+    }
 
     update(entityManager, deltaTime) {
-
-        this._qtBounds.x = this.center.x;
-        this._qtBounds.y = this.center.y;
-
         if (!this.side.bottom) {
             this._jumping = true;
         }
@@ -100,7 +94,7 @@ class Player extends IPlayer {
         }
 
         super.update(entityManager, deltaTime);
-        this.entitiesInProximity.checkPlayerProximityEntities(entityManager);
+        this.entitiesInProximity.update(entityManager, deltaTime);
 
         if (this.side.bottom) {
             this._jumping = false;

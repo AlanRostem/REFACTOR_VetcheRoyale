@@ -60,7 +60,6 @@ export default class EntityDataReceiver {
         });
 
         client.on('updateEntity', dataPack => {
-
             for (var id in dataPack) {
                 var entityData = dataPack[id];
                 if (this.existsOnClient(id)) {
@@ -68,7 +67,8 @@ export default class EntityDataReceiver {
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {
-                    console.warn("Attempted to update a non existent entity. There's a hole in your programming...");
+                    //console.warn("Attempted to update a non existent entity. There's a hole in your programming...");
+                    throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
                 }
             }
         });

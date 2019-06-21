@@ -72,7 +72,6 @@ class Client {
 
     update(entityManager) {
         this.emit("updateEntity", this._player.entitiesInProximity.exportDataPack());
-        this.emit("t_getQuadTree", QuadTree.rects);
     }
 }
 
