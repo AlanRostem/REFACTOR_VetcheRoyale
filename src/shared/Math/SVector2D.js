@@ -6,12 +6,12 @@ class Vector2D {
     }
 
     set x(val) {
-        typeCheck.primitive( 0, val);
+        typeCheck.primitive(0, val);
         this._x = val;
     }
 
     set y(val) {
-        typeCheck.primitive( 0, val);
+        typeCheck.primitive(0, val);
         this._y = val;
     }
 

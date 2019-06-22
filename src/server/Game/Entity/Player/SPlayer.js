@@ -22,7 +22,7 @@ class Player extends IPlayer {
         //this._collisionConfig.gravity = false;
 
         this._speed = {
-            ground: 65,
+            ground: 65 * 55,
             jump: -190,
         };
 
@@ -73,11 +73,11 @@ class Player extends IPlayer {
         this.vel.x = 0;
 
         if (this.keys[68]) {
-            this.vel.x = this._speed.ground;
+            this.accelerateX(this._speed.ground, deltaTime);
         }
 
         if (this.keys[65]) {
-            this.vel.x = -this._speed.ground;
+            this.accelerateX(-this._speed.ground, deltaTime);
         }
 
 

@@ -50,9 +50,6 @@ class Game {
 
     start() {
         setInterval(() => this.update(), 1000/this._tickRate);
-        // Server tick rate of 30hz. We will create a state
-        // predictor system on the client making movement
-        // smooth only on the client.
     }
 }
 
