@@ -55,7 +55,7 @@ export default class MyClient {
         this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);
         if (e) {
-            R.camera.update(e._targetState._pos);
+            R.camera.update(e._output._pos);
         }
     }
 

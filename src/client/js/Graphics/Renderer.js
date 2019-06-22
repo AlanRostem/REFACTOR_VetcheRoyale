@@ -82,7 +82,7 @@ export default class R {
 
     static get canvasElement() {
         if (R._canvas === null) {
-            throw new Error("Canvas element context is not defined! Maybe you forgot to set up the renderer.");
+            throw new Error("Canvas element is not defined! Maybe you forgot to set up the renderer.");
         }
         return R._canvas;
     }

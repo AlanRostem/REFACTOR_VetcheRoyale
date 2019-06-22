@@ -30,7 +30,7 @@ export default class MiniMap extends UIElement {
     update(client) {
         this.pos.x = R.WIDTH - 33;
         if (client.player) {
-            this.p_Pos = client.player._targetState._pos;
+            this.p_Pos = client.player._output._pos;
         }
         // TODO: Add toggle
         this.updateEvent();

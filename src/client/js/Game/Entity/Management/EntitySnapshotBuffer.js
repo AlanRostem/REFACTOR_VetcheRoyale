@@ -88,7 +88,7 @@ export default class EntitySnapshotBuffer {
             var ghostPos = vectorLinearInterpolation(previous._pos, target._pos, timePoint);
 
             var testSmoothing = 25; // TODO: Find a better value than the test
-            entity._targetState._pos = vectorLinearInterpolation(entity._targetState._pos, ghostPos, deltaTime * testSmoothing);
+            entity._output._pos = vectorLinearInterpolation(entity._output._pos, ghostPos, deltaTime * testSmoothing);
         }
     }
 
