@@ -6,6 +6,7 @@ import AssetManager from "./AssetManager/AssetManager.js";
 import TileSheet from "./AssetManager/Classes/TileSheet.js";
 import UI from "./UI/UI.js";
 import MiniMap from "./UI/MiniMap.js";
+import KelvinBar from "./UI/KelvinBar.js";
 
 // This is the initialization entry point
 

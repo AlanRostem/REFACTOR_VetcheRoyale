@@ -8,6 +8,7 @@ import CTileMap from "./CTileMap.js";
 import MyClient from "../Networking/MyClient.js";
 import UI from "../UI/UI.js";
 import MiniMap from "../UI/MiniMap.js";
+import KelvinBar from "../UI/KelvinBar.js";
 
 export default class Scene {
     static _deltaTime = 0;
@@ -28,6 +29,7 @@ export default class Scene {
             Scene.t_ts = new TileSheet("tileSet.png", 8, Scene._t_tm);
             UI.setup(() => {
                 UI.append(new MiniMap(Scene._t_tm));
+                UI.append(new KelvinBar)
             });
             UI.init();
         });

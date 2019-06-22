@@ -1,28 +1,18 @@
+import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 
 export default class KelvinBar extends UIElement {
     constructor() {
-        super("kelvinbar", R.WIDTH - 33, 1, 1, 1);
+        super("kelvinbar", 0, 0, 32, 32);
+        this.src = AssetManager.get("ui/KelvinBar.png");
+
         this.color = "Cyan";
 
         this.equippedGunID = -1;
-
         this.hasWeapon = false;
-
-        try {
-
-            //     this.sprite = new SpriteSheet("Client/assets/img/ui/ui.png");
-
-            // Strink
-            this.strink = new Image();
-            this.strink.src = "Client/assets/img/ui/strink.png";
-
-        } catch (e) {
-        }
     }
 
     update(client) {
-
 
         //this.hasWeapon = !(ClientEntity.getEntity(this.equippedGunID) === undefined || !ClientEntity.getEntity(this.equippedGunID).boundToPlayer);
 
@@ -43,14 +33,13 @@ export default class KelvinBar extends UIElement {
     }
 
     draw() {
-        console.warn("meh");
-        var gun = ClientEntity.getEntity(this.equippedGunID);
+        //console.warn("meh");
+        //var gun = ClientEntity.getEntity(this.equippedGunID);
 
         R.ctx.save();
         if (this.hasWeapon) {
             var gun = ClientEntity.getEntity(this.equippedGunID);
             if (ClientEntity.getEntity(this.equippedGunID) !== undefined) {
-                console.log(true);
                 R.ctx.fillStyle = "cyan";
                 R.ctx.fillRect(R.WIDTH - this.strink.width + 5, R.HEIGHT - this.strink.height + 15 - (48 * (gun.superCharge / 100)), 5, 48 * (gun.superCharge / 100));
                 if (gun.superCharge === 100) {
@@ -65,7 +54,10 @@ export default class KelvinBar extends UIElement {
                 R.ctx.globalAlpha = 1;
             }
         }
-        R.ctx.drawImage(this.strink, R.WIDTH - this.strink.width - 8, R.HEIGHT - this.strink.height - 4);
+        var percent = 40;
+        R.ctx.drawImage(this.src, 22, 0, 4, 40, R.WIDTH - 17 | 0, R.HEIGHT - 46 | 0, 4, 40);
+        R.ctx.drawImage(this.src, 26, 0, 4, 4 , R.WIDTH - 17 | 0, R.HEIGHT - 20 | 0, 4, 4);
+        R.ctx.drawImage(this.src, 0, 0, 22, 62, R.WIDTH - 26 | 0, R.HEIGHT - 66 | 0, 22, 62);
         R.ctx.restore();
     }
 
