@@ -114,8 +114,25 @@ class QuadTree {
                 this.northwest.remove(entity);
                 this.southeast.remove(entity);
                 this.southwest.remove(entity);
+
+                if (this.northeast.length === 0 && this.southwest.length === 0
+                    && this.southeast.length === 0 && this.northwest.length === 0) {
+                    this.clear();
+                }
             }
         }
+    }
+
+    clear() {
+        delete this.northeast;
+        delete this.northwest;
+        delete this.southwest;
+        delete this.southeast;
+        this._divided = false;
+    }
+
+    get length() {
+        return this._entities.length;
     }
 
     get bounds() {
