@@ -54,9 +54,9 @@ export default class KelvinBar extends UIElement {
                 R.ctx.globalAlpha = 1;
             }
         }
-        var percent = 40;
-        R.ctx.drawImage(this.src, 22, 0, 4, 40, R.WIDTH - 17 | 0, R.HEIGHT - 46 | 0, 4, 40);
-        R.ctx.drawImage(this.src, 26, 0, 4, 4 , R.WIDTH - 17 | 0, R.HEIGHT - 20 | 0, 4, 4);
+        var pr = 80;
+        R.ctx.drawImage(this.src, 22, 41 - (40 * pr / 100) | 0, 4, 40 * pr / 100 | 0, R.WIDTH - 17 | 0, R.HEIGHT - 45 + 40 - 40 * pr / 100| 0, 4, 40 * pr / 100 | 0);
+        R.ctx.drawImage(this.src, 26, 0, 4, 4 , R.WIDTH - 17 | 0, R.HEIGHT - 8 - 40 * pr / 100 | 0 | 0, 4, 4);
         R.ctx.drawImage(this.src, 0, 0, 22, 62, R.WIDTH - 26 | 0, R.HEIGHT - 66 | 0, 22, 62);
         R.ctx.restore();
     }
