@@ -1,6 +1,6 @@
-import AssetManager from "../AssetManager.js"
-import R from "../../Graphics/Renderer.js";
-import Scene from "../../Game/Scene.js";
+import AssetManager from "../../AssetManager.js"
+import R from "../../../Graphics/Renderer.js";
+import Scene from "../../../Game/Scene.js";
 
 
 export default class SpriteSheet {

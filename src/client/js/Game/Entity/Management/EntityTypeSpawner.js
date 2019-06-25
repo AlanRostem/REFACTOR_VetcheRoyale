@@ -21,4 +21,4 @@ export default class EntityTypeSpawner {
 }
 
 EntityTypeSpawner.createSpawner("Player", CPlayer);
-EntityTypeSpawner.createSpawner("Entity", CEntity);
+EntityTypeSpawner.createSpawner("SEntity", CEntity);

@@ -72,14 +72,18 @@ class Player extends IPlayer {
 
         this.vel.x = 0;
 
+        this._movementState.main = "stand";
         if (this.keys[68]) {
             this.accelerateX(this._speed.ground, deltaTime);
+            this._movementState.main = "run";
+            this._movementState.direction = "right";
         }
 
         if (this.keys[65]) {
             this.accelerateX(-this._speed.ground, deltaTime);
+            this._movementState.main = "run";
+            this._movementState.direction = "left";
         }
-
 
         if (!this._collisionConfig.collision) {
             this.vel.y = 0;

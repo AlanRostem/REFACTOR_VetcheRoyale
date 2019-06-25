@@ -1,19 +1,28 @@
 import CEntity from "../CEntity.js";
-import AssetManager from "../../../AssetManager/AssetManager.js"
-import SpriteSheet from "../../../AssetManager/Classes/SpriteSheet.js";
+import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
+import AnimationManager from "../../../AssetManager/Classes/Graphical/AnimationManager.js";
 
 export default class CPlayer extends CEntity {
     constructor(dataPack) {
         super(dataPack);
+        this.animations = new AnimationManager();
+        this.animations.addAnimation("run", new SpriteSheet.Animation(0, 5, 16, 0.1));
+        this.animations.addAnimation("stand", new SpriteSheet.Animation(6, 6, 16, 0.1));
+        this.animations.setCurrentAnimation("stand");
+    }
+
+    update(deltaTime) {
+        super.update(deltaTime);
+        this.animations.setCurrentAnimation(this.output._movementState.main);
     }
 
     draw() {
         super.draw();
-        CPlayer.sprite.animate("green", CPlayer.walkAnim, 16, 16);
+        this.animations.animate(CPlayer.sprite, "blue", 16, 16);
 
         SpriteSheet.beginChanges();
-        if (this.output._vel._x < 0) {
+        if (this.output._movementState.direction === "left") {
             CPlayer.sprite.flipX();
         }
         CPlayer.sprite.drawAnimated(
@@ -30,4 +39,3 @@ CPlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
 CPlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
 CPlayer.sprite.setCentralOffset(4);
 
-CPlayer.walkAnim = new SpriteSheet.Animation(0, 5, 16, 0.1);

@@ -14,6 +14,9 @@ class SEntity {
         this._height = height;
         this._id = Math.random();
         this._removed = false;
+        this._movementState = {
+            main: "undefined",
+        };
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
 
         this._snapShotGenerator = new SnapShotGenerator(this,
@@ -23,15 +26,14 @@ class SEntity {
             "_vel",
             "_width",
             "_height",
+            "_movementState",
         ],
         [
             "_removed",
             "_color",
-
         ]);
 
         this._entitiesInProximity = new ProximityEntityManager(this);
-
 
         this._collisionConfig = {
             collision: true, // Tile collision

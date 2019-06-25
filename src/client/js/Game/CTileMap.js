@@ -1,4 +1,4 @@
-import TileSheet from "../AssetManager/Classes/TileSheet.js";
+import TileSheet from "../AssetManager/Classes/Graphical/TileSheet.js";
 
 export default class CTileMap {
     constructor() {

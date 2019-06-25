@@ -3,7 +3,7 @@
 
 import R from "../Graphics/Renderer.js"
 import AssetManager from "../AssetManager/AssetManager.js"
-import TileSheet from "../AssetManager/Classes/TileSheet.js";
+import TileSheet from "../AssetManager/Classes/Graphical/TileSheet.js";
 import CTileMap from "./CTileMap.js";
 import MyClient from "../Networking/MyClient.js";
 import UI from "../UI/UI.js";
