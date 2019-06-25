@@ -30,4 +30,4 @@ CPlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
 CPlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
 CPlayer.sprite.setCentralOffset(4);
 
-CPlayer.walkAnim = new SpriteSheet.Animation(0, 5, 16, 0.13);
+CPlayer.walkAnim = new SpriteSheet.Animation(0, 5, 16, 0.1);
