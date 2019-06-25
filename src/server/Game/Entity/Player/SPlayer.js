@@ -75,13 +75,11 @@ class Player extends IPlayer {
         this._movementState.main = "stand";
         if (this.keys[68]) {
             this.accelerateX(this._speed.ground, deltaTime);
-            this._movementState.main = "run";
             this._movementState.direction = "right";
         }
 
         if (this.keys[65]) {
             this.accelerateX(-this._speed.ground, deltaTime);
-            this._movementState.main = "run";
             this._movementState.direction = "left";
         }
 
@@ -97,8 +95,20 @@ class Player extends IPlayer {
             }
         }
 
+
+
         super.update(entityManager, deltaTime);
         this.entitiesInProximity.update(entityManager, deltaTime);
+
+        if (this.vel.x !== 0) {
+            this._movementState.main = "run";
+        }
+
+        if (this.vel.y < 0) {
+            this._movementState.main = "jump";
+        } else if (this.vel.y > 0) {
+            this._movementState.main = "fall";
+        }
 
         if (this.side.bottom) {
             this._jumping = false;
