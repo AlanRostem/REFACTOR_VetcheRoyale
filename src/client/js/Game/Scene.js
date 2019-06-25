@@ -57,9 +57,9 @@ export default class Scene {
         if (AssetManager.done()) {
             if (Scene.t_ts) {
                 Scene.t_ts.draw(Scene._t_tm);
-                UI.draw(undefined);
             }
             Scene._entityManager.drawEntities();
+            UI.draw(undefined);
 
         } else {
             var str = "Loading " +

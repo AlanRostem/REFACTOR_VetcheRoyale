@@ -1,5 +1,7 @@
 import AssetManager from "../AssetManager.js"
 import R from "../../Graphics/Renderer.js";
+import Scene from "../../Game/Scene.js";
+
 
 export default class SpriteSheet {
 
@@ -28,6 +30,7 @@ export default class SpriteSheet {
             this.passedTime = 0;
             this.reversed = false;
             this.paused = false;
+            this.centralOffset = 0;
         }
     };
 
@@ -44,7 +47,9 @@ export default class SpriteSheet {
     }
 
     bind(name, ox, oy, fw, fh) {
-        this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
+        AssetManager.addDownloadCallback(() => {
+            this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
+        });
     }
 
     drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
@@ -52,7 +57,6 @@ export default class SpriteSheet {
     }
 
     drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h, ctx = R.context) {
-        if (!this.img.isLoaded) return;
         var rect = this.offsetRects.get(name);
         ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
     }
@@ -65,10 +69,8 @@ export default class SpriteSheet {
         return this.offsetRects.get(name).h;
     }
 
-    animate(name, anim) {
-        var deltaTime = 0;
-        try {deltaTime = Game.deltaTime/1000;}
-        catch (e) {deltaTime = 0;}
+    animate(name, anim, fw, fh) {
+        var deltaTime = Scene.deltaTime;
 
         if  (!anim.paused) {
             if ((anim.passedTime += deltaTime) >= anim.frameSpeed) {
@@ -81,8 +83,8 @@ export default class SpriteSheet {
             }
         }
 
-        var width = this.offsetRects.get(name).w;
-        var height = this.offsetRects.get(name).h;
+        var width = fw;
+        var height = fh;
 
         this.animRect.x = this.offsetRects.get(name).x + width * (anim.currentCol % anim.framesPerRow | 0);
         this.animRect.y = this.offsetRects.get(name).y + height * (anim.currentCol / anim.framesPerRow | 0);
@@ -90,9 +92,34 @@ export default class SpriteSheet {
         this.animRect.h = height;
     }
 
-    drawAnimated(x, y, w, h) {
-        if (!this.img.isLoaded) return;
+    static beginChanges() {
+        R.context.save();
+    }
+
+    static end() {
+        R.context.restore();
+    }
+
+    setCentralOffset(value) {
+        this.centralOffset = value;
+    }
+
+    flipX() {
+        this.flipped = true;
+    }
+
+    drawAnimated(x, y, w = this.animRect.w, h = this.animRect.h) {
         var rect = this.animRect;
-        R.context.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
+        if (this.flipped) {
+            R.context.translate(x - this.centralOffset, y - this.centralOffset);
+            R.context.scale(-1, 1);
+        }
+        R.context.drawImage(this.img,
+            rect.x, rect.y, rect.w, rect.h,
+            (!this.flipped ? x - this.centralOffset : -w + this.centralOffset / 2 | 0),
+            (!this.flipped ? y - this.centralOffset : 0),
+            w, h
+        );
+        this.flipped = false;
     }
 }

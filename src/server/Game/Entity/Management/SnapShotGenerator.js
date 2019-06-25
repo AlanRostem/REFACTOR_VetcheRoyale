@@ -23,6 +23,9 @@ class SnapShotGenerator {
         this._dynamicValues = dynamicValues;
 
         this._snapShot = {};
+
+        this._snapShot.entityType = composedEntity.constructor.name;
+
         for (let key of referenceValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
@@ -79,6 +82,7 @@ class SnapShotGenerator {
     }
 
     export() {
+
         return this._snapShot;
     }
 
