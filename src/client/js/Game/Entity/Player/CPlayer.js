@@ -20,7 +20,7 @@ export default class CPlayer extends CEntity {
     }
 
     draw() {
-        this.animations.animate(CPlayer.sprite, "blue", 16, 16);
+        this.animations.animate(CPlayer.sprite, this.output._teamName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.output._movementState.direction === "left") {
             CPlayer.sprite.flipX();

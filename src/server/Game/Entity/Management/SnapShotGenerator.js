@@ -61,14 +61,14 @@ class SnapShotGenerator {
         for (let key of dynamicValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
-                    " does not have property " + key + " in reference values.");
+                    " does not have property " + key + " in dynamic values.");
             }
 
             if (this._snapShot.hasOwnProperty(key)) {
                 throw new Error("Added duplicate dynamic value: " + key);
             }
+            this._dynamicValues.push(key);
             this._snapShot[key] = composedEntity[key];
-            this._dynamicValues[key] = composedEntity[key];
         }
     }
 

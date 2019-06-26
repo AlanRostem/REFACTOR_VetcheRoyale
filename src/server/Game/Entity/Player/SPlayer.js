@@ -8,9 +8,18 @@ class Player extends IPlayer {
     constructor(x, y, client) {
         super(x, y, 6, 12);
         this._id = client.id;
+        this._teamName = "red";
 
         this._snapShotGenerator._snapShot._id = this._id;
+        this.addDynamicSnapShotData([
+            "_teamName"
+        ]);
 
+        this.addCollisionListener("Player", (self, player) => {
+            if (self.isTeammate(player)) {
+                self.onTeamCollision(player);
+            }
+        });
 
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
@@ -29,7 +38,6 @@ class Player extends IPlayer {
         if (!this._collisionConfig.collision) {
             this._speed.ground = 600;
         }
-
 
         this._gravity = 500;
 
@@ -54,13 +62,28 @@ class Player extends IPlayer {
         return this._clientRef._keyStates;
     }
 
-    onEntityCollision(e) {
 
+    setTeam(team) {
+        this.team = team;
+        this._teamName = team.name;
+    }
+
+    onTeamCollision(e) {
+        // TODO: Add one way collision
+    }
+
+    isTeammate(player) {
+        if (player instanceof Player) {
+            return player.team.name === this.team.name;
+        }
+        return false;
     }
 
     update(entityManager, deltaTime) {
         if (!this.side.bottom) {
             this._jumping = true;
+        } else {
+            this._movementState.main = "stand";
         }
 
         if (this.keys[32]) {
@@ -72,7 +95,6 @@ class Player extends IPlayer {
 
         this.vel.x = 0;
 
-        this._movementState.main = "stand";
         if (this.keys[68]) {
             this.accelerateX(this._speed.ground, deltaTime);
             this._movementState.direction = "right";

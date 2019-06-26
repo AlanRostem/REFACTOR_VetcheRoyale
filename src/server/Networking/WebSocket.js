@@ -36,19 +36,23 @@ class ClientList {
 }
 
 class WebSocket {
-    constructor(socket, entityManager) {
+    // TODO: Handle connections on the matchmaker
+    constructor(socket, entityManager, game) {
        this._socket = socket;
         if (this._socket === null || this._socket === undefined) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
         this._clientList = new ClientList();
+        this._gameRef = game;
         this.defineSocketEvents(entityManager);
     }
 
     defineSocketEvents(entityManager) {
         this._socket.on("connection", client => {
             console.log("Establishing connection... Client ID: [ " + client.id + " ]");
-            this._clientList.addClient(client.id, new Client(client, this._clientList, entityManager));
+            var _client = new Client(client, this._clientList, entityManager);
+            this._gameRef.teamManager.addPlayer(_client.player);
+            this._clientList.addClient(client.id, _client);
         });
     }
 

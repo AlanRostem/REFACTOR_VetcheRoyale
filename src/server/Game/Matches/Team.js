@@ -1,23 +1,38 @@
 class Team {
-    constructor(name, match) {
+    constructor(name) {
         this._name = name;
         this._players = {};
         this._playerCount = 0;
     }
 
+    get name() {
+        return this._name;
+    }
+
+    set name(val) {
+        this._name = val;
+    }
+
+    isFull() {
+        return this._playerCount === Team.MAX_PLAYERS;
+    }
+
     addPlayer(player) {
-        if (this._playerCount < Team.MAX_PLAYERS) {
+        if (this.isFull()) {
+            console.log("Team " + this._name + " has reached maximum amount of players");
+            return;
         }
         this._playerCount++;
         this._players[player.id] = player;
+        player.setTeam(this);
     }
 }
 
 Team.Names = {
-    RED: "red",
-    BLUE: "blue",
-    GREEN: "green",
-    YELLOW: "yellow",
+    0: "red",
+    1: "blue",
+    2: "green",
+    3: "yellow",
 };
 
 Team.MAX_PLAYERS = 3;

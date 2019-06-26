@@ -3,6 +3,7 @@ typeCheck = require("../../../shared/Debugging/StypeCheck.js");
 Tile = require("../TileBased/Tile.js");
 SnapShotGenerator = require("./Management/SnapShotGenerator.js");
 ProximityEntityManager = require("./Management/ProximityEntityManager.js");
+EntityCollisionCompositor = require("./Management/EntityCollisionCompositor.js");
 
 class SEntity {
     constructor(x, y, width, height) {
@@ -35,6 +36,9 @@ class SEntity {
 
         this._entitiesInProximity = new ProximityEntityManager(this);
 
+        // TODO: Make collision composition static.
+        this._collisionCompositor = new EntityCollisionCompositor(this);
+
         this._collisionConfig = {
             collision: true, // Tile collision
             gravity: true, // Gravity
@@ -51,6 +55,18 @@ class SEntity {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
+    }
+
+    addCollisionListener(typeName, callback) {
+        this._collisionCompositor.addCollisionListener(typeName, callback);
+    }
+
+    addDynamicSnapShotData(array) {
+        this._snapShotGenerator.addDynamicValues(this, array);
+    }
+
+    addStaticSnapShotData(array) {
+        this._snapShotGenerator.addReferenceValues(this, array);
     }
 
     initFromEntityManager(entityManager) {
@@ -190,6 +206,7 @@ class SEntity {
     }
 
     onEntityCollision(entity) {
+        this._collisionCompositor.applyCollisionsEffects(entity);
     }
 
     update(entityManager, deltaTime) {

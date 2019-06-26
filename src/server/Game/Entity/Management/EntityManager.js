@@ -6,11 +6,11 @@ QuadTree = require("./QuadTree.js");
 Rect = require("./QTRect.js");
 
 class EntityManager {
-    constructor(singleton = false) {
+    constructor(singleton = false, gameMap) {
         this._container = {};
         if (singleton) {
             this._entitiesQueuedToDelete = [];
-            this._tileMap = new STileMap(testMap);
+            this._tileMap = gameMap;
             this._gameClock = new GameClock(0);
 
             this._qt = new QuadTree(new Rect(
