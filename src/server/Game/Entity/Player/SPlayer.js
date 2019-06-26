@@ -7,40 +7,37 @@ Rect = require("../Management/QTRect.js");
 class Player extends IPlayer {
     constructor(x, y, client) {
         super(x, y, 6, 12);
+
+        // Misc var inits
+
         this._id = client.id;
         this._teamName = "red";
-
         this._snapShotGenerator._snapShot._id = this._id;
-        this.addDynamicSnapShotData([
-            "_teamName"
-        ]);
-
-        this.addCollisionListener("Player", (self, player) => {
-            if (self.isTeammate(player)) {
-                self.onTeamCollision(player);
-            }
-        });
-
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
         this._jumping = false;
 
-        // TODO: Remove this test after being done with quad trees
-        //this._collisionConfig.static = true;
-        //this._collisionConfig.collision = false;
-        //this._collisionConfig.gravity = false;
+        // Init functions
+
+        this.addDynamicSnapShotData([
+            "_teamName"
+        ]);
+
+        this.addCollisionListener("Player", player => {
+            if (this.isTeammate(player)) {
+                this.onTeamCollision(player);
+            }
+        });
+
+
+        // Physics
 
         this._speed = {
             ground: 65 * 55,
             jump: -190,
         };
 
-        if (!this._collisionConfig.collision) {
-            this._speed.ground = 600;
-        }
-
         this._gravity = 500;
-
         this.acc.y = this._gravity;
     }
 
@@ -69,7 +66,8 @@ class Player extends IPlayer {
     }
 
     onTeamCollision(e) {
-        // TODO: Add one way collision
+        // TODO: Add one way collision for players
+        //this.vel.y = -100;
     }
 
     isTeammate(player) {
