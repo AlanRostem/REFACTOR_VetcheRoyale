@@ -74,14 +74,22 @@ class Player extends IPlayer {
 
     }
 
+    t_checkPlayerCollision() {
+        for (var id in this._playersOnTopOfMe) {
+            if (this._playersOnTopOfMe[id]) {
+                return true;
+            }
+        }
+    }
+
     oneWayTeamCollision(deltaTime) {
         for (var id in this.team.players) {
             if (id !== this.id) {
                 var p = this.team.players[id];
                 var bottomLine = {
-                    pos: {x: this.pos.x, y: this.pos.y + this.height + this.vel.y * deltaTime + 1},
+                    pos: {x: this.pos.x, y: this.pos.y + this.height},
                     width: this._width,
-                    height: 0
+                    height: this.vel.y * deltaTime + 1
                 };
 
                 if (p.overlapEntity(bottomLine) && !p._jumping) {
@@ -126,6 +134,12 @@ class Player extends IPlayer {
             this._movementState.main = "stand";
         }
 
+        if (this.t_checkPlayerCollision()) {
+            this.side.bottom = true;
+            this._jumping = false;
+            this._movementState.main = "stand";
+        }
+
         if (this.keys[32]) {
             if (!this._jumping) {
                 this.vel.y = this._speed.jump;
@@ -144,6 +158,8 @@ class Player extends IPlayer {
             this.accelerateX(-this._speed.ground, deltaTime);
             this._movementState.direction = "left";
         }
+
+
 
         super.update(entityManager, deltaTime);
         this.oneWayTeamCollision(deltaTime);
