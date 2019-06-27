@@ -7,7 +7,11 @@ class ProximityEntityManager extends EntityManager {
     constructor(entity) {
         super(false);
         this._entRef = entity;
-        this._qtBounds = new Rect(entity.center.x, entity.center.y, 320, 160);
+        this._qtBounds = new Rect(entity.center.x, entity.center.y,
+            // These rectangle bounds start from the center, so the
+            // actual entity check range would be a 320*2 by 160*2
+            // rectangle around the entity.
+            320, 160);
     }
 
     addEntity(entity) {

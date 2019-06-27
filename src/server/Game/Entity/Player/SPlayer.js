@@ -17,12 +17,17 @@ class Player extends IPlayer {
         this._entitiesInProximity = new ClientPEM(this);
         this._jumping = false;
 
+        // TEST:
+        this._playersOnTopOfMe = {};
+
         // Init functions
 
         this.addDynamicSnapShotData([
             "_teamName"
         ]);
 
+
+        // Unnecessary at the moment:
         this.addCollisionListener("Player", player => {
             if (this.isTeammate(player)) {
                 this.onTeamCollision(player);
@@ -65,9 +70,38 @@ class Player extends IPlayer {
         this._teamName = team.name;
     }
 
-    onTeamCollision(e) {
-        // TODO: Add one way collision for players
-        //this.vel.y = -100;
+    onTeamCollision(p) {
+
+    }
+
+    oneWayTeamCollision(deltaTime) {
+        for (var id in this.team.players) {
+            if (id !== this.id) {
+                var p = this.team.players[id];
+                var bottomLine = {
+                    pos: {x: this.pos.x, y: this.pos.y + this.height + this.vel.y * deltaTime + 1},
+                    width: this._width,
+                    height: 1
+                };
+
+                if (p.overlapEntity(bottomLine) && !p._jumping) {
+                    if (this.pos.y + this.height < p.pos.y && this.vel.y > 0) {
+                        this.onGround(p);
+                        this._playersOnTopOfMe[p.id] = true;
+                    }
+                } else {
+                    this._playersOnTopOfMe[p.id] = false;
+                }
+
+                if (this._playersOnTopOfMe[p.id]) {
+                    if (this.overlapEntity(p)) {
+                        if (this.pos.y + this.height > p.pos.y) {
+                            this.onGround(p);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     isTeammate(player) {
@@ -75,6 +109,14 @@ class Player extends IPlayer {
             return player.team.name === this.team.name;
         }
         return false;
+    }
+
+    onGround(p) {
+        this.pos.y = p.pos.y - this.height;
+        this.vel.y = 0;
+        this._jumping = false;
+        this.side.bottom = true;
+        this._movementState.main = "stand";
     }
 
     update(entityManager, deltaTime) {
@@ -103,22 +145,8 @@ class Player extends IPlayer {
             this._movementState.direction = "left";
         }
 
-        if (!this._collisionConfig.collision) {
-            this.vel.y = 0;
-
-            if (this.keys[87]) {
-                this.vel.y = -this._speed.ground;
-            }
-
-            if (this.keys[83]) {
-                this.vel.y = this._speed.ground;
-            }
-        }
-
-
-
         super.update(entityManager, deltaTime);
-        this.entitiesInProximity.update(entityManager, deltaTime);
+
 
         if (this.vel.x !== 0) {
             this._movementState.main = "run";
@@ -130,9 +158,13 @@ class Player extends IPlayer {
             this._movementState.main = "fall";
         }
 
+        this.oneWayTeamCollision(deltaTime);
+
         if (this.side.bottom) {
             this._jumping = false;
         }
+
+
     }
 }
 

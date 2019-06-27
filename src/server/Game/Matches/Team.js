@@ -5,6 +5,10 @@ class Team {
         this._playerCount = 0;
     }
 
+    get players() {
+        return this._players;
+    }
+
     get name() {
         return this._name;
     }
