@@ -211,6 +211,7 @@ class SEntity {
 
     update(entityManager, deltaTime) {
         this.physics(entityManager, deltaTime);
+        this._entitiesInProximity.update(entityManager, deltaTime);
     }
 
     updateDataPack(entityManager, deltaTime) {

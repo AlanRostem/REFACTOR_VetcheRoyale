@@ -1,5 +1,5 @@
-// Collision handler for entities with different
-// actions based on different collisions.
+// Composition class for Entity. Handles entity
+// collisions based on the entity class type.
 
 class EntityCollisionCompositor {
     constructor() {
