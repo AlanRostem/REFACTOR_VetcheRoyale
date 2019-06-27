@@ -146,7 +146,7 @@ class Player extends IPlayer {
         }
 
         super.update(entityManager, deltaTime);
-
+        this.oneWayTeamCollision(deltaTime);
 
         if (this.vel.x !== 0) {
             this._movementState.main = "run";
@@ -157,8 +157,6 @@ class Player extends IPlayer {
         } else if (this.vel.y > 0) {
             this._movementState.main = "fall";
         }
-
-        this.oneWayTeamCollision(deltaTime);
 
         if (this.side.bottom) {
             this._jumping = false;
