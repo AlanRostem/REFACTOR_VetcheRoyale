@@ -81,7 +81,7 @@ class Player extends IPlayer {
                 var bottomLine = {
                     pos: {x: this.pos.x, y: this.pos.y + this.height + this.vel.y * deltaTime + 1},
                     width: this._width,
-                    height: 1
+                    height: 0
                 };
 
                 if (p.overlapEntity(bottomLine) && !p._jumping) {

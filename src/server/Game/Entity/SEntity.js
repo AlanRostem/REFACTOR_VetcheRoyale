@@ -191,7 +191,7 @@ class SEntity {
 
         this.side.reset();
 
-        if (!this._collisionConfig.static){}
+        if (!this._collisionConfig.static)
         this.moveY(this._vel.y, deltaTime);
         if (this._collisionConfig.collision)
             this.tileCollisionY(entityManager.tileMap, deltaTime);
