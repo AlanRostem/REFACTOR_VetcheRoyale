@@ -83,33 +83,34 @@ class Player extends IPlayer {
     }
 
     oneWayTeamCollision(deltaTime) {
-        for (var id in this.team.players) {
-            if (id !== this.id) {
-                var p = this.team.players[id];
-                var bottomLine = {
-                    pos: {x: this.pos.x, y: this.pos.y + this.height},
-                    width: this._width,
-                    height: this.vel.y * deltaTime + 1
-                };
+        if (this.team)
+            for (var id in this.team.players) {
+                if (id !== this.id) {
+                    var p = this.team.players[id];
+                    var bottomLine = {
+                        pos: {x: this.pos.x, y: this.pos.y + this.height},
+                        width: this._width,
+                        height: this.vel.y * deltaTime + 1
+                    };
 
-                if (p.overlapEntity(bottomLine) && !p._jumping) {
-                    if (this.pos.y + this.height < p.pos.y && this.vel.y > 0) {
-                        this.onGround(p);
-                        this._playersOnTopOfMe[p.id] = true;
-                    }
-                } else {
-                    this._playersOnTopOfMe[p.id] = false;
-                }
-
-                if (this._playersOnTopOfMe[p.id]) {
-                    if (this.overlapEntity(p)) {
-                        if (this.pos.y + this.height > p.pos.y) {
+                    if (p.overlapEntity(bottomLine) && !p._jumping) {
+                        if (this.pos.y + this.height < p.pos.y && this.vel.y > 0) {
                             this.onGround(p);
+                            this._playersOnTopOfMe[p.id] = true;
+                        }
+                    } else {
+                        this._playersOnTopOfMe[p.id] = false;
+                    }
+
+                    if (this._playersOnTopOfMe[p.id]) {
+                        if (this.overlapEntity(p)) {
+                            if (this.pos.y + this.height > p.pos.y) {
+                                this.onGround(p);
+                            }
                         }
                     }
                 }
             }
-        }
     }
 
     isTeammate(player) {
@@ -125,6 +126,10 @@ class Player extends IPlayer {
         this._jumping = false;
         this.side.bottom = true;
         this._movementState.main = "stand";
+    }
+
+    remove() {
+        this.team.removePlayer(this);
     }
 
     update(entityManager, deltaTime) {
@@ -158,7 +163,6 @@ class Player extends IPlayer {
             this.accelerateX(-this._speed.ground, deltaTime);
             this._movementState.direction = "left";
         }
-
 
 
         super.update(entityManager, deltaTime);

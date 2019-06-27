@@ -17,6 +17,13 @@ class Team {
         this._name = val;
     }
 
+    removePlayer(player) {
+        player.team = null;
+        player._teamName = "none";
+        this._playerCount--;
+        delete this._players[player.id];
+    }
+
     isFull() {
         return this._playerCount === Team.MAX_PLAYERS;
     }
