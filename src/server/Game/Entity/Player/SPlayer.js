@@ -1,14 +1,13 @@
 Entity = require("../SEntity.js");
-IPlayer = require("./IPlayer.js");
 ClientPEM = require("./ClientPEM.js");
 Vector2D = require("../../../../shared/Math/SVector2D.js");
 Rect = require("../Management/QTRect.js");
 
-class Player extends IPlayer {
+class Player extends Entity {
     constructor(x, y, client) {
         super(x, y, 6, 12);
 
-        // Misc var inits
+        // MISC VAR INITS
 
         this._id = client.id;
         this._teamName = "red";
@@ -20,12 +19,10 @@ class Player extends IPlayer {
         // TEST:
         this._playersOnTopOfMe = {};
 
-        // Init functions
-
+        // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
             "_teamName"
         ]);
-
 
         // Unnecessary at the moment:
         this.addCollisionListener("Player", player => {
@@ -35,7 +32,7 @@ class Player extends IPlayer {
         });
 
 
-        // Physics
+        // PHYSICS
 
         this._speed = {
             ground: 65 * 55,
@@ -74,7 +71,7 @@ class Player extends IPlayer {
 
     }
 
-    t_checkPlayerCollision() {
+    isCollidingWithTeammate() {
         for (var id in this._playersOnTopOfMe) {
             if (this._playersOnTopOfMe[id]) {
                 return true;
@@ -88,9 +85,9 @@ class Player extends IPlayer {
                 if (id !== this.id) {
                     var p = this.team.players[id];
                     var bottomLine = {
-                        pos: {x: this.pos.x, y: this.pos.y + this.height},
+                        pos: {x: this.pos.x, y: this.pos.y + this.height + this.vel.y * deltaTime},
                         width: this._width,
-                        height: this.vel.y * deltaTime + 1
+                        height: 1
                     };
 
                     if (p.overlapEntity(bottomLine) && !p._jumping) {
@@ -133,13 +130,13 @@ class Player extends IPlayer {
     }
 
     update(entityManager, deltaTime) {
-        if (!this.side.bottom) {
-            this._jumping = true;
-        } else {
+        if (this.side.bottom) {
             this._movementState.main = "stand";
+        } else {
+            this._jumping = true;
         }
 
-        if (this.t_checkPlayerCollision()) {
+        if (this.isCollidingWithTeammate()) {
             this.side.bottom = true;
             this._jumping = false;
             this._movementState.main = "stand";

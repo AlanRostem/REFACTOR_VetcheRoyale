@@ -13,7 +13,7 @@ export default class AnimationManager {
 
     getAnimation(name) {
         if (!this._animations[name]) {
-            throw new Error("No animation found!");
+            throw new Error("No animation such as " + name + " found!");
         }
         return this._animations[name];
     }
