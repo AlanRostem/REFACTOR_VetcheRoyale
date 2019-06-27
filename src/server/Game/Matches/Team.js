@@ -19,7 +19,7 @@ class Team {
 
     removePlayer(player) {
         player.team = null;
-        player._teamName = "none";
+        //player._teamName = "none"; // Well this dont work...
         this._playerCount--;
         delete this._players[player.id];
     }
