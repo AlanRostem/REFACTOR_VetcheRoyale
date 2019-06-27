@@ -58,7 +58,7 @@ class Player extends Entity {
     }
 
     get keys() {
-        return this._clientRef._keyStates;
+        return this._clientRef.inputReceiver.keys;
     }
 
 

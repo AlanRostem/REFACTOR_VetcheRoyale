@@ -1,6 +1,7 @@
 Player = require("../Game/Entity/Player/SPlayer.js");
 Tile = require("../Game/TileBased/Tile.js");
 QuadTree = require("../Game/Entity/Management/QuadTree.js");
+InputReceiver = require("./InputReceiver.js");
 
 class Client {
     constructor(socket, clientList, entityManager) {
@@ -8,10 +9,8 @@ class Client {
         this._socket = socket;
 
         this._socket.emit("connectClient", {id: socket.id});
-        // Holds all key states of corresponding key codes
-        this._keyStates = {};
-        // Holds all mouse states of corresponding mouse button numbers
-        this._mouseStates = {};
+
+        this._inputReceiver = new InputReceiver(this);
 
         this._player = new Player(0, 0, this);
         entityManager.spawnEntity(
@@ -21,6 +20,10 @@ class Client {
             this._player);
 
         this.defineSocketEvents(socket, clientList, entityManager);
+    }
+
+    get inputReceiver() {
+        return this._inputReceiver;
     }
 
     get player() {
@@ -60,14 +63,6 @@ class Client {
             clientList.removeClient(this.id);
             entityManager.removeEntity(this.player.id);
             console.log("Disconnected [ " + this.id + " ]");
-        });
-
-        this._socket.on("keyEvent", data => {
-            this._keyStates[data.keyCode] = data.keyState;
-        });
-
-        this._socket.on("mouseEvent", data => {
-            this._mouseStates[data.mouseButton] = data.mouseState;
         });
 
         var _this = this;
