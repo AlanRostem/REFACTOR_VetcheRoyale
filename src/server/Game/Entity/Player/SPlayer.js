@@ -161,7 +161,6 @@ class Player extends Entity {
             this._movementState.direction = "left";
         }
 
-
         super.update(entityManager, deltaTime);
         this.oneWayTeamCollision(deltaTime);
 
@@ -178,8 +177,6 @@ class Player extends Entity {
         if (this.side.bottom) {
             this._jumping = false;
         }
-
-
     }
 }
 

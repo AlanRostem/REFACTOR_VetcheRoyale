@@ -15,7 +15,7 @@ export default class InputListener {
     // Remember that one key code can have multiple
     // callbacks mapped to it, and they're all called
     // simultaneously.
-    addMapping(keyCode, callback) {
+    addKeyMapping(keyCode, callback) {
         typeCheck.primitive(0, keyCode);
         typeCheck.instance(Function, callback);
         if (this._keyCallbacks[keyCode]) {
@@ -24,6 +24,8 @@ export default class InputListener {
             this._keyCallbacks[keyCode] = [callback];
         }
     }
+
+
 
     // Sets the key state once per key press/release
     // and calls the respective callback function.
@@ -41,6 +43,33 @@ export default class InputListener {
         }
     }
 
+    _mouseCallbacks = {};
+    _mouseStates = {};
+
+    addMouseMapping(mouseButton, callback) {
+        typeCheck.primitive(0, mouseButton);
+        typeCheck.instance(Function, callback);
+        if (this._mouseCallbacks[mouseButton]) {
+            this._mouseCallbacks[mouseButton].push(callback);
+        } else {
+            this._mouseCallbacks[mouseButton] = [callback];
+        }
+    }
+
+    handleMouse(event) {
+        const {which} = event;
+        if (!this._mouseCallbacks.hasOwnProperty(which)) return;
+
+        event.preventDefault();
+        const mouseState = event.type === "mousedown"; // Pressed = true, released = false
+        if (this._mouseStates[which] === mouseState) return;
+
+        this._mouseStates[which] = mouseState;
+        for (var callback of this._mouseCallbacks[which]) {
+            callback(mouseState);
+        }
+    }
+
     listenTo() {
         window.addEventListener("keydown", event => {
             this.handleEvent(event);
@@ -49,5 +78,13 @@ export default class InputListener {
         window.addEventListener("keyup", event => {
             this.handleEvent(event);
         });
+
+        window.addEventListener("mousedown", event => {
+            this.handleMouse(event);
+        });
+
+        window.addEventListener("mouseup", event => {
+            this.handleMouse(event);
+        })
     }
 }

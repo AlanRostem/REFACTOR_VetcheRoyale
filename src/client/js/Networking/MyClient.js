@@ -9,8 +9,14 @@ export default class MyClient {
         this.id = socket.id;
         this._inputListener = new InputListener(this);
 
+
+
         [32, 83, 68, 65, 87].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
+        });
+
+        [1, 2, 3].forEach(mouseButton => {
+            this.addMouseEmitter(mouseButton);
         });
 
         this.defineSocketEvents();
@@ -24,13 +30,26 @@ export default class MyClient {
     // is sent to the server.
     addKeyEmitter(keyCode, callback) {
         if (callback === undefined) {
-            this._inputListener.addMapping(keyCode, keyState => {
+            this._inputListener.addKeyMapping(keyCode, keyState => {
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
             });
         } else {
-            this._inputListener.addMapping(keyCode, keyState => {
+            this._inputListener.addKeyMapping(keyCode, keyState => {
                 callback(keyState);
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
+            });
+        }
+    }
+
+    addMouseEmitter(mouseButton, callback) {
+        if (callback === undefined) {
+            this._inputListener.addMouseMapping(mouseButton, mouseState => {
+                this.emit("mouseEvent", {mouseButton: mouseButton, mouseState: mouseState});
+            });
+        } else {
+            this._inputListener.addMouseMapping(mouseButton, mouseState => {
+                callback(mouseState);
+                this.emit("mouseEvent", {mouseButton: mouseButton, mouseState: mouseState});
             });
         }
     }
