@@ -1,8 +1,12 @@
 import TileSheet from "../AssetManager/Classes/Graphical/TileSheet.js";
+import JSONFile from "../AssetManager/Classes/Text/JSONFile.js"
 
 export default class CTileMap {
     constructor() {
-        this.array = mappu; // TODO: Remove test and improve
+        var _this = this;
+        this.json = new JSONFile("tilemaps/MegaMap.json", object => {
+            _this.array = object.layers[0].data;
+        });
         this.w = 480;
         this.h = 272;
         this.dontDrawID = 0;

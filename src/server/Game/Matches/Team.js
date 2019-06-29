@@ -46,6 +46,6 @@ Team.Names = {
     3: "yellow",
 };
 
-Team.MAX_PLAYERS = 3;
+Team.MAX_PLAYERS = 4;
 
 module.exports = Team;

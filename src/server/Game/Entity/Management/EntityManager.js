@@ -1,6 +1,6 @@
 STileMap = require("../../TileBased/STileMap.js");
 Tile = require("../../TileBased/Tile.js");
-testMap = require("../../../../res/tileMaps/testMap.js");
+testMap = require("../../../../public/res/tilemaps/testMap.js");
 GameClock = require("../../Entity/Management/GameClock.js");
 QuadTree = require("./QuadTree.js");
 Rect = require("./QTRect.js");

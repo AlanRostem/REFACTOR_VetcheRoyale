@@ -8,6 +8,31 @@ class AssetManager {
         this.downloadCallbacks = [];
     }
 
+    loadTextFile(path, loadedCallback, failureCallback) {
+        let rawFile = new XMLHttpRequest();
+        var allText = {content: ""};
+        const _this = this;
+        rawFile.open("GET", path, true);
+        rawFile.onreadystatechange = function () {
+            switch (rawFile.readyState) {
+                case 0 : // UNINITIALIZED
+                case 1 : // LOADING
+                case 2 : // LOADED
+                case 3 : // INTERACTIVE
+                    break;
+                case 4 : // COMPLETED
+                    allText.content = rawFile.responseText;
+                    loadedCallback();
+                    break;
+                default:
+                    failureCallback();
+                    alert("Text loading error!");
+            }
+        };
+        rawFile.send(null);
+        return allText;
+    }
+
     queue(path) {
         let rawFile = new XMLHttpRequest();
         var allText = "";
@@ -92,6 +117,14 @@ class AssetManager {
                     img.src = "public/assets/img/" + path;
                     this.cache[path] = img;
                     break;
+                case "json":
+                    var txt = _this.loadTextFile("public/res/" + path, () => {
+                        _this.successCount++;
+                    }, () => {
+                        _this.errorCount++;
+                    });
+                    this.cache[path] = txt;
+                    break;
                 default:
                     window.alert("FILENAME ERROR");
                     break;
@@ -113,5 +146,4 @@ class AssetManager {
 }
 
 const assMan = new AssetManager();
-
 export default assMan;
