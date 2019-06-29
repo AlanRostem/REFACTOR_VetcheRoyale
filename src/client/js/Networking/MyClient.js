@@ -22,6 +22,10 @@ export default class MyClient {
         this._latency = Date.now() - this._startTime;
     }
 
+    get input() {
+        return this._inputListener;
+    }
+
     // Map a key code to the input listener with a
     // callback. This mapping function's difference
     // is that upon the key state the key state data
