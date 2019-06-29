@@ -118,7 +118,7 @@ class AssetManager {
                     this.cache[path] = img;
                     break;
                 case "json":
-                    var txt = _this.loadTextFile("public/res/" + path, () => {
+                    var txt = _this.loadTextFile("shared/res/" + path, () => {
                         _this.successCount++;
                     }, () => {
                         _this.errorCount++;

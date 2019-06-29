@@ -1,11 +1,15 @@
 var typeCheck = require("../../../shared/Debugging/StypeCheck.js");
 var Tile = require("./Tile.js");
+var JSONFile = require("../../ResourceManagement/SJSONFile.js");
 
-class STileMap {
-    constructor(arr = new Uint8Array(), w = 480, h = 272) {
-        this.array = arr;
-        this.w = w;
-        this.h = h;
+// Specify global file path relative to app.js
+// for the JSON tile map file
+class TileMap {
+    constructor(src) {
+        var json = new JSONFile(__dirname + "../../../../" + src);
+        this.array = json.get().layers[0].data;
+        this.w = json.get().width;
+        this.h = json.get().height;
         this.types = {
             PASS: 0, // TODO: Remove test values
             SOLID: 17 // TODO: Remove test values
@@ -41,4 +45,4 @@ class STileMap {
     }
 }
 
-module.exports = STileMap;
+module.exports = TileMap;

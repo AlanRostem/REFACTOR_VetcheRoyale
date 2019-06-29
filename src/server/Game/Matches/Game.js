@@ -6,10 +6,9 @@ var STileMap = require("../TileBased/STileMap.js");
 var TeamManager = require("../Matches/TeamManager.js");
 
 // Class composition of matches
-
 class Game {
     constructor(socket) {
-        this.entityManager = new EntityManager(true, new STileMap(testMap));
+        this.entityManager = new EntityManager(true, new STileMap("shared/res/tilemaps/MegaMap.json"));
         this.teamManager = new TeamManager();
         this.mainSocket = new WebSocket(socket, this.entityManager, this);
         this._deltaTime = 0;

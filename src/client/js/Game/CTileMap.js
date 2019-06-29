@@ -1,5 +1,5 @@
 import TileSheet from "../AssetManager/Classes/Graphical/TileSheet.js";
-import JSONFile from "../AssetManager/Classes/Text/JSONFile.js"
+import JSONFile from "../AssetManager/Classes/Text/CJSONFile.js"
 
 export default class CTileMap {
     constructor() {
