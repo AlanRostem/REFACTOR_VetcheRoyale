@@ -15,13 +15,18 @@ class Player extends Entity {
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
         this._jumping = false;
+        this._center = {
+            _x: x + this._width/2,
+            _y: y + this._height/2,
+        };
 
         // TEST:
         this._playersOnTopOfMe = {};
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
-            "_teamName"
+            "_teamName",
+            "_center"
         ]);
 
         // Unnecessary at the moment:
@@ -130,6 +135,8 @@ class Player extends Entity {
     }
 
     update(entityManager, deltaTime) {
+
+
         if (this.side.bottom) {
             this._movementState.main = "stand";
         } else {
@@ -177,6 +184,9 @@ class Player extends Entity {
         if (this.side.bottom) {
             this._jumping = false;
         }
+
+        this._center._x = this.center.x;
+        this._center._y = this.center.y;
     }
 }
 

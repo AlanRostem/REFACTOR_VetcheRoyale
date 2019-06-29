@@ -9,8 +9,6 @@ export default class MyClient {
         this.id = socket.id;
         this._inputListener = new InputListener(this);
 
-
-
         [32, 83, 68, 65, 87].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
         });
@@ -74,7 +72,7 @@ export default class MyClient {
         this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);
         if (e) {
-            R.camera.update(e._output._pos);
+            R.camera.update(e._output._center);
         }
     }
 

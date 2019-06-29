@@ -1,14 +1,23 @@
 import {typeCheck} from "../../shared/code/Debugging/CtypeCheck.js"
+import R from "./Graphics/Renderer.js"
+import {sqrt} from "../../shared/code/Math/CCustomMath.js";
 
 export default class InputListener {
-    constructor() {
+    constructor(client) {
         // Holds the current state of the key (up or down).
         this._keyStates = {};
 
         // Holds callback functions for each key code.
         this._keyCallbacks = {};
 
-        this.listenTo();
+        this._mouse = {
+            x: 0,
+            y: 0,
+            cosCenter: 0,
+            sinCenter: 0,
+        };
+
+        this.listenTo(client);
     }
 
     // Set a callback function mapped to a key code.
@@ -70,7 +79,7 @@ export default class InputListener {
         }
     }
 
-    listenTo() {
+    listenTo(client) {
         window.addEventListener("keydown", event => {
             this.handleEvent(event);
         });
@@ -85,6 +94,23 @@ export default class InputListener {
 
         window.addEventListener("mouseup", event => {
             this.handleMouse(event);
-        })
+        });
+
+        window.addEventListener("mousemove", event => {
+            this._mouse.x = Math.round(event.clientX * (R.screenSize.x / window.innerWidth));
+            this._mouse.y = Math.round(event.clientY * (R.screenSize.y / window.innerHeight));
+
+            var centerX = Math.round(R.screenSize.x / 2);
+            var centerY = Math.round(R.screenSize.y / 2);
+
+            var xx = this._mouse.x - centerX;
+            var yy = this._mouse.y - centerY;
+            var dd = sqrt(xx**2 + yy**2);
+
+            this._mouse.sinCenter = yy / dd;
+            this._mouse.cosCenter = xx / dd;
+
+            client.emit("mouseMoveEvent", this._mouse);
+        });
     }
 }
