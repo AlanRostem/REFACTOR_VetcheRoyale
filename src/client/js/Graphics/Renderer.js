@@ -47,8 +47,8 @@ export default class R {
         R._aspectRatio.x = window.innerWidth / window.innerHeight;
         R._aspectRatio.y = 1;
 
-        R._screenDimensions.x = R._aspectRatio.x * R._resolution;
-        R._screenDimensions.y = R._aspectRatio.y * R._resolution;
+        R._screenDimensions.x = Math.round(R._aspectRatio.x * R._resolution);
+        R._screenDimensions.y = Math.round(R._aspectRatio.y * R._resolution);
 
         if (R._screenDimensions.x > 360) {
             R._screenDimensions.x = 320;
