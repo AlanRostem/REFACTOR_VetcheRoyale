@@ -1,5 +1,5 @@
 import Camera from "./Camera.js"
-import Vector2D from "../../../shared/Math/CVector2D.js";
+import Vector2D from "../../../shared/code/Math/CVector2D.js";
 export default class R {
 
     static _camera = new Camera(0, 0);

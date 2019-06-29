@@ -1,6 +1,6 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
-import Vector2D from "../../../shared/Math/CVector2D.js";
+import Vector2D from "../../../shared/code/Math/CVector2D.js";
 
 export default class KelvinBar extends UIElement {
     constructor() {

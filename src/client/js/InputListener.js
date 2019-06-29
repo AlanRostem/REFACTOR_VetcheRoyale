@@ -1,4 +1,4 @@
-import {typeCheck} from "../../shared/Debugging/CtypeCheck.js"
+import {typeCheck} from "../../shared/code/Debugging/CtypeCheck.js"
 
 export default class InputListener {
     constructor() {

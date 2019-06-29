@@ -1,5 +1,5 @@
-Vector2D = require("../../../../shared/Math/SVector2D.js");
-typeCheck = require("../../../../shared/Debugging/StypeCheck.js");
+Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
 Rect = require("./QTRect.js");
 
 class QuadTree {

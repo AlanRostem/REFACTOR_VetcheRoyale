@@ -1,6 +1,6 @@
 Entity = require("../SEntity.js");
 ClientPEM = require("./ClientPEM.js");
-Vector2D = require("../../../../shared/Math/SVector2D.js");
+Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 Rect = require("../Management/QTRect.js");
 
 class Player extends Entity {

@@ -1,7 +1,7 @@
 // Class that should compose all data pack
 // exporting for every entity in the game.
 
-var typeCheck = require("../../../../shared/Debugging/StypeCheck.js");
+var typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
 var SEntity = require("../SEntity.js");
 
 // TODO: Look at why including Entity apparently works...

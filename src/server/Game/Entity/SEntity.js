@@ -1,5 +1,5 @@
-Vector2D = require("../../../shared/Math/SVector2D");
-typeCheck = require("../../../shared/Debugging/StypeCheck.js");
+Vector2D = require("../../../shared/code/Math/SVector2D");
+typeCheck = require("../../../shared/code/Debugging/StypeCheck.js");
 Tile = require("../TileBased/Tile.js");
 SnapShotGenerator = require("./Management/SnapShotGenerator.js");
 ProximityEntityManager = require("./Management/ProximityEntityManager.js");

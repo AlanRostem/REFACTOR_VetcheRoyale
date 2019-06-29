@@ -1,4 +1,4 @@
-import typeCheck from "../../../shared/Debugging/CtypeCheck.js";
+import typeCheck from "../../../shared/code/Debugging/CtypeCheck.js";
 import UIElement from "./UIElement.js";
 
 export default class UI {

@@ -1,4 +1,4 @@
-import Vector2D from "../../../shared/Math/CVector2D.js";
+import Vector2D from "../../../shared/code/Math/CVector2D.js";
 
 export default class UIElement {
     constructor(name, x, y, w, h) {
