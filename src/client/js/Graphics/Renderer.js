@@ -27,7 +27,7 @@ export default class R {
         document.body.appendChild(R._canvas);
         document.body.style.margin = 0;
 
-        R._canvas.style.width = "100%";
+        R._canvas.style.width = "99%";
 
         R._canvas.style.backgroundSize = "cover";
 
