@@ -94,7 +94,7 @@ export default class KelvinBar extends UIElement {
             this.liquidFill.x, // TODO: Cannot be 0 cus of FireFox
             diff,              // TODO: Cannot be 0 cus of FireFox
             R.WIDTH - this.glassTube.x / 2 - this.liquidFill.x / 2 - 4 | 0,
-            R.HEIGHT - 6 - diff, 
+            R.HEIGHT - 6 - diff,
             4,
             diff);
         // Liquid Top
