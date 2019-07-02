@@ -29,15 +29,12 @@ const R = {
         document.body.appendChild(R._canvas);
         document.body.style.margin = 0;
 
-        R._canvas.style.width = "99%";
+        R._canvas.imageSmoothingEnabled = false;
 
-        R._canvas.style.backgroundSize = "cover";
 
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;
 
-        R._canvas.style.backgroundColor = "black";
-        R._canvas.style.imageRendering = "pixelated";
 
         this.calibrateScreen();
         window.onresize = e => {

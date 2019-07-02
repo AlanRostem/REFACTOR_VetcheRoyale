@@ -20,6 +20,8 @@ export default class SpriteSheet {
         AssetManager.addDownloadCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
         });
+
+        this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
     }
 
     drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
@@ -56,10 +58,11 @@ export default class SpriteSheet {
         var width = fw;
         var height = fh;
 
-        this.animRect.x = this.offsetRects.get(name).x + width * (anim.currentCol % anim.framesPerRow | 0);
-        this.animRect.y = this.offsetRects.get(name).y + height * (anim.currentCol / anim.framesPerRow | 0);
         this.animRect.w = width;
         this.animRect.h = height;
+
+        this.animRect.x = this.offsetRects.get(name).x + width * (anim.currentCol % anim.framesPerRow | 0);
+        this.animRect.y = this.offsetRects.get(name).y + height * (anim.currentCol / anim.framesPerRow | 0);
     }
 
     static beginChanges() {
@@ -84,6 +87,7 @@ export default class SpriteSheet {
             R.context.translate(x - this.centralOffset, y - this.centralOffset);
             R.context.scale(-1, 1);
         }
+
         R.context.drawImage(this.img,
             rect.x, rect.y, rect.w, rect.h,
             (!this.flipped ? x - this.centralOffset : -w + this.centralOffset / 2 | 0),
