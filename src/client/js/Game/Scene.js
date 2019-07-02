@@ -26,7 +26,7 @@ const Scene = {
             Scene.t_ts = new TileSheet("tileSet.png", 8, Scene._t_tm);
             UI.setup(() => {
                 UI.append(new MiniMap(Scene._t_tm));
-                //UI.append(new KelvinBar); // TODO: Look in file Karli fix
+                UI.append(new KelvinBar()); // TODO: Look in file Karli fix
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();

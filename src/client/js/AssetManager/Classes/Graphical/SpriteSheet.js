@@ -87,8 +87,14 @@ export default class SpriteSheet {
     drawAnimated(x, y, w = this.animRect.w, h = this.animRect.h) {
         if (!this.img) return;
 
+        var rect = this.animRect;
 
-            var rect = this.animRect;
+        // FireFox compatibility sake
+        if (rect.w === 0 || rect.h === 0)  {
+            this.flipped = false;
+            return;
+        }
+
         if (this.flipped) {
             R.context.translate(x - this.centralOffset, y - this.centralOffset);
             R.context.scale(-1, 1);
