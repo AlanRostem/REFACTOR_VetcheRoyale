@@ -10,6 +10,9 @@ export default class InputListener {
         // Holds callback functions for each key code.
         this._keyCallbacks = {};
 
+        this._mouseCallbacks = {};
+        this._mouseStates = {};
+
         this._mouse = {
             x: 0,
             y: 0,
@@ -55,9 +58,6 @@ export default class InputListener {
             callback(keyState);
         }
     }
-
-    _mouseCallbacks = {};
-    _mouseStates = {};
 
     addMouseMapping(mouseButton, callback) {
         typeCheck.primitive(0, mouseButton);

@@ -4,36 +4,6 @@ import Scene from "../../../Game/Scene.js";
 
 
 export default class SpriteSheet {
-
-    static Rect = class {
-        constructor(x, y, w, h) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-        }
-
-        setPos(x, y) {
-            this.x = x;
-            this.y = y;
-        }
-    };
-
-    static Animation = class {
-        constructor(startCol, endCol, framesPerRow, frameSpeed) {
-            this.startCol = startCol;
-            this.endCol = endCol;
-            this.framesPerRow = framesPerRow;
-            this.frameSpeed = frameSpeed;
-
-            this.currentCol = this.startCol;
-            this.passedTime = 0;
-            this.reversed = false;
-            this.paused = false;
-            this.centralOffset = 0;
-        }
-    };
-
     constructor(src) {
         this.src = src;
         this.offsetRects = new Map();
@@ -123,3 +93,32 @@ export default class SpriteSheet {
         this.flipped = false;
     }
 }
+
+SpriteSheet.Rect = class {
+    constructor(x, y, w, h) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+    }
+
+    setPos(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+};
+
+SpriteSheet.Animation = class {
+    constructor(startCol, endCol, framesPerRow, frameSpeed) {
+        this.startCol = startCol;
+        this.endCol = endCol;
+        this.framesPerRow = framesPerRow;
+        this.frameSpeed = frameSpeed;
+
+        this.currentCol = this.startCol;
+        this.passedTime = 0;
+        this.reversed = false;
+        this.paused = false;
+        this.centralOffset = 0;
+    }
+};
