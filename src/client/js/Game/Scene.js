@@ -18,9 +18,6 @@ const Scene = {
     _t_tm: new CTileMap(),
 
     get deltaTime() {
-        if (Scene._deltaTime === 0) {
-            console.warn("Attempted to retrieve a delta time of zero.");
-        }
         return Scene._deltaTime;
     },
 
@@ -29,7 +26,7 @@ const Scene = {
             Scene.t_ts = new TileSheet("tileSet.png", 8, Scene._t_tm);
             UI.setup(() => {
                 UI.append(new MiniMap(Scene._t_tm));
-                UI.append(new KelvinBar);
+                //UI.append(new KelvinBar); // TODO: Look in file Karli fix
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();

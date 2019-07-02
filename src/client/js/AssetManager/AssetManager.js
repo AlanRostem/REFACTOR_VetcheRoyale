@@ -52,32 +52,32 @@ class AssetManager {
                         lines[i] = lines[i].replace('\r', '');
                         _this.downloadQueue.push(lines[i]);
                     }
+
+                    window.DLC =_this.downloadCallbacks;
+
                     _this.download(() => {
                         for (var fun of _this.downloadCallbacks) {
                             fun();
                         }
                         console.log('%cThe program loaded in ' + (_this.successCount) + ' assets.', 'color: green; font-weight: bold;');
-                        if(_this.errorCount>0) console.error(_this.errorCount + " error(s).");
-                        else console.warn(_this.errorCount + " error(s).");
+                        if (_this.errorCount > 0) console.error(_this.errorCount + " asset(s) failed to load.");
                     }, false);
                     break;
                 default:
                     alert("error");
             }
         };
-            rawFile.send(null);
+        rawFile.send(null);
     }
 
     download(downloadCallback) {
         if (this.downloadQueue.length === 0) {
-            console.log(false);
             downloadCallback();
         }
 
         for (var i = 0; i < this.downloadQueue.length; i++) {
             var path = this.downloadQueue[i];
             var type = path.substring(path.lastIndexOf(('.')) + 1);
-
             const _this = this;
 
             switch (type) {
@@ -120,8 +120,14 @@ class AssetManager {
                 case "json":
                     var txt = _this.loadTextFile("shared/res/" + path, () => {
                         _this.successCount++;
+                        if (_this.done()) {
+                            downloadCallback();
+                        }
                     }, () => {
                         _this.errorCount++;
+                        if (_this.done()) {
+                            downloadCallback();
+                        }
                     });
                     this.cache[path] = txt;
                     break;

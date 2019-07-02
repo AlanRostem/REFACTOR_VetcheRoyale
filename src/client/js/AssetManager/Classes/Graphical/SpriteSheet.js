@@ -8,7 +8,7 @@ export default class SpriteSheet {
         this.src = src;
         this.offsetRects = new Map();
         this.posRect = new SpriteSheet.Rect(0, 0, 0, 0);
-        this.animRect = new SpriteSheet.Rect(0, 0, 0, 0);
+        this.animRect = new SpriteSheet.Rect(0, 0, 1, 1);
         this.offsetTileRect = new SpriteSheet.Rect(0, 0, 0, 0);
     }
 
@@ -20,17 +20,18 @@ export default class SpriteSheet {
         AssetManager.addDownloadCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
         });
-
-        this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
     }
 
     drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
-        ctx.drawImage(this.img, cropX, cropY, cropW, cropH, x, y, w, h);
+        if (this.img)
+            ctx.drawImage(this.img, cropX, cropY, cropW, cropH, x, y, w, h);
     }
 
     drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h, ctx = R.context) {
-        var rect = this.offsetRects.get(name);
-        ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
+        if (this.img) {
+            var rect = this.offsetRects.get(name);
+            ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
+        }
     }
 
     getWidth(name) {
@@ -42,9 +43,11 @@ export default class SpriteSheet {
     }
 
     animate(name, anim, fw, fh) {
+        if (!this.offsetRects.get(name)) return;
+
         var deltaTime = Scene.deltaTime;
 
-        if  (!anim.paused) {
+        if (!anim.paused) {
             if ((anim.passedTime += deltaTime) >= anim.frameSpeed) {
                 if (anim.currentCol < anim.endCol) {
                     anim.currentCol++;
@@ -82,7 +85,10 @@ export default class SpriteSheet {
     }
 
     drawAnimated(x, y, w = this.animRect.w, h = this.animRect.h) {
-        var rect = this.animRect;
+        if (!this.img) return;
+
+
+            var rect = this.animRect;
         if (this.flipped) {
             R.context.translate(x - this.centralOffset, y - this.centralOffset);
             R.context.scale(-1, 1);
