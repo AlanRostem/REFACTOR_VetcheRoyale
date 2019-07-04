@@ -12,7 +12,7 @@ export default class JSONFile {
                 _this._fileContent
             );
             downloadCallback(_this._objectContent);
-        })
+        });
     }
 
     get() {
