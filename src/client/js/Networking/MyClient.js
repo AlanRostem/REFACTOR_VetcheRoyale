@@ -2,8 +2,6 @@ import InputListener from "../InputListener.js"
 import R from "../Graphics/Renderer.js";
 export default class MyClient {
 
-    static _ping = 1;
-
     constructor(socket) {
         this._socket = socket;
         this.id = socket.id;
@@ -115,3 +113,5 @@ export default class MyClient {
         });
     }
 }
+
+MyClient._ping = 1;

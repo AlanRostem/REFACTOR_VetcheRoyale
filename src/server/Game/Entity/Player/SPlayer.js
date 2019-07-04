@@ -22,6 +22,8 @@ class Player extends Entity {
 
         // TEST:
         this._playersOnTopOfMe = {};
+        this._movementState.main = "stand";
+        this._movementState.direction = "right";
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([

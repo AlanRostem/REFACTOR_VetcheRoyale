@@ -1,41 +1,42 @@
 import typeCheck from "../../../shared/code/Debugging/CtypeCheck.js";
 import UIElement from "./UIElement.js";
 
-export default class UI {
-    constructor() {
-    }
+const UI = {
+    elements: {},
+    setupCallback: () => {
+        console.warn("No UI elements are set up!")
+    },
 
-    static elements = {};
-    static setupCallback = () => { console.warn("No UI elements are set up!") };
-
-    static init() {
+    init() {
         UI.setupCallback();
-    }
+    },
 
-    static setup(callback) {
+    setup(callback) {
         UI.setupCallback = callback;
-    }
+    },
 
-    static append(element) {
+    append(element) {
         typeCheck.instance(UIElement, element);
         UI.elements[element.id] = element;
-    }
+    },
 
-    static remove(element) {
+    remove(element) {
         if (!UI.elements[element.id])
             console.warn("Attempted to remove a non-existent UI element.");
         delete UI.elements[element.id];
-    }
+    },
 
-    static update(client) {
+    update(client) {
         for (var key in UI.elements) {
             UI.elements[key].update(client);
         }
-    };
+    },
 
-    static draw() {
+    draw() {
         for (var key in UI.elements) {
             UI.elements[key].draw();
         }
-    };
-}
+    },
+};
+
+export default UI;

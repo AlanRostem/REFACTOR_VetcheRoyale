@@ -85,10 +85,24 @@ export default class KelvinBar extends UIElement {
 
         var diff = this.liquidFill.y * this.pr / 100 | 0;
 
+
         // Draw Glass Tube
         R.ctx.drawImage(this.src, 0, 0, this.glassTube.x, this.glassTube.y, R.WIDTH - this.glassTube.x - 4 | 0, R.HEIGHT - this.glassTube.y - 4 | 0, this.glassTube.x, this.glassTube.y);
+
+        if (diff === 0) {
+            return; // TODO: Remove this. I added this so the FireFox bug doesn't happen.
+        }
+
         // Liquid Inside
-        R.ctx.drawImage(this.src, this.glassTube.x, this.liquidFill.y - diff, this.liquidFill.x, diff, R.WIDTH - this.glassTube.x / 2 - this.liquidFill.x / 2 - 4 | 0, R.HEIGHT - 6 - diff, 4, diff);
+        R.ctx.drawImage(this.src,
+            this.glassTube.x,
+            this.liquidFill.y - diff,
+            this.liquidFill.x, // TODO: Cannot be 0 cus of FireFox
+            diff,              // TODO: Cannot be 0 cus of FireFox
+            R.WIDTH - this.glassTube.x / 2 - this.liquidFill.x / 2 - 4 | 0,
+            R.HEIGHT - 6 - diff,
+            4,
+            diff);
         // Liquid Top
         R.ctx.drawImage(this.src, this.glassTube.x + this.liquidFill.x + this.liquidTopCut.x, this.liquidTopCut.y, this.liquidTop.x, this.liquidTop.y, R.WIDTH - this.glassTube.x / 2 - this.liquidTop.x / 2 - 4 | 0, R.HEIGHT - 9 - diff, this.liquidTop.x, this.liquidTop.y);
         R.ctx.restore();

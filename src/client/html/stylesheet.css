@@ -1,6 +1,10 @@
 
 canvas {
-
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    width: 100%;
+    background-color: black;
 }
 
 body {

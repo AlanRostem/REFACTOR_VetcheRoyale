@@ -5,10 +5,11 @@ import EntityTypeSpawner from "./EntityTypeSpawner.js";
 
 export default class EntityDataReceiver {
 
-    _container = {};
-    _isClient = false;
+
 
     constructor(client) {
+        this._isClient = false;
+        this._container = {};
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
 
