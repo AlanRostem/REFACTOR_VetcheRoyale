@@ -8,29 +8,19 @@ class AssetManager {
         this.downloadCallbacks = [];
     }
 
-    loadTextFile(path, loadedCallback, failureCallback) {
-        let rawFile = new XMLHttpRequest();
-        var allText = {content: ""};
-        const _this = this;
-        rawFile.open("GET", path, true);
-        rawFile.onreadystatechange = function () {
-            switch (rawFile.readyState) {
-                case 0 : // UNINITIALIZED
-                case 1 : // LOADING
-                case 2 : // LOADED
-                case 3 : // INTERACTIVE
-                    break;
-                case 4 : // COMPLETED
-                    allText.content = rawFile.responseText;
-                    loadedCallback();
-                    break;
-                default:
-                    failureCallback();
-                    alert("Text loading error!");
-            }
-        };
-        rawFile.send(null);
-        return allText;
+    loadJSON(path, loadedCallback, failureCallback) {
+        var text = {string: "", object: {}};
+        fetch(path)
+            .then(resp => {
+                var json = resp.json();
+                text.string = JSON.stringify(json);
+                return json;
+            })
+            .then(data => {
+                text.object = data;
+                loadedCallback();
+            });
+        return text;
     }
 
     queue(path) {
@@ -116,7 +106,7 @@ class AssetManager {
                     this.cache[path] = img;
                     break;
                 case "json":
-                    var txt = _this.loadTextFile("shared/res/" + path, () => {
+                    var txt = _this.loadJSON("shared/res/" + path, () => {
                         _this.successCount++;
                         if (_this.done()) {
                             downloadCallback();

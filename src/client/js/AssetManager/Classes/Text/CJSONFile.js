@@ -7,10 +7,8 @@ export default class JSONFile {
         this._objectContent = {};
         var _this = this;
         AssetManager.addDownloadCallback(() => {
-            _this._fileContent = AssetManager.get(src).content;
-            _this._objectContent = JSON.parse(
-                _this._fileContent
-            );
+            _this._fileContent = AssetManager.get(src).string;
+            _this._objectContent = AssetManager.get(src).object;
             downloadCallback(_this._objectContent);
         });
     }
