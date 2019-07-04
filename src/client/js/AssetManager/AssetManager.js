@@ -53,8 +53,6 @@ class AssetManager {
                         _this.downloadQueue.push(lines[i]);
                     }
 
-                    window.DLC =_this.downloadCallbacks;
-
                     _this.download(() => {
                         for (var fun of _this.downloadCallbacks) {
                             fun();
