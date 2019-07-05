@@ -1,9 +1,9 @@
-Entity = require("../SEntity.js");
+Alive = require("../Traits/Alive.js");
 ClientPEM = require("./ClientPEM.js");
 Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 Rect = require("../Management/QTRect.js");
 
-class Player extends Entity {
+class Player extends Alive {
     constructor(x, y, client) {
         super(x, y, 6, 12);
 
@@ -16,8 +16,8 @@ class Player extends Entity {
         this._entitiesInProximity = new ClientPEM(this);
         this._jumping = false;
         this._center = {
-            _x: x + this._width/2,
-            _y: y + this._height/2,
+            _x: x + this._width / 2,
+            _y: y + this._height / 2,
         };
 
         // TEST:
@@ -28,7 +28,8 @@ class Player extends Entity {
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
             "_teamName",
-            "_center"
+            "_center",
+            "_hp"
         ]);
 
         // Unnecessary at the moment:
