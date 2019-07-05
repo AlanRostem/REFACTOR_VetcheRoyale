@@ -21,14 +21,13 @@ class Interactable extends Entity {
     }
 
     handlePlayerInput(player, entityManager) {
-        if (player.input.keyHeldDown(Interactable.INTERACTION_KEY)) {
+        if (player.input.singleKeyPress(Interactable.INTERACTION_KEY)) {
             this.onPlayerInteraction(player, entityManager);
         }
     }
 
     onPlayerInteraction(player, entityManager) {
-        // TODO: Remove Test
-        console.log("Interactions with " + player.id);
+        // Override here
     }
 
     forEachNearbyEntity(entity, entityManager) {

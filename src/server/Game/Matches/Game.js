@@ -15,12 +15,6 @@ class Game {
         this._deltaTime = 0;
         this._lastTime = 0;
         this._tickRate = 60; // Hz
-
-        // TODO: Remove test
-        this.entityManager.spawnEntity(
-            144 * Tile.SIZE,
-            202 * Tile.SIZE,
-            new Interactable(0, 0, 16, 24, 100));
     }
 
     update() {

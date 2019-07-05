@@ -7,7 +7,7 @@ export default class MyClient {
         this.id = socket.id;
         this._inputListener = new InputListener(this);
 
-        [32, 83, 68, 65, 87].forEach(keyCode => {
+        [32, 83, 68, 65, 87, 69].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
         });
 

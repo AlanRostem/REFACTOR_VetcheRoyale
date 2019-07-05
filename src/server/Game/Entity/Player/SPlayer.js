@@ -155,7 +155,7 @@ class Player extends Alive {
             this._movementState.main = "stand";
         }
 
-        if (this.keys[32]) {
+        if (this.input.keyHeldDown(32)) {
             if (!this._jumping) {
                 this.vel.y = this._speed.jump;
                 this._jumping = true;
@@ -164,12 +164,12 @@ class Player extends Alive {
 
         this.vel.x = 0;
 
-        if (this.keys[68]) {
+        if (this.input.keyHeldDown(68)) {
             this.accelerateX(this._speed.ground, deltaTime);
             this._movementState.direction = "right";
         }
 
-        if (this.keys[65]) {
+        if (this.input.keyHeldDown(65)) {
             this.accelerateX(-this._speed.ground, deltaTime);
             this._movementState.direction = "left";
         }
