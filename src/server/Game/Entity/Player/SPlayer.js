@@ -33,7 +33,7 @@ class Player extends Alive {
         ]);
 
         // Unnecessary at the moment:
-        this.addCollisionListener("Player", player => {
+        this.addCollisionListener("Player", (player, entityManager) => {
             if (this.isTeammate(player)) {
                 this.onTeamCollision(player);
             }
@@ -69,6 +69,9 @@ class Player extends Alive {
         return this._clientRef.inputReceiver.keys;
     }
 
+    get input() {
+        return this._clientRef.inputReceiver;
+    }
 
     setTeam(team) {
         this.team = team;

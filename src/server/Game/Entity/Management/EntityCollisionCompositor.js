@@ -6,10 +6,10 @@ class EntityCollisionCompositor {
         this._collisions = {};
     }
 
-    applyCollisionsEffects(entity) {
+    applyCollisionsEffects(entity, entityManager) {
         if (!this._collisions[entity.constructor.name]) return;
         for (let callback of this._collisions[entity.constructor.name]) {
-            callback(entity);
+            callback(entity, entityManager);
         }
     }
 
@@ -17,7 +17,7 @@ class EntityCollisionCompositor {
     // to map the collision effect callback function.
     // The callback will have this layout:
 
-    // addCollisionListener("EntityClass", (subject) => { doStuff(); }
+    // addCollisionListener("EntityClass", (subject, entityManager) => { doStuff(); }
 
     addCollisionListener(classType, callback) {
         if (!this._collisions[classType]) {

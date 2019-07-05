@@ -205,11 +205,11 @@ class SEntity {
         this.pos.y = Math.round(this.pos.y);
     }
 
-    onEntityCollision(entity) {
-        this._collisionCompositor.applyCollisionsEffects(entity);
+    onEntityCollision(entity, entityManager) {
+        this._collisionCompositor.applyCollisionsEffects(entity, entityManager);
     }
 
-    forEachNearbyEntity(entity) {
+    forEachNearbyEntity(entity, entityManager) {
         // Override here
     }
 
