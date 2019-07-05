@@ -10,6 +10,7 @@ class TileMap {
         this.array = json.get().layers[0].data;
         this.w = json.get().width;
         this.h = json.get().height;
+        this.tileSize = Tile.SIZE;
         this.types = {
             PASS: 0, // TODO: Remove test values
             SOLID: 17 // TODO: Remove test values
