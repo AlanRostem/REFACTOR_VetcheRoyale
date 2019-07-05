@@ -209,6 +209,10 @@ class SEntity {
         this._collisionCompositor.applyCollisionsEffects(entity);
     }
 
+    forEachNearbyEntity(entity) {
+        // Override here
+    }
+
     update(entityManager, deltaTime) {
         this.physics(entityManager, deltaTime);
         this._entitiesInProximity.update(entityManager, deltaTime);

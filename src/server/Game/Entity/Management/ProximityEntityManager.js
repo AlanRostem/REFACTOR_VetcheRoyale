@@ -41,6 +41,7 @@ class ProximityEntityManager extends EntityManager {
                 if (!this.exists(e.id)) {
                     this.addEntity(e);
                 } else {
+                    this._entRef.forEachNearbyEntity(e);
                     if (this._entRef.overlapEntity(e)) {
                         this._entRef.onEntityCollision(e);
                     }

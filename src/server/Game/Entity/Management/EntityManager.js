@@ -3,7 +3,6 @@ Tile = require("../../TileBased/Tile.js");
 GameClock = require("../../Entity/Management/GameClock.js");
 QuadTree = require("./QuadTree.js");
 Rect = require("./QTRect.js");
-
 class EntityManager {
     constructor(singleton = false, gameMap) {
         this._container = {};
@@ -67,12 +66,6 @@ class EntityManager {
                 }
                 entity.update(this, deltaTime);
             }
-        }
-    }
-
-    forEach(callback) {
-        for (var id in this._container) {
-            callback(this._container[id]);
         }
     }
 
