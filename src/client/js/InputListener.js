@@ -114,6 +114,11 @@ export default class InputListener {
             this._mouse.sinCenter = yy / dd;
             this._mouse.cosCenter = xx / dd;
 
+            this._mouse.world = {
+                x: this._mouse.x - R.camera.boundPos.x,
+                y: this._mouse.y - R.camera.boundPos.y,
+            };
+
             client.emit("mouseMoveEvent", this._mouse);
         });
     }

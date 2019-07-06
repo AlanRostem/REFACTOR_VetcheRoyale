@@ -29,6 +29,16 @@ export default class CPlayer extends CEntity {
             this.output._pos._x + R.camera.boundPos.x,
             this.output._pos._y + R.camera.boundPos.y);
         SpriteSheet.end();
+
+        R.ctx.beginPath();
+        R.ctx.moveTo(
+            this.output._center._x + R.camera.boundPos.x,
+            this.output._center._y + R.camera.boundPos.y);
+        R.ctx.lineTo(
+            this.output._t_scanPos._x + R.camera.boundPos.x,
+            this.output._t_scanPos._y + R.camera.boundPos.y);
+        R.ctx.strokeStyle = "white";
+        R.ctx.stroke();
     }
 }
 

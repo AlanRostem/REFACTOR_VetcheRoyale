@@ -5,6 +5,7 @@ class InputReceiver {
         this._singlePressKeys = {};
         // Holds all mouse states of corresponding mouse button numbers
         this._mouseStates = {};
+        this._singlePressMouseButtons = {};
 
         client.on("keyEvent", data => {
             this._keyStates[data.keyCode] = data.keyState;
@@ -21,6 +22,24 @@ class InputReceiver {
 
     get mouseData() {
         return this._mouseData;
+    }
+
+    mouseHeldDown(button) {
+        return this._mouseStates[button];
+    }
+
+    singleMousePress(button) {
+        var mouseState;
+        if (this._mouseStates[button]) {
+            if (!this._singlePressMouseButtons[button]) {
+                mouseState = true;
+            }
+            this._singlePressMouseButtons[button] = true;
+        } else {
+            this._singlePressMouseButtons[button] = false;
+            mouseState = false;
+        }
+        return mouseState;
     }
 
     keyHeldDown(keyCode) {

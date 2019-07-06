@@ -1,4 +1,4 @@
-Entity = require("../SEntity.js");
+const Entity = require("../SEntity.js");
 
 class Alive extends Entity {
     constructor(x, y, w, h, HP = 100) {

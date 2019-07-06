@@ -2,13 +2,14 @@ const Vector2D = require("../../../shared/code/Math/SVector2D.js");
 const QTRect = require("../Entity/Management/QTRect.js");
 
 class HitScanner {
-    constructor(entityCollision = true, tileCollision = true) {
+    constructor(exceptions = [], entityCollision = true, tileCollision = true) {
         this._scanEntities = entityCollision;
         this._scanTiles = tileCollision;
         this._stopAtEntity = true;
         this._stopAtTile = true;
         this._qtRange = new QTRect(0, 0, 360, 160);
         this._end = new Vector2D(0, 0);
+        this._entityExceptions = exceptions;
     }
 
     scan(originPos, endPos, entityManager, tileMap) {
@@ -66,8 +67,12 @@ class HitScanner {
         if (this._scanEntities) {
             var entities = entityManager.quadTree.query(this._qtRange);
             for (var e of entities) {
+                if (this._entityExceptions.includes(e.id)) {
+                    continue;
+                }
+
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                    if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
+                    if (this._stopAtEntity) {}b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
                     this.onEntityHit(e, entityManager);
                 }
 
@@ -87,6 +92,7 @@ class HitScanner {
                 }
             }
         }
+        return this._end;
     }
 
     onTileHit(hitPos, entityManager) {

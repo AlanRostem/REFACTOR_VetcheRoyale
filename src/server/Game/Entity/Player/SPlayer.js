@@ -1,7 +1,8 @@
-Alive = require("../Traits/Alive.js");
-ClientPEM = require("./ClientPEM.js");
-Vector2D = require("../../../../shared/code/Math/SVector2D.js");
-Rect = require("../Management/QTRect.js");
+const Alive = require("../Traits/Alive.js");
+const ClientPEM = require("./ClientPEM.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+const Rect = require("../Management/QTRect.js");
+const HitScanner = require("../../Mechanics/HitScanner.js");
 
 class Player extends Alive {
     constructor(x, y, client) {
@@ -25,11 +26,17 @@ class Player extends Alive {
         this._movementState.main = "stand";
         this._movementState.direction = "right";
 
+
+        this._t_scanPos = {};
+        this._t_scanner = new HitScanner([this.id]);
+
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
             "_teamName",
             "_center",
-            "_hp"
+            "_hp",
+            "_t_scanPos"
+
         ]);
 
         // Unnecessary at the moment:
@@ -142,6 +149,14 @@ class Player extends Alive {
 
     update(entityManager, deltaTime) {
 
+        if (this.input.singleMousePress(1)) {
+            if (this.input.mouseData.cosCenter && this.input.mouseData.sinCenter) {
+                let endPos = new Vector2D(
+                    this.center.x + 200 * this.input.mouseData.cosCenter,
+                    this.center.y + 200 * this.input.mouseData.sinCenter);
+                this._t_scanPos = this._t_scanner.scan(this.center, endPos, entityManager, entityManager.tileMap);
+            }
+        }
 
         if (this.side.bottom) {
             this._movementState.main = "stand";

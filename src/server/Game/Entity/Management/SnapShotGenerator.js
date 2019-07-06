@@ -2,7 +2,7 @@
 // exporting for every entity in the game.
 
 var typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
-var SEntity = require("../SEntity.js");
+var Entity = require("../SEntity.js");
 
 // TODO: Look at why including Entity apparently works...
 
@@ -11,9 +11,6 @@ class SnapShotGenerator {
     // The 2 last parameters are arrays with strings of the
     // entity's specified properties.
     constructor(composedEntity, referenceValues, dynamicValues = []) {
-        typeCheck.instance(Entity, composedEntity);
-        typeCheck.instance(Array, referenceValues);
-        typeCheck.instance(Array, dynamicValues);
 
         // Pass in constants or reference objects that
         // are updated in referenceValues.
