@@ -4,7 +4,7 @@ const Entity = require("../Entity/SEntity.js");
 const Tile = require("../TileBased/Tile");
 const STileMap = require("../TileBased/STileMap.js");
 const TeamManager = require("../Matches/TeamManager.js");
-const Interactable = require("../Entity/Traits/Interactable.js");
+const Ammo = require("../Entity/Loot/Multanium/Ammo.js");
 
 // Class composition of matches
 class Game {
@@ -15,11 +15,20 @@ class Game {
         this._deltaTime = 0;
         this._lastTime = 0;
         this._tickRate = 60; // Hz
+
+        this.entityManager.spawnEntity(
+            142 * Tile.SIZE,
+            202 * Tile.SIZE,
+            new Ammo(0, 0)
+        )
     }
 
     update() {
         if (Date.now() > 0)
             this._deltaTime = (Date.now() - this._lastTime) / 1000;
+
+        if (this._deltaTime > 1)
+            this._deltaTime = 0;
 
         // Update the entities, then create data packs
         this.entityManager.update(this._deltaTime);

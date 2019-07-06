@@ -3,6 +3,7 @@ const ClientPEM = require("./ClientPEM.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const Rect = require("../Management/QTRect.js");
 const HitScanner = require("../../Mechanics/HitScanner.js");
+const Inventory = require("./Inventory.js");
 
 class Player extends Alive {
     constructor(x, y, client) {
@@ -15,6 +16,7 @@ class Player extends Alive {
         this._snapShotGenerator._snapShot._id = this._id;
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
+        this._inventory = new Inventory();
         this._jumping = false;
         this._center = {
             _x: x + this._width / 2,
@@ -26,17 +28,11 @@ class Player extends Alive {
         this._movementState.main = "stand";
         this._movementState.direction = "right";
 
-
-        this._t_scanPos = {};
-        this._t_scanner = new HitScanner([this.id]);
-
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
             "_teamName",
             "_center",
             "_hp",
-            "_t_scanPos"
-
         ]);
 
         // Unnecessary at the moment:
@@ -62,6 +58,10 @@ class Player extends Alive {
         super.initFromEntityManager(entityManager);
         this._entitiesInProximity.initProximityEntityData(entityManager);
         this._clientRef.emit("initEntity", this._entitiesInProximity.exportDataPack())
+    }
+
+    get inventory() {
+        return this._inventory;
     }
 
     get entitiesInProximity() {
@@ -148,16 +148,6 @@ class Player extends Alive {
     }
 
     update(entityManager, deltaTime) {
-
-        if (this.input.singleMousePress(1)) {
-            if (this.input.mouseData.cosCenter && this.input.mouseData.sinCenter) {
-                let endPos = new Vector2D(
-                    this.center.x + 200 * this.input.mouseData.cosCenter,
-                    this.center.y + 200 * this.input.mouseData.sinCenter);
-                this._t_scanPos = this._t_scanner.scan(this.center, endPos, entityManager, entityManager.tileMap);
-            }
-        }
-
         if (this.side.bottom) {
             this._movementState.main = "stand";
         } else {

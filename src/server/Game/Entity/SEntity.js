@@ -19,7 +19,6 @@ class SEntity {
             main: "undefined",
         };
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
-
         this._snapShotGenerator = new SnapShotGenerator(this,
         [
             "_id",
