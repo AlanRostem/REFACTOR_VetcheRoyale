@@ -12,7 +12,39 @@ class HitScanner {
         this._entityExceptions = exceptions;
     }
 
-    scan(originPos, endPos, entityManager, tileMap) {
+    set entityScanEnabled(val) {
+        this._scanEntities = val;
+    }
+
+    set tileScanEnabled(val) {
+        this._scanTiles = val;
+    }
+
+    get stopAtTile() {
+        return this._stopAtTile;
+    }
+
+    set stopAtTile(val) {
+        this._stopAtTile = val;
+    }
+
+    get stopAtEntity() {
+        return this._stopAtEntity;
+    }
+
+    set stopAtEntity(val) {
+        this._stopAtEntity = val;
+    }
+
+    get exceptions() {
+        return this._entityExceptions;
+    }
+
+    set exceptions(val) {
+        this._entityExceptions = val;
+    }
+
+    scan(ownerID, originPos, endPos, entityManager, tileMap) {
         var a = originPos;
         this._qtRange.x = a.x;
         this._qtRange.y = a.y;
@@ -67,12 +99,14 @@ class HitScanner {
         if (this._scanEntities) {
             var entities = entityManager.quadTree.query(this._qtRange);
             for (var e of entities) {
-                if (this._entityExceptions.includes(e.id)) {
+                if (this._entityExceptions.includes(e.id) || e.id === ownerID) {
                     continue;
                 }
 
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                    if (this._stopAtEntity) {}b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
+                    if (this._stopAtEntity) {
+                    }
+                    b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
                     this.onEntityHit(e, entityManager);
                 }
 

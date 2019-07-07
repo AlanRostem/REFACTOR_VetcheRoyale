@@ -2,11 +2,16 @@ class Team {
     constructor(name) {
         this._name = name;
         this._players = {};
+        this._arrayPlayers = [];
         this._playerCount = 0;
     }
 
     get players() {
         return this._players;
+    }
+
+    get array() {
+        return this._arrayPlayers;
     }
 
     get name() {
@@ -21,6 +26,7 @@ class Team {
         player.team = null;
         //player._teamName = "none"; // Well this dont work...
         this._playerCount--;
+        this._arrayPlayers.splice(this._arrayPlayers.indexOf(player.id));
         delete this._players[player.id];
     }
 
@@ -35,6 +41,7 @@ class Team {
         }
         this._playerCount++;
         this._players[player.id] = player;
+        this._arrayPlayers.push(player.id);
         player.setTeam(this);
     }
 }
@@ -46,6 +53,6 @@ Team.Names = {
     3: "yellow",
 };
 
-Team.MAX_PLAYERS = 4;
+Team.MAX_PLAYERS = 2;
 
 module.exports = Team;
