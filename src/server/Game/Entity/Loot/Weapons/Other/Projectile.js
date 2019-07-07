@@ -46,7 +46,7 @@ class Projectile extends Entity {
     }
 
     onPlayerHit(player, entityManager) {
-        new Damage(10).inflict(player, entityManager);
+
     }
 
     update(entityManager, deltaTime) {

@@ -4,7 +4,7 @@ const Entity = require("../Entity/SEntity.js");
 const Tile = require("../TileBased/Tile");
 const STileMap = require("../TileBased/STileMap.js");
 const TeamManager = require("../Matches/TeamManager.js");
-const AttackWeapon = require("../Entity/Loot/Weapons/Base/AttackWeapon.js");
+const KE_6H = require("../Entity/Loot/Weapons/KE_6H.js");
 
 // Class composition of matches
 class Game {
@@ -19,7 +19,7 @@ class Game {
         this.entityManager.spawnEntity(
             142 * Tile.SIZE,
             202 * Tile.SIZE,
-            new AttackWeapon(0, 0)
+            new KE_6H(0, 0)
         )
     }
 

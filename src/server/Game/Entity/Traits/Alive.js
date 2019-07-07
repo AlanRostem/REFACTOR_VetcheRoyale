@@ -41,7 +41,7 @@ class Alive extends Entity {
                 this._currentRegenSpeed -= deltaTime;
                 if (this._currentRegenSpeed <= 0) {
                     this._currentRegenSpeed = this._maxRegenSpeed;
-                    console.log(this.HP += this._regenPerTick);
+                    this.HP += this._regenPerTick;
                 }
             } else {
                 this._currentRegenCooldown -= deltaTime;
