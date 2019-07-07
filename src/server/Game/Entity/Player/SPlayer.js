@@ -7,7 +7,7 @@ const Inventory = require("./Inventory.js");
 
 class Player extends Alive {
     constructor(x, y, client) {
-        super(x, y, 6, 12);
+        super(x, y, 6, 12, 100, true);
 
         // MISC VAR INITS
 

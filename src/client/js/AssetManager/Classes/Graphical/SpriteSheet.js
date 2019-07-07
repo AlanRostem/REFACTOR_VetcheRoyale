@@ -124,7 +124,7 @@ SpriteSheet.Rect = class {
     }
 };
 
-SpriteSheet.Animation = class {
+SpriteSheet.Animation = class Animation {
     constructor(startCol, endCol, framesPerRow, frameSpeed) {
         this.startCol = startCol;
         this.endCol = endCol;

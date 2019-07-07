@@ -1,5 +1,6 @@
 const Entity = require("../../../SEntity.js");
 const Player = require("../../../Player/SPlayer.js");
+const Damage = require("../../../../Mechanics/Damage/Damage.js");
 
 class Projectile extends Entity {
     constructor(ownerID, x, y, w, h, cos, sin, speed, arc = 0, shouldRemove = true) {
@@ -45,7 +46,7 @@ class Projectile extends Entity {
     }
 
     onPlayerHit(player, entityManager) {
-
+        new Damage(10).inflict(player, entityManager);
     }
 
     update(entityManager, deltaTime) {
