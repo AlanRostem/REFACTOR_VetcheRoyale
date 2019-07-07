@@ -1,7 +1,7 @@
 const Entity = require("../SEntity.js");
 
 class Alive extends Entity {
-    constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.167, regenCoolDown = 5) {
+    constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.2, regenCoolDown = 10) {
         super(x, y, w, h);
 
         this._maxHP = HP;
@@ -41,11 +41,12 @@ class Alive extends Entity {
                 this._currentRegenSpeed -= deltaTime;
                 if (this._currentRegenSpeed <= 0) {
                     this._currentRegenSpeed = this._maxRegenSpeed;
+                    console.log(this.HP += this._regenPerTick);
                 }
             } else {
-                this._maxRegenCooldown -= deltaTime;
-                if (this._maxRegenCooldown <= 0) {
-                    this._maxRegenCooldown = 0;
+                this._currentRegenCooldown -= deltaTime;
+                if (this._currentRegenCooldown <= 0) {
+                    this._currentRegenCooldown = 0;
                     this._takingDamage = false;
                 }
             }
