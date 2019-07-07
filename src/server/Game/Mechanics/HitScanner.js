@@ -104,9 +104,7 @@ class HitScanner {
                 }
 
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                    if (this._stopAtEntity) {
-                    }
-                    b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
+                    if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
                     this.onEntityHit(e, entityManager);
                 }
 
