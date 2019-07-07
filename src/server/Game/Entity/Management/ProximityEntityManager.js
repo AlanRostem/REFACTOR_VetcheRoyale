@@ -20,7 +20,6 @@ class ProximityEntityManager extends EntityManager {
 
     removeEntity(id) {
         delete this._container[id];
-        delete this._dataBox[id];
     }
 
     quadTreePlacement(entityManager) {

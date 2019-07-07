@@ -1,7 +1,7 @@
 const WeaponItem = require("./WeaponItem.js");
 const ModAbility = require("./ModAbility.js");
 const SuperAbility = require("./SuperAbility.js");
-const Damage = require("../../../../Mechanics/Damage/Damage.js");
+const Projectile = require("../Other/Projectile.js");
 
 // Composition abstraction class for the weapon abilities
 class AttackWeapon extends WeaponItem {
@@ -40,7 +40,11 @@ class AttackWeapon extends WeaponItem {
     }
 
     fire(player, entityManager, deltaTime) {
-        //console.log("Clip count: " + this._currentAmmo);
+        entityManager.spawnEntity(this.center.x, this.center.y,
+            new Projectile(player.id, 0, 0, 2, 2,
+                player.input.mouseData.cosCenter,
+                player.input.mouseData.sinCenter,
+                200))
     }
 
     activateReloadAction() {
