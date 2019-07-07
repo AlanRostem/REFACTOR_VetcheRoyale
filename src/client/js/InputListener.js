@@ -119,7 +119,20 @@ export default class InputListener {
                 y: this._mouse.y - R.camera.boundPos.y,
             };
 
+            /*
+            console.log(
+                Math.asin(this._mouse.sinCenter) * 180 / Math.PI,
+                Math.acos(this._mouse.cosCenter) * 180 / Math.PI,
+            );
+            */
+
             client.emit("mouseMoveEvent", this._mouse);
         });
+
+        client.emit("mouseMoveEvent", this._mouse);
+
+        window.oncontextmenu = () => {
+            return false;
+        }
     }
 }

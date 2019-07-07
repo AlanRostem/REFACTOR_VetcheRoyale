@@ -6,7 +6,6 @@ class Inventory {
 
     pickUp(loot) {
         loot.addToInventory(this);
-        console.log(this); // TODO: Remove test
     }
 
     get ammo() {
@@ -19,6 +18,17 @@ class Inventory {
 
     get weapon() {
         return this._equippedWeapon;
+    }
+
+    set weapon(val) {
+        if (this._equippedWeapon === null)
+            this._equippedWeapon = val;
+    }
+
+    dropWeapon() {
+        if (this._equippedWeapon !== null) {
+            this._equippedWeapon = null;
+        }
     }
 }
 

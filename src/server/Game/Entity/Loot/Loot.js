@@ -8,6 +8,9 @@ class Loot extends Interactable {
     }
 
     update(entityManager, deltaTime) {
+        if (this.side.bottom) {
+            this.vel.x *= Loot.GROUND_FRICTION;
+        }
         super.update(entityManager, deltaTime);
     }
 
@@ -21,5 +24,7 @@ class Loot extends Interactable {
         if (this._shouldRemove) this.remove();
     }
 }
+
+Loot.GROUND_FRICTION = 0;
 
 module.exports = Loot;
