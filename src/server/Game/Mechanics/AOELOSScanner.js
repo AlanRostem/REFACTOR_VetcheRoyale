@@ -22,15 +22,13 @@ class AOELOSScanner extends HitScanner {
                 originPos.y + this._radius * Math.sin(angle));
             var a = originPos;
             var b = this.scan(ownerID, originPos, rangePos, entityManager, entityManager.tileMap);
-            if (this._entityExceptions.includes(e.id) || e.id === ownerID) {
+            if (this._entityExceptions.includes(e.id) || e.id === ownerID)
                 continue;
-            }
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
-                Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight))
                 this.onEntityHit(e, entityManager);
-            }
         }
     }
 }
