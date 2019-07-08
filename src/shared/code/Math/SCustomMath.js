@@ -1,5 +1,3 @@
-import {sqrt} from "./CCustomMath";
-
 const VMath = {
     sqrt: function sqrt(x){
         var s, t;

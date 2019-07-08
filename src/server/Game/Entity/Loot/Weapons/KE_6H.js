@@ -2,6 +2,7 @@ const AttackWeapon = require("./Base/AttackWeapon.js");
 const Projectile = require("./Other/Projectile.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
+const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 
 class KineticBomb extends Projectile {
     constructor(ownerID, weaponID, x, y, cos, sin) {
@@ -9,6 +10,7 @@ class KineticBomb extends Projectile {
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(50);
+        this._areaDmg = new AOEDamage(x, y, 64, 15);
         this.vx = 0;
         this.vy = 0;
     }
@@ -47,6 +49,9 @@ class KineticBomb extends Projectile {
     }
 
     detonate(entityManager) {
+        this._areaDmg.x = this.center.x;
+        this._areaDmg.y = this.center.y;
+        this._areaDmg.applyAreaOfEffect(this.id, entityManager);
         this.remove();
     }
 
