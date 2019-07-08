@@ -5,37 +5,39 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 
 class KineticBomb extends Projectile {
     constructor(ownerID, weaponID, x, y, cos, sin) {
-        super(ownerID, x, y, 4, 4, cos, sin, 100, 0, false);
+        super(ownerID, x, y, 4, 4, cos, sin, 120, 0, false);
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(50);
+        this.vx = 0;
+        this.vy = 0;
     }
 
     onTopCollision(tile) {
         this.side.top = true;
         this.pos.y = tile.y + Tile.SIZE;
-        this.vel.y = -this.vel.y;
+        this.vy = -this.vel.y;
         this._hits--;
     }
 
     onBottomCollision(tile) {
         this.side.bottom = true;
         this.pos.y = tile.y - this.height;
-        this.vel.y = -this.vel.y;
+        this.vy = -this.vel.y;
         this._hits--;
     }
 
     onLeftCollision(tile) {
         this.side.left = true;
         this.pos.x = tile.x + Tile.SIZE;
-        this.vel.x = -this.vel.x;
+        this.vx = -this.vel.x;
         this._hits--;
     }
 
     onRightCollision(tile) {
         this.side.right = true;
         this.pos.x = tile.x - this.width;
-        this.vel.x = -this.vel.x;
+        this.vx = -this.vel.x;
         this._hits--;
     }
 
@@ -50,6 +52,13 @@ class KineticBomb extends Projectile {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+        if (this.side.left || this.side.right) {
+            this.vel.x = this.vx;
+        }
+
+        if (this.side.bottom || this.side.top) {
+            this.vel.y = this.vy;
+        }
         if (this._hits === 0 ||
             entityManager.getEntity(this._weaponID).kineticDetonation) {
             this.detonate(entityManager);
