@@ -109,22 +109,22 @@ export default class InputListener {
 
             var xx = this._mouse.x - centerX;
             var yy = this._mouse.y - centerY;
-            var dd = sqrt(xx**2 + yy**2);
+            var a = Math.atan2(yy, xx);
 
-            this._mouse.sinCenter = yy / dd;
-            this._mouse.cosCenter = xx / dd;
+            this._mouse.sinCenter = Math.sin(a);
+            this._mouse.cosCenter = Math.cos(a);
+            this._mouse.angleCenter = a;
 
             this._mouse.world = {
                 x: this._mouse.x - R.camera.boundPos.x,
                 y: this._mouse.y - R.camera.boundPos.y,
             };
 
-            /*
+
             console.log(
                 Math.asin(this._mouse.sinCenter) * 180 / Math.PI,
                 Math.acos(this._mouse.cosCenter) * 180 / Math.PI,
             );
-            */
 
             client.emit("mouseMoveEvent", this._mouse);
         });
