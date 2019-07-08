@@ -10,7 +10,7 @@ class KineticBomb extends Projectile {
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(50);
-        this._areaDmg = new AOEDamage(x, y, 64, 15);
+        this._areaDmg = new AOEDamage(x, y, Tile.SIZE * 4, 15);
         this.vx = 0;
         this.vy = 0;
     }
