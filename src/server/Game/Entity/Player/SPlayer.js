@@ -1,4 +1,5 @@
 const Alive = require("../Traits/Alive.js");
+const Affectable = require("../Traits/Affectable.js");
 const ClientPEM = require("./ClientPEM.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const Rect = require("../Management/QTRect.js");
