@@ -15,8 +15,8 @@ class AOELOSScanner extends HitScanner {
         var entities = entityManager.quadTree.query(this._qtRange);
         for (var e of entities) {
             var angle = Math.atan2(
-                originPos.y - e.center.x,
-                originPos.y - e.center.y);
+                e.center.y - originPos.y,
+                e.center.x - originPos.x);
             var rangePos = new Vector2D(
                 originPos.x + this._radius * Math.cos(angle),
                 originPos.y + this._radius * Math.sin(angle));
@@ -25,24 +25,10 @@ class AOELOSScanner extends HitScanner {
             if (this._entityExceptions.includes(e.id) || e.id === ownerID) {
                 continue;
             }
-
-            if (e.constructor.name === "Player") {
-                console.log(angle * 180 / Math.PI);
-            }
-
-            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                this.onEntityHit(e, entityManager);
-            }
-
-            if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
-                this.onEntityHit(e, entityManager);
-            }
-
-            if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
-                this.onEntityHit(e, entityManager);
-            }
-
-            if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
+                Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
+                Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
+                Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
                 this.onEntityHit(e, entityManager);
             }
         }
