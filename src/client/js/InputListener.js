@@ -121,10 +121,12 @@ export default class InputListener {
             };
 
 
+            /*
             console.log(
                 Math.asin(this._mouse.sinCenter) * 180 / Math.PI,
                 Math.acos(this._mouse.cosCenter) * 180 / Math.PI,
             );
+            */
 
             client.emit("mouseMoveEvent", this._mouse);
         });
