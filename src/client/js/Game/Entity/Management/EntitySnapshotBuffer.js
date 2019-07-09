@@ -1,7 +1,7 @@
 // Buffers data inbound packs of entities
 // from the server. Composed in an entity.
 
-import Constants from "../../../../../shared/code/Constants.js";
+import Constants from "../../../../../shared/code/Tools/Constants.js";
 import MyClient from "../../../Networking/MyClient.js";
 import Scene from "../../Scene.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";

@@ -1,6 +1,13 @@
 const Entity = require("../SEntity.js");
+const Affectable = require("./Affectable.js");
 
-class Alive extends Entity {
+class IAlive extends Affectable {
+    constructor(x, y, w, h) {
+        super(x, y, w, h);
+    }
+}
+
+class Alive extends IAlive {
     constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.2, regenCoolDown = 10) {
         super(x, y, w, h);
 

@@ -1,7 +1,7 @@
 // Client side entity instance. Used for rendering
 // and other potential entity management on the client.
 import R from "../../Graphics/Renderer.js"
-import Constants from "../../../../shared/code/Constants.js";
+import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
 
 
