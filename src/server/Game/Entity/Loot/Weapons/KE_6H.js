@@ -3,6 +3,24 @@ const Projectile = require("./Other/Projectile.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
+const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
+const Player = require("../../Player/SPlayer.js");
+
+class AOEKnockBackDamage extends AOEDamage {
+    constructor(x, y, radius, knockBackSpeed, value) {
+        super(x, y, radius, value);
+        this._knockBackSpeed = knockBackSpeed;
+    }
+
+    inflict(entity, entityManager, a) {
+        super.inflict(entity, entityManager, a);
+        if (entity instanceof Player) {
+            entity.applyEffect(new KnockBackEffect(entity.id,
+                -Math.cos(a) * this._knockBackSpeed,
+                -Math.sin(a) * this._knockBackSpeed), entityManager);
+        }
+    }
+}
 
 class KineticBomb extends Projectile {
     constructor(ownerID, weaponID, x, y, cos, sin) {
@@ -10,7 +28,7 @@ class KineticBomb extends Projectile {
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30);
-        this._areaDmg = new AOEDamage(x, y, Tile.SIZE * 4, 15);
+        this._areaDmg = new AOEKnockBackDamage(x, y, Tile.SIZE * 4, 400, 15);
         this.vx = 0;
         this.vy = 0;
     }

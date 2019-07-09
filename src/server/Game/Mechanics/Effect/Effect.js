@@ -5,7 +5,6 @@ class Effect {
         this._aeID = affectedEntityID;
         this._currentTime = duration;
         this._done = false;
-        this._started = false;
         this.id = Math.random();
     }
 
@@ -31,26 +30,19 @@ class Effect {
 
     update(entityManager, deltaTime) {
         var entity = entityManager.getEntity(this._aeID);
-        if (!this._started) {
-            if (entityManager instanceof Affectable) {
-                this.onAppliedToEntity(entity, entityManager);
+        this._currentTime -= deltaTime;
+        if (this._currentTime > 0) {
+            if (entity instanceof Affectable) {
+                this.effects(entity, entityManager, deltaTime);
             }
-            this._started = true;
         } else {
-            this._currentTime -= deltaTime;
-            if (this._currentTime > 0) {
-                if (entityManager instanceof Affectable) {
-                    this.effects(entity, entityManager, deltaTime);
-                }
-            } else {
-                this._done = true;
-            }
+            this._done = true;
+        }
 
-            if (this._done) {
-                if (entityManager instanceof Affectable) {
-                    this.onDone(entity, entityManager, deltaTime);
-                    entity.removeEffect(this.id);
-                }
+        if (this._done) {
+            if (entity instanceof Affectable) {
+                this.onDone(entity, entityManager, deltaTime);
+                entity.removeEffect(this.id);
             }
         }
     }

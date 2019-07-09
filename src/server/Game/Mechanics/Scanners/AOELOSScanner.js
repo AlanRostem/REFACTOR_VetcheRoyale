@@ -27,8 +27,10 @@ class AOELOSScanner extends HitScanner {
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
-                Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight))
-                this.onEntityHit(e, entityManager);
+                Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                var ang = Math.atan2(a.y - b.y, a.x - b.x);
+                this.onEntityHit(e, entityManager, ang);
+            }
         }
     }
 }

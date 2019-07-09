@@ -13,8 +13,9 @@ class Affectable extends Entity {
         super.update(entityManager, deltaTime);
     }
 
-    applyEffect(effect) {
+    applyEffect(effect, entityManager) {
         this._effects[effect.id] = effect;
+        effect.onAppliedToEntity(this, entityManager)
     }
 
     removeEffect(id) {

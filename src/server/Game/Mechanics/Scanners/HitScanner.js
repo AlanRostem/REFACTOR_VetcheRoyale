@@ -105,22 +105,26 @@ class HitScanner {
 
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                     if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
-                    this.onEntityHit(e, entityManager);
+                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                    this.onEntityHit(e, entityManager, ang);
                 }
 
                 if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
                     if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.topRight));
-                    this.onEntityHit(e, entityManager);
+                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                    this.onEntityHit(e, entityManager, ang);
                 }
 
                 if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
                     if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topRight, e.bottomRight));
-                    this.onEntityHit(e, entityManager);
+                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                    this.onEntityHit(e, entityManager, ang);
                 }
 
                 if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
                     if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.bottomLeft, e.bottomRight));
-                    this.onEntityHit(e, entityManager);
+                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                    this.onEntityHit(e, entityManager, ang);
                 }
             }
         }
@@ -131,7 +135,7 @@ class HitScanner {
 
     }
 
-    onEntityHit(entity, entityManager) {
+    onEntityHit(entity, entityManager, angle) {
 
     }
 }

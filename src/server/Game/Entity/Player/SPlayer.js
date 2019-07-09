@@ -45,10 +45,15 @@ class Player extends Alive {
         this._speed = {
             ground: 65 * 55,
             jump: -190,
+            gravity: 500
         };
 
-        this._gravity = 500;
-        this.acc.y = this._gravity;
+        this.acc.y = this._speed.gravity;
+        this.acc.x = this._speed.ground;
+    }
+
+    get speed() {
+        return this._speed;
     }
 
     initFromEntityManager(entityManager) {
@@ -164,15 +169,15 @@ class Player extends Alive {
             }
         }
 
-        this.vel.x = 0;
+        this.vel.x *= this.fric.x;
 
         if (this.input.keyHeldDown(68)) {
-            this.accelerateX(this._speed.ground, deltaTime);
+            this.accelerateX(this.acc.x, deltaTime);
             this._movementState.direction = "right";
         }
 
         if (this.input.keyHeldDown(65)) {
-            this.accelerateX(-this._speed.ground, deltaTime);
+            this.accelerateX(-this.acc.x, deltaTime);
             this._movementState.direction = "left";
         }
 

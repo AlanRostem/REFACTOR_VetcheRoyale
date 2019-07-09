@@ -6,7 +6,7 @@ class typeCheck {
     // the parameter is in the same instance.
     static instance(dataType, parameter) {
         if (!(parameter instanceof dataType)) {
-            throw new DataTypeError(dataType);
+            throw new DataTypeError(parameter, dataType);
         }
     }
 
@@ -16,14 +16,14 @@ class typeCheck {
     // to check if their data types match.
     static primitive(testValue, parameter) {
         if (typeof testValue !== typeof parameter || isNaN(parameter)) {
-            throw new DataTypeError({name: typeof testValue});
+            throw new DataTypeError(parameter, {name: typeof testValue});
         }
     }
 }
 
 class DataTypeError extends Error {
-    constructor(dataType) {
-        super("Data type mismatch, the corresponding type must be of instance " + dataType.name);
+    constructor(parameter, dataType) {
+        super("Data type mismatch with value " + parameter + ", the corresponding type must be of instance " + dataType.name);
     }
 }
 

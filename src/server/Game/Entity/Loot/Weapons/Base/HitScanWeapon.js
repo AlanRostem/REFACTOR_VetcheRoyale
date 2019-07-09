@@ -11,8 +11,8 @@ class HitScanWeapon extends AttackWeapon {
             this.onTileHit(hitPos, entityManager);
         };
 
-        this._scanner.onEntityHit = (hitPos, entityManager) => {
-            this.onEntityHit(hitPos, entityManager);
+        this._scanner.onEntityHit = (hitPos, entityManager, a) => {
+            this.onEntityHit(hitPos, entityManager, a);
         };
 
         this._endFirePos = new Vector2D(0, 0);
@@ -30,7 +30,7 @@ class HitScanWeapon extends AttackWeapon {
 
     }
 
-    onEntityHit(entity, entityManager) {
+    onEntityHit(entity, entityManager, angle) {
 
     }
 
