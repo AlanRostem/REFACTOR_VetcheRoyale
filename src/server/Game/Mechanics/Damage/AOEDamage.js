@@ -1,5 +1,5 @@
 const Damage = require("./Damage.js");
-const AOELOSScanner = require("../AOELOSScanner.js");
+const AOELOSScanner = require("../Scanners/AOELOSScanner.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 class AOEDamage extends Damage {

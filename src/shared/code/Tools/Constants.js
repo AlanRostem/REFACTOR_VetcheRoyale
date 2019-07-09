@@ -4,5 +4,4 @@ const Constants = {
     CLIENT_PREDICTION_OFFSET: 100 /*ms*/ / 1000
 };
 
-
 export default Constants;

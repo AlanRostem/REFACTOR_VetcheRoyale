@@ -1,5 +1,5 @@
-const Vector2D = require("../../../shared/code/Math/SVector2D.js");
-const QTRect = require("../Entity/Management/QTRect.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+const QTRect = require("../../Entity/Management/QTRect.js");
 
 class HitScanner {
     constructor(exceptions = [], entityCollision = true, tileCollision = true) {

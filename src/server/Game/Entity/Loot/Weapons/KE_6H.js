@@ -9,7 +9,7 @@ class KineticBomb extends Projectile {
         super(ownerID, x, y, 4, 4, cos, sin, 120, 0, false);
         this._hits = 4;
         this._weaponID = weaponID;
-        this._directHitDmg = new Damage(50);
+        this._directHitDmg = new Damage(30);
         this._areaDmg = new AOEDamage(x, y, Tile.SIZE * 4, 15);
         this.vx = 0;
         this.vy = 0;
@@ -57,17 +57,15 @@ class KineticBomb extends Projectile {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
-        if (this.side.left || this.side.right) {
+        if (this.side.left || this.side.right)
             this.vel.x = this.vx;
-        }
 
-        if (this.side.bottom || this.side.top) {
+        if (this.side.bottom || this.side.top)
             this.vel.y = this.vy;
-        }
+
         if (this._hits === 0 ||
-            entityManager.getEntity(this._weaponID).kineticDetonation) {
+            entityManager.getEntity(this._weaponID).kineticDetonation)
             this.detonate(entityManager);
-        }
     }
 
 }

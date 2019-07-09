@@ -1,5 +1,5 @@
 const AttackWeapon = require("./AttackWeapon.js");
-const HitScanner = require("../../../../Mechanics/HitScanner.js");
+const HitScanner = require("../../../../Mechanics/Scanners/HitScanner.js");
 const Vector2D = require("../../../../../../shared/code/Math/SVector2D.js");
 
 class HitScanWeapon extends AttackWeapon {

@@ -1,6 +1,6 @@
 const HitScanner = require("./HitScanner.js");
-const VMath = require("../../../shared/code/Math/SCustomMath.js");
-const Vector2D = require("../../../shared/code/Math/SVector2D.js");
+const VMath = require("../../../../shared/code/Math/SCustomMath.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 // Area of effect line of sight hit scanner
 class AOELOSScanner extends HitScanner {

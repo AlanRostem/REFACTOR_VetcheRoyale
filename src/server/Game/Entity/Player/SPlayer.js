@@ -1,8 +1,5 @@
 const Alive = require("../Traits/Alive.js");
 const ClientPEM = require("./ClientPEM.js");
-const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
-const Rect = require("../Management/QTRect.js");
-const HitScanner = require("../../Mechanics/HitScanner.js");
 const Inventory = require("./Inventory.js");
 
 class Player extends Alive {

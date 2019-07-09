@@ -1,3 +1,5 @@
+// TODO: EXPERIMENTAL
+
 const SMultiInheritor = {
     // Inherit method to create base classes.
     inherit(..._bases)
