@@ -1,10 +1,10 @@
 const Effect = require("./Effect.js");
 
 class KnockBackEffect extends Effect {
-    constructor(id, speedX, speedY, tolerance = 30) {
+    constructor(id, speedX, speedY, negationSpeed = 0, tolerance = 30) {
         super(id);
         this._friction = 0.8;
-        this._accel = 0;
+        this._accel = negationSpeed;
         this._sx = speedX;
         this._sy = speedY;
         this._tolerance = tolerance;
