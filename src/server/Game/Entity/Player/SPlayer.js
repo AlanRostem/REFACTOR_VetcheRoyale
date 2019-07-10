@@ -169,6 +169,10 @@ class Player extends Alive {
             }
         }
 
+        super.update(entityManager, deltaTime);
+        this.oneWayTeamCollision(deltaTime);
+
+
         this.vel.x *= this.fric.x;
 
         if (this.input.keyHeldDown(68)) {
@@ -181,8 +185,6 @@ class Player extends Alive {
             this._movementState.direction = "left";
         }
 
-        super.update(entityManager, deltaTime);
-        this.oneWayTeamCollision(deltaTime);
 
         if (this.vel.x !== 0) {
             this._movementState.main = "run";
