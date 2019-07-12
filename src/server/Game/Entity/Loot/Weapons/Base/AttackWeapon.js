@@ -12,6 +12,17 @@ class AttackWeapon extends WeaponItem {
         this.configureAttackStats(2, 10, 1, 600);
     }
 
+    get superCharge() {
+        return this._superAbility._currentCharge;
+    }
+
+    set superCharge(val) {
+        this._superAbility._currentCharge += val;
+        if (this._superAbility._currentCharge > 100) {
+            this._superAbility._currentCharge = 100;
+        }
+    }
+
     setModAbility(overridden) {
         this._modAbility = overridden;
     }

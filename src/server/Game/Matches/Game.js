@@ -6,6 +6,9 @@ const STileMap = require("../TileBased/STileMap.js");
 const TeamManager = require("../Matches/TeamManager.js");
 const KE_6H = require("../Entity/Loot/Weapons/KE_6H.js");
 
+const Ammo = require("../Entity/Loot/Multanium/Ammo.js");
+const Charge = require("../Entity/Loot/Multanium/Charge.js");
+
 // Class composition of matches
 class Game {
     constructor(socket) {
@@ -20,7 +23,20 @@ class Game {
             142 * Tile.SIZE,
             202 * Tile.SIZE,
             new KE_6H(0, 0)
-        )
+        );
+
+        this.entityManager.spawnEntity(
+            140 * Tile.SIZE,
+            202 * Tile.SIZE,
+            new Ammo(0, 0)
+        );
+
+        this.entityManager.spawnEntity(
+            144 * Tile.SIZE,
+            202 * Tile.SIZE,
+            new Charge(0, 0)
+        );
+
     }
 
     update() {

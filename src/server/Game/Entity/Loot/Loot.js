@@ -7,6 +7,11 @@ class Loot extends Interactable {
         this._acc.y = 500;
     }
 
+    cast(x, y) {
+        this.vel.x = x;
+        this.vel.y = y;
+    }
+
     update(entityManager, deltaTime) {
         if (this.side.bottom) {
             this.vel.x *= Loot.GROUND_FRICTION;
