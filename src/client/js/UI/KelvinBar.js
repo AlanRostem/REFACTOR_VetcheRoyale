@@ -16,9 +16,7 @@ export default class KelvinBar extends UIElement {
         this.liquidTop = new Vector2D(4, 4);
         this.liquidTopCut = new Vector2D(0, 0);
 
-        this.pr = 0;
-        this.mpr = 0;
-
+        this.charge = 0;
 
         this.equippedGunID = -1;
         this.hasWeapon = false;
@@ -26,38 +24,44 @@ export default class KelvinBar extends UIElement {
 
     update(client, entityList) {
 
-        if (this.mpr++ > 10 && (this.mpr = 0 === 0) && this.pr++ === 100) this.pr = this.mpr = 0;
+        if (client.player) {
+            var gun = entityList.getEntityByID(client.player.output._invWeaponID);
+            if (gun) {
+                this.charge = gun.output._superCharge;
 
-        if (this.pr > 18) {
-            this.liquidTop.x = 4;
-            this.liquidTop.y = 8;
-            this.liquidTopCut.x = 0;
-            this.liquidTopCut.y = 4;
+                if (this.charge > 18) {
+                    this.liquidTop.x = 4;
+                    this.liquidTop.y = 8;
+                    this.liquidTopCut.x = 0;
+                    this.liquidTopCut.y = 4;
 
-        } else {
-            this.liquidTop.x = 4;
-            this.liquidTop.y = 4;
-            this.liquidTopCut.x = 0;
-            this.liquidTopCut.y = 0;
-        }
-
-        //this.hasWeapon = !(ClientEntity.getEntity(this.equippedGunID) === undefined || !ClientEntity.getEntity(this.equippedGunID).boundToPlayer);
-
-
-        /*
-                this.pos.x = R.WIDTH - 33;
-                if (client.keys) {
-                    if (client.keys[77]) {
-                        if (!client.onePressKeys[77]) {
-                            this.toggle = !this.toggle;
-                            client.activateOnePressKey(77);
-                        }
-                    } else {
-                        client.resetOnePressKey(77);
-                    }
+                } else {
+                    this.liquidTop.x = 4;
+                    this.liquidTop.y = 4;
+                    this.liquidTopCut.x = 0;
+                    this.liquidTopCut.y = 0;
                 }
-                this.updateEvent();*/
+            } else {
+            }
 
+            //this.hasWeapon = !(ClientEntity.getEntity(this.equippedGunID) === undefined || !ClientEntity.getEntity(this.equippedGunID).boundToPlayer);
+
+
+            /*
+                    this.pos.x = R.WIDTH - 33;
+                    if (client.keys) {
+                        if (client.keys[77]) {
+                            if (!client.onePressKeys[77]) {
+                                this.toggle = !this.toggle;
+                                client.activateOnePressKey(77);
+                            }
+                        } else {
+                            client.resetOnePressKey(77);
+                        }
+                    }
+                    this.updateEvent();*/
+
+        }
     }
 
     draw() {
@@ -65,25 +69,8 @@ export default class KelvinBar extends UIElement {
         //var gun = ClientEntity.getEntity(this.equippedGunID);
 
         R.ctx.save();
-        if (this.hasWeapon) {
-            var gun = ClientEntity.getEntity(this.equippedGunID);
-            if (ClientEntity.getEntity(this.equippedGunID) !== undefined) {
-                R.ctx.fillStyle = "cyan";
-                R.ctx.fillRect(R.WIDTH - this.strink.width + 5, R.HEIGHT - this.strink.height + 15 - (48 * (gun.superCharge / 100)), 5, 48 * (gun.superCharge / 100));
-                if (gun.superCharge === 100) {
-                    R.ctx.globalAlpha = 1;
-                    R.ctx.beginPath();
-                    R.ctx.arc(R.WIDTH - this.strink.width + 38 + 10, R.HEIGHT - this.strink.height + 40, 32, 0, Math.PI * 2);
-                    R.ctx.fill();
-                    R.ctx.fillStyle = "black";
-                    R.ctx.font = "32px sans-serif";
-                    R.ctx.fillText("Q", R.WIDTH - this.strink.width + 38 - 3, R.HEIGHT - this.strink.height + 40 + 10);
-                }
-                R.ctx.globalAlpha = 1;
-            }
-        }
 
-        var diff = this.liquidFill.y * this.pr / 100 | 0;
+        var diff = this.liquidFill.y * this.charge / 100 | 0;
 
 
         // Draw Glass Tube
