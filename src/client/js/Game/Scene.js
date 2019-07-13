@@ -48,7 +48,7 @@ const Scene = {
     update() {
         if (AssetManager.done()) {
             Scene._clientRef.update(Scene._entityManager);
-            UI.update(Scene._clientRef);
+            UI.update(Scene._clientRef, Scene._entityManager);
             Scene._entityManager.updateEntities(Scene.deltaTime);
         }
     },
@@ -60,7 +60,7 @@ const Scene = {
                 Scene.t_ts.draw(Scene._t_tm);
             }
             Scene._entityManager.drawEntities();
-            UI.draw(undefined);
+            UI.draw();
 
         } else {
             var str = "Loading " +

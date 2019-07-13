@@ -13,7 +13,7 @@ export default class HPBar extends UIElement {
         this.HPlength = 0;
     }
 
-    update(client) {
+    update(client, entityList) {
         this.HPlength = client.player.output._hp * this.HPjuice.x / 100 | 0;
     }
 

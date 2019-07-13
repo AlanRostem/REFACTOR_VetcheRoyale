@@ -27,7 +27,7 @@ export default class MiniMap extends UIElement {
         }
     }
 
-    update(client) {
+    update(client, entityList) {
         this.pos.x = R.WIDTH - 33;
         if (client.player) {
             this.p_Pos = client.player._output._pos;

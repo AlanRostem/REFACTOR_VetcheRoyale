@@ -14,6 +14,10 @@ class Player extends Alive {
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
         this._inventory = new Inventory();
+        this._invWeaponID = null;
+        this._invAmmo = null;
+
+
         this._jumping = false;
         this._center = {
             _x: x + this._width / 2,
@@ -30,6 +34,8 @@ class Player extends Alive {
             "_teamName",
             "_center",
             "_hp",
+            "_invAmmo",
+            "_invWeaponID",
         ]);
 
         // Unnecessary at the moment:
@@ -150,6 +156,13 @@ class Player extends Alive {
     }
 
     update(entityManager, deltaTime) {
+        this._invAmmo = this.inventory.ammo;
+        if (this.inventory.weapon) {
+            this._invWeaponID = this.inventory.weapon.id;
+        } else {
+            this._invWeaponID = null;
+        }
+
         if (this.side.bottom) {
             this._movementState.main = "stand";
         } else {

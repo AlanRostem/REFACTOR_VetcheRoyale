@@ -26,9 +26,9 @@ const UI = {
         delete UI.elements[element.id];
     },
 
-    update(client) {
+    update(client, entityList) {
         for (var key in UI.elements) {
-            UI.elements[key].update(client);
+            UI.elements[key].update(client, entityList);
         }
     },
 

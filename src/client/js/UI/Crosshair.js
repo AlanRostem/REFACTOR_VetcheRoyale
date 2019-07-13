@@ -9,7 +9,7 @@ export default class CrossHair extends UIElement {
         this.color = "lime";
     }
 
-    update(client) {
+    update(client, entityList) {
         this.pos.x = client.input.mouse.x;
         this.pos.y = client.input.mouse.y;
     }

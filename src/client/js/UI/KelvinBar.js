@@ -24,7 +24,7 @@ export default class KelvinBar extends UIElement {
         this.hasWeapon = false;
     }
 
-    update(client) {
+    update(client, entityList) {
 
         if (this.mpr++ > 10 && (this.mpr = 0 === 0) && this.pr++ === 100) this.pr = this.mpr = 0;
 

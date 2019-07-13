@@ -10,11 +10,12 @@ class Loot extends Interactable {
     cast(x, y) {
         this.vel.x = x;
         this.vel.y = y;
-        console.log(x, y)
     }
 
     update(entityManager, deltaTime) {
-        this.vel.x *= Loot.GROUND_FRICTION;
+        if (!this.side.bottom) {
+            this.vel.x *= Loot.AIR_FRICTION;
+        }
         super.update(entityManager, deltaTime);
     }
 
@@ -29,6 +30,6 @@ class Loot extends Interactable {
     }
 }
 
-Loot.GROUND_FRICTION = 0.95;
+Loot.AIR_FRICTION = 0.95;
 
 module.exports = Loot;

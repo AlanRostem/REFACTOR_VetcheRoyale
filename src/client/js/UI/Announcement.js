@@ -62,7 +62,7 @@ export default class Announcement extends UIElement {
         }
     }
 
-    update() {
+    update(client, entityList) {
         this.pos.x = R.WIDTH / 2 - 64;
         var a = this.annoucements[this.activeAnnoucement];
         if (a !== undefined) {
