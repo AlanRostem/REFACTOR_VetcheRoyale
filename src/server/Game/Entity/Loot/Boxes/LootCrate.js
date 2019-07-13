@@ -32,6 +32,6 @@ class LootCrate extends Interactable {
     }
 }
 
-LootCrate.DROP_SPEED = 100;
+LootCrate.DROP_SPEED = 200;
 
 module.exports = LootCrate;

@@ -17,7 +17,7 @@ class AOEKnockBackDamage extends AOEDamage {
         if (entity instanceof Player) {
             entity.applyEffect(new KnockBackEffect(entity.id,
                 -Math.cos(a) * this._knockBackSpeed,
-                -Math.sin(a) * this._knockBackSpeed), entityManager);
+                -Math.sin(a) * this._knockBackSpeed / 2, 0.9), entityManager);
         }
     }
 }
@@ -28,7 +28,7 @@ class KineticBomb extends Projectile {
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30);
-        this._areaDmg = new AOEKnockBackDamage(x, y, Tile.SIZE * 4, 600, 15);
+        this._areaDmg = new AOEKnockBackDamage(x, y, Tile.SIZE * 4, 300, 15);
         this.vx = 0;
         this.vy = 0;
     }

@@ -1,9 +1,9 @@
 const Effect = require("./Effect.js");
 
 class KnockBackEffect extends Effect {
-    constructor(id, speedX, speedY, negationSpeed = 0, tolerance = 30) {
+    constructor(id, speedX, speedY, friction = 0.95, negationSpeed = 0, tolerance = 30) {
         super(id);
-        this._friction = 0.8;
+        this._friction = friction;
         this._accel = negationSpeed;
         this._sx = speedX;
         this._sy = speedY;
@@ -13,7 +13,7 @@ class KnockBackEffect extends Effect {
     onAppliedToEntity(entity, entityManager, deltaTime) {
         super.onAppliedToEntity(entity, entityManager, deltaTime);
         entity.vel.x = this._sx;
-        entity.vel.y = this._sy / (this._tolerance / 10);
+        entity.vel.y = this._sy /// (this._tolerance / 10);
     }
 
     effects(entity, entityManager, deltaTime) {

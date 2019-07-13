@@ -9,7 +9,13 @@ class AttackWeapon extends WeaponItem {
         super(x, y);
         this._modAbility = new ModAbility(5, 5);
         this._superAbility = new SuperAbility(3, 30, 20);
+        this._superCharge = 0;
+        this._modCoolDown = 0;
         this.configureAttackStats(2, 10, 1, 600);
+        this.addDynamicSnapShotData([
+            "_superCharge",
+            "_modCoolDown"
+        ]);
     }
 
     get superCharge() {
@@ -87,7 +93,7 @@ class AttackWeapon extends WeaponItem {
 
         if (player.input.mouseHeldDown(1)) {
             if (this._currentFireTime <= 0 && !this._reloading) {
-                this._currentFireTime = 60/this._fireRate;
+                this._currentFireTime = 60 / this._fireRate;
                 if (this._currentAmmo >= this._ammoPerShot) {
                     this.fire(player, entityManager, deltaTime);
                     this._currentAmmo -= this._ammoPerShot;
@@ -117,6 +123,8 @@ class AttackWeapon extends WeaponItem {
         this.listenToInput(player, entityManager, deltaTime);
         this._modAbility.update(this, entityManager, deltaTime);
         this._superAbility.update(this, entityManager, deltaTime);
+        this._superCharge = this.superCharge;
+        this._modCoolDown = this._modAbility._currentCoolDown;
 
         if (this._reloading) {
             this._currentReloadTime -= deltaTime;

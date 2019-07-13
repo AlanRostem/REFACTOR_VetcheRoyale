@@ -10,6 +10,7 @@ class Loot extends Interactable {
     cast(x, y) {
         this.vel.x = x;
         this.vel.y = y;
+        console.log(x, y)
     }
 
     update(entityManager, deltaTime) {
