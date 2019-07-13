@@ -10,6 +10,11 @@ class ModAbility {
         this._onCoolDown = false;
     }
 
+    configureStats(duration, coolDown) {
+        this._maxDuration = duration;
+        this._maxCoolDown = coolDown;
+    }
+
     update(composedWeapon, entityManager, deltaTime) {
         if (this._active) {
             this.buffs(composedWeapon, entityManager, deltaTime);

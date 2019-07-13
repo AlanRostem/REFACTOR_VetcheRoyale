@@ -98,6 +98,8 @@ class KE_6H extends AttackWeapon {
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticDetonation = true;
         };
+
+        this._superAbility.configureStats(0, 3, 17);
     }
 
     get kineticDetonation() {

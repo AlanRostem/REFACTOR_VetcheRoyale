@@ -4,12 +4,18 @@ class SuperAbility {
         this._maxDuration = duration;
 
         this._currentCharge = 0;
-        this._currentChargeTickTime = 0;
+        this._currentChargeTickTime = 3;
         this._killChargeGain = chargeGainPerKill;
         this._tickChargeGain = chargeGainPerTick;
 
         this._fullyCharged = false;
         this._active = false;
+    }
+
+    configureStats(duration, tickChargeGain, killChargeGain) {
+        this._maxDuration = duration;
+        this._tickChargeGain = tickChargeGain;
+        this._killChargeGain = killChargeGain;
     }
 
     update(composedWeapon, entityManager, deltaTime) {
