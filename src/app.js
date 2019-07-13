@@ -36,6 +36,6 @@ server.listen(3000);
 console.log("Vetche Royale online!");
 
 var io = require('socket.io').listen(server);
-var Game = require("./server/Game/Game.js");
+var Game = require("./server/Game/Matches/Game.js");
 var game = new Game(io);
 game.start();

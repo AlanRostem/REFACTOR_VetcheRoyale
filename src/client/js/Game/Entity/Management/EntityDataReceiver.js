@@ -1,14 +1,15 @@
 // Manages inbound entity data packs from the server.
 // This singleton class also renders those entities.
 import CEntity from "../CEntity.js"
+import EntityTypeSpawner from "./EntityTypeSpawner.js";
+
 export default class EntityDataReceiver {
 
-    _previousDataContainer = {};
-    _container = {};
-    _isClient = false;
 
-    static _entityTypeSpawner = {}; // Map container with class constructors mapped to respective entities
+
     constructor(client) {
+        this._isClient = false;
+        this._container = {};
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
 
@@ -18,7 +19,7 @@ export default class EntityDataReceiver {
 
     addEntityFromDataPack(dataPack, client) {
         // TODO: Add the ability to spawn an entity based on class type
-        this._container[dataPack._id] = new CEntity(dataPack);
+        this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack);
         if (dataPack._id === client.id) {
             this._isClient = true;
         }

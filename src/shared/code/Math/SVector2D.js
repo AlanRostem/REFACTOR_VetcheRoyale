@@ -53,8 +53,6 @@ class Vector2D {
     }
 
     static angle(a, b) {
-        typeCheck.instance(Vector2D, a);
-        typeCheck.instance(Vector2D, b);
         let x = b.x - a.x;
         let y = b.y - a.y;
         return Math.atan2(y, x)
@@ -62,10 +60,6 @@ class Vector2D {
 
     static intersect(a, b, c, d)
     {
-        typeCheck.instance(Vector2D, a);
-        typeCheck.instance(Vector2D, b);
-        typeCheck.instance(Vector2D, c);
-        typeCheck.instance(Vector2D, d);
 
         const r = new Vector2D (b.x - a.x, b.y - a.y);
         const s = new Vector2D (d.x - c.x, d.y- c.y);
@@ -78,10 +72,6 @@ class Vector2D {
 
     static getIntersectedPos(a, b, c, d)
     {
-        typeCheck.instance(Vector2D, a);
-        typeCheck.instance(Vector2D, b);
-        typeCheck.instance(Vector2D, c);
-        typeCheck.instance(Vector2D, d);
 
         const r = new Vector2D (b.x - a.x, b.y - a.y);
         const s = new Vector2D (d.x - c.x, d.y- c.y);

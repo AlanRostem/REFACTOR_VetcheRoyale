@@ -1,19 +1,12 @@
 // Client side entity instance. Used for rendering
 // and other potential entity management on the client.
 import R from "../../Graphics/Renderer.js"
-import Vector2D from "../../../../shared/Math/CVector2D.js";
-import {vectorLinearInterpolation} from "../../../../shared/Math/CCustomMath.js";
-import Constants from "../../../../shared/Constants.js";
-import MyClient from "../../Networking/MyClient.js"
+import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
-import Scene from "../Scene.js"
 
 
 export default class CEntity {
         constructor(initDataPack) {
-        this._displayPos = new Vector2D(initDataPack._pos._x, initDataPack._pos._y);
-
-        this._serverState = initDataPack;
         this._output = initDataPack;
 
         this._dataBuffer = new EntitySnapshotBuffer(Constants.MAX_ENTITY_BUFFER_SIZE, initDataPack);

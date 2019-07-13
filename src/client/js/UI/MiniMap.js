@@ -72,18 +72,7 @@ export default class MiniMap extends UIElement {
         this.drawEvent();
     }
 
-    static event = class {
-        constructor(nvn, x, y, t, c) {
-            this.name = nvn;
-            this.pos = new Vector2D(x, y);
-            this.color = c;
-            this.time = t;
-        }
 
-        update() {
-            this.time -= Game.deltaTime / 1000;
-        }
-    };
 
     addEvent(name, evt, time, color) {
 
@@ -120,3 +109,16 @@ export default class MiniMap extends UIElement {
         }
     }
 }
+
+MiniMap.event = class {
+    constructor(nvn, x, y, t, c) {
+        this.name = nvn;
+        this.pos = new Vector2D(x, y);
+        this.color = c;
+        this.time = t;
+    }
+
+    update() {
+        this.time -= Game.deltaTime / 1000;
+    }
+};

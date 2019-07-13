@@ -1,8 +1,8 @@
 // Class that should compose all data pack
 // exporting for every entity in the game.
 
-var typeCheck = require("../../../../shared/Debugging/StypeCheck.js");
-var SEntity = require("../SEntity.js");
+var typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
+var Entity = require("../SEntity.js");
 
 // TODO: Look at why including Entity apparently works...
 
@@ -11,9 +11,6 @@ class SnapShotGenerator {
     // The 2 last parameters are arrays with strings of the
     // entity's specified properties.
     constructor(composedEntity, referenceValues, dynamicValues = []) {
-        typeCheck.instance(Entity, composedEntity);
-        typeCheck.instance(Array, referenceValues);
-        typeCheck.instance(Array, dynamicValues);
 
         // Pass in constants or reference objects that
         // are updated in referenceValues.
@@ -23,6 +20,9 @@ class SnapShotGenerator {
         this._dynamicValues = dynamicValues;
 
         this._snapShot = {};
+
+        this._snapShot.entityType = composedEntity.constructor.name;
+
         for (let key of referenceValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
@@ -58,14 +58,14 @@ class SnapShotGenerator {
         for (let key of dynamicValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
-                    " does not have property " + key + " in reference values.");
+                    " does not have property " + key + " in dynamic values.");
             }
 
             if (this._snapShot.hasOwnProperty(key)) {
                 throw new Error("Added duplicate dynamic value: " + key);
             }
+            this._dynamicValues.push(key);
             this._snapShot[key] = composedEntity[key];
-            this._dynamicValues[key] = composedEntity[key];
         }
     }
 
@@ -79,6 +79,7 @@ class SnapShotGenerator {
     }
 
     export() {
+
         return this._snapShot;
     }
 

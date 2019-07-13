@@ -7,7 +7,11 @@ class ProximityEntityManager extends EntityManager {
     constructor(entity) {
         super(false);
         this._entRef = entity;
-        this._qtBounds = new Rect(entity.center.x, entity.center.y, 320, 160);
+        this._qtBounds = new Rect(entity.center.x, entity.center.y,
+            // These rectangle bounds start from the center, so the
+            // actual entity check range would be a 320*2 by 160*2
+            // rectangle around the entity.
+            320, 160);
     }
 
     addEntity(entity) {
@@ -16,7 +20,6 @@ class ProximityEntityManager extends EntityManager {
 
     removeEntity(id) {
         delete this._container[id];
-        delete this._dataBox[id];
     }
 
     quadTreePlacement(entityManager) {
@@ -37,8 +40,9 @@ class ProximityEntityManager extends EntityManager {
                 if (!this.exists(e.id)) {
                     this.addEntity(e);
                 } else {
+                    this._entRef.forEachNearbyEntity(e, entityManager);
                     if (this._entRef.overlapEntity(e)) {
-                        this._entRef.onEntityCollision(e);
+                        this._entRef.onEntityCollision(e, entityManager);
                     }
                     if (e.toRemove || !entityManager.exists(e.id) || !this._qtBounds.myContains(e)) {
                         this.removeEntity(e.id);

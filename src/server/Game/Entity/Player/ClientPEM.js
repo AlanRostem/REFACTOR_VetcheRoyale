@@ -13,6 +13,7 @@ class ClientPEM extends ProximityEntityManager {
 
     removeEntity(id) {
         super.removeEntity(id);
+        delete this._dataBox[id];
         this._entRef.client.emit("removeEntity", id);
     }
 

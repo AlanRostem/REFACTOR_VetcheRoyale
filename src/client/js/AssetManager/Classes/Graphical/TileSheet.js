@@ -1,5 +1,5 @@
 import SpriteSheet from "./SpriteSheet.js";
-import R from "../../Graphics/Renderer.js";
+import R from "../../../Graphics/Renderer.js";
 
 export default class TileSheet extends SpriteSheet {
     constructor(src, tileSize, map) {

@@ -2,20 +2,26 @@ import InputListener from "../InputListener.js"
 import R from "../Graphics/Renderer.js";
 export default class MyClient {
 
-    static _ping = 1;
-
     constructor(socket) {
         this._socket = socket;
         this.id = socket.id;
         this._inputListener = new InputListener(this);
 
-        [32, 83, 68, 65, 87].forEach(keyCode => {
+        [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
+        });
+
+        [1, 2, 3].forEach(mouseButton => {
+            this.addMouseEmitter(mouseButton);
         });
 
         this.defineSocketEvents();
         this._startTime = Date.now();
         this._latency = Date.now() - this._startTime;
+    }
+
+    get input() {
+        return this._inputListener;
     }
 
     // Map a key code to the input listener with a
@@ -24,13 +30,26 @@ export default class MyClient {
     // is sent to the server.
     addKeyEmitter(keyCode, callback) {
         if (callback === undefined) {
-            this._inputListener.addMapping(keyCode, keyState => {
+            this._inputListener.addKeyMapping(keyCode, keyState => {
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
             });
         } else {
-            this._inputListener.addMapping(keyCode, keyState => {
+            this._inputListener.addKeyMapping(keyCode, keyState => {
                 callback(keyState);
                 this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
+            });
+        }
+    }
+
+    addMouseEmitter(mouseButton, callback) {
+        if (callback === undefined) {
+            this._inputListener.addMouseMapping(mouseButton, mouseState => {
+                this.emit("mouseEvent", {mouseButton: mouseButton, mouseState: mouseState});
+            });
+        } else {
+            this._inputListener.addMouseMapping(mouseButton, mouseState => {
+                callback(mouseState);
+                this.emit("mouseEvent", {mouseButton: mouseButton, mouseState: mouseState});
             });
         }
     }
@@ -55,7 +74,7 @@ export default class MyClient {
         this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);
         if (e) {
-            R.camera.update(e._output._pos);
+            R.camera.update(e._output._center);
         }
     }
 
@@ -86,11 +105,7 @@ export default class MyClient {
         this.on('broadcast-newPlayer', data => {
            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
-
-
-        // TODO: Remove test
-        this.on("t_getQuadTree", data => {
-
-        });
     }
 }
+
+MyClient._ping = 1;

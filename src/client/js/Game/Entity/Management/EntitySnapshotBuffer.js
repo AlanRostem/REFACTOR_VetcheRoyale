@@ -1,11 +1,11 @@
 // Buffers data inbound packs of entities
 // from the server. Composed in an entity.
 
-import Constants from "../../../../../shared/Constants.js";
+import Constants from "../../../../../shared/code/Tools/Constants.js";
 import MyClient from "../../../Networking/MyClient.js";
 import Scene from "../../Scene.js";
-import Vector2D from "../../../../../shared/Math/CVector2D.js";
-import {vectorLinearInterpolation} from "../../../../../shared/Math/CCustomMath.js";
+import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
+import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 
 Number.prototype.fixed = function(n) { n = n || 3; return parseFloat(this.toFixed(n)); };
 

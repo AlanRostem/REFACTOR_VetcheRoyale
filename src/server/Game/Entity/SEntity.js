@@ -1,8 +1,9 @@
-Vector2D = require("../../../shared/Math/SVector2D");
-typeCheck = require("../../../shared/Debugging/StypeCheck.js");
+Vector2D = require("../../../shared/code/Math/SVector2D");
+typeCheck = require("../../../shared/code/Debugging/StypeCheck.js");
 Tile = require("../TileBased/Tile.js");
 SnapShotGenerator = require("./Management/SnapShotGenerator.js");
 ProximityEntityManager = require("./Management/ProximityEntityManager.js");
+EntityCollisionCompositor = require("./Management/EntityCollisionCompositor.js");
 
 class SEntity {
     constructor(x, y, width, height) {
@@ -14,8 +15,10 @@ class SEntity {
         this._height = height;
         this._id = Math.random();
         this._removed = false;
+        this._movementState = {
+            main: "undefined",
+        };
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
-
         this._snapShotGenerator = new SnapShotGenerator(this,
         [
             "_id",
@@ -23,15 +26,17 @@ class SEntity {
             "_vel",
             "_width",
             "_height",
+            "_movementState",
         ],
         [
             "_removed",
             "_color",
-
         ]);
 
         this._entitiesInProximity = new ProximityEntityManager(this);
 
+        // TODO: Make collision composition static.
+        this._collisionCompositor = new EntityCollisionCompositor(this);
 
         this._collisionConfig = {
             collision: true, // Tile collision
@@ -49,6 +54,18 @@ class SEntity {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
+    }
+
+    addCollisionListener(typeName, callback) {
+        this._collisionCompositor.addCollisionListener(typeName, callback);
+    }
+
+    addDynamicSnapShotData(array) {
+        this._snapShotGenerator.addDynamicValues(this, array);
+    }
+
+    addStaticSnapShotData(array) {
+        this._snapShotGenerator.addReferenceValues(this, array);
     }
 
     initFromEntityManager(entityManager) {
@@ -173,7 +190,7 @@ class SEntity {
 
         this.side.reset();
 
-        if (!this._collisionConfig.static){}
+        if (!this._collisionConfig.static)
         this.moveY(this._vel.y, deltaTime);
         if (this._collisionConfig.collision)
             this.tileCollisionY(entityManager.tileMap, deltaTime);
@@ -187,11 +204,17 @@ class SEntity {
         this.pos.y = Math.round(this.pos.y);
     }
 
-    onEntityCollision(entity) {
+    onEntityCollision(entity, entityManager) {
+        this._collisionCompositor.applyCollisionsEffects(entity, entityManager);
+    }
+
+    forEachNearbyEntity(entity, entityManager) {
+        // Override here
     }
 
     update(entityManager, deltaTime) {
         this.physics(entityManager, deltaTime);
+        this._entitiesInProximity.update(entityManager, deltaTime);
     }
 
     updateDataPack(entityManager, deltaTime) {
