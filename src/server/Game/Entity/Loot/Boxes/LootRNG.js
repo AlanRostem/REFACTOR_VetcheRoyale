@@ -1,4 +1,7 @@
 const KE_6H = require("../Weapons/KE_6H.js");
+const Ammo = require("../Multanium/Ammo.js");
+const Charge = require("../Multanium/Charge.js");
+
 
 const LootRNG = {
     _levelMap: {
@@ -10,6 +13,8 @@ const LootRNG = {
 
     setup() {
         LootRNG.setLootConstructor(3, KE_6H);
+        LootRNG.setLootConstructor(3, Charge);
+        LootRNG.setLootConstructor(3, Ammo);
     },
 
     setLootConstructor: (level, constructor) => {

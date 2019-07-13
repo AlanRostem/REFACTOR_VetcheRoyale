@@ -61,7 +61,7 @@ class WeaponItem extends Loot {
     }
 
     onPlayerInteraction(player, entityManager) {
-        if (!this._equippedToPlayer) {
+        if (!this._equippedToPlayer && !player.inventory.weapon) {
             super.onPlayerInteraction(player, entityManager);
             this.equip(player);
         }
