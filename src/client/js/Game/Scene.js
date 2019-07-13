@@ -9,6 +9,8 @@ import UI from "../UI/UI.js";
 import MiniMap from "../UI/MiniMap.js";
 import KelvinBar from "../UI/KelvinBar.js";
 import CrossHair from "../UI/Crosshair.js";
+import HPBar from "../UI/HPBar.js";
+
 
 const Scene = {
     _deltaTime: 0,
@@ -27,6 +29,7 @@ const Scene = {
             UI.setup(() => {
                 UI.append(new MiniMap(Scene._t_tm));
                 UI.append(new KelvinBar()); // TODO: Look in file Karli fix
+                UI.append(new HPBar());     // TODO: Look in file Karli fix
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();
