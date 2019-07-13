@@ -6,7 +6,7 @@ import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
 
 
 export default class CEntity {
-        constructor(initDataPack) {
+    constructor(initDataPack) {
         this._output = initDataPack;
 
         this._dataBuffer = new EntitySnapshotBuffer(Constants.MAX_ENTITY_BUFFER_SIZE, initDataPack);
@@ -43,17 +43,12 @@ export default class CEntity {
     }
 
     draw() {
-        if (this._output._qtBounds) {
-            var rect = this._output._qtBounds;
-            R.ctx.strokeStyle = "red";
-            R.ctx.strokeRect(
-                rect.x - rect.w + R.camera.boundPos.x,
-                rect.y - rect.h + R.camera.boundPos.y,
-                rect.w * 2, rect.h * 2);
-        }
         R.drawRect(this._color,
             this._output._pos._x /*+ (this._output._vel._x * Scene.deltaTime | 0) */,
             this._output._pos._y /*+ (this._output._vel._y * Scene.deltaTime | 0) */,
             this._width, this._height, true);
+        R.drawText(this._output._eType,
+            this._output._pos._x - R.ctx.measureText(this._output._eType).width / 2,
+            this._output._pos._y, "white", true, 8);
     }
 }

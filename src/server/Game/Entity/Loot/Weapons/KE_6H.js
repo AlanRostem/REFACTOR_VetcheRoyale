@@ -122,4 +122,5 @@ class KE_6H extends AttackWeapon {
 
 }
 
+
 module.exports = KE_6H;

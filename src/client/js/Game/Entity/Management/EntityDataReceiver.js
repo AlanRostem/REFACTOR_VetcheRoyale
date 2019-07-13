@@ -18,7 +18,7 @@ export default class EntityDataReceiver {
     }
 
     addEntityFromDataPack(dataPack, client) {
-        // TODO: Add the ability to spawn an entity based on class type
+        if (dataPack._removed) return;
         this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack);
         if (dataPack._id === client.id) {
             this._isClient = true;

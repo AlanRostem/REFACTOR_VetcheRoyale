@@ -13,3 +13,8 @@ body {
     cursor: none;
     overflow: hidden;
 }
+
+@font-face {
+    font-family: Code8x8;
+    src: url(Code8x8.ttf);
+}

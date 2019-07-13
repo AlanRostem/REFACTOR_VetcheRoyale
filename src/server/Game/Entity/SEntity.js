@@ -15,6 +15,7 @@ class SEntity {
         this._height = height;
         this._id = Math.random();
         this._removed = false;
+        this._eType = this.constructor.name;
         this._movementState = {
             main: "undefined",
         };
@@ -31,6 +32,7 @@ class SEntity {
         [
             "_removed",
             "_color",
+            "_eType"
         ]);
 
         this._entitiesInProximity = new ProximityEntityManager(this);
