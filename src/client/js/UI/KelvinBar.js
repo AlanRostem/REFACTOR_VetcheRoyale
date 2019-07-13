@@ -42,6 +42,7 @@ export default class KelvinBar extends UIElement {
                     this.liquidTopCut.y = 0;
                 }
             } else {
+                this.charge = 0;
             }
 
             //this.hasWeapon = !(ClientEntity.getEntity(this.equippedGunID) === undefined || !ClientEntity.getEntity(this.equippedGunID).boundToPlayer);
