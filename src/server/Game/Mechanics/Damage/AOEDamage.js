@@ -3,10 +3,10 @@ const AOELOSScanner = require("../Scanners/AOELOSScanner.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 class AOEDamage extends Damage {
-    constructor(x, y, radius, value) {
+    constructor(x, y, radius, value, exceptions = []) {
         super(value);
         this._pos = new Vector2D(x, y);
-        this._scanner = new AOELOSScanner(radius);
+        this._scanner = new AOELOSScanner(radius, exceptions);
         this._scanner.onEntityHit = (entity, entityManager, angle) => {
             this.inflict(entity, entityManager, angle);
         }
