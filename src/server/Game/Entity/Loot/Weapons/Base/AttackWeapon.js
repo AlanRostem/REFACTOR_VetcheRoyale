@@ -5,10 +5,10 @@ const Projectile = require("../Other/Projectile.js");
 
 // Composition abstraction class for the weapon abilities
 class AttackWeapon extends WeaponItem {
-    constructor(x, y) {
+    constructor(x, y, modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15) {
         super(x, y);
-        this._modAbility = new ModAbility(5, 5);
-        this._superAbility = new SuperAbility(3, 30, 20);
+        this._modAbility = new ModAbility(modDuration, modCoolDown);
+        this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
         this._superCharge = 0;
         this._modCoolDown = 0;
         this.configureAttackStats(2, 10, 1, 600);
@@ -16,6 +16,10 @@ class AttackWeapon extends WeaponItem {
             "_superCharge",
             "_modCoolDown"
         ]);
+    }
+
+    get isSuperActive() {
+        return this._superAbility._active;
     }
 
     get superCharge() {

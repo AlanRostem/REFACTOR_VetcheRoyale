@@ -90,16 +90,13 @@ class KineticBomb extends Projectile {
 
 class KE_6H extends AttackWeapon {
     constructor(x, y) {
-        super(x, y);
+        super(x, y, 0, 0, 0);
         this._detonate = false;
         this.configureAttackStats(2.5, 5, 1, 100);
-        this._modAbility._maxCoolDown = 0;
-        this._modAbility._maxDuration = 0;
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticDetonation = true;
         };
 
-        this._superAbility.configureStats(0, 3, 17);
     }
 
     get kineticDetonation() {

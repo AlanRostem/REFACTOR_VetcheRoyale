@@ -19,10 +19,9 @@ class Game {
 
         for (var i = 0; i < 5; i++) {
             this.entityManager.spawnEntity(
-                142 * Tile.SIZE + Tile.SIZE * 5 * i,
+                142 * Tile.SIZE + Tile.SIZE * 8 * i,
                 202 * Tile.SIZE,
-                new LootCrate(0, 0, 3)
-            );
+                new LootCrate(0, 0, 3));
         }
     }
 
