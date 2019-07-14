@@ -7,8 +7,8 @@ export default class HPBar extends UIElement {
         super("hpbar", 0, 0, 32, 32);
         this.src = AssetManager.get("ui/ui.png");
 
-        this.glassTube = new Vector2D(80, 12);
-        this.HPjuice = new Vector2D(76, 8);
+        this.glassTube = new Vector2D(54, 12);
+        this.HPjuice = new Vector2D(50, 8);
 
         this.HPlength = 0;
     }
