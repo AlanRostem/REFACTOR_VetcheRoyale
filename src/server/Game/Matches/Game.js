@@ -17,11 +17,13 @@ class Game {
         this._lastTime = 0;
         this._tickRate = 60; // Hz
 
-        this.entityManager.spawnEntity(
-            142 * Tile.SIZE,
-            201 * Tile.SIZE,
-            new LootCrate(0, 0, 3)
-        );
+        for (var i = 0; i < 5; i++) {
+            this.entityManager.spawnEntity(
+                142 * Tile.SIZE + Tile.SIZE * 5 * i,
+                202 * Tile.SIZE,
+                new LootCrate(0, 0, 3)
+            );
+        }
     }
 
     update() {

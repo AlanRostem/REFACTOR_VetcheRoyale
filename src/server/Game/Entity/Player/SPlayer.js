@@ -138,7 +138,9 @@ class Player extends Alive {
 
     isTeammate(player) {
         if (player instanceof Player) {
-            return player.team.name === this.team.name;
+            if (player.team && this.team) {
+                return player.team.name === this.team.name;
+            }
         }
         return false;
     }

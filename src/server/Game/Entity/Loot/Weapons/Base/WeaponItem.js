@@ -69,6 +69,6 @@ class WeaponItem extends Loot {
 }
 
 WeaponItem.DROP_KEY = 71;
-WeaponItem.DROP_SPEED = 150;
+WeaponItem.DROP_SPEED = 200;
 
 module.exports = WeaponItem;

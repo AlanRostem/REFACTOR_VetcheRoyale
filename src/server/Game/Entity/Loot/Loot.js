@@ -30,6 +30,6 @@ class Loot extends Interactable {
     }
 }
 
-Loot.AIR_FRICTION = 0.95;
+Loot.AIR_FRICTION = 0.9;
 
 module.exports = Loot;

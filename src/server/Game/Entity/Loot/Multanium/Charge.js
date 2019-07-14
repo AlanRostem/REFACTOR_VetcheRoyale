@@ -14,8 +14,7 @@ class Charge extends Bottle {
     addToInventory(inventory) {
         super.addToInventory(inventory);
         // TODO: Remove test:
-        console.log("Charged up weapon " + inventory.weapon.constructor.name + " with " + inventory.weapon.superCharge + "% to",
-            (inventory.weapon.superCharge += this._amount) + "%");
+        inventory.weapon.superCharge += this._amount;
     }
 
     onPlayerInteraction(player, entityManager) {
