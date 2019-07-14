@@ -48,7 +48,7 @@ export default class CEntity {
             this._output._pos._y /*+ (this._output._vel._y * Scene.deltaTime | 0) */,
             this._width, this._height, true);
         R.drawText(this._output._eType,
-            this._output._pos._x - R.ctx.measureText(this._output._eType).width / 4,
+            this._output._pos._x - R.ctx.measureText(this._output._eType).width / 3,
             this._output._pos._y, "white", true);
     }
 }
