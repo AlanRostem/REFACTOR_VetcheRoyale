@@ -8,7 +8,7 @@ export default class EntityDataReceiver {
 
 
     constructor(client) {
-        this._isClient = false;
+        this._clientRef = client;
         this._container = {};
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
@@ -19,14 +19,10 @@ export default class EntityDataReceiver {
 
     addEntityFromDataPack(dataPack, client) {
         //if (dataPack._removed) return;
-        this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack);
+        (this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack)).onClientSpawn(dataPack, client);
         if (dataPack._id === client.id) {
             this._isClient = true;
         }
-    }
-
-    get isClient() {
-        return this._isClient;
     }
 
     getEntity(entityData) {
@@ -38,6 +34,7 @@ export default class EntityDataReceiver {
     }
 
     removeEntity(id) {
+        this._container[id].onClientDelete(this._clientRef);
         delete this._container[id];
     }
 

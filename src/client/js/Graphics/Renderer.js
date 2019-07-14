@@ -105,7 +105,7 @@ const R = {
     drawText(str, x, y, color = "white", useCamera = false, size = 5) {
         R.context.save();
         R._ctx.font = size + "px CGpixel";
-        R.context.fillStyle = color;
+        R.context.fillStyle = "Blue";
         R.context.fillText(str,
             (x + (useCamera ? R._camera.boundPos.x : 0) | 0),
             (y + (useCamera ? R._camera.boundPos.y : 0) | 0),

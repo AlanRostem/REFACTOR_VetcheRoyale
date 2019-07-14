@@ -7,8 +7,8 @@ const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Player = require("../../Player/SPlayer.js");
 
 class AOEKnockBackDamage extends AOEDamage {
-    constructor(x, y, radius, knockBackSpeed, value) {
-        super(x, y, radius, value);
+    constructor(x, y, radius, knockBackSpeed, value, exceptions) {
+        super(x, y, radius, value, exceptions);
         this._knockBackSpeed = knockBackSpeed;
     }
 
@@ -23,12 +23,17 @@ class AOEKnockBackDamage extends AOEDamage {
 }
 
 class KineticBomb extends Projectile {
-    constructor(ownerID, weaponID, x, y, cos, sin) {
+    constructor(ownerID, weaponID, x, y, cos, sin, entityManager) {
         super(ownerID, x, y, 4, 4, cos, sin, 120, 0, false);
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30);
-        this._areaDmg = new AOEKnockBackDamage(x, y, Tile.SIZE * 4, 300, 15);
+
+
+        var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
+        exceptions.splice(exceptions.indexOf(ownerID));
+
+        this._areaDmg = new AOEKnockBackDamage(x, y, Tile.SIZE * 4, 300, 15, exceptions);
         this.vx = 0;
         this.vy = 0;
     }
@@ -90,16 +95,12 @@ class KineticBomb extends Projectile {
 
 class KE_6H extends AttackWeapon {
     constructor(x, y) {
-        super(x, y);
+        super(x, y, 0, 0, 0);
         this._detonate = false;
         this.configureAttackStats(2.5, 5, 1, 100);
-        this._modAbility._maxCoolDown = 0;
-        this._modAbility._maxDuration = 0;
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticDetonation = true;
         };
-
-        this._superAbility.configureStats(0, 3, 17);
     }
 
     get kineticDetonation() {
@@ -119,7 +120,7 @@ class KE_6H extends AttackWeapon {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(player.id, this.id, 0, 0,
                 player.input.mouseData.cosCenter,
-                player.input.mouseData.sinCenter));
+                player.input.mouseData.sinCenter, entityManager));
     }
 
 }

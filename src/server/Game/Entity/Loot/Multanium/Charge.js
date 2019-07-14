@@ -13,13 +13,12 @@ class Charge extends Bottle {
 
     addToInventory(inventory) {
         super.addToInventory(inventory);
-        // TODO: Remove test:
         inventory.weapon.superCharge += this._amount;
     }
 
     onPlayerInteraction(player, entityManager) {
         if (player.inventory.weapon) {
-            if (player.inventory.weapon.superCharge < 100) {
+            if (player.inventory.weapon.superCharge < 100 && !player.inventory.weapon.isSuperActive) {
                 super.onPlayerInteraction(player, entityManager);
             }
         }
