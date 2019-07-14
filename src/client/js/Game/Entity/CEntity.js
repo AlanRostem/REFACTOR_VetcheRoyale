@@ -3,6 +3,7 @@
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
+import AssetManager from "../../AssetManager/AssetManager.js"
 
 
 export default class CEntity {
@@ -26,6 +27,17 @@ export default class CEntity {
 
     get output() {
         return this._output;
+    }
+
+    onClientSpawn(dataPack, client) {
+
+    }
+
+    onClientDelete(client) {
+        if (this.output._eType === "Ammo") {
+            if (AssetManager.get("eatWeapon.ogg"))
+                AssetManager.get("eatWeapon.ogg").cloneNode().play();
+        }
     }
 
     update(deltaTime) {
