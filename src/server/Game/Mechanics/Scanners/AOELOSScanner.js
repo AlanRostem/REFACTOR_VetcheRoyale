@@ -12,6 +12,7 @@ class AOELOSScanner extends HitScanner {
     areaScan(ownerID, originPos, entityManager) {
         this._qtRange.x = originPos.x;
         this._qtRange.y = originPos.y;
+
         var entities = entityManager.quadTree.query(this._qtRange);
         for (var e of entities) {
             var angle = Math.atan2(

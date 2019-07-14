@@ -14,6 +14,10 @@ class Team {
         return this._arrayPlayers;
     }
 
+    createIDArray() {
+        return Object.keys(this._players);
+    }
+
     get name() {
         return this._name;
     }
