@@ -3,6 +3,7 @@
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
+import AssetManager from "../../AssetManager/AssetManager.js"
 
 
 export default class CEntity {
@@ -28,6 +29,17 @@ export default class CEntity {
         return this._output;
     }
 
+    onClientSpawn(dataPack, client) {
+
+    }
+
+    onClientDelete(client) {
+        if (this.output._eType === "Ammo") {
+            if (AssetManager.get("eatWeapon.ogg"))
+                AssetManager.get("eatWeapon.ogg").cloneNode().play();
+        }
+    }
+
     update(deltaTime) {
         //this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined);
         /*
@@ -49,6 +61,6 @@ export default class CEntity {
             this._width, this._height, true);
         R.drawText(this._output._eType,
             this._output._pos._x - R.ctx.measureText(this._output._eType).width / 4,
-            this._output._pos._y, "white", true);
+            this._output._pos._y, "blue", true);
     }
 }
