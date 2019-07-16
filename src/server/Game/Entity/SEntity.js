@@ -13,7 +13,7 @@ class SEntity {
         this._acc = new Vector2D(0, 0);
         this._width = width;
         this._height = height;
-        this._id = Math.random();
+        this._id = String.random();
         this._removed = false;
         this._eType = this.constructor.name;
         this._movementState = {

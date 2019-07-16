@@ -33,9 +33,9 @@ app.get('/', (req, res) => {
 
 server.listen(3000);
 
-console.log("Vetche Royale online!");
+console.log("Dome 24 online!");
 
 var io = require('socket.io').listen(server);
-var Game = require("./server/Game/Matches/Game.js");
-var game = new Game(io);
-game.start();
+var GameServer = require("./server/Networking/GameServer.js");
+var gameServer = new GameServer(io);
+gameServer.start();
