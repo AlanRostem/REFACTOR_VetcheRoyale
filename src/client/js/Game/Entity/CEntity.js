@@ -34,10 +34,7 @@ export default class CEntity {
     }
 
     onClientDelete(client) {
-        if (this.output._eType === "Ammo") {
-            if (AssetManager.get("eatWeapon.ogg"))
-                AssetManager.get("eatWeapon.ogg").cloneNode().play();
-        }
+
     }
 
     update(deltaTime) {

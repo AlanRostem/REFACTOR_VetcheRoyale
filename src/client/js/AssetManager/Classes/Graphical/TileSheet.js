@@ -7,7 +7,7 @@ export default class TileSheet extends SpriteSheet {
         super(src);
         this.tileSize = tileSize;
         AssetManager.addDownloadCallback(() => {
-            this.tilesPerRow = this.img.width / tileSize | 0;
+            this.tilesPerRow = (this.img.width / tileSize) | 0;
             this.image = this.paintImage(map);
         });
     }
@@ -20,10 +20,9 @@ export default class TileSheet extends SpriteSheet {
         for (var y = 0; y <= map.h; y++) {
             for (var x = 0; x <= map.w; x++) {
                 if (map.getID(x, y) > map.dontDrawID && map.withinRange(x, y)) {
-                    var tile = map.getID(x, y);
+                    var tile = map.getID(x, y) - 1;
                     var tileRow = Math.floor(tile / this.tilesPerRow);
                     var tileCol = Math.floor(tile % this.tilesPerRow);
-                    tileCol--;
                     this.drawCropped(
                         (x * this.tileSize + R.camera.boundPos.x),
                         (y * this.tileSize + R.camera.boundPos.y),
