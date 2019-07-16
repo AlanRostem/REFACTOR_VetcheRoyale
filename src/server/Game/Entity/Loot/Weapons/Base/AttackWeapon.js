@@ -15,6 +15,7 @@ class AttackWeapon extends WeaponItem {
         this.addDynamicSnapShotData([
             "_superCharge",
             "_modCoolDown",
+            "_currentAmmo"
         ]);
     }
 
