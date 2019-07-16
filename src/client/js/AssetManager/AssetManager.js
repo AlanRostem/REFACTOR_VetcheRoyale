@@ -131,6 +131,7 @@ class AssetManager {
     }
 
     get(path) {
+        if(this.cache[path] === undefined) console.error("Resource not found (" + path + "), check if in cfg file!");
         return this.cache[path];
     }
 

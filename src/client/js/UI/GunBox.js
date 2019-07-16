@@ -2,9 +2,9 @@ import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
 
-export default class HPBar extends UIElement {
+export default class GunBox extends UIElement {
     constructor() {
-        super("hpbar", 0, 0, 32, 32);
+        super("gunbox", 0, 0, 32, 32);
         this.src = AssetManager.get("ui/ui.png");
 
         this.glassTube = new Vector2D(54, 12); // Old 80 and 76
