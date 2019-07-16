@@ -19,7 +19,7 @@ class PlayerList extends ClientList {
 const DEFAULT_MAP = new STileMap("shared/res/tilemaps/lobby.json");
 
 class GameWorld extends EntityManager {
-    constructor(serverSocket, maxPlayers = 24, gameMap = DEFAULT_MAP) {
+    constructor(serverSocket, maxPlayers = 4, gameMap = DEFAULT_MAP) {
         super(true, gameMap);
         this.teamManager = new TeamManager();
         this._clients = new PlayerList();
@@ -55,6 +55,7 @@ class GameWorld extends EntityManager {
     }
 
     update(deltaTime) {
+        // Update the entities, then create data packs
         super.update(deltaTime);
         for (var id in this._clients.getContainer()) {
             var client = this._clients.getClient(id);

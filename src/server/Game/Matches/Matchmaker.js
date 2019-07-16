@@ -31,6 +31,8 @@ class Matchmaker {
             // TEST:
             if (!this._gameWorlds[this._lastCreatedWorldID].isFull) {
                 this.putPlayerInGame(id, this._lastCreatedWorldID);
+            } else {
+                this.createWorld(webSocket);
             }
         }
     }

@@ -27,6 +27,10 @@ class WebSocket {
         });
     }
 
+    get ioSocket() {
+        return this._socket;
+    }
+
     get clientList() {
         return this._clientList.getContainer();
     }

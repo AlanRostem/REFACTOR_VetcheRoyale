@@ -22,13 +22,11 @@ class GameServer {
         if (Date.now() > 0)
             this._deltaTime = (Date.now() - this._lastTime) / 1000;
 
-        if (this._deltaTime > 1)
+        if (this._deltaTime > 1) {
+            console.warn("High throttling! Check logs.");
             this._deltaTime = 0;
-
-        // Update the entities, then create data packs
-        this.matchMaker.update(this.mainSocket, this);
-
-
+        }
+        this.matchMaker.update(this.mainSocket.ioSocket, this);
         if (Date.now() > 0)
             this._lastTime = Date.now();
 
