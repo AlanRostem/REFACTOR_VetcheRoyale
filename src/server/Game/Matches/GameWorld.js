@@ -17,7 +17,7 @@ class PlayerList extends ClientList {
     }
 }
 
-const DEFAULT_MAP = new STileMap("shared/res/tilemaps/MegaMap.json");
+const DEFAULT_MAP = new STileMap("shared/res/tilemaps/lobby.json");
 
 class GameWorld extends EntityManager {
     constructor(serverSocket, gameMap = DEFAULT_MAP) {
@@ -27,8 +27,8 @@ class GameWorld extends EntityManager {
 
         for (var i = 0; i < 5; i++) {
             this.spawnEntity(
-                142 * Tile.SIZE + Tile.SIZE * 8 * i,
-                202 * Tile.SIZE,
+                61 * Tile.SIZE + Tile.SIZE * 8 * i,
+                105 * Tile.SIZE,
                 new LootCrate(0, 0, 3));
         }
     }
@@ -37,8 +37,8 @@ class GameWorld extends EntityManager {
         this._clients.addClient(client.id, client);
         this.teamManager.addPlayer(client.player);
         this.spawnEntity(
-            145 * Tile.SIZE,
-            202 * Tile.SIZE,
+            61 * Tile.SIZE,
+            105 * Tile.SIZE,
             client.player);
     }
 
@@ -50,7 +50,7 @@ class GameWorld extends EntityManager {
             // the data packs have been supplied, they
             // are queried to the client socket and then
             // emitted to the client.
-            client.update(this.entityManager);
+            client.update(this);
             if (client.removed) {
                 this._clients.removeClient(client.id)
             }
