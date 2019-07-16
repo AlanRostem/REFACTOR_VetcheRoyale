@@ -1,12 +1,15 @@
 import SpriteSheet from "./SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
+import AssetManager from "../../AssetManager.js"
 
 export default class TileSheet extends SpriteSheet {
     constructor(src, tileSize, map) {
         super(src);
         this.tileSize = tileSize;
-        this.tilesPerRow = this.img.width / tileSize | 0;
-        this.image = this.paintImage(map);
+        AssetManager.addDownloadCallback(() => {
+            this.tilesPerRow = this.img.width / tileSize | 0;
+            this.image = this.paintImage(map);
+        });
     }
 
     paintImage(map) {

@@ -6,14 +6,13 @@ import Scene from "../../../Game/Scene.js";
 export default class SpriteSheet {
     constructor(src) {
         this.src = src;
+        AssetManager.addDownloadCallback(() => {
+            this.img = AssetManager.get(this.src);
+        });
         this.offsetRects = new Map();
         this.posRect = new SpriteSheet.Rect(0, 0, 0, 0);
         this.animRect = new SpriteSheet.Rect(0, 0, 1, 1);
         this.offsetTileRect = new SpriteSheet.Rect(0, 0, 0, 0);
-    }
-
-    get img() {
-        return AssetManager.get(this.src);
     }
 
     bind(name, ox, oy, fw, fh) {
