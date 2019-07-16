@@ -154,7 +154,10 @@ class Player extends Alive {
     }
 
     remove() {
-        this.team.removePlayer(this);
+        super.remove();
+        if (this.team) {
+            this.team.removePlayer(this);
+        }
     }
 
     update(entityManager, deltaTime) {
