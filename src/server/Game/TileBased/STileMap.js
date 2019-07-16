@@ -13,7 +13,8 @@ class TileMap {
         this.tileSize = Tile.SIZE;
         this.types = {
             PASS: 0, // TODO: Remove test values
-            SOLID: 17 // TODO: Remove test values
+            SOLID: 17, // TODO: Remove test values
+            ONE_WAY: 0 // TODO: FIND CORRECT VALUE
         };
     }
 
