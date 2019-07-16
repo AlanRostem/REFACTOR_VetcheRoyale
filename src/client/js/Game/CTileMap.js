@@ -4,11 +4,11 @@ import JSONFile from "../AssetManager/Classes/Text/CJSONFile.js"
 export default class CTileMap {
     constructor() {
         var _this = this;
-        this.json = new JSONFile("tilemaps/MegaMap.json", object => {
+        this.json = new JSONFile("tilemaps/lobby.json", object => {
             _this.array = object.layers[0].data;
+            _this.w = object.width;
+            _this.h = object.height;
         });
-        this.w = 480;
-        this.h = 272;
         this.dontDrawID = 0;
     }
 
