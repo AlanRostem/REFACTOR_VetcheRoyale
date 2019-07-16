@@ -5,7 +5,6 @@ const Tile = require("../TileBased/Tile");
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const ClientList = require("../../Networking/ClientList.js");
 
-
 class PlayerList extends ClientList {
     constructor() {
         super();
@@ -20,10 +19,11 @@ class PlayerList extends ClientList {
 const DEFAULT_MAP = new STileMap("shared/res/tilemaps/lobby.json");
 
 class GameWorld extends EntityManager {
-    constructor(serverSocket, gameMap = DEFAULT_MAP) {
+    constructor(serverSocket, maxPlayers = 24, gameMap = DEFAULT_MAP) {
         super(true, gameMap);
         this.teamManager = new TeamManager();
         this._clients = new PlayerList();
+        this._maxPlayers = maxPlayers;
 
         for (var i = 0; i < 5; i++) {
             this.spawnEntity(
@@ -31,6 +31,18 @@ class GameWorld extends EntityManager {
                 105 * Tile.SIZE,
                 new LootCrate(0, 0, 3));
         }
+    }
+
+    get maxPlayers() {
+        return this._maxPlayers;
+    }
+
+    get playerCount() {
+        return this._clients.length;
+    }
+
+    get isFull() {
+        return this.playerCount === this.maxPlayers;
     }
 
     spawnPlayer(client) {
@@ -52,7 +64,7 @@ class GameWorld extends EntityManager {
             // emitted to the client.
             client.update(this);
             if (client.removed) {
-                this._clients.removeClient(client.id)
+                this._clients.removeClient(client.id);
             }
         }
     }

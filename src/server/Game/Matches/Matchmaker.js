@@ -29,7 +29,9 @@ class Matchmaker {
     checkQueuedPlayers(webSocket, server) {
         for (var id in this._queuedPlayers) {
             // TEST:
-            this.putPlayerInGame(id, this._lastCreatedWorldID);
+            if (!this._gameWorlds[this._lastCreatedWorldID].isFull) {
+                this.putPlayerInGame(id, this._lastCreatedWorldID);
+            }
         }
     }
 
