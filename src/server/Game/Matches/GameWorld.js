@@ -16,7 +16,7 @@ class PlayerList extends ClientList {
     }
 }
 
-const DEFAULT_MAP = TileMapConfigs.getMap("lobby");
+const DEFAULT_MAP = TileMapConfigs.getMap("MegaMap");
 
 class GameWorld extends EntityManager {
     constructor(serverSocket, maxPlayers = 4, gameMap = DEFAULT_MAP) {
@@ -27,8 +27,8 @@ class GameWorld extends EntityManager {
 
         for (var i = 0; i < 3; i++) {
             this.spawnEntity(
-                61 * Tile.SIZE + Tile.SIZE * 10 * i,
-                105 * Tile.SIZE,
+                150 * Tile.SIZE + Tile.SIZE * 10 * i,
+                202 * Tile.SIZE,
                 new LootCrate(0, 0, 3));
         }
     }
@@ -49,8 +49,8 @@ class GameWorld extends EntityManager {
         this._clients.addClient(client.id, client);
         this.teamManager.addPlayer(client.player);
         this.spawnEntity(
-            61 * Tile.SIZE,
-            105 * Tile.SIZE,
+            150 * Tile.SIZE,
+            202 * Tile.SIZE,
             client.player);
     }
 

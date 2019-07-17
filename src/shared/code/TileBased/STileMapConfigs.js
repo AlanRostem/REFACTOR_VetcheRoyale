@@ -12,6 +12,7 @@ const TileMapConfigs = {
     },
     setup() {
         this.createFromJSON("lobby", "shared/res/tilemaps/lobby.json");
+        this.createFromJSON("MegaMap", "shared/res/tilemaps/MegaMap.json");
     },
     getMap(name) {
         return this._maps[name];
