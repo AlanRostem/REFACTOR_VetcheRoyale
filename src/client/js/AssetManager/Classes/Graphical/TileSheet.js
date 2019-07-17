@@ -35,7 +35,7 @@ export default class TileSheet extends SpriteSheet {
         return canvas;
     }
 
-    draw(map) {
+    draw() {
         R.context.drawImage(this.image, R.camera.boundPos.x, R.camera.boundPos.y);
         /*
         R.context.drawImage(this.image,

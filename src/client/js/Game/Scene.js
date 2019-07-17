@@ -4,7 +4,7 @@
 import R from "../Graphics/Renderer.js"
 import AssetManager from "../AssetManager/AssetManager.js"
 import TileSheet from "../AssetManager/Classes/Graphical/TileSheet.js";
-import CTileMap from "./CTileMap.js";
+import CTileMap from "./TileBased/CTileMap.js";
 import UI from "../UI/UI.js";
 import MiniMap from "../UI/MiniMap.js";
 import KelvinBar from "../UI/KelvinBar.js";
@@ -12,23 +12,24 @@ import CrossHair from "../UI/Crosshair.js";
 import HPBar from "../UI/HPBar.js";
 import GunBox from "../UI/GunBox.js";
 
+import TileMapManager from "./TileBased/TileMapManager.js"
 
 const Scene = {
     _deltaTime: 0,
     _lastTime: 0,
     _entityManager: null,
     _clientRef: null,
-    _t_tm: new CTileMap(),
 
     get deltaTime() {
         return Scene._deltaTime;
     },
 
     setup() {
+        Scene.tileMaps = new TileMapManager();
+        Scene.tileMaps.createMap("MegaMap","tilemaps/MegaMap.json");
         AssetManager.addDownloadCallback(() => {
-            Scene.t_ts = new TileSheet("tileSet.png", 8, Scene._t_tm);
             UI.setup(() => {
-                UI.append(new MiniMap(Scene._t_tm));
+                UI.append(new MiniMap(Scene.tileMaps.getMap("MegaMap")));
                 UI.append(new KelvinBar()); // TODO: Look in file Karli fix
                 UI.append(new HPBar());     // TODO: Look in file Karli fix
                 UI.append(new GunBox());     // TODO: Look in file Karli fix
@@ -58,9 +59,7 @@ const Scene = {
     draw() {
         R.clear();
         if (AssetManager.done()) {
-            if (Scene.t_ts) {
-                Scene.t_ts.draw(Scene._t_tm);
-            }
+            Scene.tileMaps.getMap("MegaMap").draw();
             Scene._entityManager.drawEntities();
             UI.draw();
 
