@@ -25,9 +25,9 @@ class GameWorld extends EntityManager {
         this._clients = new PlayerList();
         this._maxPlayers = maxPlayers;
 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 3; i++) {
             this.spawnEntity(
-                61 * Tile.SIZE + Tile.SIZE * 8 * i,
+                61 * Tile.SIZE + Tile.SIZE * 10 * i,
                 105 * Tile.SIZE,
                 new LootCrate(0, 0, 3));
         }
