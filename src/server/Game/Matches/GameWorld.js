@@ -1,9 +1,9 @@
 const EntityManager = require("../Entity/Management/EntityManager.js");
-const STileMap = require("../TileBased/STileMap.js");
 const TeamManager = require("./TeamManager.js");
 const Tile = require("../TileBased/Tile");
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const ClientList = require("../../Networking/ClientList.js");
+const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
 
 class PlayerList extends ClientList {
     constructor() {
@@ -16,7 +16,7 @@ class PlayerList extends ClientList {
     }
 }
 
-const DEFAULT_MAP = new STileMap("shared/res/tilemaps/lobby.json");
+const DEFAULT_MAP = TileMapConfigs.getMap("lobby");
 
 class GameWorld extends EntityManager {
     constructor(serverSocket, maxPlayers = 4, gameMap = DEFAULT_MAP) {
