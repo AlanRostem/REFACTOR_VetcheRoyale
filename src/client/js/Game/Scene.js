@@ -10,6 +10,7 @@ import MiniMap from "../UI/MiniMap.js";
 import KelvinBar from "../UI/KelvinBar.js";
 import CrossHair from "../UI/Crosshair.js";
 import HPBar from "../UI/HPBar.js";
+import GunBox from "../UI/GunBox.js";
 
 
 const Scene = {
@@ -30,6 +31,7 @@ const Scene = {
                 UI.append(new MiniMap(Scene._t_tm));
                 UI.append(new KelvinBar()); // TODO: Look in file Karli fix
                 UI.append(new HPBar());     // TODO: Look in file Karli fix
+                UI.append(new GunBox());     // TODO: Look in file Karli fix
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();
