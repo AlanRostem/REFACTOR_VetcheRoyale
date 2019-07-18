@@ -3,8 +3,6 @@
 
 import R from "../Graphics/Renderer.js"
 import AssetManager from "../AssetManager/AssetManager.js"
-import TileSheet from "../AssetManager/Classes/Graphical/TileSheet.js";
-import CTileMap from "./TileBased/CTileMap.js";
 import UI from "../UI/UI.js";
 import MiniMap from "../UI/MiniMap.js";
 import KelvinBar from "../UI/KelvinBar.js";
@@ -15,6 +13,7 @@ import TileMapManager from "./TileBased/TileMapManager.js"
 const Scene = {
     _deltaTime: 0,
     _lastTime: 0,
+    _currentMap: "MegaMap",
     _entityManager: null,
     _clientRef: null,
 
@@ -22,14 +21,23 @@ const Scene = {
         return Scene._deltaTime;
     },
 
+    get currentMapName() {
+        return Scene._currentMap;
+    },
+
+    set currentMapName(val) {
+        Scene._currentMap = val;
+    },
+
     setup() {
         Scene.tileMaps = new TileMapManager();
-        Scene.tileMaps.createMap("MegaMap","tilemaps/MegaMap.json");
+        Scene.tileMaps.createMap("MegaMap", "tilemaps/MegaMap.json");
+        Scene.tileMaps.createMap("lobby", "tilemaps/lobby.json");
         AssetManager.addDownloadCallback(() => {
             UI.setup(() => {
                 UI.append(new MiniMap(Scene.tileMaps.getMap("MegaMap")));
-                UI.append(new KelvinBar()); // TODO: Look in file Karli fix
-                UI.append(new HPBar());     // TODO: Look in file Karli fix
+                UI.append(new KelvinBar());
+                UI.append(new HPBar());
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();
@@ -56,7 +64,7 @@ const Scene = {
     draw() {
         R.clear();
         if (AssetManager.done()) {
-            Scene.tileMaps.getMap("MegaMap").draw();
+            Scene.tileMaps.getMap(Scene.currentMapName).draw();
             Scene._entityManager.drawEntities();
             UI.draw();
 

@@ -8,7 +8,7 @@ const TileMap = require("../../../server/Game/TileBased/STileMap.js");
 const TileMapConfigs = {
     _maps: {},
     createFromJSON(name, src) {
-        this._maps[name] = new TileMap(src);
+        this._maps[name] = new TileMap(name, src);
     },
     setup() {
         this.createFromJSON("lobby", "shared/res/tilemaps/lobby.json");

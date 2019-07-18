@@ -5,7 +5,7 @@ var JSONFile = require("../../ResourceManagement/SJSONFile.js");
 // Specify global file path relative to app.js
 // for the JSON tile map file
 class TileMap {
-    constructor(src) {
+    constructor(name, src) {
         var json = new JSONFile(__dirname + "../../../../" + src);
         this.array = json.get().layers[0].data;
         this.w = json.get().width;
@@ -16,6 +16,11 @@ class TileMap {
             SOLID: 17, // TODO: Remove test values
             ONE_WAY: 0 // TODO: FIND CORRECT VALUE
         };
+        this._name = name;
+    }
+
+    get name() {
+        return this._name;
     }
 
     withinRange(x, y) {

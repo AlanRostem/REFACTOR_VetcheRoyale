@@ -33,6 +33,15 @@ class GameWorld extends EntityManager {
         }
     }
 
+    changeMap(name) {
+        this.tileMap = TileMapConfigs.getMap(name);
+        this._clients.forEach(client => {
+            client.emit("gameEvent-changeMap", {
+                mapName: name
+            });
+        });
+    }
+
     get maxPlayers() {
         return this._maxPlayers;
     }

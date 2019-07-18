@@ -1,5 +1,7 @@
 import InputListener from "../InputListener.js"
 import R from "../Graphics/Renderer.js";
+import Scene from "../Game/Scene.js"
+
 export default class MyClient {
 
     constructor(socket) {
@@ -104,6 +106,10 @@ export default class MyClient {
 
         this.on('broadcast-newPlayer', data => {
            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
+        });
+
+        this.on("gameEvent-changeMap", data => {
+            Scene.currentMapName = data.mapName
         });
     }
 }

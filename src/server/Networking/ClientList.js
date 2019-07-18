@@ -31,6 +31,12 @@ class ClientList {
             console.log("WARNING: Attempted to delete a non-existent client.")
         }
     }
+
+    forEach(callback) {
+        for (var id in this._container) {
+            callback(this._container[id]);
+        }
+    }
 }
 
 module.exports = ClientList;
