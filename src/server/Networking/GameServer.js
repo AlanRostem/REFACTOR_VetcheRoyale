@@ -6,7 +6,6 @@ const MatchMaker = require("../Game/Matches/Matchmaker.js");
 // Class composition of matches
 class GameServer {
     constructor(socket) {
-        this.entityManager = new EntityManager(true, new STileMap("shared/res/tilemaps/MegaMap.json"));
         this.matchMaker = new MatchMaker(socket);
         this.mainSocket = new WebSocket(socket, this.matchMaker);
         this._deltaTime = 0;
