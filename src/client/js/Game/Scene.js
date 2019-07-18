@@ -8,6 +8,8 @@ import MiniMap from "../UI/MiniMap.js";
 import KelvinBar from "../UI/KelvinBar.js";
 import CrossHair from "../UI/Crosshair.js";
 import HPBar from "../UI/HPBar.js";
+import GunBox from "../UI/GunBox.js";
+
 import TileMapManager from "./TileBased/TileMapManager.js"
 
 const Scene = {
@@ -38,6 +40,7 @@ const Scene = {
                 UI.append(new MiniMap(Scene.tileMaps.getMap("MegaMap")));
                 UI.append(new KelvinBar());
                 UI.append(new HPBar());
+                UI.append(new GunBox());
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();

@@ -41,8 +41,10 @@ export default class KelvinBar extends UIElement {
                     this.liquidTopCut.x = 0;
                     this.liquidTopCut.y = 0;
                 }
+                this.hasWeapon = true;
             } else {
                 this.charge = 0;
+                this.hasWeapon = false;
             }
 
             //this.hasWeapon = !(ClientEntity.getEntity(this.equippedGunID) === undefined || !ClientEntity.getEntity(this.equippedGunID).boundToPlayer);
@@ -68,11 +70,11 @@ export default class KelvinBar extends UIElement {
     draw() {
         //console.warn("meh");
         //var gun = ClientEntity.getEntity(this.equippedGunID);
+        if(this.hasWeapon) {
 
         R.ctx.save();
 
         var diff = this.liquidFill.y * this.charge / 100 | 0;
-
 
         // Draw Glass Tube
         R.ctx.drawImage(this.src, 0, 0, this.glassTube.x, this.glassTube.y, R.WIDTH - this.glassTube.x - 4 | 0, R.HEIGHT - this.glassTube.y - 4 | 0, this.glassTube.x, this.glassTube.y);
@@ -94,6 +96,7 @@ export default class KelvinBar extends UIElement {
         // Liquid Top
         R.ctx.drawImage(this.src, this.glassTube.x + this.liquidFill.x + this.liquidTopCut.x, this.liquidTopCut.y, this.liquidTop.x, this.liquidTop.y, R.WIDTH - this.glassTube.x / 2 - this.liquidTop.x / 2 - 4 | 0, R.HEIGHT - 9 - diff, this.liquidTop.x, this.liquidTop.y);
         R.ctx.restore();
+        }
     }
 
 }

@@ -7,39 +7,35 @@ export default class GunBox extends UIElement {
         super("gunbox", 0, 0, 32, 32);
         this.src = AssetManager.get("ui/ui.png");
 
-        this.glassTube = new Vector2D(54, 12); // Old 80 and 76
-        this.HPjuice = new Vector2D(50, 8);
+        this.frame = new Vector2D(64, 32);
 
-        this.HPlength = 0;
+        this.hasWeapon = false;
+
     }
 
     update(client, entityList) {
-        this.HPlength = client.player.output._hp * this.HPjuice.x / 100 | 0;
+        if (client.player) {
+            var gun = entityList.getEntityByID(client.player.output._invWeaponID);
+            gun ? this.hasWeapon = true : this.hasWeapon = false;
+        }
     }
 
     draw() {
-        R.ctx.save();
-
-        if (this.HPlength === 0) {
-            return; // TODO: Remove this. I added this so the FireFox bug doesn't happen.
+        if(this.hasWeapon) {
+            R.ctx.save();
+            // Liquid Inside
+            R.ctx.drawImage(this.src,
+                0,
+                36,
+                this.frame.x, // TODO: Cannot be 0 cus of FireFox
+                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                R.WIDTH - 92,
+                R.HEIGHT - 36,
+                this.frame.x, // TODO: Cannot be 0 cus of FireFox
+                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+            );
+            R.ctx.restore();
         }
-
-        // Liquid Inside
-        R.ctx.drawImage(this.src,
-            0,
-            this.glassTube.y,
-            this.HPlength, // TODO: Cannot be 0 cus of FireFox
-            this.HPjuice.y,  // TODO: Cannot be 0 cus of FireFox
-            6,
-            R.HEIGHT - this.glassTube.y - 2 ,
-            this.HPlength, // TODO: Cannot be 0 cus of FireFox
-            this.HPjuice.y,  // TODO: Cannot be 0 cus of FireFox
-        );
-
-        // Draw Glass Tube
-        R.ctx.drawImage(this.src, 0, 0, this.glassTube.x, this.glassTube.y, 4, R.HEIGHT - this.glassTube.y - 4 | 0, this.glassTube.x, this.glassTube.y);
-
-        R.ctx.restore();
     }
 
 }
