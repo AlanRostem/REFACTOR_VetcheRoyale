@@ -8,7 +8,6 @@ String.random = () => {
 
 
 class WebSocket {
-    // TODO: Handle connections on the matchmaker
     constructor(socket, matchMaker) {
        this._socket = socket;
         if (this._socket === null || this._socket === undefined) {
@@ -27,7 +26,7 @@ class WebSocket {
         });
     }
 
-    get ioSocket() {
+    get ioInstance() {
         return this._socket;
     }
 

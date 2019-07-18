@@ -10,14 +10,14 @@ class Matchmaker {
     }
 
     createWorld(socket) {
-        var id = String.random();
+        const id = String.random();
         this._lastCreatedWorldID = id;
         return this._gameWorlds[id] = new GameWorld(socket);
     }
 
     putPlayerInGame(playerID, gameID) {
-        var client = this._queuedPlayers[playerID];
-        var world = this._gameWorlds[gameID];
+        const client = this._queuedPlayers[playerID];
+        const world = this._gameWorlds[gameID];
         world.spawnPlayer(client);
         delete this._queuedPlayers[playerID];
     }

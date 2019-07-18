@@ -24,10 +24,10 @@ class LootCrate extends Interactable {
                 this.center.x - loot.width / 2,
                 this.pos.y - loot.height,
                 loot);
-            startAngle += count * (Math.PI / 2 / items.length);
+            startAngle += count * (Math.PI / items.length);
             loot.cast(
-                LootCrate.DROP_SPEED * Math.cos(startAngle),
-                LootCrate.DROP_SPEED * Math.sin(startAngle));
+                LootCrate.DROP_SPEED * -Math.cos(startAngle),
+                LootCrate.DROP_SPEED * -Math.sin(startAngle));
             count++;
         }
     }
