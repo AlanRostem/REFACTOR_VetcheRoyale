@@ -1,4 +1,3 @@
-var typeCheck = require("../../../shared/code/Debugging/StypeCheck.js");
 var Tile = require("./Tile.js");
 var JSONFile = require("../../ResourceManagement/SJSONFile.js");
 

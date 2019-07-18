@@ -27,7 +27,7 @@ class Matchmaker {
     }
 
     checkQueuedPlayers(webSocket, server) {
-        for (var id in this._queuedPlayers) {
+        for (let id in this._queuedPlayers) {
             // TEST:
             if (!this._gameWorlds[this._lastCreatedWorldID].isFull) {
                 this.putPlayerInGame(id, this._lastCreatedWorldID);
@@ -39,8 +39,9 @@ class Matchmaker {
 
     update(webSocket, server) {
         this.checkQueuedPlayers(webSocket, server);
-        for (var worldID in this._gameWorlds) {
-            this._gameWorlds[worldID].update(server.deltaTime);
+        for (let worldID in this._gameWorlds) {
+            if (this._gameWorlds.hasOwnProperty(worldID))
+                this._gameWorlds[worldID].update(server.deltaTime);
         }
     }
 }
