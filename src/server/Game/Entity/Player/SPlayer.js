@@ -1,10 +1,10 @@
-const Alive = require("../Traits/Alive.js");
+const ServerDataLinker = require("./ServerDataLinker.js");
 const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 
-class Player extends Alive {
+class Player extends ServerDataLinker {
     constructor(x, y, client) {
-        super(x, y, 6, 12, 100, true);
+        super(client, x, y, 6, 12, 100, true);
 
         // MISC VAR INITS
 
