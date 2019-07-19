@@ -214,9 +214,9 @@ class SEntity {
         // Override here
     }
 
-    update(entityManager, deltaTime) {
-        this.physics(entityManager, deltaTime);
-        this._entitiesInProximity.update(entityManager, deltaTime);
+    update(game, deltaTime) {
+        this.physics(game, deltaTime);
+        this._entitiesInProximity.update(game, deltaTime);
     }
 
     updateDataPack(entityManager, deltaTime) {

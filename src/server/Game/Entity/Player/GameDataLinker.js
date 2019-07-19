@@ -6,12 +6,25 @@ const Alive = require("../Traits/Alive.js");
 class GameDataLinker extends Alive {
     constructor(client, x, y, w, h, HP, regenCoolDown) {
         super(x, y, w, h, HP, regenCoolDown);
+        this._gameData = {};
+        this.addStaticSnapShotData([
+            "_gameData"
+        ]);
+
         this.defineSocketEvents(client);
     }
 
-
     defineSocketEvents(client) {
 
+    }
+
+    retrieveGameData(game) {
+        this._gameData.mapName = game.tileMap.name;
+    }
+
+    update(entityManager, deltaTime) {
+        this.retrieveGameData(entityManager);
+        super.update(entityManager, deltaTime);
     }
 }
 

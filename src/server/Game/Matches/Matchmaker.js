@@ -28,7 +28,7 @@ class Matchmaker {
 
     checkQueuedPlayers(webSocket, server) {
         for (let id in this._queuedPlayers) {
-            // TEST:
+            // TEST: Creating a new game instantly after it exceeds the player max count
             if (!this._gameWorlds[this._lastCreatedWorldID].isFull) {
                 this.putPlayerInGame(id, this._lastCreatedWorldID);
             } else {

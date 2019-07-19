@@ -1,8 +1,8 @@
-const ServerDataLinker = require("./ServerDataLinker.js");
+const GameDataLinker = require("./GameDataLinker.js");
 const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 
-class Player extends ServerDataLinker {
+class Player extends GameDataLinker {
     constructor(x, y, client) {
         super(client, x, y, 6, 12, 100, true);
 
@@ -16,8 +16,7 @@ class Player extends ServerDataLinker {
         this._inventory = new Inventory();
         this._invWeaponID = null;
         this._invAmmo = null;
-
-
+        
         this._jumping = false;
         this._center = {
             _x: x + this._width / 2,
