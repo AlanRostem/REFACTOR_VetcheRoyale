@@ -18,6 +18,7 @@ class Player extends GameDataLinker {
         this._invWeaponID = null;
         this._invAmmo = null;
         this._stats = new StatTracker(this.id);
+        this._statData = this._stats._statMap;
         
         this._jumping = false;
         this._center = {
@@ -37,6 +38,10 @@ class Player extends GameDataLinker {
             "_hp",
             "_invAmmo",
             "_invWeaponID",
+        ]);
+
+        this.addStaticSnapShotData([
+            "_statData"
         ]);
 
         // Unnecessary at the moment:
