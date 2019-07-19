@@ -7,8 +7,8 @@ const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Player = require("../../Player/SPlayer.js");
 
 class AOEKnockBackDamage extends AOEDamage {
-    constructor(x, y, radius, knockBackSpeed, value, exceptions) {
-        super(x, y, radius, value, exceptions);
+    constructor(ownerID, x, y, radius, knockBackSpeed, value, exceptions) {
+        super(ownerID, x, y, radius, value, exceptions);
         this._knockBackSpeed = knockBackSpeed;
     }
 
@@ -27,13 +27,13 @@ class KineticBomb extends Projectile {
         super(ownerID, x, y, 4, 4, cos, sin, 120, 0, false);
         this._hits = 4;
         this._weaponID = weaponID;
-        this._directHitDmg = new Damage(30);
+        this._directHitDmg = new Damage(30, ownerID);
 
 
         var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
         exceptions.splice(exceptions.indexOf(ownerID));
 
-        this._areaDmg = new AOEKnockBackDamage(x, y, Tile.SIZE * 4, 300, 15, exceptions);
+        this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
         this.vx = 0;
         this.vy = 0;
     }

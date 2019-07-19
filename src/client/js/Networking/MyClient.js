@@ -76,6 +76,7 @@ export default class MyClient {
         this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);
         if (e) {
+            Scene.currentMapName = this.player.output._gameData.mapName;
             R.camera.update(e._output._center);
         }
     }

@@ -42,6 +42,10 @@ class AttackWeapon extends WeaponItem {
         this._superAbility = overridden;
     }
 
+    grantSuperCharge() {
+        this.superCharge += this._superAbility._killChargeGain;
+    }
+
     configureAttackStats(reloadSpeed, clipSize, ammoUsagePerShot, fireRateRPM) {
         this._currentAmmo = clipSize;
         this._maxAmmo = clipSize;

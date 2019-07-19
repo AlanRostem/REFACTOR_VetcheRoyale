@@ -10,7 +10,6 @@ class GameDataLinker extends Alive {
         this.addStaticSnapShotData([
             "_gameData"
         ]);
-
         this.defineSocketEvents(client);
     }
 

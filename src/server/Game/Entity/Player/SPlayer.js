@@ -1,6 +1,7 @@
 const GameDataLinker = require("./GameDataLinker.js");
 const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
+const StatTracker = require("./StatTracker.js");
 
 class Player extends GameDataLinker {
     constructor(x, y, client) {
@@ -16,6 +17,7 @@ class Player extends GameDataLinker {
         this._inventory = new Inventory();
         this._invWeaponID = null;
         this._invAmmo = null;
+        this._stats = new StatTracker(this.id);
         
         this._jumping = false;
         this._center = {
@@ -55,6 +57,10 @@ class Player extends GameDataLinker {
 
         this.acc.y = this._speed.gravity;
         this.acc.x = this._speed.ground;
+    }
+
+    get stats() {
+        return this._stats;
     }
 
     get speed() {

@@ -38,7 +38,7 @@ const Scene = {
         Scene.tileMaps.createMap("lobby", "tilemaps/lobby.json");
         AssetManager.addDownloadCallback(() => {
             UI.setup(() => {
-                UI.append(new MiniMap(Scene.tileMaps.getMap("MegaMap")));
+                UI.append(new MiniMap(Scene.tileMaps.getMap(Scene._clientRef.player.output._gameData.mapName)));
                 UI.append(new KelvinBar());
                 UI.append(new HPBar());
                 UI.append(new GunBox());

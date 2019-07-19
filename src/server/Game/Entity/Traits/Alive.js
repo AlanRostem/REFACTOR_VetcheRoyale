@@ -25,6 +25,10 @@ class Alive extends Affectable {
         if (this._hp === 0) this._isAlive = false;
     }
 
+    get dead() {
+        return !this._isAlive;
+    }
+
     get HP() {
         return this._hp;
     }
