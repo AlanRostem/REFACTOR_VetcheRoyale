@@ -3,8 +3,6 @@ class StatTracker {
         this._statMap = {
             "Kills": 0,
             "Damage": 0,
-            "KnockDowns": 0,
-            "Revives": 0,
         }
     }
 
@@ -22,14 +20,6 @@ class StatTracker {
 
     grantDamage(value) {
         this.grantStat("Damage", value);
-    }
-
-    grantRevive() {
-        this.grantStat("Revives")
-    }
-
-    grantKnockDown() {
-        this.grantStat("KnockDowns");
     }
 }
 
