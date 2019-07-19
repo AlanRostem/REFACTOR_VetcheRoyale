@@ -16,7 +16,7 @@ class PlayerList extends ClientList {
     }
 }
 
-const DEFAULT_MAP = TileMapConfigs.getMap("MegaMap");
+const DEFAULT_MAP = TileMapConfigs.getMap("lobby");
 
 class GameWorld extends EntityManager {
     constructor(serverSocket, maxPlayers = 4, gameMap = DEFAULT_MAP) {
@@ -27,10 +27,11 @@ class GameWorld extends EntityManager {
 
         for (var i = 0; i < 3; i++) {
             this.spawnEntity(
-                150 * Tile.SIZE + Tile.SIZE * 10 * i,
-                202 * Tile.SIZE,
+                61 * Tile.SIZE + Tile.SIZE * 10 * i,
+                105 * Tile.SIZE,
                 new LootCrate(0, 0, 3));
         }
+        console.log(gameMap.name)
     }
 
     changeMap(name) {
@@ -40,6 +41,10 @@ class GameWorld extends EntityManager {
                 mapName: name
             });
         });
+    }
+
+    get spawner() {
+        return this.tileMap._spawner;
     }
 
     get maxPlayers() {
@@ -57,10 +62,13 @@ class GameWorld extends EntityManager {
     spawnPlayer(client) {
         this._clients.addClient(client.id, client);
         this.teamManager.addPlayer(client.player);
-        this.spawnEntity(
-            150 * Tile.SIZE,
-            202 * Tile.SIZE,
+        this.spawner.spawnSpecificAtPos(105, client.player, this);
+
+        /*this.spawnEntity(
+            61 * Tile.SIZE,
+            105 * Tile.SIZE,
             client.player);
+         */
     }
 
     update(deltaTime) {

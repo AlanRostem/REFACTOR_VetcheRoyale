@@ -1,4 +1,3 @@
-STileMap = require("../../TileBased/STileMap.js");
 Tile = require("../../TileBased/Tile.js");
 GameClock = require("../../Entity/Management/GameClock.js");
 QuadTree = require("./QuadTree.js");

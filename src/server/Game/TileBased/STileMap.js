@@ -1,5 +1,6 @@
-var Tile = require("./Tile.js");
-var JSONFile = require("../../ResourceManagement/SJSONFile.js");
+const Tile = require("./Tile.js");
+const JSONFile = require("../../ResourceManagement/SJSONFile.js");
+const EntitySpawnerLocator = require("./EntitySpawnerLocator.js");
 
 // Specify global file path relative to app.js
 // for the JSON tile map file
@@ -16,6 +17,11 @@ class TileMap {
             ONE_WAY: 0 // TODO: FIND CORRECT VALUE
         };
         this._name = name;
+        this._spawner = new EntitySpawnerLocator(this);
+    }
+
+    get spawner() {
+        return this._spawner;
     }
 
     get name() {
