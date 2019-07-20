@@ -11,9 +11,6 @@ class SEntity {
         this._id = String.random();
         this._removed = false;
         this._eType = this.constructor.name;
-        this._movementState = {
-            main: "undefined",
-        };
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
         this._snapShotGenerator = new SnapShotGenerator(this,
         [

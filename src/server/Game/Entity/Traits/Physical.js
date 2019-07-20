@@ -8,6 +8,9 @@ class Physical extends Entity {
         this._vel = new Vector2D(0, 0);
         this._fric = new Vector2D(0, 0);
         this._acc = new Vector2D(0, 0);
+        this._movementState = {
+            main: "undefined",
+        };
         this.addStaticSnapShotData([
             "_vel",
             "_movementState",

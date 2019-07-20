@@ -19,6 +19,7 @@ class GameDataLinker extends Alive {
 
     retrieveGameData(game) {
         this._gameData.mapName = game.tileMap.name;
+        this._gameData.playerCount = game.playerCount;
     }
 
     update(entityManager, deltaTime) {
