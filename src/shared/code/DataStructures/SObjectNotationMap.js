@@ -23,6 +23,10 @@ class ObjectNotationMap {
         return this._jsonContainer[key];
     }
 
+    has(key) {
+        return this._jsonContainer.hasOwnProperty(key);
+    }
+
     remove(key) {
         this._count--;
         this._arrayContainer.splice(this._arrayContainer.indexOf(this._jsonContainer[key]));

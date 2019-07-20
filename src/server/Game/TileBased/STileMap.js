@@ -1,6 +1,6 @@
 const Tile = require("./Tile.js");
 const JSONFile = require("../../ResourceManagement/SJSONFile.js");
-const EntitySpawnerLocator = require("./TileSpawnPositionList.js");
+const EntitySpawnerLocator = require("./Spawning/TileSpawnPositionList.js");
 
 // Specify global file path relative to app.js
 // for the JSON tile map file
