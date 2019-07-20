@@ -21,14 +21,14 @@ class TileSpawnPositionList {
                 var tileID = tileMap.getID(x, y);
                 if (SpawnLocation.getSpawnerByID(tileID)) {
                     if (!this._spawners.has(tileID)) {
-                        if (SpawnLocation.getSpawnerByID(tileID).singleton) {
+                        if (SpawnLocation.getSpawnerByID(tileID).replicate) {
                             this._spawners.set(tileID, []);
                         } else {
                             this._spawners.set(tileID,
                                 SpawnLocation.createSpawner(tileID, x * Tile.SIZE, y * Tile.SIZE));
                         }
                     }
-                    if (SpawnLocation.getSpawnerByID(tileID).singleton) {
+                    if (SpawnLocation.getSpawnerByID(tileID).replicate) {
                         this._spawners.get(tileID).push(
                             SpawnLocation.createSpawner(
                                 tileID, x * Tile.SIZE, y * Tile.SIZE));
@@ -53,7 +53,7 @@ class TileSpawnPositionList {
     }
 
     spawnSpecificAtPos(id, entity, entityManager) {
-        if (!SpawnLocation.getSpawnerByID(id).singleton) {
+        if (!SpawnLocation.getSpawnerByID(id).replicate) {
             entityManager.spawnEntity(this._spawners.get(id).x, this._spawners.get(id).y, entity);
         }
     }

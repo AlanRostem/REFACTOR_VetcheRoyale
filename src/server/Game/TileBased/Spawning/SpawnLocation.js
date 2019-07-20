@@ -23,7 +23,7 @@ SpawnLocation.ENTITY_SPAWN_IDS = new ONMap();
 SpawnLocation.MappingStructure = class SLMappingStructure {
     constructor(name, classType, isOnlyPositionalData = false) {
         this.name = name;
-        this.singleton = !isOnlyPositionalData;
+        this.replicate = !isOnlyPositionalData;
         this.callback = (x, y) => new SpawnLocation(x, y, name, classType);
     }
 };
