@@ -1,8 +1,8 @@
-const Entity = require("../SEntity.js");
+const Physical = require("../Traits/Physical.js");
 const Player = require("../Player/SPlayer.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
-class Interactable extends Entity {
+class Interactable extends Physical {
     constructor(x, y, w, h, interactionRange = 0) {
         super(x, y, w, h);
         this._iRange = interactionRange;

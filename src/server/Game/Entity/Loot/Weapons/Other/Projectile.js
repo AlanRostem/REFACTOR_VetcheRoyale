@@ -1,8 +1,8 @@
-const Entity = require("../../../SEntity.js");
+const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
 
-class Projectile extends Entity {
+class Projectile extends Physical {
     constructor(ownerID, x, y, w, h, cos, sin, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
         this._ownerID = ownerID;

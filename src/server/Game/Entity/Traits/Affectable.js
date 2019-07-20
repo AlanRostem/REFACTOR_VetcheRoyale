@@ -1,6 +1,6 @@
-const Entity = require("../SEntity.js");
+const Physical = require("./Physical.js");
 
-class Affectable extends Entity {
+class Affectable extends Physical {
     constructor(x, y, w, h) {
         super(x, y, w, h);
         this._effects = {};
