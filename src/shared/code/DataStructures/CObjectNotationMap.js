@@ -1,5 +1,5 @@
 // Better version of the stock JS Map.
-// Iteration of this object is way more
+// Iteration of this object is way better
 // for performance and easier to use.
 
 export default class ObjectNotationMap {
