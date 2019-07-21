@@ -24,11 +24,17 @@ export default class TileSheet extends SpriteSheet {
                     var tileRow = Math.floor(tile / this.tilesPerRow);
                     var tileCol = Math.floor(tile % this.tilesPerRow);
                     this.drawCropped(
-                        (x * this.tileSize),
-                        (y * this.tileSize),
+                        x * this.tileSize,
+                        y * this.tileSize,
                         this.tileSize, this.tileSize,
                         (tileCol * this.tileSize), (tileRow * this.tileSize),
                         this.tileSize, this.tileSize, ctx);
+                    /*
+                    ctx.fillStyle = "yellow";
+                    ctx.fillText(tile + 1,
+                        x * this.tileSize,
+                        y * this.tileSize + 8)
+                     */
                 }
             }
         }

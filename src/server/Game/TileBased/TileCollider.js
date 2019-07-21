@@ -1,8 +1,12 @@
+const Vector2D = require("../../../shared/code/Math/SVector2D.js");
+
 const TileCollider = {
     TYPE_RANGE: {
         PASS: 95, // TODO: Remove test values
         SOLID: 17, // TODO: Remove test values
-        ONE_WAY: 96 // TODO: FIND CORRECT VALUE
+        ONE_WAY: 96, // TODO: FIND CORRECT VALUE
+        SLOPE_UP_LEFT: 14,
+        SLOPE_UP_RIGHT: 13,
     },
 
     TYPE_COLLISION_CALLBACK_X: {
@@ -22,9 +26,71 @@ const TileCollider = {
                 }
             }
         },
-        ONE_WAY: (entity, tile, deltaTime) => {
+        SLOPE_UP_RIGHT: (entity, tile, deltaTime) => {
+            if (entity.overlapTile(tile)) {
+                let line = {
+                    a: {
+                        x: tile.x,
+                        y: tile.y + Tile.SIZE,
+                    },
+                    b: {
+                        x: tile.x + Tile.SIZE,
+                        y: tile.y,
+                    }
+                };
+                if (Vector2D.intersect(entity.bottomLeft, entity.bottomRight, line.a, line.b) ||
+                    Vector2D.intersect(entity.topRight, entity.bottomRight, line.a, line.b)) {
+                    let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
+                    if (entity.vel.x > 0) {
+                        entity.pos.x = pos.x - entity.width + entity.vel.x * deltaTime;
+                        entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
+                    } else if (entity.vel.x < 0) {
+                        entity.pos.x = pos.x - entity.width - entity.vel.x * deltaTime;
+                        entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
+                    }
+                    entity.side.bottom = true;
+                    if (entity.vel.y > 0) {
+                        entity.pos.x = pos.x - entity.width;
+                        entity.pos.y = pos.y - entity.height;
+                        entity.vel.y = 0;
+                    }
+                }
 
-        }
+            }
+        },
+        SLOPE_UP_LEFT: (entity, tile, deltaTime) => {
+            if (entity.overlapTile(tile)) {
+                let line = {
+                    a: {
+                        x: tile.x,
+                        y: tile.y,
+                    },
+                    b: {
+                        x: tile.x + Tile.SIZE,
+                        y: tile.y + Tile.SIZE,
+                    }
+                };
+                if (Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b)
+                    || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)
+                ) {
+                    let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
+                    if (entity.vel.x < 0) {
+                        entity.pos.x = pos.x - entity.vel.x * deltaTime;
+                        entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
+                    } else if (entity.vel.x > 0) {
+                        entity.pos.x = pos.x + entity.vel.x * deltaTime;
+                        entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
+                    }
+                    entity.side.bottom = true;
+                    if (entity.vel.y > 0) {
+                        entity.pos.x = pos.x;
+                        entity.pos.y = pos.y - entity.height;
+                        entity.vel.y = 0;
+                    }
+                }
+
+            }
+        },
     },
 
     TYPE_COLLISION_CALLBACK_Y: {
@@ -39,7 +105,7 @@ const TileCollider = {
                 if (entity.vel.y < 0) {
                     if (entity.pos.y < tile.y + Tile.SIZE) {
                         entity.onTopCollision(tile);
-                        entity.side.top= true;
+                        entity.side.top = true;
                     }
                 }
             }
@@ -74,9 +140,9 @@ const TileCollider = {
 
     overlapEntityWithTile(e, t) {
         return t.y + Tile.SIZE > e.pos.y
-            &&  t.y < (e.pos.y + e.height)
+            && t.y < (e.pos.y + e.height)
             && t.x + Tile.SIZE > e.pos.x
-            &&  t.x < (e.pos.x + e.width);
+            && t.x < (e.pos.x + e.width);
     },
 
     handleCollisionX(entity, tileID, tilePos, deltaTime) {
@@ -92,13 +158,25 @@ const TileCollider = {
     },
 
     findType(id) {
-        if (TileCollider.isSolid(id)) {
+        if (TileCollider.isSlopeLeft(id)) {
+            return "SLOPE_UP_LEFT"
+        } else if (TileCollider.isSlopeRight(id)) {
+            return "SLOPE_UP_RIGHT";
+        } else if (TileCollider.isSolid(id)) {
             return "SOLID";
         } else if (TileCollider.isOneWay(id)) {
             return "ONE_WAY";
         } else {
             return "PASS";
         }
+    },
+
+    isSlopeLeft(id) {
+        return TileCollider.TYPE_RANGE.SLOPE_UP_LEFT === id;
+    },
+
+    isSlopeRight(id) {
+        return TileCollider.TYPE_RANGE.SLOPE_UP_RIGHT === id;
     },
 
     isSolid(id) {
