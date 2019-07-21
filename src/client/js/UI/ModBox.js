@@ -23,7 +23,6 @@ export default class ModBox extends UIElement {
     draw() {
         if(this.hasWeapon) {
             R.ctx.save();
-            // Liquid Inside
             R.ctx.drawImage(this.src,
                 0,
                 68,
