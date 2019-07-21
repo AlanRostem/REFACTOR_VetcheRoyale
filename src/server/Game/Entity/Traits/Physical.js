@@ -88,8 +88,9 @@ class Physical extends Entity {
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
+                tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
-                    TileCollider.handleCollisionX(this, tileMap.getID(xx, yy), tile);
+                    TileCollider.handleCollisionX(this, tileMap.getID(xx, yy), tile, deltaTime);
                 }
             }
         }
@@ -110,8 +111,17 @@ class Physical extends Entity {
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
+                tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
-                    TileCollider.handleCollisionY(this, tileMap.getID(xx, yy), tile);
+                    /*
+                    if (this.overlapTile(tile)) {
+                        if (this.constructor.name === "Player") {
+                            console.log(tile.id);
+                        }
+                    }
+
+                     */
+                    TileCollider.handleCollisionY(this, tileMap.getID(xx, yy), tile, deltaTime);
                 }
             }
         }

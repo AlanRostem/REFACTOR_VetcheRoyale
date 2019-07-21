@@ -84,10 +84,6 @@ class Player extends GameDataLinker {
         return this._clientRef;
     }
 
-    get keys() {
-        return this._clientRef.inputReceiver.keys;
-    }
-
     get input() {
         return this._clientRef.inputReceiver;
     }
