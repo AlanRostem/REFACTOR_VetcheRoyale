@@ -44,13 +44,6 @@ class Player extends GameDataLinker {
             "_statData"
         ]);
 
-        // Unnecessary at the moment:
-        this.addCollisionListener("Player", (player, entityManager) => {
-            if (this.isTeammate(player)) {
-                this.onTeamCollision(player);
-            }
-        });
-
 
         // PHYSICS
 

@@ -1,6 +1,6 @@
 const Entity = require("../SEntity.js");
 const Tile = require("../../TileBased/Tile.js");
-const EntityCollisionCompositor = require("../Management/EntityCollisionCompositor.js");
+const EntityCollider = require("../Management/EntityCollider.js");
 
 class Physical extends Entity {
     constructor(x, y, w, h) {
@@ -32,13 +32,6 @@ class Physical extends Entity {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
-
-        // TODO: Make collision composition static.
-        this._collisionCompositor = new EntityCollisionCompositor(this);
-    }
-
-    addCollisionListener(classType, callback) {
-        this._collisionCompositor.addCollisionListener(classType, callback)
     }
 
     moveX(pixelsPerSecond, deltaTime) {
@@ -153,7 +146,7 @@ class Physical extends Entity {
     onBottomCollision(tile) { if (this._collisionConfig.stop) this.vel.y = 0; this.pos.y = tile.y - this.height; }
 
     onEntityCollision(entity, entityManager) {
-        this._collisionCompositor.applyCollisionsEffects(entity, entityManager);
+        EntityCollider.applyCollisionsEffects(this, entity, entityManager);
     }
 
     physics(entityManager, deltaTime) {
