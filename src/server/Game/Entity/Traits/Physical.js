@@ -1,6 +1,8 @@
 const Entity = require("../SEntity.js");
 const Tile = require("../../TileBased/Tile.js");
-const EntityCollisionCompositor = require("../Management/EntityCollisionCompositor.js");
+const EntityCollider = require("../Management/EntityCollider.js");
+const TileCollider = require("../../TileBased/TileCollider.js");
+const MovementTracker = require("../Management/EntityMovementTracker.js");
 
 class Physical extends Entity {
     constructor(x, y, w, h) {
@@ -8,9 +10,8 @@ class Physical extends Entity {
         this._vel = new Vector2D(0, 0);
         this._fric = new Vector2D(0, 0);
         this._acc = new Vector2D(0, 0);
-        this._movementState = {
-            main: "undefined",
-        };
+        this._movementTracker = new MovementTracker();
+        this._movementState = this._movementTracker.movementStates;
         this.addStaticSnapShotData([
             "_vel",
             "_movementState",
@@ -32,13 +33,14 @@ class Physical extends Entity {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
-
-        // TODO: Make collision composition static.
-        this._collisionCompositor = new EntityCollisionCompositor(this);
     }
 
-    addCollisionListener(classType, callback) {
-        this._collisionCompositor.addCollisionListener(classType, callback)
+    addMovementListener(name, stateName, callback) {
+        this._movementTracker.addMovementStateListener(name, stateName, callback);
+    }
+
+    setMovementState(name, stateName, entityManager, deltaTime) {
+        this._movementTracker.setMovementState(name, stateName, this, entityManager, deltaTime)
     }
 
     moveX(pixelsPerSecond, deltaTime) {
@@ -86,24 +88,9 @@ class Physical extends Entity {
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
-
+                tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
-                    if (tileMap.isSolid(tileMap.getID(xx, yy))) {
-                        if (this.overlapTile(tile)) {
-                            if (this.vel.x > 0) {
-                                if (this.pos.x + this.width > tile.x) {
-                                    this.onRightCollision(tile);
-                                    this.side.right = true;
-                                }
-                            }
-                            if (this.vel.x < 0) {
-                                if (this.pos.x < tile.x + Tile.SIZE) {
-                                    this.onLeftCollision(tile);
-                                    this.side.left = true;
-                                }
-                            }
-                        }
-                    }
+                    TileCollider.handleCollisionX(this, tileMap.getID(xx, yy), tile, deltaTime);
                 }
             }
         }
@@ -124,24 +111,17 @@ class Physical extends Entity {
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
-
+                tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
-                    if (tileMap.isSolid(tileMap.getID(xx, yy))) {
-                        if (this.overlapTile(tile)) {
-                            if (this.vel.y > 0) {
-                                if (this.pos.y + this.height > tile.y) {
-                                    this.onBottomCollision(tile);
-                                    this.side.bottom = true;
-                                }
-                            }
-                            if (this.vel.y < 0) {
-                                if (this.pos.y < tile.y + Tile.SIZE) {
-                                    this.onTopCollision(tile);
-                                    this.side.top= true;
-                                }
-                            }
+                    /*
+                    if (this.overlapTile(tile)) {
+                        if (this.constructor.name === "Player") {
+                            console.log(tile.id);
                         }
                     }
+
+                     */
+                    TileCollider.handleCollisionY(this, tileMap.getID(xx, yy), tile, deltaTime);
                 }
             }
         }
@@ -153,7 +133,7 @@ class Physical extends Entity {
     onBottomCollision(tile) { if (this._collisionConfig.stop) this.vel.y = 0; this.pos.y = tile.y - this.height; }
 
     onEntityCollision(entity, entityManager) {
-        this._collisionCompositor.applyCollisionsEffects(entity, entityManager);
+        EntityCollider.applyCollisionsEffects(this, entity, entityManager);
     }
 
     physics(entityManager, deltaTime) {

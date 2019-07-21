@@ -24,14 +24,13 @@ class AOEKnockBackDamage extends AOEDamage {
 
 class KineticBomb extends Projectile {
     constructor(ownerID, weaponID, x, y, cos, sin, entityManager) {
-        super(ownerID, x, y, 4, 4, cos, sin, 120, 0, false);
+        super(ownerID, x, y, 2, 2, cos, sin, 120, 0, false);
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30, ownerID);
 
-
         var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
-        exceptions.splice(exceptions.indexOf(ownerID));
+        exceptions.remove(ownerID);
 
         this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
         this.vx = 0;
