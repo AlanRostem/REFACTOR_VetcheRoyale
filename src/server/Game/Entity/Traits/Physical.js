@@ -1,6 +1,7 @@
 const Entity = require("../SEntity.js");
 const Tile = require("../../TileBased/Tile.js");
 const EntityCollider = require("../Management/EntityCollider.js");
+const MovementTracker = require("../Management/EntityMovementTracker.js");
 
 class Physical extends Entity {
     constructor(x, y, w, h) {
@@ -8,9 +9,8 @@ class Physical extends Entity {
         this._vel = new Vector2D(0, 0);
         this._fric = new Vector2D(0, 0);
         this._acc = new Vector2D(0, 0);
-        this._movementState = {
-            main: "undefined",
-        };
+        this._movementTracker = new MovementTracker();
+        this._movementState = this._movementTracker.movementStates;
         this.addStaticSnapShotData([
             "_vel",
             "_movementState",
@@ -32,6 +32,14 @@ class Physical extends Entity {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
+    }
+
+    addMovementListener(name, stateName, callback) {
+        this._movementTracker.addMovementStateListener(name, stateName, callback);
+    }
+
+    setMovementState(name, stateName, entityManager, deltaTime) {
+        this._movementTracker.setMovementState(name, stateName, this, entityManager, deltaTime)
     }
 
     moveX(pixelsPerSecond, deltaTime) {

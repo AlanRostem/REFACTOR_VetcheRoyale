@@ -28,8 +28,9 @@ class Player extends GameDataLinker {
 
         // TEST:
         this._playersOnTopOfMe = {};
-        this._movementState.main = "stand";
-        this._movementState.direction = "right";
+
+        this.addMovementListener("main", "stand", () => 0);
+        this.addMovementListener("direction", "right", () => 0);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -153,7 +154,7 @@ class Player extends GameDataLinker {
         this.vel.y = 0;
         this._jumping = false;
         this.side.bottom = true;
-        this._movementState.main = "stand";
+        this.setMovementState("main", "stand");
     }
 
     remove() {
@@ -172,7 +173,8 @@ class Player extends GameDataLinker {
         }
 
         if (this.side.bottom) {
-            this._movementState.main = "stand";
+            this.setMovementState("main", "stand");
+
         } else {
             this._jumping = true;
         }
@@ -180,7 +182,8 @@ class Player extends GameDataLinker {
         if (this.isCollidingWithTeammate()) {
             this.side.bottom = true;
             this._jumping = false;
-            this._movementState.main = "stand";
+            this.setMovementState("main", "stand");
+
         }
 
         if (this.input.keyHeldDown(32)) {
@@ -198,23 +201,24 @@ class Player extends GameDataLinker {
 
         if (this.input.keyHeldDown(68)) {
             this.accelerateX(this.acc.x, deltaTime);
-            this._movementState.direction = "right";
+            this.setMovementState("direction", "right");
+
         }
 
         if (this.input.keyHeldDown(65)) {
             this.accelerateX(-this.acc.x, deltaTime);
-            this._movementState.direction = "left";
+            this.setMovementState("direction", "left");
         }
 
 
         if (this.vel.x !== 0) {
-            this._movementState.main = "run";
+            this.setMovementState("main", "run");
         }
 
         if (this.vel.y < 0) {
-            this._movementState.main = "jump";
+            this.setMovementState("main", "jump");
         } else if (this.vel.y > 0) {
-            this._movementState.main = "fall";
+            this.setMovementState("main", "fall");
         }
 
         if (this.side.bottom) {
