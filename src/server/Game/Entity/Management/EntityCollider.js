@@ -7,7 +7,7 @@ const EntityCollider = {
     _collisions: new ONMap(),
 
     applyCollisionsEffects(entity1, entity2, entityManager) {
-        if (!this._collisions[entity2.constructor.name]) return;
+        if (!this._collisions.has(entity1.constructor.name)) return;
         for (let callback of this._collisions.get(entity2.constructor.name)) {
             callback(entity1, entity2, entityManager);
         }
