@@ -1,5 +1,6 @@
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const QTRect = require("../../Entity/Management/QTRect.js");
+const TileCollider = require("../../TileBased/TileCollider.js");
 
 class HitScanner {
     constructor(exceptions = [], entityCollision = true, tileCollision = true) {
@@ -65,7 +66,7 @@ class HitScanner {
         if (this._scanTiles) {
             for (var y = startY; y <= endY; y++) {
                 for (var x = startX; x <= endX; x++) {
-                    if (tileMap.isSolid(tileMap.array[y * tileMap.w + x])) {
+                    if (TileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {
                         var ts = tileMap.tileSize;
                         let topLeft = new Vector2D(x * ts, y * ts);
                         let bottomLeft = new Vector2D(x * ts, (y + 1) * ts);

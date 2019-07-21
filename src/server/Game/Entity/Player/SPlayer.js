@@ -97,10 +97,6 @@ class Player extends GameDataLinker {
         this._teamName = team.name;
     }
 
-    onTeamCollision(p) {
-
-    }
-
     isCollidingWithTeammate() {
         for (var id in this._playersOnTopOfMe) {
             if (this._playersOnTopOfMe[id]) {

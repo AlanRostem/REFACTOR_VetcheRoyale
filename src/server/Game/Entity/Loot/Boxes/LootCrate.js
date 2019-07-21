@@ -1,5 +1,5 @@
 const Interactable = require("../../Traits/Interactable.js");
-const LootRNG = require("./LootRNG.js");
+const LootRNG = require("../LootRNG.js");
 
 class LootCrate extends Interactable {
     constructor(x, y, level = 1, capacity = 5, levelGuarantee = 1) {

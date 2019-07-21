@@ -1,6 +1,6 @@
-const KE_6H = require("../Weapons/KE_6H.js");
-const Ammo = require("../Multanium/Ammo.js");
-const Charge = require("../Multanium/Charge.js");
+const KE_6H = require("./Weapons/KE_6H.js");
+const Ammo = require("./Multanium/Ammo.js");
+const Charge = require("./Multanium/Charge.js");
 
 const LootRNG = {
     _levelMap: {

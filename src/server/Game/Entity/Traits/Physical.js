@@ -1,6 +1,7 @@
 const Entity = require("../SEntity.js");
 const Tile = require("../../TileBased/Tile.js");
 const EntityCollider = require("../Management/EntityCollider.js");
+const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
 
 class Physical extends Entity {
@@ -87,24 +88,8 @@ class Physical extends Entity {
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
-
                 if (tileMap.withinRange(xx, yy)) {
-                    if (tileMap.isSolid(tileMap.getID(xx, yy))) {
-                        if (this.overlapTile(tile)) {
-                            if (this.vel.x > 0) {
-                                if (this.pos.x + this.width > tile.x) {
-                                    this.onRightCollision(tile);
-                                    this.side.right = true;
-                                }
-                            }
-                            if (this.vel.x < 0) {
-                                if (this.pos.x < tile.x + Tile.SIZE) {
-                                    this.onLeftCollision(tile);
-                                    this.side.left = true;
-                                }
-                            }
-                        }
-                    }
+                    TileCollider.handleCollisionX(this, tileMap.getID(xx, yy), tile);
                 }
             }
         }
@@ -125,24 +110,8 @@ class Physical extends Entity {
                 var yy = cy + y;
 
                 var tile = Tile.toPos(xx, yy);
-
                 if (tileMap.withinRange(xx, yy)) {
-                    if (tileMap.isSolid(tileMap.getID(xx, yy))) {
-                        if (this.overlapTile(tile)) {
-                            if (this.vel.y > 0) {
-                                if (this.pos.y + this.height > tile.y) {
-                                    this.onBottomCollision(tile);
-                                    this.side.bottom = true;
-                                }
-                            }
-                            if (this.vel.y < 0) {
-                                if (this.pos.y < tile.y + Tile.SIZE) {
-                                    this.onTopCollision(tile);
-                                    this.side.top= true;
-                                }
-                            }
-                        }
-                    }
+                    TileCollider.handleCollisionY(this, tileMap.getID(xx, yy), tile);
                 }
             }
         }
