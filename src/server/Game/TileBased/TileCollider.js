@@ -27,6 +27,9 @@ const TileCollider = {
             }
         },
         SLOPE_UP_RIGHT: (entity, tile, deltaTime) => {
+            if (entity.constructor.name !== "Player") {
+                return;
+            }
             if (entity.overlapTile(tile)) {
                 let line = {
                     a: {
@@ -59,6 +62,9 @@ const TileCollider = {
             }
         },
         SLOPE_UP_LEFT: (entity, tile, deltaTime) => {
+            if (entity.constructor.name !== "Player") {
+                return;
+            }
             if (entity.overlapTile(tile)) {
                 let line = {
                     a: {
@@ -111,6 +117,9 @@ const TileCollider = {
             }
         },
         ONE_WAY: (entity, tile, deltaTime) => {
+            if (entity.constructor.name !== "Player") {
+                return;
+            }
             var bottomLine = {
                 pos: {x: entity.pos.x, y: entity.pos.y + entity.height + entity.vel.y * deltaTime},
                 width: entity.width,
