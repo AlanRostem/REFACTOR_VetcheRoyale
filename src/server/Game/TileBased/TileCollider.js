@@ -74,10 +74,10 @@ const TileCollider = {
                     || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)
                 ) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
-                    if (entity.vel.x < 0) {
+                    if (entity.vel.x > 0) {
                         entity.pos.x = pos.x - entity.vel.x * deltaTime;
                         entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
-                    } else if (entity.vel.x > 0) {
+                    } else if (entity.vel.x < 0) {
                         entity.pos.x = pos.x + entity.vel.x * deltaTime;
                         entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
                     }
