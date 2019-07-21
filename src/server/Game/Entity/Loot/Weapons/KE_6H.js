@@ -30,7 +30,7 @@ class KineticBomb extends Projectile {
         this._directHitDmg = new Damage(30, ownerID);
 
         var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
-        exceptions.splice(exceptions.indexOf(ownerID));
+        exceptions.remove(ownerID);
 
         this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
         this.vx = 0;
