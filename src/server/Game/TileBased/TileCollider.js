@@ -110,9 +110,11 @@ const TileCollider = {
 
             if (TileCollider.overlapEntityWithTile(bottomLine, tile)) {
                 if (entity.pos.y + entity.height <= tile.y || entity.side.bottom) {
-                    entity.onBottomCollision(tile);
-                    entity.side.bottom = true;
-                    entity.onPlatform = true;
+                    if (!entity.input.keyHeldDown(83)) {
+                        entity.onBottomCollision(tile);
+                        entity.side.bottom = true;
+                        entity.onPlatform = true;
+                    }
                 }
             } else {
                 entity.onPlatform = false;
