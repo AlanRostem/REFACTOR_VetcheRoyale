@@ -11,6 +11,10 @@ class Charge extends Bottle {
         ]);
     }
 
+    canPickUp(player) {
+        return player.inventory.weapon;
+    }
+
     addToInventory(inventory) {
         super.addToInventory(inventory);
         inventory.weapon.superCharge += this._amount;

@@ -12,9 +12,14 @@ class ObjectNotationMap {
 
     set(key, item) {
         if (this._count < this._limit) {
+            if (!this.has(key)) {
+                this._arrayContainer.push(item);
+                this._count++;
+            } else {
+                let i = this._arrayContainer.indexOf(this._jsonContainer[key]);
+                this._arrayContainer[i] = item;
+            }
             this._jsonContainer[key] = item;
-            this._arrayContainer.push(item);
-            this._count++;
         }
         return item;
     }
@@ -33,8 +38,13 @@ class ObjectNotationMap {
         delete this._jsonContainer[key];
     }
 
-    indexOf(key) {
+
+    indexOfKey(key) {
         return this._arrayContainer.indexOf(this._jsonContainer[key]);
+    }
+
+    indexOfValue(value) {
+        return this._arrayContainer.indexOf(value);
     }
 
     get length() {
@@ -50,10 +60,11 @@ class ObjectNotationMap {
     }
 
     clear() {
-        delete this["_jsonContainer"];
         this._count = 0;
+        delete this["_jsonContainer"];
         this._jsonContainer = {};
-        this._arrayContainer.clear();
+        delete this["_arrayContainer"];
+        this._arrayContainer = [];
     }
 
     forEach(callback) {

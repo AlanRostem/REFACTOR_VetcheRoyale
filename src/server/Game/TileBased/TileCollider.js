@@ -67,15 +67,6 @@ const TileCollider = {
                         y: tile.y + Tile.SIZE,
                     }
                 };
-
-                if (entity.slopeCollided) {
-                    if (entity.vel.x > 0) {
-                        entity.vel.y = entity.vel.x;
-                        if (!entity.jumping) {
-                            entity.setMovementState("slope", "run");
-                        }
-                    }
-                }
                 if (Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b)
                     || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)
                 ) {
@@ -84,10 +75,7 @@ const TileCollider = {
                     entity.pos.x = pos.x + entity.vel.x * deltaTime;
                     entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
                     entity.vel.y = 0;
-                    entity.slopeCollided = true;
                 }
-            } else {
-                entity.slopeCollided = false;
             }
 
         },

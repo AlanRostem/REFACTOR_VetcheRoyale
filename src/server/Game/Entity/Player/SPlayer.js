@@ -3,6 +3,11 @@ const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
 
+const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
+const Loot = require("../Loot/Loot.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
+
 class Player extends GameDataLinker {
     constructor(x, y, client) {
         super(client, x, y, 6, 12, 100, true);
@@ -31,7 +36,6 @@ class Player extends GameDataLinker {
 
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
-        this.addMovementListener("slope", "run", () => 0);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -57,6 +61,36 @@ class Player extends GameDataLinker {
 
         this.acc.y = this._speed.gravity;
         this.acc.x = this._speed.ground;
+
+        this._itemsNearby = new ONMap();
+        this._itemScanner = new HitScanner([], false);
+    }
+
+    forEachNearbyEntity(entity, entityManager) {
+        super.forEachNearbyEntity(entity, entityManager);
+        if (this.input.keyHeldDown(69)) {
+            if (entity instanceof Loot) {
+                let distance = Vector2D.distance(this.center, entity.center);
+                this._itemScanner.scan(this.id, this.center, entity.center, entityManager, entityManager.tileMap);
+                if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
+                && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
+                    this._itemsNearby.set(entity.id, distance);
+                }
+            }
+        }
+    }
+
+    checkForNearbyLoot(game) {
+        if (this.input.singleKeyPress(69)) {
+            let closest = Math.min(...this._itemsNearby.array);
+            for (let id in this._itemsNearby.object) {
+                let loot = game.getEntity(id);
+                if (this._itemsNearby.get(loot.id) === closest) {
+                    loot.onPlayerInteraction(this, game);
+                }
+            }
+            this._itemsNearby.clear();
+        }
     }
 
     get stats() {
@@ -88,6 +122,8 @@ class Player extends GameDataLinker {
     get input() {
         return this._clientRef.inputReceiver;
     }
+
+
 
     setTeam(team) {
         this.team = team;
@@ -168,9 +204,7 @@ class Player extends GameDataLinker {
         if (this.side.bottom) {
             this.setMovementState("main", "stand");
         } else {
-            if (!this.checkMovementState("slope", "run")) {
-                this._jumping = true;
-            }
+            this._jumping = true;
         }
 
         if (this.isCollidingWithTeammate()) {
@@ -189,7 +223,7 @@ class Player extends GameDataLinker {
 
         super.update(entityManager, deltaTime);
         this.oneWayTeamCollision(deltaTime);
-
+        this.checkForNearbyLoot(entityManager);
 
         this.vel.x *= this.fric.x;
 
@@ -212,9 +246,7 @@ class Player extends GameDataLinker {
         if (this.vel.y < 0) {
             this.setMovementState("main", "jump");
         } else if (this.vel.y > 0) {
-            if (!this.checkMovementState("slope", "run")) {
-                this.setMovementState("main", "fall");
-            }
+            this.setMovementState("main", "fall");
         }
 
         if (this.side.bottom) {

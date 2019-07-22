@@ -33,8 +33,12 @@ export default class ObjectNotationMap {
         delete this._jsonContainer[key];
     }
 
-    indexOf(key) {
+    indexOfKey(key) {
         return this._arrayContainer.indexOf(this._jsonContainer[key]);
+    }
+
+    indexOfValue(value) {
+        return this._arrayContainer.indexOf(value);
     }
 
     get length() {

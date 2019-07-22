@@ -8,6 +8,10 @@ class WeaponItem extends Loot {
         this._playerID = null;
     }
 
+    canPickUp(player) {
+        return !player.inventory.weapon;
+    }
+
     update(entityManager, deltaTime) {
         if (!this._equippedToPlayer) {
             super.update(entityManager, deltaTime);

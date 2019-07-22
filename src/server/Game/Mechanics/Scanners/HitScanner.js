@@ -141,4 +141,11 @@ class HitScanner {
     }
 }
 
+HitScanner.intersectsEntity = (a, b, e) => {
+    return Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
+        Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
+        Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
+        Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight);
+};
+
 module.exports = HitScanner;

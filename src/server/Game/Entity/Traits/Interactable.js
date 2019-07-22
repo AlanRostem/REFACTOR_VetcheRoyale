@@ -1,5 +1,5 @@
 const Physical = require("../Traits/Physical.js");
-const Player = require("../Player/SPlayer.js");
+//const Player = require("../Player/SPlayer.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 class Interactable extends Physical {
@@ -31,7 +31,7 @@ class Interactable extends Physical {
     }
 
     forEachNearbyEntity(entity, entityManager) {
-        if (entity instanceof Player) {
+        if (entity.constructor.name === "Player") {
             this.checkInteraction(entity, entityManager);
         }
     }
