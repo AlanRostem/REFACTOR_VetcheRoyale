@@ -68,8 +68,7 @@ const TileCollider = {
                     }
                 };
                 if (Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b)
-                    || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)
-                ) {
+                    || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
                     entity.side.bottom = true;
                     entity.pos.x = pos.x + entity.vel.x * deltaTime;
@@ -99,6 +98,7 @@ const TileCollider = {
             }
         },
         ONE_WAY: (entity, tile, deltaTime) => {
+            // TODO: Find a better way to do this and let loot collide with one ways
             if (entity.constructor.name !== "Player") {
                 return;
             }
@@ -180,7 +180,7 @@ const TileCollider = {
         return id > TileCollider.TYPE_RANGE.PASS
             && id <= TileCollider.TYPE_RANGE.ONE_WAY
             && id !== 0;
-    }
+    },
 };
 
 Object.freeze(TileCollider); // Prevents object mutation

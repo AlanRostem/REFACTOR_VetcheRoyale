@@ -1,9 +1,11 @@
 const EntityManager = require("../Entity/Management/EntityManager.js");
 const TeamManager = require("./TeamManager.js");
 const Tile = require("../TileBased/Tile");
-const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const ClientList = require("../../Networking/ClientList.js");
 const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
+
+const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
+const Portal = require("../Entity/Portal/Portal.js");
 
 class PlayerList extends ClientList {
     constructor() {
@@ -31,6 +33,18 @@ class GameWorld extends EntityManager {
                 105 * Tile.SIZE,
                 new LootCrate(0, 0, 3));
         }
+
+        let p1 = this.spawnEntity(
+            50 * Tile.SIZE,
+            108 * Tile.SIZE,
+            new Portal(0, 0, null));
+
+        let p2 = this.spawnEntity(
+            9 * Tile.SIZE,
+            79 * Tile.SIZE,
+            new Portal(0, 0, null));
+
+        p1.link(p2);
         console.log(gameMap.name)
     }
 

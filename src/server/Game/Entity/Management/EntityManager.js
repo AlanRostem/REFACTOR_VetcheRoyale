@@ -81,6 +81,7 @@ class EntityManager {
         entity.pos.y = y;
 
         this._qt.insert(entity);
+        return entity;
     }
 
     getEntity(id) {

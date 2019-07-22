@@ -3,6 +3,7 @@
     <words>
       <w>collider</w>
       <w>spawner</w>
+      <w>teleport</w>
     </words>
   </dictionary>
 </component>
