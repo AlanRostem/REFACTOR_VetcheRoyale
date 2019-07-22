@@ -35,6 +35,10 @@ class Physical extends Entity {
         };
     }
 
+    checkMovementState(movementName, stateName) {
+        return this._movementTracker.checkMovementState(movementName, stateName);
+    }
+
     addMovementListener(name, stateName, callback) {
         this._movementTracker.addMovementStateListener(name, stateName, callback);
     }

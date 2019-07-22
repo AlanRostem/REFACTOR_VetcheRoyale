@@ -28,6 +28,10 @@ class EntityMovementTracker {
         }
     }
 
+    checkMovementState(movementName, stateName) {
+        return this._currentMovementStates.get(movementName) === stateName;
+    }
+
     setMovementState(movementName, stateName, composedEntity, entityManager, deltaTime) {
         this._currentMovementStates.set(movementName, stateName);
         if (this._movementStateCallbacks.has(movementName)) {

@@ -44,19 +44,10 @@ const TileCollider = {
                 if (Vector2D.intersect(entity.bottomLeft, entity.bottomRight, line.a, line.b) ||
                     Vector2D.intersect(entity.topRight, entity.bottomRight, line.a, line.b)) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
-                    if (entity.vel.x > 0) {
-                        entity.pos.x = pos.x - entity.width + entity.vel.x * deltaTime;
-                        entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
-                    } else if (entity.vel.x < 0) {
-                        entity.pos.x = pos.x - entity.width - entity.vel.x * deltaTime;
-                        entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
-                    }
                     entity.side.bottom = true;
-                    if (entity.vel.y > 0) {
-                        entity.pos.x = pos.x - entity.width;
-                        entity.pos.y = pos.y - entity.height;
-                        entity.vel.y = 0;
-                    }
+                    entity.pos.x = pos.x - entity.width + entity.vel.x * deltaTime;
+                    entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
+                    entity.vel.y = 0;
                 }
 
             }
@@ -76,26 +67,29 @@ const TileCollider = {
                         y: tile.y + Tile.SIZE,
                     }
                 };
+
+                if (entity.slopeCollided) {
+                    if (entity.vel.x > 0) {
+                        entity.vel.y = entity.vel.x;
+                        if (!entity.jumping) {
+                            entity.setMovementState("slope", "run");
+                        }
+                    }
+                }
                 if (Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b)
                     || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)
                 ) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
-                    if (entity.vel.x > 0) {
-                        entity.pos.x = pos.x - entity.vel.x * deltaTime;
-                        entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
-                    } else if (entity.vel.x < 0) {
-                        entity.pos.x = pos.x + entity.vel.x * deltaTime;
-                        entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
-                    }
                     entity.side.bottom = true;
-                    if (entity.vel.y > 0) {
-                        entity.pos.x = pos.x;
-                        entity.pos.y = pos.y - entity.height;
-                        entity.vel.y = 0;
-                    }
+                    entity.pos.x = pos.x + entity.vel.x * deltaTime;
+                    entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
+                    entity.vel.y = 0;
+                    entity.slopeCollided = true;
                 }
-
+            } else {
+                entity.slopeCollided = false;
             }
+
         },
     },
 

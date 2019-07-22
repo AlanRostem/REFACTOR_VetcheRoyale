@@ -31,6 +31,7 @@ class Player extends GameDataLinker {
 
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
+        this.addMovementListener("slope", "run", () => 0);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -166,9 +167,10 @@ class Player extends GameDataLinker {
 
         if (this.side.bottom) {
             this.setMovementState("main", "stand");
-
         } else {
-            this._jumping = true;
+            if (!this.checkMovementState("slope", "run")) {
+                this._jumping = true;
+            }
         }
 
         if (this.isCollidingWithTeammate()) {
@@ -210,7 +212,9 @@ class Player extends GameDataLinker {
         if (this.vel.y < 0) {
             this.setMovementState("main", "jump");
         } else if (this.vel.y > 0) {
-            this.setMovementState("main", "fall");
+            if (!this.checkMovementState("slope", "run")) {
+                this.setMovementState("main", "fall");
+            }
         }
 
         if (this.side.bottom) {
