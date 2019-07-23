@@ -2,6 +2,7 @@ const GameDataLinker = require("./GameDataLinker.js");
 const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
+const Team = require("../../World/Team.js");
 
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const Loot = require("../Loot/Loot.js");
@@ -15,7 +16,7 @@ class Player extends GameDataLinker {
         // MISC VAR INITS
 
         this._id = client.id;
-        this._teamName = "red";
+        new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
         this._snapShotGenerator._snapShot._id = this._id;
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
