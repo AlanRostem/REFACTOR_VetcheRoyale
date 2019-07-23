@@ -112,6 +112,10 @@ export default class MyClient {
         this.on("gameEvent-changeMap", data => {
             Scene.currentMapName = data.mapName
         });
+
+        this.on("gameEvent-changeWorld", data => {
+
+        });
     }
 }
 

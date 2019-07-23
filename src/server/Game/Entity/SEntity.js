@@ -12,6 +12,7 @@ class SEntity {
         this._removed = false;
         this._eType = this.constructor.name;
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
+        this._homeWorldID = -1;
         this._snapShotGenerator = new SnapShotGenerator(this,
         [
             "_id",
@@ -26,6 +27,14 @@ class SEntity {
         ]);
 
         this._entitiesInProximity = new ProximityEntityManager(this);
+    }
+
+    get gameID() {
+        return this._homeWorldID;
+    }
+
+    setWorld(game) {
+        this._homeWorldID = game.id;
     }
 
     addDynamicSnapShotData(array) {

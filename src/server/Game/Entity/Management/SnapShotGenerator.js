@@ -79,7 +79,6 @@ class SnapShotGenerator {
     }
 
     export() {
-
         return this._snapShot;
     }
 

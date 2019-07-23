@@ -33,6 +33,10 @@ const Scene = {
         Scene._currentMap = val;
     },
 
+    get entities() {
+        return Scene._entityManager;
+    },
+
     setup() {
         Scene.tileMaps = new TileMapManager();
         Scene.tileMaps.createMap("MegaMap", "tilemaps/MegaMap.json");

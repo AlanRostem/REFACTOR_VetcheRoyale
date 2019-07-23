@@ -1,5 +1,5 @@
 const WebSocket = require("./WebSocket.js");
-const MatchMaker = require("../Game/Matches/Matchmaker.js");
+const MatchMaker = require("../Game/World/Matches/Matchmaker.js");
 
 // Class for the main server
 class GameServer {

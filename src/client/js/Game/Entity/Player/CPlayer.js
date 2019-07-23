@@ -14,6 +14,10 @@ export default class CPlayer extends CEntity {
         this.animations.setCurrentAnimation("stand");
     }
 
+    updateFromDataPack(dataPack, client) {
+        super.updateFromDataPack(dataPack, client);
+    }
+
     update(deltaTime) {
         super.update(deltaTime);
         this.animations.setCurrentAnimation(this.output._movementState.main);

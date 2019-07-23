@@ -4,13 +4,14 @@ import CEntity from "../CEntity.js"
 import EntityTypeSpawner from "./EntityTypeSpawner.js";
 
 export default class EntityDataReceiver {
-
-
-
     constructor(client) {
         this._clientRef = client;
         this._container = {};
         this.defineSocketEvents(client) // Used for composing the socket emit events here
+    }
+
+    clear() {
+        this._container = {};
     }
 
     existsOnClient(id) {
@@ -19,10 +20,8 @@ export default class EntityDataReceiver {
 
     addEntityFromDataPack(dataPack, client) {
         //if (dataPack._removed) return;
-        (this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack)).onClientSpawn(dataPack, client);
-        if (dataPack._id === client.id) {
-            this._isClient = true;
-        }
+        (this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack))
+            .onClientSpawn(dataPack, client);
     }
 
     getEntity(entityData) {
@@ -69,6 +68,11 @@ export default class EntityDataReceiver {
                     throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
                 }
             }
+        });
+
+        client.on("gameEvent-changeWorld", data => {
+           this.clear();
+           this.addEntityFromDataPack(data, client);
         });
 
         client.on('spawnEntity', entityData => {

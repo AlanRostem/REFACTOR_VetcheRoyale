@@ -11,10 +11,6 @@ class TileSpawnPositionList {
         this.scanMap(tileMap);
     }
 
-    getSpawnPosition(id) {
-        return this._spawners[id];
-    }
-
     scanMap(tileMap) {
         for (var y = 0; y < tileMap.h; y++) {
             for (var x = 0; x < tileMap.w; x++) {
@@ -56,6 +52,11 @@ class TileSpawnPositionList {
         if (!SpawnLocation.getSpawnerByID(id).replicate) {
             entityManager.spawnEntity(this._spawners.get(id).x, this._spawners.get(id).y, entity);
         }
+        return entity;
+    }
+
+    getSpawnerType(id) {
+        return SpawnLocation.getSpawnerByID(id);
     }
 }
 
