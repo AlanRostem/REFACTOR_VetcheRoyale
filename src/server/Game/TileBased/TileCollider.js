@@ -72,8 +72,14 @@ const TileCollider = {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
                     entity.side.bottom = true;
                     entity.pos.x = pos.x + entity.vel.x * deltaTime;
-                    entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
                     entity.vel.y = 0;
+                    if (entity.vel.x > 0) {
+                        entity.vel.y = 35;
+                        entity.onSlope = true;
+                    }
+                    entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
+                } else {
+                    entity.onSlope = false;
                 }
             }
 

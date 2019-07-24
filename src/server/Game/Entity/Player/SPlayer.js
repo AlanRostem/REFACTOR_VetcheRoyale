@@ -17,7 +17,7 @@ class Player extends GameDataLinker {
 
         this._id = client.id;
         this._teamName = "red";
-        //new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
+        new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
         this._snapShotGenerator._snapShot._id = this._id;
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
@@ -253,6 +253,12 @@ class Player extends GameDataLinker {
             this._jumping = false;
             this.setMovementState("main", "stand");
             if (this.vel.x !== 0) {
+                this.setMovementState("main", "run");
+            }
+        }
+
+        if (this.vel.x !== 0) {
+            if (this.onSlope === true) {
                 this.setMovementState("main", "run");
             }
         }
