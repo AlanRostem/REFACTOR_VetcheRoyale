@@ -107,8 +107,8 @@ const R = {
         R._ctx.font = size + "px CGpixel";
         R.context.fillStyle = color;
         R.context.fillText(str,
-            (x + (useCamera ? R._camera.boundPos.x : 0) | 0),
-            (y + (useCamera ? R._camera.boundPos.y : 0) | 0),
+            Math.round(x + (useCamera ? R._camera.boundPos.x : 0)),
+            Math.round(y + (useCamera ? R._camera.boundPos.y : 0)),
         );
         R.context.restore();
     },
@@ -121,8 +121,8 @@ const R = {
             var x = startPos.x + i * Math.cos(a);
             var y = startPos.y + i * Math.sin(a);
             R.context.fillRect(
-                (x + (useCamera ? R._camera._pos.x : 0) | 0),
-                (y + (useCamera ? R._camera._pos.y : 0) | 0),
+                Math.round(x + (useCamera ? R._camera._pos.x : 0)),
+                Math.round(y + (useCamera ? R._camera._pos.y : 0)),
                 thickness, thickness);
         }
     },
