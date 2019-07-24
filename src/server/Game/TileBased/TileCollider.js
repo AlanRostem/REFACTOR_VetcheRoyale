@@ -114,6 +114,8 @@ const TileCollider = {
                         entity.onBottomCollision(tile);
                         entity.side.bottom = true;
                         entity.onPlatform = true;
+                    } else {
+                        entity.side.bottom = false;
                     }
                 }
             } else {
@@ -122,9 +124,13 @@ const TileCollider = {
 
             if (entity.onPlatform) {
                 if (TileCollider.overlapEntityWithTile(entity, tile)) {
-                    if (entity.pos.y + entity.height > tile.y) {
-                        entity.onBottomCollision(tile);
-                        entity.side.bottom = true;
+                    if (!entity.input.keyHeldDown(83)) {
+                        if (entity.pos.y + entity.height > tile.y) {
+                            entity.onBottomCollision(tile);
+                            entity.side.bottom = true;
+                        }
+                    } else {
+                        entity.onPlatform = false;
                     }
                 }
             }
