@@ -41,8 +41,13 @@ const TileCollider = {
                         y: tile.y,
                     }
                 };
-                if (Vector2D.intersect(entity.bottomLeft, entity.bottomRight, line.a, line.b) ||
-                    Vector2D.intersect(entity.topRight, entity.bottomRight, line.a, line.b)) {
+                if (entity.vel.x < 0) {
+                    entity.vel.y = -entity.vel.x;
+                }
+                let onSlope =
+                    Vector2D.intersect(entity.bottomLeft, entity.bottomRight, line.a, line.b) ||
+                    Vector2D.intersect(entity.topRight, entity.bottomRight, line.a, line.b);
+                if (onSlope) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
                     entity.side.bottom = true;
                     entity.pos.x = pos.x - entity.width + entity.vel.x * deltaTime;
@@ -67,19 +72,22 @@ const TileCollider = {
                         y: tile.y + Tile.SIZE,
                     }
                 };
-                if (Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b)
-                    || Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b)) {
+                if (entity.vel.x > 0) {
+                    entity.vel.y = entity.vel.x;
+                }
+
+                let onSlope =
+                    Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b) ||
+                    Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b);
+
+                if (onSlope) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
                     entity.side.bottom = true;
                     entity.pos.x = pos.x + entity.vel.x * deltaTime;
-                    entity.vel.y = 0;
-                    if (entity.vel.x > 0) {
-                        entity.vel.y = 35;
-                        entity.onSlope = true;
-                    }
                     entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
-                } else {
-                    entity.onSlope = false;
+                    if (entity.vel.x < 0) {
+                        entity.vel.y = 0;
+                    }
                 }
             }
 

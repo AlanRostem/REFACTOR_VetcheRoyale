@@ -257,12 +257,6 @@ class Player extends GameDataLinker {
             }
         }
 
-        if (this.vel.x !== 0) {
-            if (this.onSlope === true) {
-                this.setMovementState("main", "run");
-            }
-        }
-
         if (this.side.bottom) {
             this._jumping = false;
         }
