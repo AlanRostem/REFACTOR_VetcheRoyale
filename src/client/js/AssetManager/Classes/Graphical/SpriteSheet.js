@@ -29,7 +29,7 @@ export default class SpriteSheet {
     drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h, ctx = R.context) {
         if (this.img) {
             var rect = this.offsetRects.get(name);
-            ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
+            ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h, Math.round(x), Math.round(y), w, h);
         }
     }
 
@@ -101,8 +101,8 @@ export default class SpriteSheet {
 
         R.context.drawImage(this.img,
             rect.x, rect.y, rect.w, rect.h,
-            (!this.flipped ? x - this.centralOffset : -w + this.centralOffset / 2 | 0),
-            (!this.flipped ? y - this.centralOffset : 0),
+            Math.round(!this.flipped ? x - this.centralOffset : -w + this.centralOffset / 2),
+            Math.round(!this.flipped ? y - this.centralOffset : 0),
             w, h
         );
         this.flipped = false;

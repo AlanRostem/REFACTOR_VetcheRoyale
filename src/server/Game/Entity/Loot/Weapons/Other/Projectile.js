@@ -10,10 +10,11 @@ class Projectile extends Physical {
         this.vel.x = cos * speed;
         this.vel.y = sin * speed;
         this._hitTile = false;
-        this._collisionConfig.gravity = false;
+        this.setPhysicsConfiguration("gravity", false);
+        this.setPhysicsConfiguration("pixelatePos", false);
         if (arc) {
             this.acc.y = arc;
-            this._collisionConfig.gravity = true;
+            this.setPhysicsConfiguration("gravity", true);
         }
     }
 

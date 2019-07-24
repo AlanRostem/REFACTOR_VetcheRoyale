@@ -238,7 +238,6 @@ class Player extends GameDataLinker {
             this.setMovementState("direction", "left");
         }
 
-
         if (this.vel.x !== 0) {
             this.setMovementState("main", "run");
         }

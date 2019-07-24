@@ -17,11 +17,12 @@ class Physical extends Entity {
             "_movementState",
         ]);
 
-        this._collisionConfig = {
+        this._physicsConfig = {
             collision: true, // Tile collision
             gravity: true, // Gravity
             static: false, // No movement
-            stop: true // Sets speed to zero when colliding with tile
+            stop: true, // Sets speed to zero when colliding with tile
+            pixelatePos: true, // Rounds position to nearest integer
         };
 
         this.side = {
@@ -131,23 +132,27 @@ class Physical extends Entity {
         }
     }
 
+    setPhysicsConfiguration(name, value) {
+        this._physicsConfig[name] = value;
+    }
+
     onLeftCollision(tile) {
-        if (this._collisionConfig.stop) this.vel.x = 0;
+        if (this._physicsConfig.stop) this.vel.x = 0;
         this.pos.x = tile.x + Tile.SIZE;
     }
 
     onRightCollision(tile) {
-        if (this._collisionConfig.stop) this.vel.x = 0;
+        if (this._physicsConfig.stop) this.vel.x = 0;
         this.pos.x = tile.x - this.width;
     }
 
     onTopCollision(tile) {
-        if (this._collisionConfig.stop) this.vel.y = 0;
+        if (this._physicsConfig.stop) this.vel.y = 0;
         this.pos.y = tile.y + Tile.SIZE;
     }
 
     onBottomCollision(tile) {
-        if (this._collisionConfig.stop) this.vel.y = 0;
+        if (this._physicsConfig.stop) this.vel.y = 0;
         this.pos.y = tile.y - this.height;
     }
 
@@ -156,25 +161,26 @@ class Physical extends Entity {
     }
 
     physics(entityManager, deltaTime) {
-        if (this._collisionConfig.gravity)
+        if (this._physicsConfig.gravity)
             if (!this.side.bottom)
                 this.accelerateY(this._acc.y, deltaTime);
 
-
         this.side.reset();
 
-        if (!this._collisionConfig.static)
+        if (!this._physicsConfig.static)
             this.moveY(this._vel.y, deltaTime);
-        if (this._collisionConfig.collision)
+        if (this._physicsConfig.collision)
             this.tileCollisionY(entityManager.tileMap, deltaTime);
 
-        if (!this._collisionConfig.static)
+        if (!this._physicsConfig.static)
             this.moveX(this._vel.x, deltaTime);
-        if (this._collisionConfig.collision)
+        if (this._physicsConfig.collision)
             this.tileCollisionX(entityManager.tileMap, deltaTime);
 
-        this.pos.x = Math.round(this.pos.x);
-        this.pos.y = Math.round(this.pos.y);
+        if (this._physicsConfig.pixelatePos) {
+            this.pos.x = Math.round(this.pos.x);
+            this.pos.y = Math.round(this.pos.y);
+        }
     }
 
     update(game, deltaTime) {

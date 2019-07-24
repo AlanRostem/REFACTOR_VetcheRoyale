@@ -2,6 +2,7 @@
   <dictionary name="arost">
     <words>
       <w>collider</w>
+      <w>pixelate</w>
       <w>spawner</w>
       <w>teleport</w>
     </words>
