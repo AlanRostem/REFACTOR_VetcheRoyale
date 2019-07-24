@@ -29,7 +29,7 @@ class Physical extends Entity {
             right: false,
             top: false,
             bottom: false,
-            reset : () => {
+            reset: () => {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
@@ -65,21 +65,21 @@ class Physical extends Entity {
 
     overlapEntity(e) {
         return this.pos.y + this.height > e.pos.y
-            &&  this.pos.y < (e.pos.y + e.height)
+            && this.pos.y < (e.pos.y + e.height)
             && this.pos.x + this.width > e.pos.x
-            &&  this.pos.x < (e.pos.x + e.width);
+            && this.pos.x < (e.pos.x + e.width);
     }
 
     overlapTile(e) {
         return this.pos.y + this.height > e.y
-            &&  this.pos.y < (e.y + Tile.SIZE)
+            && this.pos.y < (e.y + Tile.SIZE)
             && this.pos.x + this.width > e.x
-            &&  this.pos.x < (e.x + Tile.SIZE);
+            && this.pos.x < (e.x + Tile.SIZE);
     }
 
     tileCollisionX(tileMap, deltaTime) {
-        var cx =  Math.floor(this.pos.x / Tile.SIZE);
-        var cy =  Math.floor(this.pos.y / Tile.SIZE);
+        var cx = Math.floor(this.pos.x / Tile.SIZE);
+        var cy = Math.floor(this.pos.y / Tile.SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
@@ -101,8 +101,8 @@ class Physical extends Entity {
     }
 
     tileCollisionY(tileMap, deltaTime) {
-        var cx =  Math.floor(this.pos.x / Tile.SIZE);
-        var cy =  Math.floor(this.pos.y / Tile.SIZE);
+        var cx = Math.floor(this.pos.x / Tile.SIZE);
+        var cy = Math.floor(this.pos.y / Tile.SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
@@ -131,10 +131,25 @@ class Physical extends Entity {
         }
     }
 
-    onLeftCollision(tile) { if (this._collisionConfig.stop) this.vel.x = 0; this.pos.x = tile.x + Tile.SIZE; }
-    onRightCollision(tile) { if (this._collisionConfig.stop) this.vel.x = 0; this.pos.x = tile.x - this.width; }
-    onTopCollision(tile) { if (this._collisionConfig.stop) this.vel.y = 0; this.pos.y = tile.y + Tile.SIZE; }
-    onBottomCollision(tile) { if (this._collisionConfig.stop) this.vel.y = 0; this.pos.y = tile.y - this.height; }
+    onLeftCollision(tile) {
+        if (this._collisionConfig.stop) this.vel.x = 0;
+        this.pos.x = tile.x + Tile.SIZE;
+    }
+
+    onRightCollision(tile) {
+        if (this._collisionConfig.stop) this.vel.x = 0;
+        this.pos.x = tile.x - this.width;
+    }
+
+    onTopCollision(tile) {
+        if (this._collisionConfig.stop) this.vel.y = 0;
+        this.pos.y = tile.y + Tile.SIZE;
+    }
+
+    onBottomCollision(tile) {
+        if (this._collisionConfig.stop) this.vel.y = 0;
+        this.pos.y = tile.y - this.height;
+    }
 
     onEntityCollision(entity, entityManager) {
         EntityCollider.applyCollisionsEffects(this, entity, entityManager);
@@ -144,6 +159,7 @@ class Physical extends Entity {
         if (this._collisionConfig.gravity)
             if (!this.side.bottom)
                 this.accelerateY(this._acc.y, deltaTime);
+
 
         this.side.reset();
 

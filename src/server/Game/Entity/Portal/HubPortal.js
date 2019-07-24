@@ -17,7 +17,6 @@ class HubPortal extends Portal {
         var data = client.player.getDataPack();
         entity.client.emit("gameEvent-changeWorld", data);
     }
-
 }
 
 module.exports = HubPortal;

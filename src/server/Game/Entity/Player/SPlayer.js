@@ -16,7 +16,8 @@ class Player extends GameDataLinker {
         // MISC VAR INITS
 
         this._id = client.id;
-        new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
+        this._teamName = "red";
+        //new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
         this._snapShotGenerator._snapShot._id = this._id;
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
@@ -33,7 +34,7 @@ class Player extends GameDataLinker {
         };
 
         // TEST:
-        this._playersOnTopOfMe = {};
+        this._playersBelowMe = {};
 
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
@@ -86,8 +87,10 @@ class Player extends GameDataLinker {
             let closest = Math.min(...this._itemsNearby.array);
             for (let id in this._itemsNearby.object) {
                 let loot = game.getEntity(id);
-                if (this._itemsNearby.get(loot.id) === closest) {
-                    loot.onPlayerInteraction(this, game);
+                if (loot) {
+                    if (this._itemsNearby.get(loot.id) === closest) {
+                        loot.onPlayerInteraction(this, game);
+                    }
                 }
             }
             this._itemsNearby.clear();
@@ -131,9 +134,12 @@ class Player extends GameDataLinker {
         this._teamName = team.name;
     }
 
-    isCollidingWithTeammate() {
-        for (var id in this._playersOnTopOfMe) {
-            if (this._playersOnTopOfMe[id]) {
+    isCollidingWithTeammate(entityManager) {
+        for (var id in this._playersBelowMe) {
+            if (!entityManager.getEntity(id)) {
+                delete this._playersBelowMe[id];
+            }
+            if (this._playersBelowMe[id] === true) {
                 return true;
             }
         }
@@ -153,13 +159,13 @@ class Player extends GameDataLinker {
                     if (p.overlapEntity(bottomLine) && !p._jumping) {
                         if (this.pos.y + this.height < p.pos.y && this.vel.y > 0) {
                             this.onGround(p);
-                            this._playersOnTopOfMe[p.id] = true;
+                            this._playersBelowMe[p.id] = true;
                         }
                     } else {
-                        this._playersOnTopOfMe[p.id] = false;
+                        this._playersBelowMe[p.id] = false;
                     }
 
-                    if (this._playersOnTopOfMe[p.id]) {
+                    if (this._playersBelowMe[p.id]) {
                         if (this.overlapEntity(p)) {
                             if (this.pos.y + this.height > p.pos.y) {
                                 this.onGround(p);
@@ -183,7 +189,7 @@ class Player extends GameDataLinker {
         this.pos.y = p.pos.y - this.height;
         this.vel.y = 0;
         this._jumping = false;
-        this.side.bottom = true;
+        //this.side.bottom = true;
         this.setMovementState("main", "stand");
     }
 
@@ -206,13 +212,6 @@ class Player extends GameDataLinker {
             this.setMovementState("main", "stand");
         } else {
             this._jumping = true;
-        }
-
-        if (this.isCollidingWithTeammate()) {
-            this.side.bottom = true;
-            this._jumping = false;
-            this.setMovementState("main", "stand");
-
         }
 
         if (this.input.keyHeldDown(32)) {
@@ -248,6 +247,15 @@ class Player extends GameDataLinker {
             this.setMovementState("main", "jump");
         } else if (this.vel.y > 0) {
             this.setMovementState("main", "fall");
+        }
+
+        if (this.isCollidingWithTeammate(entityManager)) {
+            this.vel.y = 0;
+            this._jumping = false;
+            this.setMovementState("main", "stand");
+            if (this.vel.x !== 0) {
+                this.setMovementState("main", "run");
+            }
         }
 
         if (this.side.bottom) {
