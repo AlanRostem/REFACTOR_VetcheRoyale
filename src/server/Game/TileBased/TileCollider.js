@@ -61,24 +61,27 @@ const TileCollider = {
             if (entity.constructor.name !== "Player") {
                 return;
             }
+            let line = {
+                a: {
+                    x: tile.x,
+                    y: tile.y,
+                },
+                b: {
+                    x: tile.x + Tile.SIZE,
+                    y: tile.y + Tile.SIZE,
+                }
+            };
+
+
+            let onSlope =
+                Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b) ||
+                Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b);
+
             if (entity.overlapTile(tile)) {
-                let line = {
-                    a: {
-                        x: tile.x,
-                        y: tile.y,
-                    },
-                    b: {
-                        x: tile.x + Tile.SIZE,
-                        y: tile.y + Tile.SIZE,
-                    }
-                };
                 if (entity.vel.x > 0) {
                     entity.vel.y = entity.vel.x;
+                    entity.side.bottom = true;
                 }
-
-                let onSlope =
-                    Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b) ||
-                    Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b);
 
                 if (onSlope) {
                     let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
