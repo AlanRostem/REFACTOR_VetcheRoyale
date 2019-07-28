@@ -38,6 +38,7 @@ class Player extends GameDataLinker {
 
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
+        this.addMovementListener("tile", "slope", () => 0);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -201,6 +202,9 @@ class Player extends GameDataLinker {
     }
 
     update(entityManager, deltaTime) {
+
+        this.setMovementState("tile", "none");
+
         this._invAmmo = this.inventory.ammo;
         if (this.inventory.weapon) {
             this._invWeaponID = this.inventory.weapon.id;
@@ -245,7 +249,9 @@ class Player extends GameDataLinker {
         if (this.vel.y < 0) {
             this.setMovementState("main", "jump");
         } else if (this.vel.y > 0) {
-            this.setMovementState("main", "fall");
+            if (!this.checkMovementState("tile", "slope")) {
+                this.setMovementState("main", "fall");
+            }
         }
 
         if (this.isCollidingWithTeammate(entityManager)) {
