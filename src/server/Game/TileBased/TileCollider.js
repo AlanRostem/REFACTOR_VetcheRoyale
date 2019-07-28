@@ -31,70 +31,85 @@ const TileCollider = {
                 return;
             }
             if (entity.overlapTile(tile)) {
-                let line = {
-                    a: {
-                        x: tile.x,
-                        y: tile.y + Tile.SIZE,
-                    },
-                    b: {
-                        x: tile.x + Tile.SIZE,
-                        y: tile.y,
-                    }
-                };
-                if (entity.vel.x < 0) {
-                    entity.vel.y = -entity.vel.x;
-                    entity.side.bottom = true;
-                }
-                let onSlope =
-                    Vector2D.intersect(entity.bottomLeft, entity.bottomRight, line.a, line.b) ||
-                    Vector2D.intersect(entity.topRight, entity.bottomRight, line.a, line.b);
-                if (onSlope) {
-                    let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
-                    entity.side.bottom = true;
-                    entity.pos.x = pos.x - entity.width + entity.vel.x * deltaTime;
-                    entity.pos.y = pos.y - entity.height - entity.vel.x * deltaTime;
-                    entity.vel.y = 0;
-                }
+                let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
 
+                let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
+
+                if (eRightToSlopeLeftDiff > Tile.SIZE) {
+                    entity.jumping = false;
+                    entity.vel.y = 0;
+                    entity.pos.y = tile.y - entity.height;
+                    entity.side.bottom = true;
+                    if (entity.vel.x < 0) {
+                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                    }
+                } else if (entity.pos.y + entity.height > steppingPosY) {
+                    entity.jumping = false;
+                    entity.vel.y = 0;
+                    entity.pos.y = steppingPosY - entity.height;
+                    entity.side.bottom = true;
+                    if (entity.vel.x < 0) {
+                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                    }
+                }
             }
         },
         SLOPE_UP_LEFT: (entity, tile, deltaTime) => {
             if (entity.constructor.name !== "Player") {
                 return;
             }
-            let line = {
-                a: {
-                    x: tile.x,
-                    y: tile.y,
-                },
-                b: {
-                    x: tile.x + Tile.SIZE,
-                    y: tile.y + Tile.SIZE,
-                }
-            };
-
             if (entity.overlapTile(tile)) {
-                if (entity.vel.x > 0) {
-                    entity.vel.y = entity.vel.x;
-                    entity.side.bottom = true;
-                }
-            }
+                let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
 
-            let onSlope =
-                Vector2D.intersect(entity.bottomRight, entity.bottomLeft, line.a, line.b) ||
-                Vector2D.intersect(entity.topLeft, entity.bottomLeft, line.a, line.b);
-            if (onSlope) {
-                let pos = Vector2D.getIntersectedPos(entity.bottomLeft, entity.bottomRight, line.a, line.b);
-                entity.side.bottom = true;
-                entity.pos.x = pos.x + entity.vel.x * deltaTime;
-                entity.pos.y = pos.y - entity.height + entity.vel.x * deltaTime;
-                if (entity.vel.x < 0) {
+                let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
+
+                if (eLeftToSlopeRightDiff > Tile.SIZE) {
+                    entity.jumping = false;
                     entity.vel.y = 0;
+                    entity.pos.y = tile.y - entity.height;
+                    entity.side.bottom = true;
+                    if (entity.vel.x > 0) {
+                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                    }
+                } else if (entity.pos.y + entity.height > steppingPosY) {
+                    entity.jumping = false;
+                    entity.vel.y = 0;
+                    entity.pos.y = steppingPosY - entity.height;
+                    entity.side.bottom = true;
+                    if (entity.vel.x > 0) {
+                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                    }
                 }
             }
-
 
         },
+    },
+
+    collideSlope(object, row, column, slope, y_offset) {
+        let TILE_SIZE = Tile.SIZE;
+        let origin_x = column * TILE_SIZE;
+        let origin_y = row * TILE_SIZE + y_offset;
+        let current_x = (slope < 0) ? object.x + object.width - origin_x : object.x - origin_x;
+        let current_y = object.y + object.height - origin_y;
+        let old_x = (slope < 0) ? object._old.x + object.width - origin_x : object._old.x - origin_x;
+        let old_y = object._old.y + object.height - origin_y;
+        let current_cross_product = current_x * slope - current_y;
+        let old_cross_product     = old_x * slope - old_y;
+        let top = (slope < 0) ? row * TILE_SIZE + TILE_SIZE + y_offset * slope : row * TILE_SIZE + y_offset;
+
+        if ((current_x < 0 || current_x > TILE_SIZE)
+            && (object.y + object.height > top && object._old.y + object.height <= top
+            || current_cross_product < 1 && old_cross_product > -1)) {
+
+            object.jumping = false;
+            object.vel.y = 0;
+            object.y = top - object.height;
+        } else if (current_cross_product < 1 && old_cross_product > -1) {
+
+            object.jumping = false;
+            object.vel.y = 0;
+            object.y = row * TILE_SIZE + slope * current_x + y_offset - object.height;
+        }
     },
 
     TYPE_COLLISION_CALLBACK_Y: {

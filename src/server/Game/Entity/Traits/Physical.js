@@ -192,6 +192,22 @@ class Physical extends Entity {
         this.physics(game, deltaTime);
     }
 
+    get x() {
+        return this._pos.x;
+    }
+
+    get y() {
+        return this._pos.y;
+    }
+
+    set x(x) {
+        this._pos.x = x;
+    }
+
+    set y(y) {
+        this._pos.y = y;
+    }
+
     get vel() {
         return this._vel;
     }
