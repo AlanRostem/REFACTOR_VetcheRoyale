@@ -26,6 +26,42 @@ const TileCollider = {
                 }
             }
         },
+
+    },
+
+
+    TYPE_COLLISION_CALLBACK_Y: {
+        SOLID: (entity, tile, deltaTime) => {
+            if (entity.overlapTile(tile)) {
+                if (entity.vel.y > 0) {
+                    if (entity.pos.y + entity.height > tile.y) {
+                        entity.onBottomCollision(tile);
+                        entity.side.bottom = true;
+                    }
+                }
+                if (entity.vel.y < 0) {
+                    if (entity.pos.y < tile.y + Tile.SIZE) {
+                        entity.onTopCollision(tile);
+                        entity.side.top = true;
+                    }
+                }
+            }
+        },
+        ONE_WAY: (entity, tile, deltaTime) => {
+            // TODO: Find a better way to do this and let loot collide with one ways
+            if (entity.constructor.name !== "Player") {
+                return;
+            }
+            // entity.input.keyHeldDown(83)
+            if (entity.overlapTile(tile)) {
+                if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
+                    entity.vel.y = 0;
+                    entity.jumping = false;
+                    entity.pos.y = tile.y - entity.height;
+                    entity.side.bottom = true;
+                }
+            }
+        },
         SLOPE_UP_RIGHT: (entity, tile, deltaTime) => {
             if (entity.constructor.name !== "Player") {
                 return;
@@ -83,67 +119,6 @@ const TileCollider = {
             }
 
         },
-    },
-
-    collideSlope(object, row, column, slope, y_offset) {
-        let TILE_SIZE = Tile.SIZE;
-        let origin_x = column * TILE_SIZE;
-        let origin_y = row * TILE_SIZE + y_offset;
-        let current_x = (slope < 0) ? object.x + object.width - origin_x : object.x - origin_x;
-        let current_y = object.y + object.height - origin_y;
-        let old_x = (slope < 0) ? object._old.x + object.width - origin_x : object._old.x - origin_x;
-        let old_y = object._old.y + object.height - origin_y;
-        let current_cross_product = current_x * slope - current_y;
-        let old_cross_product     = old_x * slope - old_y;
-        let top = (slope < 0) ? row * TILE_SIZE + TILE_SIZE + y_offset * slope : row * TILE_SIZE + y_offset;
-
-        if ((current_x < 0 || current_x > TILE_SIZE)
-            && (object.y + object.height > top && object._old.y + object.height <= top
-            || current_cross_product < 1 && old_cross_product > -1)) {
-
-            object.jumping = false;
-            object.vel.y = 0;
-            object.y = top - object.height;
-        } else if (current_cross_product < 1 && old_cross_product > -1) {
-
-            object.jumping = false;
-            object.vel.y = 0;
-            object.y = row * TILE_SIZE + slope * current_x + y_offset - object.height;
-        }
-    },
-
-    TYPE_COLLISION_CALLBACK_Y: {
-        SOLID: (entity, tile, deltaTime) => {
-            if (entity.overlapTile(tile)) {
-                if (entity.vel.y > 0) {
-                    if (entity.pos.y + entity.height > tile.y) {
-                        entity.onBottomCollision(tile);
-                        entity.side.bottom = true;
-                    }
-                }
-                if (entity.vel.y < 0) {
-                    if (entity.pos.y < tile.y + Tile.SIZE) {
-                        entity.onTopCollision(tile);
-                        entity.side.top = true;
-                    }
-                }
-            }
-        },
-        ONE_WAY: (entity, tile, deltaTime) => {
-            // TODO: Find a better way to do this and let loot collide with one ways
-            if (entity.constructor.name !== "Player") {
-                return;
-            }
-            // entity.input.keyHeldDown(83)
-            if (entity.overlapTile(tile)) {
-                if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
-                    entity.vel.y = 0;
-                    entity.jumping = false;
-                    entity.pos.y = tile.y - entity.height;
-                    entity.side.bottom = true;
-                }
-            }
-        }
     },
 
     overlapEntityWithTile(e, t) {
