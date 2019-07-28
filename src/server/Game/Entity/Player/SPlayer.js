@@ -228,13 +228,15 @@ class Player extends GameDataLinker {
         this.vel.x *= this.fric.x;
 
         if (this.input.keyHeldDown(68)) {
-            this.accelerateX(this.acc.x, deltaTime);
+            this.vel.x = 60;
+            //this.accelerateX(this.acc.x, deltaTime);
             this.setMovementState("direction", "right");
 
         }
 
         if (this.input.keyHeldDown(65)) {
-            this.accelerateX(-this.acc.x, deltaTime);
+            this.vel.x = -60;
+            //this.accelerateX(-this.acc.x, deltaTime);
             this.setMovementState("direction", "left");
         }
 

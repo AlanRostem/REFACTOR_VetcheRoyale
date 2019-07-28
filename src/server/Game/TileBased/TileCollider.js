@@ -41,7 +41,7 @@ const TileCollider = {
                     entity.pos.y = tile.y - entity.height;
                     entity.side.bottom = true;
                     if (entity.vel.x < 0) {
-                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                        entity.vel.y = -entity.vel.x; // Making it move down 1 pixel
                     }
                 } else if (entity.pos.y + entity.height > steppingPosY) {
                     entity.jumping = false;
@@ -49,7 +49,7 @@ const TileCollider = {
                     entity.pos.y = steppingPosY - entity.height;
                     entity.side.bottom = true;
                     if (entity.vel.x < 0) {
-                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                        entity.vel.y = -entity.vel.x; // Making it move down 1 pixel
                     }
                 }
             }
@@ -69,7 +69,7 @@ const TileCollider = {
                     entity.pos.y = tile.y - entity.height;
                     entity.side.bottom = true;
                     if (entity.vel.x > 0) {
-                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                        entity.vel.y = entity.vel.x; // Making it move down 1 pixel
                     }
                 } else if (entity.pos.y + entity.height > steppingPosY) {
                     entity.jumping = false;
@@ -77,7 +77,7 @@ const TileCollider = {
                     entity.pos.y = steppingPosY - entity.height;
                     entity.side.bottom = true;
                     if (entity.vel.x > 0) {
-                        entity.vel.y = 1/deltaTime; // Making it move down 1 pixel
+                        entity.vel.y = entity.vel.x; // Making it move down 1 pixel
                     }
                 }
             }
