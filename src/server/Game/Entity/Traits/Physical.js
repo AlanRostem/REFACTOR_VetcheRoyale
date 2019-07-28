@@ -7,6 +7,7 @@ const MovementTracker = require("../Management/EntityMovementTracker.js");
 class Physical extends Entity {
     constructor(x, y, w, h) {
         super(x, y, w, h);
+        this._old = new Vector2D(x, y);
         this._vel = new Vector2D(0, 0);
         this._fric = new Vector2D(0, 0);
         this._acc = new Vector2D(0, 0);
@@ -161,6 +162,9 @@ class Physical extends Entity {
     }
 
     physics(entityManager, deltaTime) {
+        this._old.x = this._pos.x;
+        this._old.y = this._pos.y;
+
         if (this._physicsConfig.gravity)
             if (!this.side.bottom)
                 this.accelerateY(this._acc.y, deltaTime);

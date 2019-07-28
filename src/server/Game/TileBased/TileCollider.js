@@ -119,36 +119,13 @@ const TileCollider = {
             if (entity.constructor.name !== "Player") {
                 return;
             }
-            var bottomLine = {
-                pos: {x: entity.pos.x, y: entity.pos.y + entity.height + entity.vel.y * deltaTime},
-                width: entity.width,
-                height: 1
-            };
-
-            if (TileCollider.overlapEntityWithTile(bottomLine, tile)) {
-                if (entity.pos.y + entity.height <= tile.y || entity.side.bottom) {
-                    if (!entity.input.keyHeldDown(83)) {
-                        entity.onBottomCollision(tile);
-                        entity.side.bottom = true;
-                        entity.onPlatform = true;
-                    } else {
-                        entity.side.bottom = false;
-                    }
-                }
-            } else {
-                entity.onPlatform = false;
-            }
-
-            if (entity.onPlatform) {
-                if (TileCollider.overlapEntityWithTile(entity, tile)) {
-                    if (!entity.input.keyHeldDown(83)) {
-                        if (entity.pos.y + entity.height > tile.y) {
-                            entity.onBottomCollision(tile);
-                            entity.side.bottom = true;
-                        }
-                    } else {
-                        entity.onPlatform = false;
-                    }
+            // entity.input.keyHeldDown(83)
+            if (entity.overlapTile(tile)) {
+                if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
+                    entity.vel.y = 0;
+                    entity.jumping = false;
+                    entity.pos.y = tile.y - entity.height;
+                    entity.side.bottom = true;
                 }
             }
         }
