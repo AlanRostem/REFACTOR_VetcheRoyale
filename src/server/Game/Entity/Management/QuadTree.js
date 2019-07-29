@@ -1,7 +1,10 @@
-Vector2D = require("../../../../shared/code/Math/SVector2D.js");
-typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
-Rect = require("./QTRect.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+const typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
+const Rect = require("./QTRect.js");
 
+// Data structure that reduces the amount of iterations
+// an entity has to perform in order to check for interactions
+// such as collision.
 class QuadTree {
     constructor(rect) {
         this._boundary = rect;
@@ -39,6 +42,8 @@ class QuadTree {
         return found;
     }
 
+    // Creates more quad trees divided into smaller
+    // pieces within the current quad tree.
     subdivide() {
         let x = this._boundary.x;
         let y = this._boundary.y;
@@ -58,8 +63,8 @@ class QuadTree {
     }
 
     // TODO: Maybe store the ID in the QuadTree instead.
-    // Places a reference to an entity in the container
-    // Subdivides if we reach the max count
+    // Places a reference to an entity in the container.
+    // We subdivides if we reach the max count.
     insert(entity) {
         if (!this._boundary.myContains(entity)) {
             if (this._entities.indexOf(entity) !== -1) {
@@ -99,6 +104,8 @@ class QuadTree {
         }
     }
 
+    // Recursively removes an entity from the quad tree and
+    // its subdivisions.
     remove(entity) {
         if (this._entities.indexOf(entity) !== -1) {
             this._entities.splice(this._entities.indexOf(entity));

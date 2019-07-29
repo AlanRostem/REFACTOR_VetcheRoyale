@@ -1,7 +1,9 @@
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
-// Composition class for Entity. Handles entity
+// Composition object for Entity. Handles entity
 // collisions based on the entity class type.
+
+// TODO: Finish this code and use it.
 
 const EntityCollider = {
     _collisions: new ONMap(),

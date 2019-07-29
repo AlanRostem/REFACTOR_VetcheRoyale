@@ -1,4 +1,4 @@
-EntityManager = require("./EntityManager.js");
+const EntityManager = require("./EntityManager.js");
 // Composition class for entities which handles
 // all entities in proximity using the global
 // quad tree.
@@ -26,6 +26,8 @@ class ProximityEntityManager extends EntityManager {
         entityManager.quadTree.insert(this._entRef);
     }
 
+    // Binds the quad tree range bounding rect to
+    // the entity's center and does interaction checks.
     update(entityManager, deltaTime) {
         this._qtBounds.x = this._entRef.center.x;
         this._qtBounds.y = this._entRef.center.y;
@@ -33,6 +35,8 @@ class ProximityEntityManager extends EntityManager {
         this.checkProximityEntities(entityManager);
     }
 
+    // Performs interactions with entities that intersect the range
+    // bounding rectangle.
     checkProximityEntities(entityManager) {
         var entities = entityManager.quadTree.query(this._qtBounds);
         for (let e of entities) {

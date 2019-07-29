@@ -1,3 +1,5 @@
+// Positional range calculation rect that starts at
+// the center.
 class QTRect {
     constructor(x, y, w, h) {
         this.x = x;

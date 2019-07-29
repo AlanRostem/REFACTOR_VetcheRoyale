@@ -169,7 +169,7 @@ class Player extends GameDataLinker {
         }
     }
 
-    collisionHandleY(game, tileMap, deltaTime) {
+    customCollisionY(game, tileMap, deltaTime) {
         this.oneWayTeamCollision(deltaTime);
     }
 

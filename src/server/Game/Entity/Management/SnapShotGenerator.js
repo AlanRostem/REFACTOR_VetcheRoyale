@@ -1,11 +1,8 @@
-// Class that should compose all data pack
+const typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
+const Entity = require("../SEntity.js");
+
+// Class that composes all data pack
 // exporting for every entity in the game.
-
-var typeCheck = require("../../../../shared/code/Debugging/StypeCheck.js");
-var Entity = require("../SEntity.js");
-
-// TODO: Look at why including Entity apparently works...
-
 class SnapShotGenerator {
 
     // The 2 last parameters are arrays with strings of the
@@ -40,6 +37,10 @@ class SnapShotGenerator {
         }
     }
 
+    // Map an array of strings with existing properties of the entity
+    // to the snapshot object. These values are usually constant values
+    // such as strings and numbers but also can also hold a reference to
+    // an object that changes.
     addReferenceValues(composedEntity, referenceValues) {
         for (let key of referenceValues) {
             if (!composedEntity.hasOwnProperty(key)) {
@@ -54,6 +55,10 @@ class SnapShotGenerator {
         }
     }
 
+    // Map an array of strings with existing properties of the entity
+    // to the snapshot object. These values are manually iterated and
+    // updated, that's why this function is suitable for singular values
+    // of type number or string.
     addDynamicValues(composedEntity, dynamicValues) {
         for (let key of dynamicValues) {
             if (!composedEntity.hasOwnProperty(key)) {

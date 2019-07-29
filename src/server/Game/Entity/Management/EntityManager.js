@@ -1,15 +1,22 @@
-Tile = require("../../TileBased/Tile.js");
-GameClock = require("../../Entity/Management/GameClock.js");
-QuadTree = require("./QuadTree.js");
-Rect = require("./QTRect.js");
+const Tile = require("../../TileBased/Tile.js");
+const GameClock = require("../../Entity/Management/GameClock.js");
+const QuadTree = require("./QuadTree.js");
+const Rect = require("./QTRect.js");
+
+// Updates entities and manages proximity queries in the quad tree
 class EntityManager {
-    constructor(singleton = false, gameMap) {
+    constructor(globalManager = false, gameMap) {
         this._container = {};
-        if (singleton) {
+
+        // If true it will be used as a global entity manager
+        // for a game world. Otherwise it might have other use cases.
+        if (globalManager) {
             this._entitiesQueuedToDelete = [];
             this._tileMap = gameMap;
             this._gameClock = new GameClock(0);
 
+            // Create a singular quad tree with the size of
+            // the whole tile map.
             this._qt = new QuadTree(new Rect(
                 this._tileMap.w * Tile.SIZE / 2,
                 this._tileMap.h * Tile.SIZE / 2,
@@ -35,6 +42,8 @@ class EntityManager {
         return this._container;
     }
 
+    // Call only when using this class as a global
+    // world entity manager.
     update(deltaTime) {
         this._gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
@@ -46,6 +55,8 @@ class EntityManager {
         }
     }
 
+    // Regenerates data packs every frame for every entity
+    // in the container.
     refreshEntityDataPacks(deltaTime) {
         for (var id in this._container) {
             if (this.exists(id)) {
@@ -72,7 +83,7 @@ class EntityManager {
         return this._container.hasOwnProperty(id);
     }
 
-    // Spawns an existing entity into the game world
+    // Spawns an existing (or new) entity into the game world
     // on a given position.
     spawnEntity(x, y, entity) {
         this._container[entity.id] = entity;
@@ -88,6 +99,8 @@ class EntityManager {
         return this._container[id];
     }
 
+    // Assigns the entity as removed and queues
+    // it to deletion.
     removeEntity(id) {
         this.getEntity(id).remove();
         this._entitiesQueuedToDelete.push(id);

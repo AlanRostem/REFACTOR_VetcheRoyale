@@ -3,20 +3,24 @@ const Tile = require("../../TileBased/Tile.js");
 
 class Loot extends Interactable {
     constructor(x, y, shouldRemove = false) {
-        super(x, y, 4, 6); // All loot should be of this size
+        super(x, y, 4, 6); // All loot hit boxes should be of this size
         this._shouldRemove = shouldRemove;
         this._acc.y = 500;
     }
 
+    // Return true based on some data of the player
+    // or self when you want the item to be picked up.
     canPickUp(player) {
         return true; // Override
     }
 
+    // Throw the item in some direction.
     cast(x, y) {
         this.vel.x = x;
         this.vel.y = y;
     }
 
+    // Ground physics.
     update(entityManager, deltaTime) {
         if (!this.side.bottom) {
             this.vel.x *= Loot.AIR_FRICTION;
@@ -24,6 +28,8 @@ class Loot extends Interactable {
         super.update(entityManager, deltaTime);
     }
 
+    // Specify what should change about the player inventory
+    // when picking the item up.
     addToInventory(inventory) {
         // Override here
     }

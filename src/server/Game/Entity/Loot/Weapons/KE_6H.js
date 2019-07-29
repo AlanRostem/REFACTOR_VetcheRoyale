@@ -42,7 +42,7 @@ class KineticBomb extends Bouncy {
         super.onTileHit(entityManager, deltaTime);
         this._hits--;
     }
-    
+
     onPlayerHit(player, entityManager) {
         this._directHitDmg.inflict(player, entityManager);
         this.detonate(entityManager);

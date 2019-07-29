@@ -2,6 +2,9 @@ const KE_6H = require("./Weapons/KE_6H.js");
 const Ammo = require("./Multanium/Ammo.js");
 const Charge = require("./Multanium/Charge.js");
 
+// Object that generates loot based on the "level" of
+// of the designated item. This file should require all
+// files of classes that extends Loot (besides composition bases)
 const LootRNG = {
     _levelMap: {
         1: [],
@@ -10,12 +13,14 @@ const LootRNG = {
         4: [],
     },
 
+    // Initialize
     setup() {
         LootRNG.setLootConstructor(3, KE_6H);
         LootRNG.setLootConstructor(2, Charge);
         LootRNG.setLootConstructor(1, Ammo);
     },
 
+    // Pass in a level int and the constructor of the loot entity
     setLootConstructor(level, constructor) {
         if (!LootRNG._levelMap[level].includes(constructor)) {
             LootRNG._levelMap[level].push(constructor);
