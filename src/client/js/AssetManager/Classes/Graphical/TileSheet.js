@@ -2,6 +2,8 @@ import SpriteSheet from "./SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
 import AssetManager from "../../AssetManager.js"
 
+// Takes a tile map and tile sheet then draws the entire
+// tile map.
 export default class TileSheet extends SpriteSheet {
     constructor(src, tileSize, map) {
         super(src);
@@ -12,6 +14,7 @@ export default class TileSheet extends SpriteSheet {
         });
     }
 
+    // Generate a new image out of the tile map array and tile set image
     paintImage(map) {
         var canvas = document.createElement('canvas');
         canvas.width = map.w * this.tileSize;
@@ -43,9 +46,5 @@ export default class TileSheet extends SpriteSheet {
 
     draw() {
         R.context.drawImage(this.image, R.camera.boundPos.x, R.camera.boundPos.y);
-        /*
-        R.context.drawImage(this.image,
-            -R.camera.boundPos.x, -R.camera.boundPos.y, R.screenSize.x | 0, R.screenSize.y | 0, 0, 0, R.screenSize.x | 0, R.screenSize.y | 0);
-        */
     }
 }

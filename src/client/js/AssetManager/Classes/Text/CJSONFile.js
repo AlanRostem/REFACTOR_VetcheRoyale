@@ -1,5 +1,6 @@
 import AssetManager from "../../AssetManager.js"
 
+// Loads in a JSON file and creates a new object with its data
 export default class JSONFile {
     constructor(src, downloadCallback) {
         this.src = src;

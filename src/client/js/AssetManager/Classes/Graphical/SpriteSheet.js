@@ -2,7 +2,8 @@ import AssetManager from "../../AssetManager.js"
 import R from "../../../Graphics/Renderer.js";
 import Scene from "../../../Game/Scene.js";
 
-
+// Class representation of a sprite sheet. Has many functions
+// such as cropping and animating.
 export default class SpriteSheet {
     constructor(src) {
         this.src = src;
@@ -15,17 +16,20 @@ export default class SpriteSheet {
         this.offsetTileRect = new SpriteSheet.Rect(0, 0, 0, 0);
     }
 
+    // Map a name to a bounding rect on the sprite
     bind(name, ox, oy, fw, fh) {
         AssetManager.addDownloadCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
         });
     }
 
+    // Manually crop the image and draw it.
     drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
         if (this.img)
             ctx.drawImage(this.img, cropX, cropY, cropW, cropH, x, y, w, h);
     }
 
+    // Draw a mapped part of the sprite
     drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h, ctx = R.context) {
         if (this.img) {
             var rect = this.offsetRects.get(name);
@@ -41,6 +45,7 @@ export default class SpriteSheet {
         return this.offsetRects.get(name).h;
     }
 
+    // Call in a loop and it will cycle through all the animation frames
     animate(name, anim, fw, fh) {
         if (!this.offsetRects.get(name)) return;
 
@@ -83,6 +88,8 @@ export default class SpriteSheet {
         this.flipped = true;
     }
 
+    // Call in a loop after calling this.animate to draw the
+    // cycling frames of the animation.
     drawAnimated(x, y, w = this.animRect.w, h = this.animRect.h) {
         if (!this.img) return;
 

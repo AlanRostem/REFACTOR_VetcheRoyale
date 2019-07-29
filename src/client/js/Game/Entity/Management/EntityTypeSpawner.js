@@ -1,6 +1,7 @@
 import CEntity from "../CEntity.js";
 import CPlayer from "../Player/CPlayer.js";
 
+// Creates client versions of inbound entity data
 const EntityTypeSpawner = {
     _functions: {},
     createSpawner(name, classType) {

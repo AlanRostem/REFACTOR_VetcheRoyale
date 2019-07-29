@@ -1,5 +1,5 @@
 // Object that calls a provided function every
-// x seconds. 
+// x seconds.
 class STimer {
     constructor(time, callback, loop = true) {
         this._maxTime = time;
