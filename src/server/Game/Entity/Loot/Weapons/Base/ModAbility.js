@@ -1,3 +1,5 @@
+// Composition class for the right-click ability of a weapon.
+// Handles cool-downs and callbacks based on input.
 class ModAbility {
     constructor(duration, coolDown) {
         this._currentDuration = 0;
@@ -10,6 +12,7 @@ class ModAbility {
         this._onCoolDown = false;
     }
 
+    // Configure cool-down and duration of the ability.
     configureStats(duration, coolDown) {
         this._maxDuration = duration;
         this._maxCoolDown = coolDown;
@@ -33,6 +36,7 @@ class ModAbility {
         }
     }
 
+    // Callback when deactivating the ability.
     onDeactivation(composedWeapon, entityManager, deltaTime) {
 
     }
@@ -45,6 +49,7 @@ class ModAbility {
         this.onDeactivation(composedWeapon, entityManager, deltaTime);
     }
 
+    // Callback when activating the ability.
     onActivation(composedWeapon, entityManager, deltaTime) {
 
     }
@@ -57,6 +62,8 @@ class ModAbility {
         }
     }
 
+    // Overridable looping method for what happens while
+    // the ability is active.
     buffs(composedWeapon, entityManager, deltaTime) {
 
     }

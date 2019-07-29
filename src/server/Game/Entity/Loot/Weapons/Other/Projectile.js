@@ -2,6 +2,7 @@ const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
 
+// Moving damaging object.
 class Projectile extends Physical {
     constructor(ownerID, x, y, w, h, cos, sin, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
@@ -13,7 +14,7 @@ class Projectile extends Physical {
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
         if (arc) {
-            this.acc.y = arc;
+            this.acc.y = arc; // Gravity for the projectile
             this.setPhysicsConfiguration("gravity", true);
         }
     }
@@ -42,10 +43,12 @@ class Projectile extends Physical {
         this._hitTile = true;
     }
 
+    // Callback when hitting a tile
     onTileHit(entityManager, deltaTime) {
 
     }
 
+    // Callback when hitting a player (non-teammates)
     onPlayerHit(player, entityManager) {
 
     }
@@ -54,9 +57,12 @@ class Projectile extends Physical {
         super.update(entityManager, deltaTime);
         if (this._hitTile) {
             this.onTileHit(entityManager, deltaTime);
+            this._hitTile = false;
         }
     }
 
+    // Checks if the projectile belongs to the player
+    // who fired it.
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Player) {

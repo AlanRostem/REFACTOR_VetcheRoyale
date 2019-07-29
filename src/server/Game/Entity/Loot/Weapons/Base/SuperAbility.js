@@ -12,6 +12,7 @@ class SuperAbility {
         this._active = false;
     }
 
+    // Configure charge stats and duration of the ability.
     configureStats(duration, tickChargeGain, killChargeGain) {
         this._maxDuration = duration;
         this._tickChargeGain = tickChargeGain;
@@ -40,6 +41,7 @@ class SuperAbility {
         }
     }
 
+    // Callback when deactivating the ability.
     onDeactivation(composedWeapon, entityManager, deltaTime) {
 
     }
@@ -50,6 +52,7 @@ class SuperAbility {
         this.onDeactivation(composedWeapon, entityManager, deltaTime);
     }
 
+    // Callback when activating the ability.
     onActivation(composedWeapon, entityManager, deltaTime) {
 
     }
@@ -64,6 +67,8 @@ class SuperAbility {
         }
     }
 
+    // Overridable looping method for what happens while
+    // the ability is active.
     buffs(composedWeapon, entityManager, deltaTime) {
 
     }

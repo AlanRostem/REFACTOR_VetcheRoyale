@@ -11,6 +11,7 @@ class Ammo extends Bottle {
         ]);
     }
 
+    // Add ammo count to player inventory
     addToInventory(inventory) {
         inventory.ammo += this._count;
     }

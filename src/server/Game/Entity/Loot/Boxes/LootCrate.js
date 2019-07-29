@@ -7,14 +7,18 @@ class LootCrate extends Interactable {
         this._level = level;
         this._capacity = capacity;
         this._levelGuarantee = levelGuarantee;
-        this._physicsConfig.gravity = true;
-        this._physicsConfig.collision = true;
+        this._physicsConfig.gravity = false;
+        this._physicsConfig.collision = false;
         this.acc.y = 500;
         this.addStaticSnapShotData([
             "_level"
         ]);
     }
 
+    // Asks the LootRNG object for an array of references to randomly
+    // generate loot. Then, it spawns them in a game world with speeds
+    // respective to their array placement order to shoot out in all
+    // of those directions.
     spawnItems(entityManager) {
         var items = LootRNG.generateLootArray(this._level, this._capacity, this._levelGuarantee);
         var startAngle = 0;
@@ -32,6 +36,7 @@ class LootCrate extends Interactable {
         }
     }
 
+    // Press key to spawn the items and delete the loot crate.
     onPlayerInteraction(player, entityManager) {
         super.onPlayerInteraction(player, entityManager);
         this.spawnItems(entityManager);

@@ -1,11 +1,13 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
-const Projectile = require("./Other/Projectile.js");
+const Bouncy = require("./Other/Bouncy.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Player = require("../../Player/SPlayer.js");
 
+// Applies a knock back effect to players hit by the
+// area of effect damage.
 class AOEKnockBackDamage extends AOEDamage {
     constructor(ownerID, x, y, radius, knockBackSpeed, value, exceptions) {
         super(ownerID, x, y, radius, value, exceptions);
@@ -22,9 +24,10 @@ class AOEKnockBackDamage extends AOEDamage {
     }
 }
 
-class KineticBomb extends Projectile {
+// Projectile fired by the KE-6H weapon
+class KineticBomb extends Bouncy {
     constructor(ownerID, weaponID, x, y, cos, sin, entityManager) {
-        super(ownerID, x, y, 2, 2, cos, sin, 120, 0, false);
+        super(ownerID, x, y, 2, 2, cos, sin, 120, 0);
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30, ownerID);
@@ -33,38 +36,13 @@ class KineticBomb extends Projectile {
         exceptions.remove(ownerID);
 
         this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
-        this.vx = 0;
-        this.vy = 0;
     }
 
-    onTopCollision(tile) {
-        this.side.top = true;
-        this.pos.y = tile.y + Tile.SIZE;
-        this.vy = -this.vel.y;
+    onTileHit(entityManager, deltaTime) {
+        super.onTileHit(entityManager, deltaTime);
         this._hits--;
     }
-
-    onBottomCollision(tile) {
-        this.side.bottom = true;
-        this.pos.y = tile.y - this.height;
-        this.vy = -this.vel.y;
-        this._hits--;
-    }
-
-    onLeftCollision(tile) {
-        this.side.left = true;
-        this.pos.x = tile.x + Tile.SIZE;
-        this.vx = -this.vel.x;
-        this._hits--;
-    }
-
-    onRightCollision(tile) {
-        this.side.right = true;
-        this.pos.x = tile.x - this.width;
-        this.vx = -this.vel.x;
-        this._hits--;
-    }
-
+    
     onPlayerHit(player, entityManager) {
         this._directHitDmg.inflict(player, entityManager);
         this.detonate(entityManager);
@@ -79,12 +57,6 @@ class KineticBomb extends Projectile {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
-        if (this.side.left || this.side.right)
-            this.vel.x = this.vx;
-
-        if (this.side.bottom || this.side.top)
-            this.vel.y = this.vy;
-
         if (this._hits === 0 ||
             entityManager.getEntity(this._weaponID).kineticDetonation)
             this.detonate(entityManager);
