@@ -26,7 +26,7 @@ class Player extends GameDataLinker {
         this._invAmmo = null;
         this._stats = new StatTracker(this.id);
         this._statData = this._stats._statMap;
-        
+
         this._jumping = false;
         this._center = {
             _x: x + this._width / 2,
@@ -76,7 +76,7 @@ class Player extends GameDataLinker {
                 let distance = Vector2D.distance(this.center, entity.center);
                 this._itemScanner.scan(this.id, this.center, entity.center, entityManager, entityManager.tileMap);
                 if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
-                && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
+                    && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
                     this._itemsNearby.set(entity.id, distance);
                 }
             }
@@ -129,52 +129,28 @@ class Player extends GameDataLinker {
     }
 
 
-
     setTeam(team) {
         this.team = team;
         this._teamName = team.name;
     }
 
-    isCollidingWithTeammate(entityManager) {
-        for (var id in this._playersBelowMe) {
-            if (!entityManager.getEntity(id)) {
-                delete this._playersBelowMe[id];
-            }
-            if (this._playersBelowMe[id] === true) {
-                return true;
-            }
-        }
-    }
-
     oneWayTeamCollision(deltaTime) {
-        if (this.team)
+        if (this.team) {
             for (var id in this.team.players) {
                 if (id !== this.id) {
                     var p = this.team.players[id];
-                    var bottomLine = {
-                        pos: {x: this.pos.x, y: this.pos.y + this.height + this.vel.y * deltaTime},
-                        width: this._width,
-                        height: 1
-                    };
-
-                    if (p.overlapEntity(bottomLine) && !p._jumping) {
-                        if (this.pos.y + this.height < p.pos.y && this.vel.y > 0) {
-                            this.onGround(p);
-                            this._playersBelowMe[p.id] = true;
-                        }
-                    } else {
-                        this._playersBelowMe[p.id] = false;
-                    }
-
-                    if (this._playersBelowMe[p.id]) {
-                        if (this.overlapEntity(p)) {
-                            if (this.pos.y + this.height > p.pos.y) {
-                                this.onGround(p);
-                            }
+                    if (this.overlapEntity(p) && !p._jumping) {
+                        if (this.pos.y + this.height > p.pos.y && this._old.y + this.height <= p.pos.y) {
+                            this.pos.y = p.pos.y - this.height;
+                            this.vel.y = 0;
+                            this._jumping = false;
+                            this.side.bottom = true;
+                            this.setMovementState("main", "stand");
                         }
                     }
                 }
             }
+        }
     }
 
     isTeammate(player) {
@@ -186,19 +162,15 @@ class Player extends GameDataLinker {
         return false;
     }
 
-    onGround(p) {
-        this.pos.y = p.pos.y - this.height;
-        this.vel.y = 0;
-        this._jumping = false;
-        //this.side.bottom = true;
-        this.setMovementState("main", "stand");
-    }
-
     remove() {
         super.remove();
         if (this.team) {
             this.team.removePlayer(this);
         }
+    }
+
+    collisionHandleY(game, tileMap, deltaTime) {
+        this.oneWayTeamCollision(deltaTime);
     }
 
     update(entityManager, deltaTime) {
@@ -226,7 +198,6 @@ class Player extends GameDataLinker {
         }
 
         super.update(entityManager, deltaTime);
-        this.oneWayTeamCollision(deltaTime);
         this.checkForNearbyLoot(entityManager);
 
         this.vel.x *= this.fric.x;
@@ -254,14 +225,6 @@ class Player extends GameDataLinker {
             }
         }
 
-        if (this.isCollidingWithTeammate(entityManager)) {
-            this.vel.y = 0;
-            this._jumping = false;
-            this.setMovementState("main", "stand");
-            if (this.vel.x !== 0) {
-                this.setMovementState("main", "run");
-            }
-        }
 
         if (this.side.bottom) {
             this._jumping = false;

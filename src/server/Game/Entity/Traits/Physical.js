@@ -175,6 +175,14 @@ class Physical extends Entity {
         EntityCollider.applyCollisionsEffects(this, entity, entityManager);
     }
 
+    collisionHandleX(game, tileMap, deltaTime) {
+        // Override Here
+    }
+
+    collisionHandleY(game, tileMap, deltaTime) {
+        // Override Here
+    }
+
     physics(entityManager, deltaTime) {
         this._old.x = this._pos.x;
         this._old.y = this._pos.y;
@@ -189,11 +197,13 @@ class Physical extends Entity {
             this.moveY(this._vel.y, deltaTime);
         if (this._physicsConfig.collision)
             this.tileCollisionY(entityManager.tileMap, deltaTime);
+        this.collisionHandleY(entityManager, entityManager.tileMap, deltaTime);
 
         if (!this._physicsConfig.static)
             this.moveX(this._vel.x, deltaTime);
         if (this._physicsConfig.collision)
             this.tileCollisionX(entityManager.tileMap, deltaTime);
+        this.collisionHandleX(entityManager, entityManager.tileMap, deltaTime);
 
         if (this._physicsConfig.pixelatePos) {
             this.pos.x = Math.round(this.pos.x);
