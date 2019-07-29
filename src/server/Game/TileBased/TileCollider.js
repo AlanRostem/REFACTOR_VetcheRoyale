@@ -64,7 +64,7 @@ const TileCollider = {
         },
         SLOPE_UP_RIGHT: (entity, tile, deltaTime) => {
             if (entity.constructor.name !== "Player") {
-                return;
+             //   return;
             }
             if (entity.overlapTile(tile)) {
                 let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
@@ -92,7 +92,7 @@ const TileCollider = {
         },
         SLOPE_UP_LEFT: (entity, tile, deltaTime) => {
             if (entity.constructor.name !== "Player") {
-                return;
+               // return;
             }
             if (entity.overlapTile(tile)) {
                 let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
