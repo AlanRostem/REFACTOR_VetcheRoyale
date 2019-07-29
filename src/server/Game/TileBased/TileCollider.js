@@ -9,8 +9,21 @@ const TileCollider = {
         SLOPE_UP_RIGHT: 13,
     },
 
-    TYPE_COLLISION_CALLBACK_X: {
-        SOLID: (entity, tile, deltaTime) => {
+    handleCollisionX(entity, tileID, tilePos, deltaTime) {
+        let type = entity.CR_ID + "-" + TileCollider.findType(tileID);
+        if (TileCollider.ENTITY_COLLISION_RESPONSES_X.hasOwnProperty(type))
+            TileCollider.ENTITY_COLLISION_RESPONSES_X[type](entity, tilePos, deltaTime);
+    },
+
+    handleCollisionY(entity, tileID, tilePos, deltaTime) {
+        let type = entity.CR_ID + "-" + TileCollider.findType(tileID);
+        if (TileCollider.ENTITY_COLLISION_RESPONSES_Y.hasOwnProperty(type))
+            TileCollider.ENTITY_COLLISION_RESPONSES_Y[type](entity, tilePos, deltaTime);
+    },
+
+
+    ENTITY_COLLISION_RESPONSES_X: {
+        "Physical-SOLID": (entity, tile, deltaTime) => {
             if (entity.overlapTile(tile)) {
                 if (entity.vel.x > 0) {
                     if (entity.pos.x + entity.width > tile.x) {
@@ -25,13 +38,11 @@ const TileCollider = {
                     }
                 }
             }
-        },
-
+        }
     },
 
-
-    TYPE_COLLISION_CALLBACK_Y: {
-        SOLID: (entity, tile, deltaTime) => {
+    ENTITY_COLLISION_RESPONSES_Y: {
+        "Physical-SOLID": (entity, tile, deltaTime) => {
             if (entity.overlapTile(tile)) {
                 if (entity.vel.y > 0) {
                     if (entity.pos.y + entity.height > tile.y) {
@@ -47,7 +58,7 @@ const TileCollider = {
                 }
             }
         },
-        ONE_WAY: (entity, tile, deltaTime) => {
+        "Physical-ONE_WAY": (entity, tile, deltaTime) => {
             // TODO: Find a better way to do this and let loot collide with one ways
             if (entity.constructor.name !== "Player") {
                 return;
@@ -62,9 +73,9 @@ const TileCollider = {
                 }
             }
         },
-        SLOPE_UP_RIGHT: (entity, tile, deltaTime) => {
+        "Physical-SLOPE_UP_RIGHT": (entity, tile, deltaTime) => {
             if (entity.constructor.name !== "Player") {
-             //   return;
+                //   return;
             }
             if (entity.overlapTile(tile)) {
                 let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
@@ -90,9 +101,9 @@ const TileCollider = {
                 }
             }
         },
-        SLOPE_UP_LEFT: (entity, tile, deltaTime) => {
+        "Physical-SLOPE_UP_LEFT": (entity, tile, deltaTime) => {
             if (entity.constructor.name !== "Player") {
-               // return;
+                // return;
             }
             if (entity.overlapTile(tile)) {
                 let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
@@ -119,25 +130,6 @@ const TileCollider = {
             }
 
         },
-    },
-
-    overlapEntityWithTile(e, t) {
-        return t.y + Tile.SIZE > e.pos.y
-            && t.y < (e.pos.y + e.height)
-            && t.x + Tile.SIZE > e.pos.x
-            && t.x < (e.pos.x + e.width);
-    },
-
-    handleCollisionX(entity, tileID, tilePos, deltaTime) {
-        let type = TileCollider.findType(tileID);
-        if (TileCollider.TYPE_COLLISION_CALLBACK_X.hasOwnProperty(type))
-            TileCollider.TYPE_COLLISION_CALLBACK_X[type](entity, tilePos, deltaTime);
-    },
-
-    handleCollisionY(entity, tileID, tilePos, deltaTime) {
-        let type = TileCollider.findType(tileID);
-        if (TileCollider.TYPE_COLLISION_CALLBACK_Y.hasOwnProperty(type))
-            TileCollider.TYPE_COLLISION_CALLBACK_Y[type](entity, tilePos, deltaTime);
     },
 
     findType(id) {

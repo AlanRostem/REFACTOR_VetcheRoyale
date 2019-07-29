@@ -26,6 +26,8 @@ class Physical extends Entity {
             pixelatePos: true, // Rounds position to nearest integer
         };
 
+        this._collisionResponseID = "Physical";
+
         this.side = {
             left: false,
             right: false,
@@ -35,6 +37,18 @@ class Physical extends Entity {
                 this.side.left = this.side.right = this.side.top = this.side.bottom = false;
             }
         };
+    }
+
+
+    get CR_ID() {
+        return this._collisionResponseID;
+    }
+
+    // Sets the ID of (preferably the extended constructor name) a presumably
+    // mapped ID in the TileCollider to a callback function which is the
+    // collision response to a specific tile.
+    setCollisionResponseID(string) {
+        this._collisionResponseID = string;
     }
 
     checkMovementState(movementName, stateName) {
