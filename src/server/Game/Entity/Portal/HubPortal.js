@@ -1,5 +1,6 @@
 const Portal = require("./Portal.js");
 
+// Portal that transfers players to different hubs.
 class HubPortal extends Portal {
     constructor(x, y, gameID, destinationWorld, destinationPos, frameColor) {
         super(x, y, destinationPos, frameColor);
@@ -16,6 +17,7 @@ class HubPortal extends Portal {
         client.player._removed = false;
         var data = client.player.getDataPack();
         entity.client.emit("gameEvent-changeWorld", data);
+        // TODO: Transfer player weapon
     }
 }
 

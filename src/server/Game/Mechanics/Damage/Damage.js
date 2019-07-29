@@ -1,5 +1,6 @@
 const Alive = require("../../Entity/Traits/Alive.js");
 
+// Composition class for objects that deal damage.
 class Damage {
     constructor(value, playerID) {
         this._value = value;

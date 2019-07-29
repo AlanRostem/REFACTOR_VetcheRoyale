@@ -1,3 +1,4 @@
+// Tracks all stats of the player.
 class StatTracker {
     constructor(playerID) {
         this._statMap = {

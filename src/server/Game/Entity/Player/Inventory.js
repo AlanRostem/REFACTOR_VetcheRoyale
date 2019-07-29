@@ -1,3 +1,5 @@
+// Composition class that keeps track of the
+// player inventory data such as ammo and weapon.
 class Inventory {
     constructor() {
         this._ammoCount = 24;

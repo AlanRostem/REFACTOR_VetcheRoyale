@@ -2,6 +2,8 @@ const Physical = require("../Traits/Physical.js");
 //const Player = require("../Player/SPlayer.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
+// Entity that can be interacted with by pressing
+// the designated interaction key.
 class Interactable extends Physical {
     constructor(x, y, w, h, interactionRange = 0) {
         super(x, y, w, h);

@@ -1,5 +1,8 @@
 const ProximityEntityManager = require("../Management/ProximityEntityManager.js");
 
+// Entity manager that iterates over quad-tree-queried
+// entities in proximity and creates data packs sent to
+// the client.
 class ClientPEM extends ProximityEntityManager {
     constructor(player) {
         super(player);

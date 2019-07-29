@@ -2,6 +2,8 @@ const Damage = require("./Damage.js");
 const AOELOSScanner = require("../Scanners/AOELOSScanner.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
+// Scans the map geometry for available line of sight
+// to deal damage to entities in an area.
 class AOEDamage extends Damage {
     constructor(ownerID, x, y, radius, value, exceptions = []) {
         super(value, ownerID);

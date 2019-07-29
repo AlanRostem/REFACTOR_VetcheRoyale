@@ -5,6 +5,7 @@ const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
+// Entity with tile collision and movement.
 class Physical extends Entity {
     constructor(x, y, w, h) {
         super(x, y, w, h);

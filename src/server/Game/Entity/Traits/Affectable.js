@@ -1,5 +1,6 @@
 const Physical = require("./Physical.js");
 
+// Entity that can receive effects.
 class Affectable extends Physical {
     constructor(x, y, w, h) {
         super(x, y, w, h);

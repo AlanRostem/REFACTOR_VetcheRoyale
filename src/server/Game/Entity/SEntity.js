@@ -3,6 +3,7 @@ const typeCheck = require("../../../shared/code/Debugging/StypeCheck.js");
 const SnapShotGenerator = require("./Management/SnapShotGenerator.js");
 const ProximityEntityManager = require("./Management/ProximityEntityManager.js");
 
+// Base class of dynamic objects in the game world.
 class SEntity {
     constructor(x, y, width, height) {
         this._pos = new Vector2D(x, y);

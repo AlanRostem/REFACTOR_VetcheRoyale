@@ -9,6 +9,7 @@ const Loot = require("../Loot/Loot.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
+// The main player class that has a link to the client.
 class Player extends GameDataLinker {
     constructor(x, y, client) {
         super(client, x, y, 6, 12, 100, true);
@@ -33,9 +34,6 @@ class Player extends GameDataLinker {
             _y: y + this._height / 2,
         };
 
-        // TEST:
-        this._playersBelowMe = {};
-
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
         this.addMovementListener("tile", "slope", () => 0);
@@ -54,7 +52,7 @@ class Player extends GameDataLinker {
         ]);
 
 
-        // PHYSICS
+        // PHYSICS DATA
 
         this._speed = {
             ground: 65 * 55,
@@ -69,6 +67,8 @@ class Player extends GameDataLinker {
         this._itemScanner = new HitScanner([], false);
     }
 
+    // Using this function to scan for items the player
+    // is able to pick up.
     forEachNearbyEntity(entity, entityManager) {
         super.forEachNearbyEntity(entity, entityManager);
         if (this.input.keyHeldDown(69)) {
@@ -83,6 +83,8 @@ class Player extends GameDataLinker {
         }
     }
 
+    // Calculates the closest item capable of being picked
+    // up and then picks it up.
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
             let closest = Math.min(...this._itemsNearby.array);
@@ -106,6 +108,7 @@ class Player extends GameDataLinker {
         return this._speed;
     }
 
+    // Sends the initial data pack to the client.
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
         this._entitiesInProximity.initProximityEntityData(entityManager);
@@ -134,6 +137,7 @@ class Player extends GameDataLinker {
         this._teamName = team.name;
     }
 
+    // Performs one way team collision.
     oneWayTeamCollision(deltaTime) {
         if (this.team) {
             for (var id in this.team.players) {

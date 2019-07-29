@@ -2,7 +2,10 @@ const HitScanner = require("./HitScanner.js");
 const VMath = require("../../../../shared/code/Math/SCustomMath.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
-// Area of effect line of sight hit scanner
+// Area of effect line of sight hit scanner. Checks if the entity
+// is within the correct radius and casts a line toward the entity
+// that collides with the map geometry. The line has to intersect
+// the entity to do the events.
 class AOELOSScanner extends HitScanner {
     constructor(radius, exceptions = [], tileCollision = true) {
         super(exceptions, false, tileCollision);

@@ -1,5 +1,7 @@
 const Affectable = require("../../Entity/Traits/Affectable.js");
 
+// Base class of the object that performs effects on the
+// Affectable entity class.
 class Effect {
     constructor(affectedEntityID, duration = Infinity) {
         this._aeID = affectedEntityID;

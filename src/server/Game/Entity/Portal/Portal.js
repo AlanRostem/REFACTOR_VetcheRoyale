@@ -1,6 +1,8 @@
 const Interactable = require("../Traits/Interactable.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
+// Teleports players to a given position. Can also be linked to
+// another portal.
 class Portal extends Interactable {
     constructor(x, y, destinationPos, frameColor = "blue") {
         super(x, y, 10, 16);

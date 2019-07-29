@@ -1,5 +1,13 @@
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
+// Object stored in tile map objects that keeps track of
+// positions to spawn certain types of entities.
+// The objects are created based on a tile ID.
+
+// This is so we eliminate the extreme amount of iterations through
+// the tile map when creating new worlds and instead iterate through
+// all the stored positions. The extreme iteration is only performed
+// once when the server actually starts.
 class SpawnLocation {
     constructor(x, y, name, entityClass) {
         this.x = x;
@@ -12,6 +20,7 @@ class SpawnLocation {
         return this._name;
     }
 
+    // Spawns entity at the given location.
     spawnHere(entityManager) {
         entityManager.spawnEntity(this.x, this.y, new this._entityClass());
     }
@@ -20,6 +29,8 @@ class SpawnLocation {
 // Retrieve it by Tile ID,
 SpawnLocation.ENTITY_SPAWN_IDS = new ONMap();
 
+// Object that maps the tile ID to a spawn location constructor
+// callback with the respective entity type. 
 SpawnLocation.MappingStructure = class SLMappingStructure {
     constructor(name, classType, isOnlyPositionalData = false) {
         this.name = name;

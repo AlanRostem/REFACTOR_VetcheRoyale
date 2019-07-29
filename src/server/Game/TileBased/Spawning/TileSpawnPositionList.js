@@ -11,6 +11,9 @@ class TileSpawnPositionList {
         this.scanMap(tileMap);
     }
 
+    // Scans the entire tile map for tile ID's used to
+    // spawn entities then creates SpawnLocation objects
+    // respective to the mapped ID.
     scanMap(tileMap) {
         for (var y = 0; y < tileMap.h; y++) {
             for (var x = 0; x < tileMap.w; x++) {
@@ -34,12 +37,14 @@ class TileSpawnPositionList {
         }
     }
 
+    // Spawns all entities.
     spawnAll(entityManager) {
         this._spawners.forEach((id, spawner) => {
            this.spawnAllOfType(id, entityManager);
         });
     }
 
+    // Spawns all entities of a certain based on the mapped tile ID.
     spawnAllOfType(id, entityManager) {
         if (!SpawnLocation.ENTITY_SPAWN_IDS[id][1]) {
             for (let spawner of this._spawners.get(id)) {
@@ -48,6 +53,8 @@ class TileSpawnPositionList {
         }
     }
 
+    // Spawns an entity in the parameter to a positional data version
+    // of a SpawnLocation object.
     spawnSpecificAtPos(id, entity, entityManager) {
         if (!SpawnLocation.getSpawnerByID(id).replicate) {
             entityManager.spawnEntity(this._spawners.get(id).x, this._spawners.get(id).y, entity);
