@@ -1,4 +1,4 @@
-ProximityEntityManager = require("../Management/ProximityEntityManager.js");
+const ProximityEntityManager = require("../Management/ProximityEntityManager.js");
 
 class ClientPEM extends ProximityEntityManager {
     constructor(player) {

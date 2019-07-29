@@ -1,4 +1,6 @@
 const EntityManager = require("./EntityManager.js");
+const Rect = require("./QTRect.js");
+
 // Composition class for entities which handles
 // all entities in proximity using the global
 // quad tree.

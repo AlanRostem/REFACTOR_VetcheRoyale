@@ -3,6 +3,7 @@ const Tile = require("../../TileBased/Tile.js");
 const EntityCollider = require("../Management/EntityCollider.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 class Physical extends Entity {
     constructor(x, y, w, h) {
