@@ -2,6 +2,8 @@ import InputListener from "../InputListener.js"
 import R from "../Graphics/Renderer.js";
 import Scene from "../Game/Scene.js"
 
+// Class representation of the client. Holds input callbacks
+// and manages socket events.
 export default class MyClient {
 
     constructor(socket) {

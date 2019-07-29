@@ -2,6 +2,7 @@ import JSONFile from "../../AssetManager/Classes/Text/CJSONFile.js"
 import TileSheet from "../../AssetManager/Classes/Graphical/TileSheet.js";
 import AssetManager from "../../AssetManager/AssetManager.js"
 
+// Tile map class for the client.
 export default class CTileMap {
     constructor(jsonSrc, imgSrc) {
         var _this = this;

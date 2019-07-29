@@ -19,6 +19,14 @@ export default class Camera {
         this._boundPos.y = -(pos._y - this._offset.y);
     }
 
+    get x() {
+        return this.boundPos.x;
+    }
+
+    get y() {
+        return this.boundPos.y;
+    }
+
     set boundPos(vec2D) {
         typeCheck.instance(Vector2D, vec2D);
         this._boundPos = vec2D;
