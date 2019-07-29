@@ -3,6 +3,7 @@ const HubPortal = require("../../Entity/Portal/HubPortal.js");
 const Tile = require("../../TileBased/Tile.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
+/// Base class of a hub.
 class HubWorld extends GameWorld {
     constructor(socket, worldList, name, maxPlayers, gameMap) {
         super(socket, name, maxPlayers, gameMap);

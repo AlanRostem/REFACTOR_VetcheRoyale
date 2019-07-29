@@ -18,6 +18,7 @@ class PlayerList extends ClientList {
     }
 }
 
+// Simulation of an entire game world.
 class GameWorld extends EntityManager {
     constructor(serverSocket, name, maxPlayers = 4, gameMap) {
         super(true, gameMap);

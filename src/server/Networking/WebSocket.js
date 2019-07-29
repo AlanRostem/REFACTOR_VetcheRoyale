@@ -16,10 +16,11 @@ Array.prototype.remove = function() {
     return this;
 };
 
+// The main web socket of the server. This is a singleton class
 class WebSocket {
     constructor(socket, matchMaker) {
-       this._socket = socket;
-        if (this._socket === null || this._socket === undefined) {
+       this._socket = socket; // Object given by socket.io
+        if (!this._socket) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
         this._clientList = new ClientList();

@@ -1,5 +1,7 @@
 var fs = require("fs");
 
+// Loads a JSON file and converts its data to
+// an object.
 class JSONFile {
     constructor(src) {
         this._fileContent = fs.readFileSync(src, 'utf8');

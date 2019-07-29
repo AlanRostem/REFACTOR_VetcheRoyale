@@ -1,6 +1,7 @@
 import typeCheck from "../Debugging/CtypeCheck.js"
 import {sqrt} from "./CCustomMath.js"
 
+// 2D vector with mathematical methods
 export default class Vector2D {
     constructor(x, y) {
         this._x = x;

@@ -1,3 +1,6 @@
+
+// Data structure that keeps track of all the
+// clients connected to the server.
 class ClientList {
     constructor() {
         this._container = {};

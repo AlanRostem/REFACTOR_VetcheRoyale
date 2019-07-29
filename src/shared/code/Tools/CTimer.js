@@ -1,3 +1,5 @@
+// Object that calls a provided function every
+// x seconds.
 export default class Timer {
     constructor(time, callback, loop = true) {
         this._maxTime = time;

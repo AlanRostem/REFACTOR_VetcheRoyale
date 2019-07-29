@@ -1,3 +1,5 @@
+// Composite class that retrieves input data
+// the client emitted to the server.
 class InputReceiver {
     constructor(client) {
         // Holds all key states of corresponding key codes

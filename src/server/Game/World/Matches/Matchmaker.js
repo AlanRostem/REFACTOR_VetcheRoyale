@@ -3,6 +3,8 @@ const HubWorld = require("../Hubs/HubWorld.js");
 const TileMapConfigs = require("../../../../shared/code/TileBased/STileMapConfigs.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
+// Manages all the game worlds and match queueing.
+// TODO: Add match queueing.
 class Matchmaker {
     constructor(mainSocket) {
         this._queuedPlayers = {};

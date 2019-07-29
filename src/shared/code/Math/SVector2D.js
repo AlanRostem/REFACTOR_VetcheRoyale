@@ -1,4 +1,5 @@
 var typeCheck = require("../Debugging/StypeCheck.js");
+// 2D vector with mathematical methods
 class Vector2D {
     constructor(x, y) {
         this._x = x;

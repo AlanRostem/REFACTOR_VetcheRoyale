@@ -1,8 +1,9 @@
-Player = require("../Game/Entity/Player/SPlayer.js");
-Tile = require("../Game/TileBased/Tile.js");
-QuadTree = require("../Game/Entity/Management/QuadTree.js");
-InputReceiver = require("./InputReceiver.js");
+const Player = require("../Game/Entity/Player/SPlayer.js");
+const Tile = require("../Game/TileBased/Tile.js");
+const QuadTree = require("../Game/Entity/Management/QuadTree.js");
+const InputReceiver = require("./InputReceiver.js");
 
+// Object that represents a client connected to the server
 class Client {
     constructor(socket, clientList) {
         // Object given by socket.io

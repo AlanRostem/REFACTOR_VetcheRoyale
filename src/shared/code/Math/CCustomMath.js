@@ -1,3 +1,4 @@
+// Contains math functions we create here
 function sqrt(x){
     var s, t;
 
