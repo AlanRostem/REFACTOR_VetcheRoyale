@@ -68,12 +68,15 @@ const TileCollider = {
                 return;
             }
             // entity.input.keyHeldDown(83)
+            let collision = entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y;
             if (entity.overlapTile(tile)) {
-                if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
-                    entity.vel.y = 0;
-                    entity.jumping = false;
-                    entity.pos.y = tile.y - entity.height;
-                    entity.side.bottom = true;
+                if (!entity.input.keyHeldDown(83)) {
+                    if (collision) {
+                        entity.vel.y = 0;
+                        entity.jumping = false;
+                        entity.pos.y = tile.y - entity.height;
+                        entity.side.bottom = true;
+                    }
                 }
             }
         },
