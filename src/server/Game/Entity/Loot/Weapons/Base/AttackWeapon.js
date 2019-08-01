@@ -5,7 +5,7 @@ const Projectile = require("../Other/Projectile.js");
 
 // Composition abstraction class for the weapon abilities.
 // It extends the item version of the weapon. When the player
-// picks up the weapon all collision of the item version is
+// picks up the weapon all tileCollision of the item version is
 // disabled and follows the player.
 class AttackWeapon extends WeaponItem {
     constructor(x, y, modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15) {

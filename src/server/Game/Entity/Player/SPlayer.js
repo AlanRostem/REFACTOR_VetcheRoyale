@@ -137,7 +137,7 @@ class Player extends GameDataLinker {
         this._teamName = team.name;
     }
 
-    // Performs one way team collision.
+    // Performs one way team tileCollision.
     oneWayTeamCollision(deltaTime) {
         if (this.team) {
             for (var id in this.team.players) {
@@ -201,6 +201,7 @@ class Player extends GameDataLinker {
             }
         }
 
+        this.setMovementState("slope", "false");
         super.update(entityManager, deltaTime);
         this.checkForNearbyLoot(entityManager);
 
@@ -221,7 +222,7 @@ class Player extends GameDataLinker {
             this.setMovementState("main", "run");
         }
 
-        if (!this.side.bottom) {
+        if (!this.checkMovementState("slope", "true")) {
             if (this.vel.y < 0) {
                 this.setMovementState("main", "jump");
             } else if (this.vel.y > 0) {

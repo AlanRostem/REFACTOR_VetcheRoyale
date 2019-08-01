@@ -16,7 +16,7 @@ const EntityCollider = {
     },
 
     // Pass in the correct class constructor name (string)
-    // to map the collision effect callback function.
+    // to map the tileCollision effect callback function.
     // The callback will have this layout:
 
     // addCollisionListener("EntityClass", (subject, entityManager) => { doStuff(); }

@@ -4,7 +4,7 @@ const Rect = require("./QTRect.js");
 
 // Data structure that reduces the amount of iterations
 // an entity has to perform in order to check for interactions
-// such as collision.
+// such as tileCollision.
 class QuadTree {
     constructor(rect) {
         this._boundary = rect;

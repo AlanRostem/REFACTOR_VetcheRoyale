@@ -5,7 +5,7 @@ const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
-// Entity with tile collision and movement.
+// Entity with tile tileCollision and movement.
 class Physical extends Entity {
     constructor(x, y, w, h) {
         super(x, y, w, h);
@@ -21,7 +21,7 @@ class Physical extends Entity {
         ]);
 
         this._physicsConfig = {
-            collision: true, // Tile collision
+            tileCollision: true, // Tile tileCollision
             gravity: true, // Gravity
             static: false, // No movement
             stop: true, // Sets speed to zero when colliding with tile
@@ -48,7 +48,7 @@ class Physical extends Entity {
 
     // Sets the ID of (preferably the extended constructor name) a presumably
     // mapped ID in the TileCollider to a callback function which is the
-    // collision response to a specific tile.
+    // tileCollision response to a specific tile.
     setCollisionResponseID(string) {
         this._collisionResponseID = string;
     }
@@ -103,6 +103,8 @@ class Physical extends Entity {
             && this.pos.x < (e.x + Tile.SIZE);
     }
 
+    // Tile tileCollision checks and resolution for x-axis-aligned
+    // bounds of the rectangle shape of the entity.
     tileCollisionX(tileMap, deltaTime) {
         var cx = Math.floor(this.pos.x / Tile.SIZE);
         var cy = Math.floor(this.pos.y / Tile.SIZE);
@@ -126,6 +128,8 @@ class Physical extends Entity {
         }
     }
 
+    // Tile tileCollision checks and resolution for x-axis-aligned
+    // bounds of the rectangle shape of the entity.
     tileCollisionY(tileMap, deltaTime) {
         var cx = Math.floor(this.pos.x / Tile.SIZE);
         var cy = Math.floor(this.pos.y / Tile.SIZE);
@@ -143,14 +147,6 @@ class Physical extends Entity {
                 var tile = Tile.toPos(xx, yy);
                 tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
-                    /*
-                    if (this.overlapTile(tile)) {
-                        if (this.constructor.name === "Player") {
-                            console.log(tile.id);
-                        }
-                    }
-
-                     */
                     TileCollider.handleCollisionY(this, tileMap.getID(xx, yy), tile, deltaTime);
                 }
             }
@@ -161,11 +157,11 @@ class Physical extends Entity {
     // or disable certain physics behaviour.
     // Table of configs:
     /*
-      "collision":   Tile collision
-      "gravity":     Gravity
-      "static":      No movement
-      "stop":        Sets speed to zero when colliding with tile
-      "pixelatePos": Rounds position to nearest integer
+      "tileCollision":      Tile tileCollision
+      "gravity":        Gravity
+      "static":         No movement when increasing velocity
+      "stop":           Sets speed to zero when colliding with tile
+      "pixelatePos":    Rounds position to nearest integer
      */
     setPhysicsConfiguration(name, value) {
         this._physicsConfig[name] = value;
@@ -211,6 +207,7 @@ class Physical extends Entity {
         // Override Here
     }
 
+    // Handling tile tileCollision physics
     physics(entityManager, deltaTime) {
         this._old.x = this._pos.x;
         this._old.y = this._pos.y;
@@ -222,14 +219,14 @@ class Physical extends Entity {
         this.side.reset();
 
         if (!this._physicsConfig.static)
-            this.moveY(this._vel.y, deltaTime);
-        if (this._physicsConfig.collision)
+            this.moveY(this._vel.y, deltaTime); // Adding velocity to position
+        if (this._physicsConfig.tileCollision)      // before colliding.
             this.tileCollisionY(entityManager.tileMap, deltaTime);
         this.customCollisionY(entityManager, entityManager.tileMap, deltaTime);
 
         if (!this._physicsConfig.static)
-            this.moveX(this._vel.x, deltaTime);
-        if (this._physicsConfig.collision)
+            this.moveX(this._vel.x, deltaTime); // Adding velocity to position
+        if (this._physicsConfig.tileCollision)      // before colliding.
             this.tileCollisionX(entityManager.tileMap, deltaTime);
         this.customCollisionX(entityManager, entityManager.tileMap, deltaTime);
 

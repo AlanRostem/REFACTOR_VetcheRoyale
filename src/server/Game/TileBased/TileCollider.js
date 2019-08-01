@@ -1,7 +1,7 @@
 const Vector2D = require("../../../shared/code/Math/SVector2D.js");
 const Tile = require("./Tile.js");
 
-// Composite object that handles tile collision
+// Composite object that handles tile tileCollision
 // based on entity type.
 // TODO: Create the entity type mapping functionality
 const TileCollider = {
@@ -88,6 +88,7 @@ const TileCollider = {
                 let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
 
                 let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
+                entity.setMovementState("slope", "true");
 
                 if (eRightToSlopeLeftDiff > Tile.SIZE) {
                     entity.jumping = false;
@@ -116,6 +117,7 @@ const TileCollider = {
                 let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
 
                 let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
+                entity.setMovementState("slope", "true");
 
                 if (eLeftToSlopeRightDiff > Tile.SIZE) {
                     entity.jumping = false;

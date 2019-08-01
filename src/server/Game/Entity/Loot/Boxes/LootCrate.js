@@ -8,7 +8,7 @@ class LootCrate extends Interactable {
         this._capacity = capacity;
         this._levelGuarantee = levelGuarantee;
         this._physicsConfig.gravity = false;
-        this._physicsConfig.collision = false;
+        this._physicsConfig.tileCollision = false;
         this.acc.y = 500;
         this.addStaticSnapShotData([
             "_level"
