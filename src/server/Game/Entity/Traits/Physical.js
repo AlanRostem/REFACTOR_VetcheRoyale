@@ -53,18 +53,22 @@ class Physical extends Entity {
         this._collisionResponseID = string;
     }
 
+    // Composite method for the movement tracker
     checkMovementState(movementName, stateName) {
         return this._movementTracker.checkMovementState(movementName, stateName);
     }
 
+    // Abstract method for conditional updates to the movement states.
     updateMovementStates(game, deltaTime) {
 
     }
 
+    // Composite method for the movement tracker
     addMovementListener(name, stateName, callback) {
         this._movementTracker.addMovementStateListener(name, stateName, callback);
     }
 
+    // Composite method for the movement tracker
     setMovementState(name, stateName, entityManager, deltaTime) {
         this._movementTracker.setMovementState(name, stateName, this, entityManager, deltaTime)
     }
@@ -153,6 +157,16 @@ class Physical extends Entity {
         }
     }
 
+    // Map a boolean value to a physics configuration string to enable
+    // or disable certain physics behaviour.
+    // Table of configs:
+    /*
+      "collision":   Tile collision
+      "gravity":     Gravity
+      "static":      No movement
+      "stop":        Sets speed to zero when colliding with tile
+      "pixelatePos": Rounds position to nearest integer
+     */
     setPhysicsConfiguration(name, value) {
         this._physicsConfig[name] = value;
     }
