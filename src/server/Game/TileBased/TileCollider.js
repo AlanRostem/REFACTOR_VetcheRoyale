@@ -137,6 +137,6 @@ const TileCollider = {
 };
 
 
-Object.freeze(TileCollider); // Prevents object mutation
+//Object.freeze(TileCollider); // Prevents object mutation
 
 module.exports = TileCollider;
