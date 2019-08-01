@@ -57,6 +57,10 @@ class Physical extends Entity {
         return this._movementTracker.checkMovementState(movementName, stateName);
     }
 
+    updateMovementStates(game, deltaTime) {
+
+    }
+
     addMovementListener(name, stateName, callback) {
         this._movementTracker.addMovementStateListener(name, stateName, callback);
     }
@@ -214,6 +218,8 @@ class Physical extends Entity {
         if (this._physicsConfig.collision)
             this.tileCollisionX(entityManager.tileMap, deltaTime);
         this.customCollisionX(entityManager, entityManager.tileMap, deltaTime);
+
+        this.updateMovementStates(entityManager, deltaTime);
 
         if (this._physicsConfig.pixelatePos) {
             this.pos.x = Math.round(this.pos.x);

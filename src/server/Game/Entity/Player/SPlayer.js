@@ -221,10 +221,10 @@ class Player extends GameDataLinker {
             this.setMovementState("main", "run");
         }
 
-        if (this.vel.y < 0) {
-            this.setMovementState("main", "jump");
-        } else if (this.vel.y > 0) {
-            if (!this.checkMovementState("tile", "slope")) {
+        if (!this.side.bottom) {
+            if (this.vel.y < 0) {
+                this.setMovementState("main", "jump");
+            } else if (this.vel.y > 0) {
                 this.setMovementState("main", "fall");
             }
         }
