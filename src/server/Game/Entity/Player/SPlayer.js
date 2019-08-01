@@ -3,6 +3,8 @@ const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
 const Team = require("../../World/Team.js");
+const TileCollider = require("../../TileBased/TileCollider.js");
+const Tile = require("../../TileBased/Tile.js");
 
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const Loot = require("../Loot/Loot.js");
@@ -59,6 +61,8 @@ class Player extends GameDataLinker {
             jump: -190,
             gravity: 500
         };
+
+        this.setCollisionResponseID("Player");
 
         this.acc.y = this._speed.gravity;
         this.acc.x = this._speed.ground;
@@ -239,5 +243,77 @@ class Player extends GameDataLinker {
         this._center._y = this.center.y;
     }
 }
+
+TileCollider.createCollisionResponse("Player", "ONE_WAY", "Y", (entity, tile, deltaTime) => {
+    let collision = entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y;
+    if (entity.overlapTile(tile)) {
+        if (!entity.input.keyHeldDown(83)) {
+            if (collision) {
+                entity.vel.y = 0;
+                entity.jumping = false;
+                entity.pos.y = tile.y - entity.height;
+                entity.side.bottom = true;
+            }
+        }
+    }
+});
+
+TileCollider.createCollisionResponse("Player", "SLOPE_UP_LEFT", "Y", (entity, tile, deltaTime) => {
+    if (entity.overlapTile(tile)) {
+        let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
+
+        let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
+        entity.setMovementState("slope", "true");
+
+        if (eLeftToSlopeRightDiff > Tile.SIZE) {
+            entity.jumping = false;
+            entity.vel.y = 0;
+            entity.pos.y = tile.y - entity.height;
+            entity.side.bottom = true;
+            if (entity.vel.x > 0) {
+                entity.vel.y = entity.vel.x;
+            }
+        } else if (entity.pos.y + entity.height > steppingPosY) {
+            entity.jumping = false;
+            entity.vel.y = 0;
+            entity.pos.y = steppingPosY - entity.height;
+            entity.side.bottom = true;
+            if (entity.vel.x > 0) {
+                entity.vel.y = entity.vel.x;
+            }
+        }
+    }
+});
+
+TileCollider.createCollisionResponse("Player", "SLOPE_UP_RIGHT", "Y", (entity, tile, deltaTime) => {
+        if (entity.constructor.name !== "Player") {
+            //   return;
+        }
+        if (entity.overlapTile(tile)) {
+            let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
+
+            let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
+            entity.setMovementState("slope", "true");
+
+            if (eRightToSlopeLeftDiff > Tile.SIZE) {
+                entity.jumping = false;
+                entity.vel.y = 0;
+                entity.pos.y = tile.y - entity.height;
+                entity.side.bottom = true;
+                if (entity.vel.x < 0) {
+                    entity.vel.y = -entity.vel.x;
+                }
+            } else if (entity.pos.y + entity.height > steppingPosY) {
+                entity.jumping = false;
+                entity.vel.y = 0;
+                entity.pos.y = steppingPosY - entity.height;
+                entity.side.bottom = true;
+                if (entity.vel.x < 0) {
+                    entity.vel.y = -entity.vel.x;
+                }
+            }
+        }
+    },
+);
 
 module.exports = Player;
