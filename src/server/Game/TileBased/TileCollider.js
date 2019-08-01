@@ -14,131 +14,83 @@ const TileCollider = {
     },
 
     handleCollisionX(entity, tileID, tilePos, deltaTime) {
-        let type = entity.CR_ID + "-" + TileCollider.findType(tileID);
-        if (TileCollider.ENTITY_COLLISION_RESPONSES_X.hasOwnProperty(type))
-            TileCollider.ENTITY_COLLISION_RESPONSES_X[type](entity, tilePos, deltaTime);
-    },
-
-    handleCollisionY(entity, tileID, tilePos, deltaTime) {
-        let type = entity.CR_ID + "-" + TileCollider.findType(tileID);
-        if (TileCollider.ENTITY_COLLISION_RESPONSES_Y.hasOwnProperty(type))
-            TileCollider.ENTITY_COLLISION_RESPONSES_Y[type](entity, tilePos, deltaTime);
-    },
-
-
-    ENTITY_COLLISION_RESPONSES_X: {
-        "Physical-SOLID": (entity, tile, deltaTime) => {
-            if (entity.overlapTile(tile)) {
-                if (entity.vel.x > 0) {
-                    if (entity.pos.x + entity.width > tile.x) {
-                        entity.onRightCollision(tile);
-                        entity.side.right = true;
-                    }
+        let type = TileCollider.findType(tileID);
+        if (TileCollider.ENTITY_COLLISION_RESPONSES.hasOwnProperty(type)) {
+            if (TileCollider.ENTITY_COLLISION_RESPONSES[type].hasOwnProperty(entity.CR_ID)) {
+                if (TileCollider.ENTITY_COLLISION_RESPONSES[type][entity.CR_ID].X) {
+                    TileCollider.ENTITY_COLLISION_RESPONSES[type][entity.CR_ID].X(entity, tilePos, deltaTime);
                 }
-                if (entity.vel.x < 0) {
-                    if (entity.pos.x < tile.x + Tile.SIZE) {
-                        entity.onLeftCollision(tile);
-                        entity.side.left = true;
-                    }
-                }
+            } else {
+                TileCollider.ENTITY_COLLISION_RESPONSES[type]["Physical"].X(entity, tilePos, deltaTime);
             }
         }
     },
 
-    ENTITY_COLLISION_RESPONSES_Y: {
-        "Physical-SOLID": (entity, tile, deltaTime) => {
-            if (entity.overlapTile(tile)) {
-                if (entity.vel.y > 0) {
-                    if (entity.pos.y + entity.height > tile.y) {
-                        entity.onBottomCollision(tile);
-                        entity.side.bottom = true;
-                    }
+    handleCollisionY(entity, tileID, tilePos, deltaTime) {
+        let type = TileCollider.findType(tileID);
+        if (TileCollider.ENTITY_COLLISION_RESPONSES.hasOwnProperty(type)) {
+            if (TileCollider.ENTITY_COLLISION_RESPONSES[type].hasOwnProperty(entity.CR_ID)) {
+                if (TileCollider.ENTITY_COLLISION_RESPONSES[type][entity.CR_ID].Y) {
+                    TileCollider.ENTITY_COLLISION_RESPONSES[type][entity.CR_ID].Y(entity, tilePos, deltaTime);
                 }
-                if (entity.vel.y < 0) {
-                    if (entity.pos.y < tile.y + Tile.SIZE) {
-                        entity.onTopCollision(tile);
-                        entity.side.top = true;
-                    }
-                }
+            } else {
+                TileCollider.ENTITY_COLLISION_RESPONSES[type]["Physical"].Y(entity, tilePos, deltaTime);
             }
+        }
+    },
+
+    ENTITY_COLLISION_RESPONSES: {
+        "SOLID": {
+            "Physical": {
+                "X": (entity, tile, deltaTime) => {
+                    if (entity.overlapTile(tile)) {
+                        if (entity.vel.x > 0) {
+                            if (entity.pos.x + entity.width > tile.x) {
+                                entity.onRightCollision(tile);
+                                entity.side.right = true;
+                            }
+                        }
+                        if (entity.vel.x < 0) {
+                            if (entity.pos.x < tile.x + Tile.SIZE) {
+                                entity.onLeftCollision(tile);
+                                entity.side.left = true;
+                            }
+                        }
+                    }
+                },
+                "Y": (entity, tile, deltaTime) => {
+                    if (entity.overlapTile(tile)) {
+                        if (entity.vel.y > 0) {
+                            if (entity.pos.y + entity.height > tile.y) {
+                                entity.onBottomCollision(tile);
+                                entity.side.bottom = true;
+                            }
+                        }
+                        if (entity.vel.y < 0) {
+                            if (entity.pos.y < tile.y + Tile.SIZE) {
+                                entity.onTopCollision(tile);
+                                entity.side.top = true;
+                            }
+                        }
+                    }
+                },
+            },
         },
-        "Physical-ONE_WAY": (entity, tile, deltaTime) => {
-            // TODO: Find a better way to do this and let loot collide with one ways
-            if (entity.constructor.name !== "Player") {
-                return;
-            }
-            // entity.input.keyHeldDown(83)
-            let collision = entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y;
-            if (entity.overlapTile(tile)) {
-                if (!entity.input.keyHeldDown(83)) {
-                    if (collision) {
-                        entity.vel.y = 0;
-                        entity.jumping = false;
-                        entity.pos.y = tile.y - entity.height;
-                        entity.side.bottom = true;
+        "ONE_WAY": {
+            "Physical": {
+                "Y": (entity, tile, deltaTime) => {
+                    let collision = entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y;
+                    if (entity.overlapTile(tile)) {
+                        if (collision) {
+                            entity.vel.y = 0;
+                            entity.pos.y = tile.y - entity.height;
+                            entity.side.bottom = true;
+                        }
                     }
                 }
             }
-        },
-        "Physical-SLOPE_UP_RIGHT": (entity, tile, deltaTime) => {
-            if (entity.constructor.name !== "Player") {
-                //   return;
-            }
-            if (entity.overlapTile(tile)) {
-                let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
+        }
 
-                let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
-                entity.setMovementState("slope", "true");
-
-                if (eRightToSlopeLeftDiff > Tile.SIZE) {
-                    entity.jumping = false;
-                    entity.vel.y = 0;
-                    entity.pos.y = tile.y - entity.height;
-                    entity.side.bottom = true;
-                    if (entity.vel.x < 0) {
-                        entity.vel.y = -entity.vel.x;
-                    }
-                } else if (entity.pos.y + entity.height > steppingPosY) {
-                    entity.jumping = false;
-                    entity.vel.y = 0;
-                    entity.pos.y = steppingPosY - entity.height;
-                    entity.side.bottom = true;
-                    if (entity.vel.x < 0) {
-                        entity.vel.y = -entity.vel.x;
-                    }
-                }
-            }
-        },
-        "Physical-SLOPE_UP_LEFT": (entity, tile, deltaTime) => {
-            if (entity.constructor.name !== "Player") {
-                // return;
-            }
-            if (entity.overlapTile(tile)) {
-                let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
-
-                let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
-                entity.setMovementState("slope", "true");
-
-                if (eLeftToSlopeRightDiff > Tile.SIZE) {
-                    entity.jumping = false;
-                    entity.vel.y = 0;
-                    entity.pos.y = tile.y - entity.height;
-                    entity.side.bottom = true;
-                    if (entity.vel.x > 0) {
-                        entity.vel.y = entity.vel.x;
-                    }
-                } else if (entity.pos.y + entity.height > steppingPosY) {
-                    entity.jumping = false;
-                    entity.vel.y = 0;
-                    entity.pos.y = steppingPosY - entity.height;
-                    entity.side.bottom = true;
-                    if (entity.vel.x > 0) {
-                        entity.vel.y = entity.vel.x;
-                    }
-                }
-            }
-
-        },
     },
 
     findType(id) {
@@ -172,7 +124,18 @@ const TileCollider = {
             && id <= TileCollider.TYPE_RANGE.ONE_WAY
             && id !== 0;
     },
+
+    createCollisionResponse(entityName, tileName, axis, callback) {
+        if (!TileCollider.ENTITY_COLLISION_RESPONSES[tileName]) {
+            TileCollider.ENTITY_COLLISION_RESPONSES[tileName] = {}
+        }
+        if (!TileCollider.ENTITY_COLLISION_RESPONSES[tileName][entityName]) {
+            TileCollider.ENTITY_COLLISION_RESPONSES[tileName][entityName] = {};
+        }
+        TileCollider.ENTITY_COLLISION_RESPONSES[tileName][entityName][axis] = callback;
+    }
 };
+
 
 Object.freeze(TileCollider); // Prevents object mutation
 
