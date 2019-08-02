@@ -1,7 +1,7 @@
 // Manages inbound entity data packs from the server.
 // This replicate class also renders those entities.
-import CEntity from "../CEntity.js"
-import EntityTypeSpawner from "./EntityTypeSpawner.js";
+import CEntity from "../Game/Entity/CEntity.js"
+import EntityTypeSpawner from "../Game/Entity/Management/EntityTypeSpawner.js";
 
 export default class EntityDataReceiver {
     constructor(client) {

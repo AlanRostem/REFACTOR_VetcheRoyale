@@ -2,7 +2,7 @@
 // and other potential entity management on the client.
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
-import EntitySnapshotBuffer from "./Management/EntitySnapshotBuffer.js";
+import EntitySnapshotBuffer from "../../Networking/EntitySnapshotBuffer.js";
 import AssetManager from "../../AssetManager/AssetManager.js"
 
 
@@ -21,8 +21,16 @@ export default class CEntity {
 
     // This function is run from the client emit callback.
     updateFromDataPack(dataPack, client) {
-        //this._dataBuffer.updateFromServerFrame(dataPack, this)
+        this._dataBuffer.updateFromServerFrame(dataPack, this);
         this._output = dataPack;
+        /*
+        for (let key in dataPack) {
+            if (key !== "_pos") {
+                this._output[key] = dataPack[key];
+            }
+        }
+        
+         */
     }
 
     get output() {

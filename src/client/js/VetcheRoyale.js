@@ -1,7 +1,7 @@
 import R from "./Graphics/Renderer.js"
 import MyClient from "./Networking/MyClient.js"
 import Scene from "./Game/Scene.js"
-import EntityDataReceiver from "./Game/Entity/Management/EntityDataReceiver.js"
+import EntityDataReceiver from "./Networking/EntityDataReceiver.js"
 import AssetManager from "./AssetManager/AssetManager.js";
 import FontMaking from "./AssetManager/FontMaking.js";
 
