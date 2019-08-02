@@ -8,7 +8,6 @@ class Bouncy extends Projectile {
         this.vy = 0;
         this.vx = 0;
         this.setPhysicsConfiguration("stop", false);
-        this.setCollisionResponseID("Bouncy");
     }
 
     onTopCollision(tile) {
@@ -44,6 +43,5 @@ class Bouncy extends Projectile {
             this.vel.y = this.vy;
     }
 }
-
 
 module.exports = Bouncy;
