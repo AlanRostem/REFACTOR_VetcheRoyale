@@ -87,6 +87,12 @@ const Scene = {
                 (R.screenSize.x / 2 | 0) - R.context.measureText(str).width / 2,
                 R.screenSize.y / 2 | 0,
                 "white");
+
+            R.drawText("Sphinx of black quartz, judge my vow...",
+                (R.screenSize.x / 3 | 0) - R.context.measureText(str).width / 2,
+                R.screenSize.y / 1.5 | 0,
+                "white");
+
         }
     },
 
