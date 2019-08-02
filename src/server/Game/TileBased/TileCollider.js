@@ -90,7 +90,59 @@ const TileCollider = {
                         }
                     }
                 },
+                "X": () => {
+                }
+            }
+        },
+        "SLOPE_UP_LEFT": {
+            "Physical": {
+                "Y": (entity, tile, deltaTime) => {
+                    if (entity.overlapTile(tile)) {
+                        let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
+
+                        let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
+
+                        if (eLeftToSlopeRightDiff > Tile.SIZE) {
+                            entity.vel.y = 0;
+                            entity.vel.x = 0;
+                            entity.pos.y = tile.y - entity.height;
+                            entity.side.bottom = true;
+                        } else if (entity.pos.y + entity.height > steppingPosY) {
+                            entity.vel.y = 0;
+                            entity.vel.x = 0;
+                            entity.pos.y = steppingPosY - entity.height;
+                            entity.side.bottom = true;
+                        }
+                    }
+                },
                 "X": () => {}
+            }
+        },
+
+        "SLOPE_UP_RIGHT": {
+            "Physical": {
+                "Y": (entity, tile, deltaTime) => {
+                    if (entity.overlapTile(tile)) {
+                        let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
+
+                        let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
+
+                        if (eRightToSlopeLeftDiff > Tile.SIZE) {
+                            entity.vel.y = 0;
+                            entity.vel.x = 0;
+                            entity.pos.y = tile.y - entity.height;
+                            entity.side.bottom = true;
+                        } else if (entity.pos.y + entity.height > steppingPosY) {
+                            entity.vel.y = 0;
+                            entity.vel.x = 0;
+                            entity.pos.y = steppingPosY - entity.height;
+                            entity.side.bottom = true;
+                        }
+                    }
+
+                },
+                "X": () => {
+                }
             }
         }
 
