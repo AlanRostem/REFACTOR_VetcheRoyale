@@ -181,7 +181,7 @@ const TileCollider = {
             && id !== 0;
     },
 
-    createCollisionResponse(entityName, tileName, axis, callback) {
+    createCollisionResponse(entityName, tileName, axis, callback = TileCollider.noResponse) {
         if (!TileCollider.ENTITY_COLLISION_RESPONSES[tileName]) {
             TileCollider.ENTITY_COLLISION_RESPONSES[tileName] = {}
         }
@@ -189,7 +189,8 @@ const TileCollider = {
             TileCollider.ENTITY_COLLISION_RESPONSES[tileName][entityName] = {};
         }
         TileCollider.ENTITY_COLLISION_RESPONSES[tileName][entityName][axis] = callback;
-    }
+    },
+    noResponse: () => {}
 };
 
 

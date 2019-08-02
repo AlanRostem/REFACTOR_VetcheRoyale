@@ -30,7 +30,7 @@ class Team {
         player.team = null;
         //player._teamName = "none"; // Well this dont work...
         this._playerCount--;
-        this._arrayPlayers.splice(this._arrayPlayers.indexOf(player.id));
+        this._arrayPlayers.remove(player.id);
         delete this._players[player.id];
     }
 
