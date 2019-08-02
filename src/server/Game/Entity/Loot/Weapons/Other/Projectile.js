@@ -1,6 +1,7 @@
 const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
+const TileCollider = require("../../../../TileBased/TileCollider.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
@@ -13,6 +14,7 @@ class Projectile extends Physical {
         this._hitTile = false;
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
+        this.setCollisionResponseID("Projectile");
         if (arc) {
             this.acc.y = arc; // Gravity for the projectile
             this.setPhysicsConfiguration("gravity", true);
@@ -76,5 +78,7 @@ class Projectile extends Physical {
     }
 
 }
+TileCollider.createCollisionResponse("Projectile", "ONE_WAY", "Y", () => {});
+
 
 module.exports = Projectile;

@@ -85,8 +85,7 @@ const TileCollider = {
                 "Y": (entity, tile, deltaTime) => {
                     if (entity.overlapTile(tile)) {
                         if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
-                            entity.vel.y = 0;
-                            entity.pos.y = tile.y - entity.height;
+                            entity.onBottomCollision(tile);
                             entity.side.bottom = true;
                         }
                     }
