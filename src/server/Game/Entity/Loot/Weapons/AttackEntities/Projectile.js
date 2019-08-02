@@ -79,6 +79,8 @@ class Projectile extends Physical {
 
 }
 TileCollider.createCollisionResponse("Projectile", "ONE_WAY", "Y", () => {});
+TileCollider.createCollisionResponse("Projectile", "SLOPE_UP_LEFT", "Y", () => {});
+TileCollider.createCollisionResponse("Projectile", "SLOPE_UP_RIGHT", "Y", () => {});
 
 
 module.exports = Projectile;
