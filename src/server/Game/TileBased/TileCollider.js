@@ -89,7 +89,8 @@ const TileCollider = {
                             entity.side.bottom = true;
                         }
                     }
-                }
+                },
+                "X": () => {}
             }
         }
 

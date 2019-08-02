@@ -45,4 +45,5 @@ class Bouncy extends Projectile {
     }
 }
 
+
 module.exports = Bouncy;

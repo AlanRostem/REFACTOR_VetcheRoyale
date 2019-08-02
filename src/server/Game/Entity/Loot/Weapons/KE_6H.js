@@ -1,5 +1,5 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
-const Bouncy = require("./Other/Bouncy.js");
+const Bouncy = require("./AttackEntities/Bouncy.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");

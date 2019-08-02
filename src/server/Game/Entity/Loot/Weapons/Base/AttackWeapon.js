@@ -1,7 +1,7 @@
 const WeaponItem = require("./WeaponItem.js");
 const ModAbility = require("./ModAbility.js");
 const SuperAbility = require("./SuperAbility.js");
-const Projectile = require("../Other/Projectile.js");
+const Projectile = require("../AttackEntities/Projectile.js");
 
 // Composition abstraction class for the weapon abilities.
 // It extends the item version of the weapon. When the player
