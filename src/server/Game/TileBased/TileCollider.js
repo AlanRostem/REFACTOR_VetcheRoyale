@@ -21,7 +21,9 @@ const TileCollider = {
                     TileCollider.ENTITY_COLLISION_RESPONSES[type][entity.CR_ID].X(entity, tilePos, deltaTime);
                 }
             } else {
-                TileCollider.ENTITY_COLLISION_RESPONSES[type]["Physical"].X(entity, tilePos, deltaTime);
+                if (TileCollider.ENTITY_COLLISION_RESPONSES[type].hasOwnProperty("Physical")) {
+                    TileCollider.ENTITY_COLLISION_RESPONSES[type]["Physical"].X(entity, tilePos, deltaTime);
+                }
             }
         }
     },
@@ -34,7 +36,9 @@ const TileCollider = {
                     TileCollider.ENTITY_COLLISION_RESPONSES[type][entity.CR_ID].Y(entity, tilePos, deltaTime);
                 }
             } else {
-                TileCollider.ENTITY_COLLISION_RESPONSES[type]["Physical"].Y(entity, tilePos, deltaTime);
+                if (TileCollider.ENTITY_COLLISION_RESPONSES[type].hasOwnProperty("Physical")) {
+                    TileCollider.ENTITY_COLLISION_RESPONSES[type]["Physical"].Y(entity, tilePos, deltaTime);
+                }
             }
         }
     },
@@ -79,9 +83,8 @@ const TileCollider = {
         "ONE_WAY": {
             "Physical": {
                 "Y": (entity, tile, deltaTime) => {
-                    let collision = entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y;
                     if (entity.overlapTile(tile)) {
-                        if (collision) {
+                        if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
                             entity.vel.y = 0;
                             entity.pos.y = tile.y - entity.height;
                             entity.side.bottom = true;
@@ -116,7 +119,8 @@ const TileCollider = {
     },
 
     isSolid(id) {
-        return id < TileCollider.TYPE_RANGE.SOLID && id !== 0;
+        return id < TileCollider.TYPE_RANGE.SOLID && id !== 0
+            && !TileCollider.isSlopeLeft(id) && !TileCollider.isSlopeRight(id);
     },
 
     isOneWay(id) {
