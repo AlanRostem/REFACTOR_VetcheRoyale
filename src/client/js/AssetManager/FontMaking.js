@@ -1,10 +1,6 @@
-import R from "../Graphics/Renderer.js";
-
 class FontMaking {
 
     constructor() {
-        this.successCount = 0;
-        this.errorCount = 0;
         this.cache = {};
         this.downloadQueue = [];
         this.downloadCallbacks = [];
@@ -12,8 +8,11 @@ class FontMaking {
         this.W = 4;
         this.H = 5;
 
+        // How to get reference from Asset manageren below
+
         this.fontImg = new Image();
         this.fontImg.src = "public/assets/img/fontMal.png";
+
     }
 
     queue() {
@@ -34,15 +33,12 @@ class FontMaking {
                     for (var i = 0; i < lines.length; i++) {
                         lines[i] = lines[i].replace('\r', '');
                         _this.downloadQueue.push(lines[i]);
-                        console.warn(lines[i]);
                     }
 
                     _this.download(() => {
                         for (var fun of _this.downloadCallbacks) {
                             fun();
                         }
-                        console.log('%cThe program loaded in ' + (_this.successCount) + ' assets.', 'color: green; font-weight: bold;');
-                        if (_this.errorCount > 0) console.error(_this.errorCount + " asset(s) failed to load.");
                     }, false);
                     break;
                 default:
@@ -57,15 +53,13 @@ class FontMaking {
             downloadCallback();
         }
 
-        //var fontImg = AssetManager.get("tileSet.png");
-
         for (var i = 0; i < this.downloadQueue.length; i++) {
             var path = this.downloadQueue[i];
             var cv = document.createElement('canvas');
             var ctx = cv.getContext('2d');
             cv.width = this.W;
             cv.height = this.H;
-            ctx.drawImage(this.fontImg, i % 8 * 4, Math.floor(i / 8 ) * 5, this.W, this.H, 0, 0, this.W, this.H);
+            ctx.drawImage(this.fontImg, i % 8 * 4, Math.floor(i / 8) * 5, this.W, this.H, 0, 0, this.W, this.H);
             var img = new Image();
             img.src = cv.toDataURL();
             this.cache[path] = img;
@@ -74,19 +68,12 @@ class FontMaking {
         }
     }
 
-    done() {
-        return (this.downloadQueue.length === this.successCount + this.errorCount);
-    }
-
     get(path) {
         if (this.cache[path] === undefined) console.error("Resource not found (" + path + "), check if in cfg file!");
         return this.cache[path];
     }
-
-    addDownloadCallback(callback) {
-        this.downloadCallbacks.push(callback);
-    }
 }
+
 
 const fontMan = new FontMaking();
 export default fontMan;
