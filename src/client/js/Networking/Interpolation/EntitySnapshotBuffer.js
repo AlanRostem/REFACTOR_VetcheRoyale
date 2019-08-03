@@ -14,11 +14,9 @@ export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
         this._tempPoint = initDataPack;
         this._size = Math.ceil(INTERPOLATION_TIME / ServerTimeSyncer.STEP_MS) + 1;
-        this._buffer = []; // Keeps snapshots of the history
-        this._buffer.length = this._size;
+        this._buffer = new Array(this._size); // Keeps snapshots of the history
         this._nextIndex = 0;
         this._startIndex = 0;
-
     }
 
     get length() {
