@@ -31,7 +31,7 @@ export default class EntitySnapshotBuffer {
         this._buffer[this._nextIndex] = data;
         this._buffer[this._nextIndex].time = time;
         this._nextIndex = this.increment(this._nextIndex);
-        if (this._nextIndex === this._startIndex){
+        if (this._nextIndex === this._startIndex) {
             this._startIndex = this.increment(this._startIndex);
         }
     }
@@ -49,6 +49,7 @@ export default class EntitySnapshotBuffer {
         this.clearOlderThan(time);
         let secondIndex = this.increment(this._startIndex);
         let first = this._buffer[this._startIndex];
+        this._tempPoint = first; // TODO
         if (first.time >= time || secondIndex === this._nextIndex) {
             //not enough data for interpolation yet, wait
             this._tempPoint._pos._x = first._pos._x;
@@ -63,33 +64,34 @@ export default class EntitySnapshotBuffer {
     }
 
     clearOlderThan(time) {
-        if (this._startIndex === this._nextIndex) return;//empty
+        if (this._startIndex === this._nextIndex) {
+            return; //empty
+        }
         var secondIndex = this.increment(this._startIndex);
 
-        if (!this._buffer[secondIndex]) { console.log(secondIndex, this.length); debugger; }
+        if (this._buffer[secondIndex])
 
-        while (this._buffer[secondIndex].time < time && secondIndex !== this._nextIndex) {
-            //second is smaller => first is useless
-            //we can move the reader ahead unless we reached end
-            this._startIndex = secondIndex;
-            secondIndex = this.increment(secondIndex);
-        }
+            while (this._buffer[secondIndex].time < time && secondIndex !== this._nextIndex) {
+                //second is smaller => first is useless
+                //we can move the reader ahead unless we reached end
+                this._startIndex = secondIndex;
+                secondIndex = this.increment(secondIndex);
+            }
     }
 
     // Run this in an entity's updateFromDataPack method
-    updateFromServerFrame(data, entity) {
-        this.pushBack(data, data.timeStamp);
+    updateFromServerFrame(data, entity, timeSyncer) {
+        this.pushBack(data, timeSyncer.getNow());
     }
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
-        entity._output = this.interpolateAtTime(timeSyncer.getNow(), entity, deltaTime);
+        entity._output = this.interpolateAtTime(timeSyncer.timeSinceStart(), entity, deltaTime);
     }
 
     remove(i) {
         this._buffer.splice(i);
     }
-
 
 
 }

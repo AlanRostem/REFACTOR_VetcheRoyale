@@ -18,16 +18,10 @@ export default class CEntity {
     }
 
     // This function is run from the client emit callback.
-    updateFromDataPack(dataPack, client) {
-        this._dataBuffer.updateFromServerFrame(dataPack, this);
-        //this._output = dataPack;
+    updateFromDataPack(dataPack, client , timeSyncer) {
+        this._dataBuffer.updateFromServerFrame(dataPack, this, timeSyncer);
+        this._output = dataPack;
         ///*
-        for (let key in dataPack) {
-            if (key !== "_pos") {
-                this._output[key] = dataPack[key];
-            }
-        }
-
        //  */
     }
 

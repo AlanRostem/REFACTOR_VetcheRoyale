@@ -47,4 +47,4 @@ export default class ServerTimeSyncer {
 
 }
 ServerTimeSyncer.SERVER_STEP_MS = 100; // Time offset of 100ms
-ServerTimeSyncer.STEP_MS = 16;
+ServerTimeSyncer.STEP_MS = 33;
