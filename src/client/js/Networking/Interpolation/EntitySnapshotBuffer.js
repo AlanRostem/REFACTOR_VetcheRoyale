@@ -1,11 +1,12 @@
 // Buffers data inbound packs of entities
 // from the server. Composed in an entity.
 
-import Constants from "../../../shared/code/Tools/Constants.js";
-import MyClient from "./MyClient.js";
-import Scene from "../Game/Scene.js";
-import Vector2D from "../../../shared/code/Math/CVector2D.js";
-import {vectorLinearInterpolation} from "../../../shared/code/Math/CCustomMath.js";
+import Constants from "../../../../shared/code/Tools/Constants.js";
+import MyClient from "../MyClient.js";
+import Scene from "../../Game/Scene.js";
+import Vector2D from "../../../../shared/code/Math/CVector2D.js";
+import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
+import ServerTimeSyncer from "./ServerTimeSyncer.js";
 
 const TIME_OFFSET = 0.2; // Milliseconds in the past
 
@@ -14,6 +15,7 @@ export default class EntitySnapshotBuffer {
         this._size = size;
         this._updates = []; // Keeps snapshots of the history
         this._currentTime = initDataPack.timeStamp;
+        this._timeSyncer = new ServerTimeSyncer();
         this._serverState = initDataPack;
     }
 
@@ -32,14 +34,14 @@ export default class EntitySnapshotBuffer {
     }
 
     interpolateEntity(currentTime, entity, deltaTime) {
-
-
         let time = currentTime - TIME_OFFSET;
-        let i = this.length/2|0;
+        let i = 0;
+        while(this._updates[i].timeStamp < time) i++;
         let before = this._updates[i - 1];
         let after = this._updates[i];
         let alpha = (time - before.timeStamp) / (after.timeStamp - before.timeStamp);
 
+        entity._output = after;
         entity.output._pos._x = before._pos._x + (after._pos._x - before._pos._x) * alpha;
         entity.output._pos._y = before._pos._y + (after._pos._y - before._pos._y) * alpha;
     }
@@ -55,10 +57,10 @@ export default class EntitySnapshotBuffer {
     }
 
     // Use client parameter to detect input
-    updateFromClientFrame(deltaTime, entity, client) {
+    updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
         this._currentTime += deltaTime;
         if (this.length > 2) {
-            this.interpolateEntity(this._currentTime, entity, deltaTime);
+            this.interpolateEntity(timeSyncer.getNow(), entity, deltaTime);
         }
     }
 

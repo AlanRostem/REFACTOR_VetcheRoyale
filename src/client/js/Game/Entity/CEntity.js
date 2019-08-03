@@ -2,9 +2,7 @@
 // and other potential entity management on the client.
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
-import EntitySnapshotBuffer from "../../Networking/EntitySnapshotBuffer.js";
-import AssetManager from "../../AssetManager/AssetManager.js"
-
+import EntitySnapshotBuffer from "../../Networking/Interpolation/EntitySnapshotBuffer.js";
 
 export default class CEntity {
     constructor(initDataPack) {
@@ -22,19 +20,29 @@ export default class CEntity {
     // This function is run from the client emit callback.
     updateFromDataPack(dataPack, client) {
         this._dataBuffer.updateFromServerFrame(dataPack, this);
-        this._output = dataPack;
-        /*
+        //this._output = dataPack;
+        ///*
         for (let key in dataPack) {
             if (key !== "_pos") {
                 this._output[key] = dataPack[key];
             }
         }
-        
-         */
+
+       //  */
+    }
+
+    update(deltaTime, timeSyncer) {
+        this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined, timeSyncer);
     }
 
     get output() {
         return this._output;
+    }
+
+    // Returns the property value of the entity based on correct
+    // interpolations in sync with the server.
+    getRealtimeProperty(string) {
+        return this._output[string];
     }
 
     onClientSpawn(dataPack, client) {
@@ -45,21 +53,10 @@ export default class CEntity {
 
     }
 
-    update(deltaTime) {
-        //this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined);
-        /*
-        var deltaX = (this._output.pos._x - this._displayPos.x);
-        this._displayPos.x += deltaX * deltaTime * 10 | 0;
-
-        var deltaY = (this._output.pos._y - this._displayPos.y);
-        this._displayPos.y += deltaY * deltaTime * 10 | 0;
-        */
-
-        // this._displayPos.x = this._output._pos._x;
-        // this._displayPos.y = this._output._pos._y;
-    }
-
     draw() {
+        if (this.constructor.name === "CPlayer") {
+            console.log(this._output);
+        }
         R.drawRect(this._color,
             this._output._pos._x /*+ (this._output._vel._x * Scene.deltaTime | 0) */,
             this._output._pos._y /*+ (this._output._vel._y * Scene.deltaTime | 0) */,

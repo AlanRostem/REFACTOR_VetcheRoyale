@@ -1,12 +1,14 @@
 // Manages inbound entity data packs from the server.
-// This replicate class also renders those entities.
+// This singleton class also renders those entities.
 import CEntity from "../Game/Entity/CEntity.js"
 import EntityTypeSpawner from "../Game/Entity/Management/EntityTypeSpawner.js";
+import ServerTimeSyncer from "./Interpolation/ServerTimeSyncer.js";
 
 export default class EntityDataReceiver {
     constructor(client) {
         this._clientRef = client;
         this._container = {};
+        this._timeSyncer = new ServerTimeSyncer();
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
 
@@ -57,6 +59,7 @@ export default class EntityDataReceiver {
         });
 
         client.on('updateEntity', dataPack => {
+            this._timeSyncer.onServerUpdate();
             for (var id in dataPack) {
                 var entityData = dataPack[id];
                 if (this.existsOnClient(id)) {
@@ -82,9 +85,15 @@ export default class EntityDataReceiver {
     }
 
     updateEntities(deltaTime) {
-        for (var id in this._container) {
-            this._container[id].update(deltaTime);
-        }
+        //if (this.shouldMoveSimulation) {
+            for (var id in this._container) {
+                this._container[id].update(deltaTime, this._timeSyncer);
+            }
+        //}
+    }
+
+    get shouldMoveSimulation() {
+        return this._timeSyncer.moveSimulation();
     }
 
     drawEntities() {
