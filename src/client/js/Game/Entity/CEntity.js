@@ -8,7 +8,7 @@ export default class CEntity {
     constructor(initDataPack) {
         this._output = initDataPack;
 
-        this._dataBuffer = new EntitySnapshotBuffer(Constants.MAX_ENTITY_BUFFER_SIZE, initDataPack);
+        this._dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
         // TODO: Initialize constants in a better way
         this._t_entityProximity = this._output._t_entityProximity;

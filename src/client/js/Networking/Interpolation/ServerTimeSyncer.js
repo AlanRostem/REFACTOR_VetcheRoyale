@@ -1,5 +1,4 @@
-const SERVER_STEP_MS = 100; // Time offset of 100ms
-const STEP_MS = 16;
+
 
 Math.clamp = function (a, b, c) {
     return Math.max(b, Math.min(c, a));
@@ -12,7 +11,7 @@ export default class ServerTimeSyncer {
         this.totalDrift = 0;
         this.serverTicks = 0;
         this.startTime = this.getNow();
-        this.expectedTime = this.getNow() + SERVER_STEP_MS;
+        this.expectedTime = this.getNow() + ServerTimeSyncer.SERVER_STEP_MS;
         this.simulationTime = 0;
     }
 
@@ -23,7 +22,7 @@ export default class ServerTimeSyncer {
 
         var adjustment = Math.clamp(this.integrator * 0.01, -0.1, 0.1);
         this.totalDrift += adjustment;
-        this.expectedTime += SERVER_STEP_MS;
+        this.expectedTime += ServerTimeSyncer.SERVER_STEP_MS;
     }
 
     getNow() {
@@ -31,15 +30,15 @@ export default class ServerTimeSyncer {
     }
 
     moveSimulation() {
-        if (this.getNow() - this.simulationTime > STEP_MS) {
-            this.simulationTime += STEP_MS;
+        if (this.getNow() - this.simulationTime > ServerTimeSyncer.STEP_MS) {
+            this.simulationTime += ServerTimeSyncer.STEP_MS;
             return true; //did step
         }
         return false; //did not step
     }
 
     serverDelta(delta) {
-        return this.serverTicks * SERVER_STEP_MS - delta;
+        return this.serverTicks * ServerTimeSyncer.SERVER_STEP_MS - delta;
     }
 
     timeSinceStart() {
@@ -47,3 +46,5 @@ export default class ServerTimeSyncer {
     }
 
 }
+ServerTimeSyncer.SERVER_STEP_MS = 100; // Time offset of 100ms
+ServerTimeSyncer.STEP_MS = 16;

@@ -8,72 +8,90 @@ import Vector2D from "../../../../shared/code/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
 import ServerTimeSyncer from "./ServerTimeSyncer.js";
 
-const TIME_OFFSET = 0.2; // Milliseconds in the past
+const INTERPOLATION_TIME = 0.2; // Milliseconds in the past
 
 export default class EntitySnapshotBuffer {
-    constructor(size, initDataPack) {
-        this._size = size;
-        this._updates = []; // Keeps snapshots of the history
-        this._currentTime = initDataPack.timeStamp;
-        this._timeSyncer = new ServerTimeSyncer();
-        this._serverState = initDataPack;
+    constructor(initDataPack) {
+        this._tempPoint = initDataPack;
+        this._size = Math.ceil(INTERPOLATION_TIME / ServerTimeSyncer.STEP_MS) + 1;
+        this._buffer = []; // Keeps snapshots of the history
+        this._buffer.length = this._size;
+        this._nextIndex = 0;
+        this._startIndex = 0;
+
     }
 
     get length() {
-        return this._updates.length;
+        return this._buffer.length;
     }
 
     get(i) {
-        return this._updates[i];
+        return this._buffer[i];
     }
 
-    forEach(callback) {
-        for (var data of this._updates) {
-            callback(data);
+    pushBack(data, time) {
+        this._buffer[this._nextIndex] = data;
+        this._buffer[this._nextIndex].time = time;
+        this._nextIndex = this.increment(this._nextIndex);
+        if (this._nextIndex === this._startIndex){
+            this._startIndex = this.increment(this._startIndex);
         }
     }
 
-    interpolateEntity(currentTime, entity, deltaTime) {
-        let time = currentTime - TIME_OFFSET;
-        let i = 0;
-        while(this._updates[i].timeStamp < time) i++;
-        let before = this._updates[i - 1];
-        let after = this._updates[i];
-        let alpha = (time - before.timeStamp) / (after.timeStamp - before.timeStamp);
+    increment(i) {
+        return (i + 1) % this._size;
+    }
 
-        entity._output = after;
-        entity.output._pos._x = before._pos._x + (after._pos._x - before._pos._x) * alpha;
-        entity.output._pos._y = before._pos._y + (after._pos._y - before._pos._y) * alpha;
+    popFront() {
+        this._buffer.splice(0, this._size - 1);
+    }
+
+    interpolateAtTime(time, entity, clientDeltaTime) {
+        time -= INTERPOLATION_TIME;
+        this.clearOlderThan(time);
+        let secondIndex = this.increment(this._startIndex);
+        let first = this._buffer[this._startIndex];
+        if (first.time >= time || secondIndex === this._nextIndex) {
+            //not enough data for interpolation yet, wait
+            this._tempPoint._pos._x = first._pos._x;
+            this._tempPoint._pos._y = first._pos._y;
+        } else {
+            var second = this._buffer[secondIndex];
+            var alpha = (time - first.time) / (second.time - first.time);
+            this._tempPoint._pos._x = first._pos._x + (second._pos._x - first._pos._x) * alpha;
+            this._tempPoint._pos._y = first._pos._y + (second._pos._y - first._pos._y) * alpha;
+        }
+        return this._tempPoint;
+    }
+
+    clearOlderThan(time) {
+        if (this._startIndex === this._nextIndex) return;//empty
+        var secondIndex = this.increment(this._startIndex);
+
+        if (!this._buffer[secondIndex]) { console.log(secondIndex, this.length); debugger; }
+
+        while (this._buffer[secondIndex].time < time && secondIndex !== this._nextIndex) {
+            //second is smaller => first is useless
+            //we can move the reader ahead unless we reached end
+            this._startIndex = secondIndex;
+            secondIndex = this.increment(secondIndex);
+        }
     }
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity) {
-        this._serverState = data;
-        this.pushBack(data);
-        if (this.length >= (1 / Scene.deltaTime | 0) * this._size) {
-            this.popFront();
-        }
-
+        this.pushBack(data, data.timeStamp);
     }
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
-        this._currentTime += deltaTime;
-        if (this.length > 2) {
-            this.interpolateEntity(timeSyncer.getNow(), entity, deltaTime);
-        }
+        entity._output = this.interpolateAtTime(timeSyncer.getNow(), entity, deltaTime);
     }
 
     remove(i) {
-        this._updates.splice(i);
+        this._buffer.splice(i);
     }
 
-    pushBack(data) {
-        this._updates.push(data);
-    }
 
-    popFront() {
-        this._updates.splice(0, this._size - 1);
-    }
 
 }

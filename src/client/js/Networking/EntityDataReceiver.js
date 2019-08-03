@@ -85,11 +85,11 @@ export default class EntityDataReceiver {
     }
 
     updateEntities(deltaTime) {
-        //if (this.shouldMoveSimulation) {
+        if (this.shouldMoveSimulation) {
             for (var id in this._container) {
                 this._container[id].update(deltaTime, this._timeSyncer);
             }
-        //}
+        }
     }
 
     get shouldMoveSimulation() {
