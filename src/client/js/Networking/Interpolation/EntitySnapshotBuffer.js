@@ -49,13 +49,14 @@ export default class EntitySnapshotBuffer {
         this.clearOlderThan(time);
         let secondIndex = this.increment(this._startIndex);
         let first = this._buffer[this._startIndex];
-        this._tempPoint = first; // TODO
         if (first.time >= time || secondIndex === this._nextIndex) {
             //not enough data for interpolation yet, wait
+            this._tempPoint = first;
             this._tempPoint._pos._x = first._pos._x;
             this._tempPoint._pos._y = first._pos._y;
         } else {
             var second = this._buffer[secondIndex];
+            console.log(1)
             var alpha = (time - first.time) / (second.time - first.time);
             this._tempPoint._pos._x = first._pos._x + (second._pos._x - first._pos._x) * alpha;
             this._tempPoint._pos._y = first._pos._y + (second._pos._y - first._pos._y) * alpha;
