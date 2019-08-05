@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
    res.sendFile(path.join(__dirname + "/client/html/index.html"));
 });
 
-server.listen(3000);
+server.listen(8080);
 
 console.log("Dome 24 online!");
 

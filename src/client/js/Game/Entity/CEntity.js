@@ -11,7 +11,6 @@ export default class CEntity {
         this._dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
         // TODO: Initialize constants in a better way
-        this._t_entityProximity = this._output._t_entityProximity;
         this._color = this._output._color;
         this._width = this._output._width;
         this._height = this._output._height;
@@ -19,14 +18,12 @@ export default class CEntity {
 
     // This function is run from the client emit callback.
     updateFromDataPack(dataPack, client , timeSyncer) {
-        //this._dataBuffer.updateFromServerFrame(dataPack, this, timeSyncer);
-        this._output = dataPack;
-        ///*
-       //  */
+         //this._output = dataPack;
+        this._dataBuffer.updateFromServerFrame(dataPack, this, timeSyncer);
     }
 
     update(deltaTime, timeSyncer) {
-        //this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined, timeSyncer);
+        this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined, timeSyncer);
     }
 
     get output() {

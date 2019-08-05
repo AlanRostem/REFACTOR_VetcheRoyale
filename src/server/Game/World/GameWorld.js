@@ -6,6 +6,7 @@ const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.j
 
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
+const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
 
 class PlayerList extends ClientList {
     constructor() {
@@ -62,6 +63,10 @@ class GameWorld extends EntityManager {
 
     spawnEntity(x, y, entity) {
         entity.setWorld(this);
+        if (entity instanceof GameDataLinker) {
+            entity._gameData.mapName = this.tileMap.name;
+            entity._gameData.playerCount = this.playerCount;
+        }
         return super.spawnEntity(x, y, entity);
     }
 

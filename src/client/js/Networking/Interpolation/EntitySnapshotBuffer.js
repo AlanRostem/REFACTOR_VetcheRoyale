@@ -60,7 +60,7 @@ export default class EntitySnapshotBuffer {
             this._tempPoint._pos._x = first._pos._x + (second._pos._x - first._pos._x) * alpha;
             this._tempPoint._pos._y = first._pos._y + (second._pos._y - first._pos._y) * alpha;
         }
-        return this._tempPoint;
+        entity._output = this._tempPoint;
     }
 
     clearOlderThan(time) {
@@ -86,7 +86,7 @@ export default class EntitySnapshotBuffer {
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
-        entity._output = this.interpolateAtTime(timeSyncer.timeSinceStart(), entity, deltaTime);
+        this.interpolateAtTime(timeSyncer.timeSinceStart(), entity, deltaTime);
     }
 
     remove(i) {
