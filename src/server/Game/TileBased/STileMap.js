@@ -7,7 +7,7 @@ const TileCollider = require("./TileCollider.js");
 // for the JSON tile map file
 class TileMap {
     constructor(name, src) {
-        var json = new JSONFile(__dirname + "../../../../" + src);
+        var json = new JSONFile(src);
         this.array = json.get().layers[0].data;
         this.w = json.get().width;
         this.h = json.get().height;
