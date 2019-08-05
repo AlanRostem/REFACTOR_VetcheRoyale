@@ -49,6 +49,9 @@ export default class EntitySnapshotBuffer {
         this.clearOlderThan(time);
         let secondIndex = this.increment(this._startIndex);
         let first = this._buffer[this._startIndex];
+        if (!first) {
+            return;
+        }
         if (first.time >= time || secondIndex === this._nextIndex) {
             //not enough data for interpolation yet, wait
             this._tempPoint = first;
@@ -56,7 +59,7 @@ export default class EntitySnapshotBuffer {
             this._tempPoint._pos._y = first._pos._y;
         } else {
             var second = this._buffer[secondIndex];
-            console.log(1)
+            console.log(1);
             var alpha = (time - first.time) / (second.time - first.time);
             this._tempPoint._pos._x = first._pos._x + (second._pos._x - first._pos._x) * alpha;
             this._tempPoint._pos._y = first._pos._y + (second._pos._y - first._pos._y) * alpha;
@@ -82,7 +85,7 @@ export default class EntitySnapshotBuffer {
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, timeSyncer) {
-        this.pushBack(data, timeSyncer.getNow());
+        this.pushBack(data, timeSyncer.serverDelta(data.deltaTime));
     }
 
     // Use client parameter to detect input

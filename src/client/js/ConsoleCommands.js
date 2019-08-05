@@ -1,0 +1,19 @@
+import Scene from "./Game/Scene.js"
+
+window.ping = () => {
+    return Scene._clientRef._latency;
+};
+
+window.client = () => {
+    return Object.create(Scene._clientRef);
+};
+
+window.player = () => {
+    return Scene._clientRef.player;
+};
+
+window.entities = () => {
+    return Object.create(Scene._entityManager._container);
+};
+
+export default {}

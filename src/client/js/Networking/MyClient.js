@@ -79,7 +79,7 @@ export default class MyClient {
         var e = entityManager.getEntityByID(this.id);
         if (e) {
             Scene.currentMapName = this.player.output._gameData.mapName;
-            R.camera.update(e._output._center);
+            R.camera.update(e.getRealtimeProperty("_center"));
         }
     }
 
