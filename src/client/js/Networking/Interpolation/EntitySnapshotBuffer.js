@@ -59,12 +59,40 @@ export default class EntitySnapshotBuffer {
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, timeSyncer, client) {
-        //this.t_directServerUpdate(data, entity);
-        this.onServerUpdateReceived(data, entity, timeSyncer, client);
+        this.t_directServerUpdate(data, entity);
+        //this.onServerUpdateReceived(data, entity, timeSyncer, client);
+    }
+
+    processUpdates(entity, timeSyncer, client) {
+        if (this.length === 0) return;
+
+        let currentTime = timeSyncer.getNow();
+
+        let target = null;
+        let previous = null;
+        for (let i = 0; i < this.length - 1; i++) {
+            let point = this.get(i);
+            let next = this.get(i + 1);
+            if (currentTime > point.timeStamp && currentTime < next.timeStamp) {
+                target = next;
+                previous = point;
+                break;
+            }
+        }
+
+        if(!target) {
+            target = this.get(0);
+            previous = this.get(0);
+        }
+
+        if (target && previous) {
+
+        }
     }
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
+        //this.processUpdates(entity, timeSyncer, client);
     }
 
     remove(i) {
