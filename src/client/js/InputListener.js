@@ -27,6 +27,10 @@ export default class InputListener {
         return this._mouse;
     }
 
+    getKey(keyCode) {
+        return this._keyStates[keyCode];
+    }
+
     // Set a callback function mapped to a key code.
     // Remember that one key code can have multiple
     // callbacks mapped to it, and they're all called
