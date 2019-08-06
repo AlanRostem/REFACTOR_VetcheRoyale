@@ -59,7 +59,7 @@ export default class EntityDataReceiver {
         });
 
         client.on('updateEntity', dataPack => {
-            this._timeSyncer.onServerUpdate();
+            this._timeSyncer.onServerUpdate(client._latency);
             for (var id in dataPack) {
                 var entityData = dataPack[id];
                 if (this.existsOnClient(id)) {

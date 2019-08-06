@@ -15,7 +15,12 @@ export default class ServerTimeSyncer {
         this.simulationTime = 0;
     }
 
-    onServerUpdate() {
+    get ping() {
+        return this._latency;
+    }
+
+    onServerUpdate(ping) {
+        this._latency = ping;
         this.serverTicks++;
         var timeDifference = this.expectedTime - this.getNow();
         this.integrator = this.integrator * 0.9 + timeDifference;
