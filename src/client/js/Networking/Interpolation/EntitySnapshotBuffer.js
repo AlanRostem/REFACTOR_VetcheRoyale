@@ -45,17 +45,58 @@ export default class EntitySnapshotBuffer {
 
     }
 
+    interpolation(entity, timeSyncer, client, deltaTime) {
+        let currentTime = timeSyncer.timeSinceStart();
+        let target = null;
+        let previous = null;
+        for (let i = 0; i < this.length - 1; i++) {
+            let point = this.get(i);
+            let next = this.get(i + 1);
+            if (currentTime > point.timeStamp && currentTime < next.timeStamp) {
+                target = next;
+                previous = point;
+                break;
+            }
+        }
+
+        if (!target) {
+            target = previous = this.get(0);
+        }
+
+        if (target && previous) {
+            let targetTime = target.timeStamp;
+            var difference = targetTime - currentTime;
+            var maxDiff = (target.timeStamp - previous.timeStamp).fixed(3);
+            var timePoint = (difference / maxDiff).fixed(3);
+
+            if (isNaN(timePoint) || Math.abs(timePoint) === Infinity) {
+                timePoint = 0;
+            }
+            for (let key in target) {
+                if (key !== "_pos") {
+                    entity._output[key] = target[key];
+                }
+            }
+            entity._output._pos =
+                entity._output._center =
+                    vectorLinearInterpolation(entity._output._pos,
+                        vectorLinearInterpolation(previous._pos, target._pos, timePoint),
+                        25 * deltaTime);
+        }
+        //console.log(entity.output._pos);
+        //debugger;
+    }
+
     onServerUpdateReceived(data, entity, timeSyncer, client) {
-        this._serverTime = data.timeStamp;
-        this._clientTime = this._serverTime - INTERPOLATION_OFFSET;
         this.pushBack(data);
-        if (this.length > this._size * 60) {
+        if (this.length > this._size) {
             this.popFront();
         }
         if (data._id === client.id) {
             this.clientPrediction(data, entity, client);
         }
     }
+
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, timeSyncer, client) {
@@ -65,6 +106,7 @@ export default class EntitySnapshotBuffer {
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
+        this.interpolation(entity, timeSyncer, client, deltaTime);
     }
 
     remove(i) {
