@@ -79,6 +79,7 @@ const Scene = {
             Scene.tileMaps.getMap(Scene.currentMapName).draw();
             Scene._entityManager.drawEntities();
             UI.draw();
+            R.drawText(Scene._clientRef._latency + "ms", 4, 4, "white");
 
         } else {
             var str = "Loading " +

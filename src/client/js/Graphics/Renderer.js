@@ -104,13 +104,15 @@ const R = {
 
     drawText(str, x, y, color = "white", useCamera = false, size = 5) {
         R.context.save();
-
+        str = str.toString();
         for (var i = 0; i < str.length; i++) {
             var img = FontMaking.get(str[i].toUpperCase());
 
+            if (!img) return;
             R.context.drawImage(img,
-                Math.round(x + i * 5 + (useCamera ? R._camera.boundPos.x : 0)),
-                Math.round(y + (useCamera ? R._camera.boundPos.y : 0)));
+                Math.round(x + i * 5 + (useCamera ? R._camera.x : 0)),
+                Math.round(y + (useCamera ? R._camera.y : 0)));
+
         }
         R.context.restore();
     },
