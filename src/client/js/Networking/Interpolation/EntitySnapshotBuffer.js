@@ -16,7 +16,7 @@ export default class EntitySnapshotBuffer {
         this._buffer = []; // Keeps snapshots of the history
         this._serverTime = initDataPack.timeStamp;
         this._clientTime = 0;
-        this._size = 2;
+        this._size = 4;
     }
 
     get length() {
@@ -78,10 +78,10 @@ export default class EntitySnapshotBuffer {
                 }
             }
             entity._output._pos =
-                entity._output._center =
                     vectorLinearInterpolation(entity._output._pos,
                         vectorLinearInterpolation(previous._pos, target._pos, timePoint),
                         25 * deltaTime);
+
         }
         //console.log(entity.output._pos);
         //debugger;
