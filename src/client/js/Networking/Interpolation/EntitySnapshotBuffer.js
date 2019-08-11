@@ -9,6 +9,7 @@ import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMat
 import ServerTimeSyncer from "./ServerTimeSyncer.js";
 
 const INTERPOLATION_OFFSET = 0.2; // Milliseconds in the past
+const SMOOTHING_PERCENTAGE = .36;
 
 export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
@@ -16,7 +17,7 @@ export default class EntitySnapshotBuffer {
         this._buffer = []; // Keeps snapshots of the history
         this._serverTime = initDataPack.timeStamp;
         this._clientTime = 0;
-        this._size = 4;
+        this._size = 2;
     }
 
     get length() {
@@ -80,7 +81,7 @@ export default class EntitySnapshotBuffer {
             entity._output._pos =
                     vectorLinearInterpolation(entity._output._pos,
                         vectorLinearInterpolation(previous._pos, target._pos, timePoint),
-                        25 * deltaTime);
+                        SMOOTHING_PERCENTAGE);
 
         }
         //console.log(entity.output._pos);
