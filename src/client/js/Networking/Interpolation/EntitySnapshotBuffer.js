@@ -42,8 +42,6 @@ export default class EntitySnapshotBuffer {
     }
 
     clientPrediction(entity, old, current, timeSyncer) {
-        let t = (timeSyncer.timeSinceStart() - current.timeStamp) / 25;
-        entity._output._pos = addVec(old._pos, vecMulScalar(vecSub(current._pos, old._pos), t));
     }
 
     interpolation(entity, timeSyncer, client, deltaTime) {
@@ -79,16 +77,10 @@ export default class EntitySnapshotBuffer {
                 }
             }
 
-
-            if (entity._output._id === client.id) {
-                this.clientPrediction(entity, previous, target, timeSyncer);
-            } else {
-                entity._output._pos =
-                    vectorLinearInterpolation(entity._output._pos,
-                        vectorLinearInterpolation(previous._pos, target._pos, timePoint),
-                        SMOOTHING_PERCENTAGE);
-            }
-
+            entity._output._pos =
+                vectorLinearInterpolation(entity._output._pos,
+                    vectorLinearInterpolation(previous._pos, target._pos, timePoint),
+                    SMOOTHING_PERCENTAGE);
         }
     }
 
