@@ -17,12 +17,12 @@ export default class CEntity {
     }
 
     // This function is run from the client emit callback.
-    updateFromDataPack(dataPack, client , timeSyncer) {
+    updateFromDataPack(dataPack, client, timeSyncer) {
         this._dataBuffer.updateFromServerFrame(dataPack, this, timeSyncer, client);
     }
 
-    update(deltaTime, timeSyncer) {
-        this._dataBuffer.updateFromClientFrame(deltaTime, this, undefined, timeSyncer);
+    update(deltaTime, client, timeSyncer) {
+        this._dataBuffer.updateFromClientFrame(deltaTime, this, client, timeSyncer);
     }
 
     get output() {

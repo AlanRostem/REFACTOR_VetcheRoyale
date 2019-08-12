@@ -1,12 +1,7 @@
 // Buffers data inbound packs of entities
 // from the server. Composed in an entity.
 
-import Constants from "../../../../shared/code/Tools/Constants.js";
-import MyClient from "../MyClient.js";
-import Scene from "../../Game/Scene.js";
-import Vector2D from "../../../../shared/code/Math/CVector2D.js";
-import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
-import ServerTimeSyncer from "./ServerTimeSyncer.js";
+import {vectorLinearInterpolation, addVec, vecSub, vecMulScalar} from "../../../../shared/code/Math/CCustomMath.js";
 
 const INTERPOLATION_OFFSET = 0.2; // Milliseconds in the past
 const SMOOTHING_PERCENTAGE = .36;
@@ -17,11 +12,15 @@ export default class EntitySnapshotBuffer {
         this._buffer = []; // Keeps snapshots of the history
         this._serverTime = initDataPack.timeStamp;
         this._clientTime = 0;
-        this._size = 2;
+        this._size = 6;
     }
 
     get length() {
         return this._buffer.length;
+    }
+
+    last() {
+        return this._buffer[this.length - 1];
     }
 
     get(i) {
@@ -42,8 +41,9 @@ export default class EntitySnapshotBuffer {
         entity._output = this._result;
     }
 
-    clientPrediction(data, entity, client) {
-
+    clientPrediction(entity, old, current, timeSyncer) {
+        let t = (timeSyncer.timeSinceStart() - current.timeStamp) / 25;
+        entity._output._pos = addVec(old._pos, vecMulScalar(vecSub(current._pos, old._pos), t));
     }
 
     interpolation(entity, timeSyncer, client, deltaTime) {
@@ -53,7 +53,7 @@ export default class EntitySnapshotBuffer {
         for (let i = 0; i < this.length - 1; i++) {
             let point = this.get(i);
             let next = this.get(i + 1);
-            if (currentTime > point.timeStamp && currentTime < next.timeStamp) {
+            if (currentTime - INTERPOLATION_OFFSET > point.timeStamp && currentTime < next.timeStamp) {
                 target = next;
                 previous = point;
                 break;
@@ -79,9 +79,13 @@ export default class EntitySnapshotBuffer {
                 }
             }
             entity._output._pos =
-                    vectorLinearInterpolation(entity._output._pos,
-                        vectorLinearInterpolation(previous._pos, target._pos, timePoint),
-                        SMOOTHING_PERCENTAGE);
+                vectorLinearInterpolation(entity._output._pos,
+                    vectorLinearInterpolation(previous._pos, target._pos, timePoint),
+                    SMOOTHING_PERCENTAGE);
+
+            if (entity._output._id === client.id) {
+                this.clientPrediction(entity, previous, target, timeSyncer);
+            }
 
         }
         //console.log(entity.output._pos);
@@ -93,9 +97,7 @@ export default class EntitySnapshotBuffer {
         if (this.length > this._size) {
             this.popFront();
         }
-        if (data._id === client.id) {
-            this.clientPrediction(data, entity, client);
-        }
+
     }
 
 

@@ -3,15 +3,19 @@ const Loot = require("../../Loot.js");
 // Composition abstraction class for the weapon you can pick up.
 // Handles interaction and world physics.
 class WeaponItem extends Loot {
-    constructor(x, y, displayName) {
+    constructor(x, y, displayName, weaponClass = "pistol") {
         super(x, y, false);
         this._equippedToPlayer = false;
         this._playerID = null;
         this._displayName = displayName;
+        this._weaponClass = weaponClass;
+        // All possible weapon classes:
+        // pistol, rifle
 
         this.setStaticSnapshotData("entityType", "Weapon");
         this.addStaticSnapShotData([
-           "_displayName",
+            "_displayName",
+            "_weaponClass"
         ]);
         this.addDynamicSnapShotData([
             "_equippedToPlayer",
@@ -54,6 +58,7 @@ class WeaponItem extends Loot {
     equip(player) {
         this._equippedToPlayer = true;
         this._playerID = player.id;
+        player.setMovementState("weapon", this._weaponClass);
     }
 
     // Drops the weapon when the player disconnects (removed from game world)
@@ -73,6 +78,7 @@ class WeaponItem extends Loot {
     drop(player, entityManager, deltaTime) {
         if (this._equippedToPlayer) {
             player.inventory.dropWeapon();
+            player.setMovementState("weapon", "none");
             this._equippedToPlayer = false;
             this._playerID = null;
             this.vel.x = WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter;

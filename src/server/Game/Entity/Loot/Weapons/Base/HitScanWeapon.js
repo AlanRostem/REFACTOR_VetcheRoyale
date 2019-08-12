@@ -4,8 +4,8 @@ const Vector2D = require("../../../../../../shared/code/Math/SVector2D.js");
 
 // Weapon that fires hit-scans rather than projectiles.
 class HitScanWeapon extends AttackWeapon {
-    constructor(x, y, displayName, maxRange = 200, hitEntities = true, hitTiles = true) {
-        super(x, y, displayName,);
+    constructor(x, y, displayName, weaponClass = "pistol", maxRange = 200, hitEntities = true, hitTiles = true) {
+        super(x, y, displayName, weaponClass);
         this._range = maxRange; // Max range of the scan-line
         this._scanner = new HitScanner([], hitEntities, hitTiles);
         this._scanner.onTileHit = (hitPos, entityManager) => {

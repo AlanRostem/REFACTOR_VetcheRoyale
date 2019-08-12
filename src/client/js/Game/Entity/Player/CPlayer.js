@@ -15,8 +15,8 @@ export default class CPlayer extends CEntity {
     }
 
 
-    update(deltaTime, timeSyncer) {
-        super.update(deltaTime, timeSyncer);
+    update(deltaTime, client, timeSyncer) {
+        super.update(deltaTime, client, timeSyncer);
         this.animations.setCurrentAnimation(this.output._movementState.main);
         this._output._center._x = this._output._pos._x + this._width / 2;
         this._output._center._y = this._output._pos._y + this._height / 2;

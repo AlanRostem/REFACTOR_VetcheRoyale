@@ -84,10 +84,10 @@ export default class EntityDataReceiver {
 
     }
 
-    updateEntities(deltaTime) {
+    updateEntities(deltaTime, client) {
         if (this.shouldMoveSimulation) {
             for (var id in this._container) {
-                this._container[id].update(deltaTime, this._timeSyncer);
+                this._container[id].update(deltaTime, client, this._timeSyncer);
             }
         }
     }

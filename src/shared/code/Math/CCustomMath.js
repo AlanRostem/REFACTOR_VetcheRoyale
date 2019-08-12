@@ -18,6 +18,18 @@ function sqrt(x){
 
 Number.prototype.fixed = function(n) { n = n || 3; return parseFloat(this.toFixed(n)); };
 
+function addVec(a, b) {
+    return {_x: (a._x + b._x).fixed(), _y: (a._y + b._y).fixed()};
+}
+
+function vecMulScalar(a, b) {
+    return {_x: (a._x * b).fixed(), _y: (a._y * b).fixed()};
+}
+
+function vecSub(a, b) {
+    return {_x: (a._x - b._x).fixed(), _y: (a._y - b._y).fixed()};
+}
+
 function linearInterpolation(p, n, t) {
     var _t = Number(t);
     _t = (Math.max(0, Math.min(1, _t))).fixed();
@@ -31,4 +43,4 @@ function vectorLinearInterpolation(v, tv, t) {
     };
 }
 
-export {sqrt, linearInterpolation, vectorLinearInterpolation}
+export {sqrt, linearInterpolation, vectorLinearInterpolation, vecMulScalar, vecSub, addVec}
