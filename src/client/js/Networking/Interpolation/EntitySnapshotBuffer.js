@@ -78,18 +78,18 @@ export default class EntitySnapshotBuffer {
                     entity._output[key] = target[key];
                 }
             }
-            entity._output._pos =
-                vectorLinearInterpolation(entity._output._pos,
-                    vectorLinearInterpolation(previous._pos, target._pos, timePoint),
-                    SMOOTHING_PERCENTAGE);
+
 
             if (entity._output._id === client.id) {
                 this.clientPrediction(entity, previous, target, timeSyncer);
+            } else {
+                entity._output._pos =
+                    vectorLinearInterpolation(entity._output._pos,
+                        vectorLinearInterpolation(previous._pos, target._pos, timePoint),
+                        SMOOTHING_PERCENTAGE);
             }
 
         }
-        //console.log(entity.output._pos);
-        //debugger;
     }
 
     onServerUpdateReceived(data, entity, timeSyncer, client) {
