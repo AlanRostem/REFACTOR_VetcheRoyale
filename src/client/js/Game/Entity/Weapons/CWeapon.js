@@ -11,11 +11,13 @@ export default class CWeapon extends CEntity {
         if (!this.getRealtimeProperty("_equippedToPlayer")) {
             let pos = this.getRealtimeProperty("_pos");
             let name = this.getRealtimeProperty("_displayName") + "-World";
-            let rect = CWeapon.sprite.offsetRects.get(name);
             let h = this.getRealtimeProperty("_height");
-            CWeapon.sprite.drawStill(name,
-                pos._x - rect.w / 2 + R.camera.x,
-                pos._y + R.camera.y - Math.abs(rect.h - h));
+            let rect = CWeapon.sprite.offsetRects.get(name);
+            if (rect) {
+                CWeapon.sprite.drawStill(name,
+                    pos._x - rect.w / 2 + R.camera.x,
+                    pos._y + R.camera.y - Math.abs(rect.h - h));
+            }
         }
     }
 }
