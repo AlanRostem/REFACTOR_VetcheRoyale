@@ -1,5 +1,7 @@
 import CEntity from "../CEntity.js";
 import CPlayer from "../Player/CPlayer.js";
+import CWeapon from "../Weapons/CWeapon.js";
+
 
 // Creates client versions of inbound entity data
 const EntityTypeSpawner = {
@@ -21,5 +23,6 @@ const EntityTypeSpawner = {
 
 EntityTypeSpawner.createSpawner("Player", CPlayer);
 EntityTypeSpawner.createSpawner("SEntity", CEntity);
+EntityTypeSpawner.createSpawner("Weapon", CWeapon);
 
 export default EntityTypeSpawner;

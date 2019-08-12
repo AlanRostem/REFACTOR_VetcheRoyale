@@ -8,8 +8,8 @@ const Projectile = require("../AttackEntities/Projectile.js");
 // picks up the weapon all tileCollision of the item version is
 // disabled and follows the player.
 class AttackWeapon extends WeaponItem {
-    constructor(x, y, modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15) {
-        super(x, y);
+    constructor(x, y, displayName, modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15) {
+        super(x, y, displayName);
         this._modAbility = new ModAbility(modDuration, modCoolDown);
         this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
         this._superCharge = 0;

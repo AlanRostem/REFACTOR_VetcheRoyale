@@ -34,6 +34,10 @@ class SEntity {
         return this._homeWorldID;
     }
 
+    setStaticSnapshotData(key, value) {
+        this._snapShotGenerator.setStaticSnapshotData(key, value);
+    }
+
     setWorld(game) {
         this._homeWorldID = game.id;
     }

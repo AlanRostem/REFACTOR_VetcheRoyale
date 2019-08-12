@@ -3,10 +3,19 @@ const Loot = require("../../Loot.js");
 // Composition abstraction class for the weapon you can pick up.
 // Handles interaction and world physics.
 class WeaponItem extends Loot {
-    constructor(x, y) {
+    constructor(x, y, displayName) {
         super(x, y, false);
         this._equippedToPlayer = false;
         this._playerID = null;
+        this._displayName = displayName;
+
+        this.setStaticSnapshotData("entityType", "Weapon");
+        this.addStaticSnapShotData([
+           "_displayName",
+        ]);
+        this.addDynamicSnapShotData([
+            "_equippedToPlayer",
+        ]);
     }
 
     // Can pick up when the player does not have a weapon.

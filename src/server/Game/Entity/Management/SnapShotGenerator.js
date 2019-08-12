@@ -37,6 +37,10 @@ class SnapShotGenerator {
         }
     }
 
+    setStaticSnapshotData(key, value) {
+        this._snapShot[key] = value;
+    }
+
     // Map an array of strings with existing properties of the entity
     // to the snapshot object. These values are usually constant values
     // such as strings and numbers but also can also hold a reference to
