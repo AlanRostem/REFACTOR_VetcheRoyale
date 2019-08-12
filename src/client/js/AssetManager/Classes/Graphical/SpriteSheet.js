@@ -26,7 +26,11 @@ export default class SpriteSheet {
     // Manually crop the image and draw it.
     drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
         if (this.img)
-            ctx.drawImage(this.img, cropX, cropY, cropW, cropH, x, y, w, h);
+            ctx.drawImage(this.img, cropX, cropY, cropW, cropH,
+                Math.round(x),
+                Math.round(y),
+                Math.round(w),
+                Math.round(h));
     }
 
     // Draw a mapped part of the sprite
@@ -96,7 +100,7 @@ export default class SpriteSheet {
         var rect = this.animRect;
 
         // FireFox compatibility sake
-        if (rect.w === 0 || rect.h === 0)  {
+        if (rect.w === 0 || rect.h === 0) {
             this.flipped = false;
             return;
         }

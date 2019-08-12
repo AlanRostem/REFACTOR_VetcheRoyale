@@ -29,8 +29,8 @@ export default class CPlayer extends CEntity {
             CPlayer.sprite.flipX();
         }
         CPlayer.sprite.drawAnimated(
-            this.output._pos._x + R.camera.boundPos.x,
-            this.output._pos._y + R.camera.boundPos.y);
+            Math.round(this.output._pos._x) + R.camera.boundPos.x,
+            Math.round(this.output._pos._y) + R.camera.boundPos.y);
         SpriteSheet.end();
     }
 }

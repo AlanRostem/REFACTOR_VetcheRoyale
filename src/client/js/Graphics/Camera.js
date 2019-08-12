@@ -15,8 +15,8 @@ export default class Camera {
     }
 
     update(pos) {
-        this._boundPos.x = -(pos._x - this._offset.x);
-        this._boundPos.y = -(pos._y - this._offset.y);
+        this._boundPos.x = -Math.round(pos._x - this._offset.x);
+        this._boundPos.y = -Math.round(pos._y - this._offset.y);
     }
 
     get x() {
