@@ -44,9 +44,6 @@ export default class CEntity {
     }
 
     draw() {
-        if (this.constructor.name === "CPlayer") {
-            console.log(this._output);
-        }
         R.drawRect(this._color,
             this._output._pos._x /*+ (this._output._vel._x * Scene.deltaTime | 0) */,
             this._output._pos._y /*+ (this._output._vel._y * Scene.deltaTime | 0) */,

@@ -9,11 +9,11 @@ export default class CWeapon extends CEntity {
 
     draw() {
         if (!this.getRealtimeProperty("_equippedToPlayer")) {
-            let pos = this.getRealtimeProperty("_pos");
             let name = this.getRealtimeProperty("_displayName") + "-World";
-            let h = this.getRealtimeProperty("_height");
             let rect = CWeapon.sprite.offsetRects.get(name);
             if (rect) {
+                let pos = this.getRealtimeProperty("_pos");
+                let h = this.getRealtimeProperty("_height");
                 CWeapon.sprite.drawStill(name,
                     pos._x - rect.w / 2 + R.camera.x,
                     pos._y + R.camera.y - Math.abs(rect.h - h));
