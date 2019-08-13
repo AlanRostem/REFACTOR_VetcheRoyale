@@ -2,6 +2,7 @@
 // from the server. Composed in an entity.
 
 import {vectorLinearInterpolation, addVec, vecSub, vecMulScalar} from "../../../../shared/code/Math/CCustomMath.js";
+import {linearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
 
 const INTERPOLATION_OFFSET = 0.2; // Milliseconds in the past
 const SMOOTHING_PERCENTAGE = .36;
@@ -11,8 +12,8 @@ export default class EntitySnapshotBuffer {
         this._result = initDataPack;
         this._buffer = []; // Keeps snapshots of the history
         this._serverTime = initDataPack.timeStamp;
-        this._clientTime = 0;
-        this._size = 6;
+        this._clientTime = initDataPack.timeStamp;
+        this._size = 6
     }
 
     get length() {
@@ -41,11 +42,18 @@ export default class EntitySnapshotBuffer {
         entity._output = this._result;
     }
 
-    clientPrediction(entity, old, current, timeSyncer) {
+    clientPrediction(entity, client, timeSyncer, deltaTime) {
+        if (client.input.getKey(68)) {
+            entity._output._pos._x += 1;
+        }
+
+        if (client.input.getKey(65)) {
+            entity._output._pos._x -= 1;
+        }
     }
 
     interpolation(entity, timeSyncer, client, deltaTime) {
-        let currentTime = timeSyncer.timeSinceStart();
+        let currentTime = this._clientTime;
         let target = null;
         let previous = null;
         for (let i = 0; i < this.length - 1; i++) {
@@ -54,6 +62,7 @@ export default class EntitySnapshotBuffer {
             if (currentTime - INTERPOLATION_OFFSET > point.timeStamp && currentTime < next.timeStamp) {
                 target = next;
                 previous = point;
+                console.log("n'")
                 break;
             }
         }
@@ -81,10 +90,16 @@ export default class EntitySnapshotBuffer {
                 vectorLinearInterpolation(entity._output._pos,
                     vectorLinearInterpolation(previous._pos, target._pos, timePoint),
                     SMOOTHING_PERCENTAGE);
+
+            if (entity._output._id === client.id) {
+
+            }
+
         }
     }
 
     onServerUpdateReceived(data, entity, timeSyncer, client) {
+        this._clientTime = data.timeStamp - INTERPOLATION_OFFSET;
         this.pushBack(data);
         if (this.length > this._size) {
             this.popFront();
@@ -102,6 +117,7 @@ export default class EntitySnapshotBuffer {
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
         this.interpolation(entity, timeSyncer, client, deltaTime);
+
     }
 
     remove(i) {
