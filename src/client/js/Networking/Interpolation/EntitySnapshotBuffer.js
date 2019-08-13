@@ -62,7 +62,6 @@ export default class EntitySnapshotBuffer {
             if (currentTime - INTERPOLATION_OFFSET > point.timeStamp && currentTime < next.timeStamp) {
                 target = next;
                 previous = point;
-                console.log("n'")
                 break;
             }
         }
