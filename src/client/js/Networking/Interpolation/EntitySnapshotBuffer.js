@@ -46,16 +46,6 @@ export default class EntitySnapshotBuffer {
         entity._output = this._result;
     }
 
-    clientPrediction(entity, client, timeSyncer, deltaTime) {
-        if (client.input.getKey(68)) {
-            entity._output._pos._x += 1;
-        }
-
-        if (client.input.getKey(65)) {
-            entity._output._pos._x -= 1;
-        }
-    }
-
     interpolation(entity, timeSyncer, client, deltaTime) {
         let currentTime = this._clientTime;
         let target = null;
@@ -113,8 +103,8 @@ export default class EntitySnapshotBuffer {
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, timeSyncer, client) {
-        //this.t_directServerUpdate(data, entity);
-        this.onServerUpdateReceived(data, entity, timeSyncer, client);
+        this.t_directServerUpdate(data, entity);
+        //this.onServerUpdateReceived(data, entity, timeSyncer, client);
     }
 
     // Use client parameter to detect input

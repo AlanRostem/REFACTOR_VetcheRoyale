@@ -9,21 +9,23 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, timeSyncer) {
         super.update(deltaTime, client, timeSyncer);
-        let vec = client.input.buffer.processInput(client);
-        this._output._pos._x += vec._x;
-        //this._output._pos._y += vec._y; //TODO
     }
 
     updateFromDataPack(dataPack, client, timeSyncer) {
         super.updateFromDataPack(dataPack, client, timeSyncer);
+        /*
         this.clientProcessPredictionCorrection(client);
+        let vec = client.input.buffer.processInput(client);
+        this._output._pos._x += vec._x;
+
+         */
     }
 
     clientProcessPredictionCorrection(client) {
         if (!this._dataBuffer.length) return;
 
         let dataBuffer = this._dataBuffer;
-        let latest = dataBuffer.last;
+        let latest = dataBuffer.last();
         let serverPos = latest._pos;
 
         let lastInput = client.input.buffer.lastServerInputSeq;
@@ -38,8 +40,8 @@ export default class UserPlayer extends RemotePlayer {
             if (lastInputIdx !== -1) {
                 let clearCount = lastInputIdx + 1;
                 client.inputBufferArray.splice(0, clearCount);
-                if (this._dataBuffer.last) {
-                    //this._output._pos = this._dataBuffer.last._pos;
+                if (serverPos) {
+                    this._output._pos = serverPos;
                 }
                 client.input.buffer.lastInputSeq = lastInputIdx;
             }
