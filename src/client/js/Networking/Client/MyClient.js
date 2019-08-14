@@ -131,7 +131,7 @@ export default class MyClient {
         });
 
         this.on('serverUpdateTick', packet => {
-            this._latency = Date.now() - packet.now;
+            this._latency = Math.abs(Date.now() - packet.now);
             MyClient._ping = this._latency;
             this.onServerUpdateReceived(packet);
         });
