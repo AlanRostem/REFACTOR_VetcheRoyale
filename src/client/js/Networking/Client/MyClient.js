@@ -26,8 +26,7 @@ export default class MyClient {
         this._clientEmitPacket = new ONMap();
 
         this.defineSocketEvents();
-        this._startTime = Date.now();
-        this._latency = Date.now() - this._startTime;
+        this._latency = 0;
     }
 
     get input() {
@@ -132,7 +131,7 @@ export default class MyClient {
         });
 
         this.on('serverUpdateTick', packet => {
-            this._latency = Date.now() - this._startTime;
+            this._latency = Date.now() - packet.now;
             MyClient._ping = this._latency;
             this.onServerUpdateReceived(packet);
         });

@@ -67,6 +67,7 @@ class Client {
     update() {
         this._inputReceiver.update(this);
         this.setOutboundPacketData("entityData", this._player.entitiesInProximity.exportDataPack());
+        this.setOutboundPacketData("now", Date.now());
         this.emit("serverUpdateTick", this._outboundPacket.object);
     }
 
