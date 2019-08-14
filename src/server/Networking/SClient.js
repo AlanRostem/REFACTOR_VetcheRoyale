@@ -2,6 +2,7 @@ const Player = require("../Game/Entity/Player/SPlayer.js");
 const Tile = require("../Game/TileBased/Tile.js");
 const QuadTree = require("../Game/Entity/Management/QuadTree.js");
 const InputReceiver = require("./InputReceiver.js");
+const ONMap = require("../../shared/code/DataStructures/SObjectNotationMap.js");
 
 // Object that represents a client connected to the server
 class Client {
@@ -15,8 +16,19 @@ class Client {
 
         this._removed = false;
 
+        this._inboundDataCallbacks = new ONMap();
+        this._outboundPacket = new ONMap();
+
         this._player = new Player(0, 0, this);
         this.defineSocketEvents(socket, clientList);
+    }
+
+    addInboundDataListener(eventName, callback) {
+        this._inboundDataCallbacks.set(eventName, callback);
+    }
+
+    setOutboundData(key, value) {
+        this._outboundPacket.set(key, value);
     }
 
     get removed() {
@@ -40,12 +52,21 @@ class Client {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
         });
+
+        this._socket.on("clientPacketToServer", packet => {
+            this.onClientUpdateReceived(packet)
+        })
+    }
+
+    onClientUpdateReceived(packet) {
+        for (let callback of this._inboundDataCallbacks.array) {
+            callback(packet);
+        }
     }
 
     update() {
-        this.emit("serverUpdateTick", {
-            entityData: this._player.entitiesInProximity.exportDataPack()
-        });
+        this.setOutboundData("entityData", this._player.entitiesInProximity.exportDataPack());
+        this.emit("serverUpdateTick", this._outboundPacket.object);
     }
 
     get inputReceiver() {

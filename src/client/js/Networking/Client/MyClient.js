@@ -23,6 +23,7 @@ export default class MyClient {
         });
 
         this._serverUpdateCallbacks = new ONMap();
+        this._clientEmitPacket = new ONMap();
 
         this.defineSocketEvents();
         this._startTime = Date.now();
@@ -52,6 +53,10 @@ export default class MyClient {
 
     get inputBufferArray() {
         return this._inputListener._inputBuffer._buffer;
+    }
+
+    setOutboundPacketData(key, value) {
+        this._clientEmitPacket.set(key, value);
     }
 
     addServerUpdateListener(eventName, callback) {
@@ -95,13 +100,13 @@ export default class MyClient {
         }
         this._localTime += deltaTime;
         this._startTime = Date.now();
-        this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);
         if (e) {
             Scene.currentMapName = this.player.output._gameData.mapName;
             R.camera.update(e.getRealtimeProperty("_center"));
         }
         this._inputListener.update(this);
+        this.emit("clientPacketToServer", this._clientEmitPacket.object);
     }
 
     get localTime() {
