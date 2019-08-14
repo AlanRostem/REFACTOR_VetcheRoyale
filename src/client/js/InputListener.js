@@ -116,8 +116,14 @@ export default class InputListener {
         return this._mouseStates[buttonCode];
     }
 
+
     update(client) {
         this._inputBuffer.update(this, client);
+        client.setOutboundPacketData("input", {
+            keyStates: this._keyStates,
+            mouseData: this._mouse,
+            mouseStates: this._mouseStates,
+        });
     }
 
     // Set a callback function mapped to a key code.
@@ -221,10 +227,8 @@ export default class InputListener {
             );
             */
 
-            client.emit("mouseMoveEvent", this._mouse);
         });
 
-        client.emit("mouseMoveEvent", this._mouse);
 
         window.oncontextmenu = () => {
             return false;

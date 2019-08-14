@@ -39,16 +39,11 @@ export default class MyClient {
     // is that upon the key state the key state data
     // is sent to the server.
     addKeyEmitter(keyCode, callback) {
-        if (callback === undefined) {
-            this._inputListener.addKeyMapping(keyCode, keyState => {
-                this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
-            });
-        } else {
-            this._inputListener.addKeyMapping(keyCode, keyState => {
+        this._inputListener.addKeyMapping(keyCode, keyState => {
+            if (callback) {
                 callback(keyState);
-                this.emit("keyEvent", {keyCode: keyCode, keyState: keyState});
-            });
-        }
+            }
+        });
     }
 
     get inputBufferArray() {
@@ -64,22 +59,26 @@ export default class MyClient {
     }
 
     onServerUpdateReceived(packet) {
+        this._receivedData = packet;
         for (let callback of this._serverUpdateCallbacks.array) {
             callback(packet);
         }
     }
 
+    get inboundPacket() {
+        return this._receivedData;
+    }
+
+    get outboundPacket() {
+        return this._clientEmitPacket.object;
+    }
+
     addMouseEmitter(mouseButton, callback) {
-        if (callback === undefined) {
-            this._inputListener.addMouseMapping(mouseButton, mouseState => {
-                this.emit("mouseEvent", {mouseButton: mouseButton, mouseState: mouseState});
-            });
-        } else {
-            this._inputListener.addMouseMapping(mouseButton, mouseState => {
-                callback(mouseState);
-                this.emit("mouseEvent", {mouseButton: mouseButton, mouseState: mouseState});
-            });
-        }
+        this._inputListener.addMouseMapping(mouseButton, mouseState => {
+            if (callback) {
+                callback(keyState);
+            }
+        });
     }
 
     static getPing() {

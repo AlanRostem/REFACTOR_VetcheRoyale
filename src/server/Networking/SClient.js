@@ -7,6 +7,9 @@ const ONMap = require("../../shared/code/DataStructures/SObjectNotationMap.js");
 // Object that represents a client connected to the server
 class Client {
     constructor(socket, clientList) {
+        this._inboundDataCallbacks = new ONMap();
+        this._outboundPacket = new ONMap();
+
         // Object given by socket.io
         this._socket = socket;
 
@@ -16,18 +19,15 @@ class Client {
 
         this._removed = false;
 
-        this._inboundDataCallbacks = new ONMap();
-        this._outboundPacket = new ONMap();
-
         this._player = new Player(0, 0, this);
         this.defineSocketEvents(socket, clientList);
     }
 
-    addInboundDataListener(eventName, callback) {
+    addClientUpdateListener(eventName, callback) {
         this._inboundDataCallbacks.set(eventName, callback);
     }
 
-    setOutboundData(key, value) {
+    setOutboundPacketData(key, value) {
         this._outboundPacket.set(key, value);
     }
 
@@ -65,7 +65,8 @@ class Client {
     }
 
     update() {
-        this.setOutboundData("entityData", this._player.entitiesInProximity.exportDataPack());
+        this._inputReceiver.update(this);
+        this.setOutboundPacketData("entityData", this._player.entitiesInProximity.exportDataPack());
         this.emit("serverUpdateTick", this._outboundPacket.object);
     }
 

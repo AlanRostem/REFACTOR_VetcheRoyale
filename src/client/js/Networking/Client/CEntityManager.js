@@ -63,7 +63,6 @@ export default class CEntityManager {
             for (var id in dataPack.entityData) {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
-                    entityData.latency = client._latency;
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.updateFromDataPack(entityData, client, this._timeSyncer);
                 } else {

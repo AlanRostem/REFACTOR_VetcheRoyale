@@ -5,7 +5,7 @@ window.ping = () => {
 };
 
 window.client = () => {
-    return Object.create(Scene._clientRef);
+    return Scene._clientRef;
 };
 
 window.player = () => {

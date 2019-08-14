@@ -9,20 +9,11 @@ class InputReceiver {
         this._mouseStates = {};
         this._singlePressMouseButtons = {};
 
-        client.on("keyEvent", data => {
-            this._keyStates[data.keyCode] = data.keyState;
-        });
-
-        client.on("mouseEvent", data => {
-            this._mouseStates[data.mouseButton] = data.mouseState;
-        });
-
-        client.on("mouseMoveEvent", data => {
-            this._mouseData = data;
-        });
-
-        client.on("clientInputSequence", data => {
-            this._lastInputSeqFromClient = data;
+        client.addClientUpdateListener("inputEvent", data => {
+            const input = data.input;
+            this._keyStates = input.keyStates;
+            this._mouseStates = input.mouseStates;
+            this._mouseData = input.mouseData;
         });
     }
 
@@ -31,11 +22,7 @@ class InputReceiver {
     }
 
     processInput(client) {
-
-        this.lastInputSeq = this._lastInputSeqFromClient;
-        client.emit("getLastServerInputSeq", {
-            lastInputSeq:  this.lastInputSeq
-        });
+        client.setOutboundPacketData("lastInputSeq", this.lastInputSeq);
     }
 
     get mouseData() {
