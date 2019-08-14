@@ -13,11 +13,15 @@ export default class EntitySnapshotBuffer {
         this._buffer = []; // Keeps snapshots of the history
         this._serverTime = initDataPack.timeStamp;
         this._clientTime = initDataPack.timeStamp;
-        this._size = 6
+        this._size = 6;
     }
 
     get length() {
         return this._buffer.length;
+    }
+
+    first() {
+        return this._buffer[0];
     }
 
     last() {

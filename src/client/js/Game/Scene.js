@@ -67,7 +67,7 @@ const Scene = {
 
     update() {
         if (AssetManager.done()) {
-            Scene._clientRef.update(Scene._entityManager);
+            Scene._clientRef.update(Scene._entityManager, Scene.deltaTime);
             UI.update(Scene._clientRef, Scene._entityManager);
             Scene._entityManager.updateEntities(Scene.deltaTime, Scene._clientRef);
         }

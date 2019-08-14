@@ -20,6 +20,22 @@ class InputReceiver {
         client.on("mouseMoveEvent", data => {
             this._mouseData = data;
         });
+
+        client.on("clientInputSequence", data => {
+            this._lastInputSeqFromClient = data;
+        });
+    }
+
+    update(client) {
+        this.processInput(client);
+    }
+
+    processInput(client) {
+
+        this.lastInputSeq = this._lastInputSeqFromClient;
+        client.emit("getLastServerInputSeq", {
+            lastInputSeq:  this.lastInputSeq
+        });
     }
 
     get mouseData() {

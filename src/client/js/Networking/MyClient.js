@@ -9,6 +9,7 @@ export default class MyClient {
     constructor(socket) {
         this._socket = socket;
         this.id = socket.id;
+        this._localTime = 0;
         this._inputListener = new InputListener(this);
 
         [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
@@ -45,6 +46,10 @@ export default class MyClient {
         }
     }
 
+    get inputBufferArray() {
+        return this._inputListener._inputBuffer._buffer;
+    }
+
     addMouseEmitter(mouseButton, callback) {
         if (callback === undefined) {
             this._inputListener.addMouseMapping(mouseButton, mouseState => {
@@ -70,10 +75,11 @@ export default class MyClient {
         return this._eMgr.getEntityByID(this.id);
     }
 
-    update(entityManager) {
+    update(entityManager, deltaTime) {
         if (!this._eMgr) {
             this._eMgr = entityManager;
         }
+        this._localTime += deltaTime;
         this._startTime = Date.now();
         this.emit("_ping");
         var e = entityManager.getEntityByID(this.id);
@@ -81,6 +87,11 @@ export default class MyClient {
             Scene.currentMapName = this.player.output._gameData.mapName;
             R.camera.update(e.getRealtimeProperty("_center"));
         }
+        this._inputListener.update(this);
+    }
+
+    get localTime() {
+        return this._localTime;
     }
 
     emit(eventType, data) {

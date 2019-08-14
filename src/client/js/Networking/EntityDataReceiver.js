@@ -22,7 +22,7 @@ export default class EntityDataReceiver {
 
     addEntityFromDataPack(dataPack, client) {
         //if (dataPack._removed) return;
-        (this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack))
+        (this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack, client))
             .onClientSpawn(dataPack, client);
     }
 
