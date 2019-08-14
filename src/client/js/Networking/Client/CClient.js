@@ -12,6 +12,8 @@ export default class CClient {
         this._socket = socket;
         this.id = socket.id;
         this._localTime = 0;
+        this._serverUpdateCallbacks = new ONMap();
+        this._clientEmitPacket = new ONMap();
         this._inputListener = new InputListener(this);
 
         [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
@@ -22,8 +24,7 @@ export default class CClient {
             this.addMouseEmitter(mouseButton);
         });
 
-        this._serverUpdateCallbacks = new ONMap();
-        this._clientEmitPacket = new ONMap();
+
 
         this.defineSocketEvents();
         this._latency = 0;

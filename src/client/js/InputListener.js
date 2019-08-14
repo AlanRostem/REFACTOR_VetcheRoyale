@@ -3,11 +3,14 @@ import R from "./Graphics/Renderer.js"
 import {sqrt} from "../../shared/code/Math/CCustomMath.js";
 
 class InputBuffer {
-    constructor(size = 30) {
+    constructor(client, size = 30) {
         this._buffer = [];
         this._allocatedCodes = [];
         this._sequence = 0;
         this._size = size;
+        client.addServerUpdateListener("inputSeq", data => {
+            this.lastServerInputSeq = data.lastServerInputSeq;
+        });
     }
 
     allocateKeyInput(keyCode) {
@@ -45,6 +48,8 @@ class InputBuffer {
     processInput(client) {
         let ic = this._buffer.length;
         let buffer = this._buffer;
+        let x = 0;
+        let y = 0;
         if (ic) {
             for (let j = 0; j < ic; j++) {
                 //don't process ones we already have simulated locally
@@ -55,19 +60,27 @@ class InputBuffer {
                 for (var i = 0; i < c; ++i) {
                     let key = input[i];
                     switch (key) {
-                        case 68: break; // Right
-                        case 65: break; // Left
+                        case 68:
+                            x++;
+                            break; // Right
+                        case 65:
+                            x--;
+                            break; // Left
                         case 32: break; // Jump
                     }
                 }
             }
+
         }
 
-        //let resultVec =
         if (this._buffer.length) {
             this.lastInputSeq = buffer[ic - 1].seq;
         }
-        //return resultVec
+
+        return {
+            _x: x,
+            _y: y
+        };
     }
 
     pushBack(input) {
@@ -78,7 +91,7 @@ class InputBuffer {
 
 export default class InputListener {
     constructor(client) {
-        this._inputBuffer = new InputBuffer();
+        this._inputBuffer = new InputBuffer(client);
 
         // Holds the current state of the key (up or down).
         this._keyStates = {};
@@ -123,6 +136,7 @@ export default class InputListener {
             keyStates: this._keyStates,
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
+            lastInputSeq: this._inputBuffer.lastInputSeq
         });
     }
 

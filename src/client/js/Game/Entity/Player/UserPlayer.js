@@ -9,6 +9,9 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, timeSyncer) {
         super.update(deltaTime, client, timeSyncer);
+        let vec = client.input.buffer.processInput(client);
+        this._output._pos._x += vec._x;
+        //this._output._pos._y += vec._y; //TODO
     }
 
     updateFromDataPack(dataPack, client, timeSyncer) {
@@ -23,7 +26,7 @@ export default class UserPlayer extends RemotePlayer {
         let latest = dataBuffer.last;
         let serverPos = latest._pos;
 
-        let lastInput = client.input.buffer.lastInputSeq;
+        let lastInput = client.input.buffer.lastServerInputSeq;
         if (lastInput) {
             let lastInputIdx = -1;
             for (let i = 0; i < client.inputBufferArray.length; i++) {
