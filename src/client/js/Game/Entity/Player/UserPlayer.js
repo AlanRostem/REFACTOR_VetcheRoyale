@@ -30,7 +30,18 @@ export default class UserPlayer extends RemotePlayer {
         if (lastInput) {
             let lastInputIdx = -1;
             for (let i = 0; i < client.inputBufferArray.length; i++) {
+                if (client.inputBufferArray[i].seq === lastInput) {
+                    lastInputIdx = i; break;
+                }
+            }
 
+            if (lastInputIdx !== -1) {
+                let clearCount = lastInputIdx + 1;
+                client.inputBufferArray.splice(0, clearCount);
+                if (this._dataBuffer.last) {
+                    //this._output._pos = this._dataBuffer.last._pos;
+                }
+                client.input.buffer.lastInputSeq = lastInputIdx;
             }
         }
     }
