@@ -6,7 +6,7 @@ import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js"
 
 // Class representation of the client. Holds input callbacks
 // and manages socket events.
-export default class MyClient {
+export default class CClient {
 
     constructor(socket) {
         this._socket = socket;
@@ -81,7 +81,7 @@ export default class MyClient {
     }
 
     static getPing() {
-        return MyClient._ping;
+        return CClient._ping;
     }
 
     static get ping() {
@@ -132,7 +132,7 @@ export default class MyClient {
 
         this.on('serverUpdateTick', packet => {
             this._latency = Math.abs(Date.now() - packet.now);
-            MyClient._ping = this._latency;
+            CClient._ping = this._latency;
             this.onServerUpdateReceived(packet);
         });
 
@@ -141,7 +141,7 @@ export default class MyClient {
         });
 
         this.on("gameEvent-changeMap", data => {
-            Scene.currentMapName = data.mapName
+            Scene.currentMapName = data.mapName;
         });
 
         this.on("gameEvent-changeWorld", data => {
@@ -150,4 +150,4 @@ export default class MyClient {
     }
 }
 
-MyClient._ping = 1;
+CClient._ping = 1;
