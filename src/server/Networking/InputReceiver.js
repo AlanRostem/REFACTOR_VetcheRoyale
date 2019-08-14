@@ -13,7 +13,7 @@ class InputReceiver {
             this._keyStates[data.keyCode] = data.keyState;
         });
 
-        client._socket.on("mouseEvent", data => {
+        client.on("mouseEvent", data => {
             this._mouseStates[data.mouseButton] = data.mouseState;
         });
 

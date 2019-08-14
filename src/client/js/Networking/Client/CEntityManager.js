@@ -1,10 +1,10 @@
 // Manages inbound entity data packs from the server.
 // This singleton class also renders those entities.
-import CEntity from "../Game/Entity/CEntity.js"
-import EntityTypeSpawner from "../Game/Entity/Management/EntityTypeSpawner.js";
-import ServerTimeSyncer from "./Interpolation/ServerTimeSyncer.js";
+import CEntity from "../../Game/Entity/CEntity.js"
+import EntityTypeSpawner from "../../Game/Entity/Management/EntityTypeSpawner.js";
+import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 
-export default class EntityDataReceiver {
+export default class CEntityManager {
     constructor(client) {
         this._clientRef = client;
         this._container = {};
@@ -58,10 +58,10 @@ export default class EntityDataReceiver {
             }
         });
 
-        client.on('updateEntity', dataPack => {
+        client.addServerUpdateListener("updateEntity", dataPack => {
             this._timeSyncer.onServerUpdate(client._latency);
-            for (var id in dataPack) {
-                var entityData = dataPack[id];
+            for (var id in dataPack.entityData) {
+                var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     entityData.latency = client._latency;
                     var existingEntity = this.getEntity(entityData);

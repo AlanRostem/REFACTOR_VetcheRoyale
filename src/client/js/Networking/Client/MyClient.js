@@ -1,6 +1,8 @@
-import InputListener from "../InputListener.js"
-import R from "../Graphics/Renderer.js";
-import Scene from "../Game/Scene.js"
+import InputListener from "../../InputListener.js"
+import R from "../../Graphics/Renderer.js";
+import Scene from "../../Game/Scene.js"
+import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
+
 
 // Class representation of the client. Holds input callbacks
 // and manages socket events.
@@ -19,6 +21,8 @@ export default class MyClient {
         [1, 2, 3].forEach(mouseButton => {
             this.addMouseEmitter(mouseButton);
         });
+
+        this._serverUpdateCallbacks = new ONMap();
 
         this.defineSocketEvents();
         this._startTime = Date.now();
@@ -48,6 +52,16 @@ export default class MyClient {
 
     get inputBufferArray() {
         return this._inputListener._inputBuffer._buffer;
+    }
+
+    addServerUpdateListener(eventName, callback) {
+        this._serverUpdateCallbacks.set(eventName, callback);
+    }
+
+    onServerUpdateReceived(packet) {
+        for (let callback of this._serverUpdateCallbacks.array) {
+            callback(packet);
+        }
     }
 
     addMouseEmitter(mouseButton, callback) {
@@ -113,9 +127,10 @@ export default class MyClient {
             });
         });
 
-        this.on('_pong', () => {
+        this.on('serverUpdateTick', packet => {
             this._latency = Date.now() - this._startTime;
             MyClient._ping = this._latency;
+            this.onServerUpdateReceived(packet);
         });
 
         this.on('broadcast-newPlayer', data => {

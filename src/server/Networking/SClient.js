@@ -40,15 +40,12 @@ class Client {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
         });
-
-        var _this = this;
-        this.on('_ping', function() {
-            _this.emit('_pong');
-        });
     }
 
     update() {
-        this.emit("updateEntity", this._player.entitiesInProximity.exportDataPack());
+        this.emit("serverUpdateTick", {
+            entityData: this._player.entitiesInProximity.exportDataPack()
+        });
     }
 
     get inputReceiver() {
