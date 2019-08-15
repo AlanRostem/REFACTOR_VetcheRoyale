@@ -14,6 +14,7 @@ class InputReceiver {
             this._keyStates = input.keyStates;
             this._mouseStates = input.mouseStates;
             this._mouseData = input.mouseData;
+            this.lastInputSeq = input.lastInputSeq;
         });
     }
 
@@ -22,7 +23,7 @@ class InputReceiver {
     }
 
     processInput(client) {
-        client.setOutboundPacketData("lastInputSeq", this.lastInputSeq);
+        client.setOutboundPacketData("lastServerInputSeq", this.lastInputSeq);
     }
 
     get mouseData() {
