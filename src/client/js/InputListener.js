@@ -2,27 +2,6 @@ import {typeCheck} from "../../shared/code/Debugging/CtypeCheck.js"
 import R from "./Graphics/Renderer.js"
 import {sqrt} from "../../shared/code/Math/CCustomMath.js";
 
-class InputBuffer {
-    constructor(client, size = 30) {
-        this._buffer = [];
-        this._allocatedCodes = [];
-        this._sequence = 0;
-        this._size = size;
-        client.addServerUpdateListener("inputSeq", data => {
-
-        });
-    }
-
-
-
-
-    update(inputListener, client) {
-
-    }
-
-
-}
-
 export default class InputListener {
     constructor(client) {
 
@@ -42,8 +21,47 @@ export default class InputListener {
             sinCenter: 0,
         };
 
+        this._buffer = [];
+        this._pendingInputs = [];
+        this._allocatedCodes = [];
+        this._sequence = 0;
 
         this.listenTo(client);
+    }
+
+    update(client) {
+        var now_ts = +new Date();
+        var last_ts = this.last_ts || now_ts;
+        var dt_sec = (now_ts - last_ts) / 1000.0;
+        this.last_ts = now_ts;
+
+        let input = {
+            keyStates: this._keyStates,
+            mouseData: this._mouse,
+            mouseStates: this._mouseStates,
+            sequence: this._sequence++,
+        };
+
+        // TODO: Calculate press time for each of the
+        // TODO: different input types (keys or mouse)
+        if (this.getKey(68)) {
+            input.pressTime = dt_sec;
+        } else if (this.getKey(65)) {
+            input.pressTime = -dt_sec;
+        } else {
+            return;
+        }
+
+        client.setOutboundPacketData("input", input);
+
+        // TODO: CLIENT SIDE PREDICTION
+
+        this._pendingInputs.push(input);
+
+    }
+
+    get pending() {
+        return this._pendingInputs;
     }
 
     get mouse() {
@@ -59,13 +77,7 @@ export default class InputListener {
     }
 
 
-    update(client) {
-        client.setOutboundPacketData("input", {
-            keyStates: this._keyStates,
-            mouseData: this._mouse,
-            mouseStates: this._mouseStates,
-        });
-    }
+
 
     // Set a callback function mapped to a key code.
     // Remember that one key code can have multiple

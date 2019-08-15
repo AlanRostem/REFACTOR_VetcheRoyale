@@ -1,5 +1,8 @@
 // Composite class that retrieves input data
 // the client emitted to the server.
+
+const TICK_RATE = 40;
+
 class InputReceiver {
     constructor(client) {
         // Holds all key states of corresponding key codes
@@ -9,21 +12,30 @@ class InputReceiver {
         this._mouseStates = {};
         this._singlePressMouseButtons = {};
 
-        client.addClientUpdateListener("inputEvent", data => {
+        client.addClientUpdateListener("processInput", data => {
             const input = data.input;
-            this._keyStates = input.keyStates;
-            this._mouseStates = input.mouseStates;
-            this._mouseData = input.mouseData;
-            this.lastInputSeq = input.lastInputSeq;
+            if (input) {
+                if (this.validateInput(input)) {
+                    this.applyInput(input);
+                    client.setOutboundPacketData(
+                        "lastProcessedInputSequence", input.sequence)
+                }
+            }
         });
     }
 
-    update(client) {
-        this.processInput(client);
+    validateInput(input) {
+        // TODO:
+        return Math.abs(input.pressTime) < 1/ TICK_RATE;
     }
 
-    processInput(client) {
-        client.setOutboundPacketData("lastServerInputSeq", this.lastInputSeq);
+    applyInput(input) {
+        this._keyStates = input.keyStates;
+        this._mouseStates = input.mouseStates;
+        this._mouseData = input.mouseData;
+    }
+
+    update(client) {
     }
 
     get mouseData() {
