@@ -2,6 +2,7 @@ import InputListener from "../../InputListener.js"
 import R from "../../Graphics/Renderer.js";
 import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
+import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 
 
 // Class representation of the client. Holds input callbacks
@@ -15,6 +16,7 @@ export default class CClient {
         this._serverUpdateCallbacks = new ONMap();
         this._clientEmitPacket = new ONMap();
         this._inputListener = new InputListener(this);
+        this._timeSyncer = new ServerTimeSyncer();
 
         [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
@@ -23,8 +25,6 @@ export default class CClient {
         [1, 2, 3].forEach(mouseButton => {
             this.addMouseEmitter(mouseButton);
         });
-
-
 
         this.defineSocketEvents();
         this._latency = 0;
@@ -59,6 +59,7 @@ export default class CClient {
     }
 
     onServerUpdateReceived(packet) {
+        this._timeSyncer.onServerUpdate(this._latency);
         this._receivedData = packet;
         for (let callback of this._serverUpdateCallbacks.array) {
             callback(packet);

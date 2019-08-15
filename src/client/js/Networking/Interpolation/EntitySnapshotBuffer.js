@@ -20,11 +20,11 @@ export default class EntitySnapshotBuffer {
         return this._buffer.length;
     }
 
-    first() {
+    get first() {
         return this._buffer[0];
     }
 
-    last() {
+    get last() {
         return this._buffer[this.length - 1];
     }
 
@@ -36,8 +36,8 @@ export default class EntitySnapshotBuffer {
         this._buffer.push(data);
     }
 
-    popFront() {
-        this._buffer.splice(0, 1);
+    popFront(alloc = 1) {
+        this._buffer.splice(0, alloc);
     }
 
 
@@ -46,70 +46,20 @@ export default class EntitySnapshotBuffer {
         entity._output = this._result;
     }
 
-    interpolation(entity, timeSyncer, client, deltaTime) {
-        let currentTime = this._clientTime;
-        let target = null;
-        let previous = null;
-        for (let i = 0; i < this.length - 1; i++) {
-            let point = this.get(i);
-            let next = this.get(i + 1);
-            if (currentTime - INTERPOLATION_OFFSET > point.timeStamp && currentTime < next.timeStamp) {
-                target = next;
-                previous = point;
-                break;
-            }
-        }
 
-        if (!target) {
-            target = previous = this.get(0);
-        }
 
-        if (target && previous) {
-            let targetTime = target.timeStamp;
-            var difference = targetTime - currentTime;
-            var maxDiff = (target.timeStamp - previous.timeStamp).fixed(3);
-            var timePoint = (difference / maxDiff).fixed(3);
-
-            if (isNaN(timePoint) || Math.abs(timePoint) === Infinity) {
-                timePoint = 0;
-            }
-            for (let key in target) {
-                if (key !== "_pos") {
-                    entity._output[key] = target[key];
-                }
-            }
-
-            entity._output._pos =
-                vectorLinearInterpolation(entity._output._pos,
-                    vectorLinearInterpolation(previous._pos, target._pos, timePoint),
-                    SMOOTHING_PERCENTAGE);
-
-            if (entity._output._id === client.id) {
-
-            }
-
-        }
-    }
-
-    onServerUpdateReceived(data, entity, timeSyncer, client) {
-        this._clientTime = data.timeStamp - INTERPOLATION_OFFSET;
-        this.pushBack(data);
-        if (this.length > this._size) {
-            this.popFront();
-        }
-
+    onServerUpdateReceived(data, entity, client) {
+        this.t_directServerUpdate(data, entity);
     }
 
 
     // Run this in an entity's updateFromDataPack method
-    updateFromServerFrame(data, entity, timeSyncer, client) {
-        this.t_directServerUpdate(data, entity);
-        //this.onServerUpdateReceived(data, entity, timeSyncer, client);
+    updateFromServerFrame(data, entity, client) {
+        this.onServerUpdateReceived(data, entity, client)
     }
 
     // Use client parameter to detect input
-    updateFromClientFrame(deltaTime, entity, client, timeSyncer) {
-        this.interpolation(entity, timeSyncer, client, deltaTime);
+    updateFromClientFrame(deltaTime, entity, client) {
 
     }
 

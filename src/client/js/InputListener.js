@@ -13,85 +13,18 @@ class InputBuffer {
         });
     }
 
-    allocateKeyInput(keyCode) {
-        if (!this._allocatedCodes.includes(keyCode)) {
-            this._allocatedCodes.push(keyCode);
-        }
-    }
 
-    popFront(count) {
-        this._buffer.splice(0, count);
-    }
+
 
     update(inputListener, client) {
 
-        let tempBuffer = [];
-        for (let key of this._allocatedCodes) {
-            if (inputListener.getKey(key)) {
-                tempBuffer.push(key);
-            }
-        }
-
-        if (tempBuffer.length) {
-            this._sequence++;
-
-            let input = {
-                inputs: tempBuffer,
-                time: client.localTime,
-                seq: this._sequence
-            };
-
-            this._buffer.push(input);
-        }
     }
 
-    processInput(client) {
-        let ic = this._buffer.length;
-        let buffer = this._buffer;
-        let x = 0;
-        let y = 0;
-        if (ic) {
-            for (let j = 0; j < ic; j++) {
-                //don't process ones we already have simulated locally
-                if (buffer[j].seq <= this.lastInputSeq) continue;
-
-                let input = buffer[j].inputs;
-                let c = input.length;
-                for (var i = 0; i < c; ++i) {
-                    let key = input[i];
-                    switch (key) {
-                        case 68:
-                            x++;
-                            break; // Right
-                        case 65:
-                            x--;
-                            break; // Left
-                        case 32: break; // Jump
-                    }
-                }
-            }
-
-        }
-
-        if (this._buffer.length) {
-            this.lastInputSeq = buffer[ic - 1].seq;
-        }
-
-        return {
-            _x: x,
-            _y: y
-        };
-    }
-
-    pushBack(input) {
-        this._buffer.push(input);
-    }
 
 }
 
 export default class InputListener {
     constructor(client) {
-        this._inputBuffer = new InputBuffer(client);
 
         // Holds the current state of the key (up or down).
         this._keyStates = {};
@@ -117,10 +50,6 @@ export default class InputListener {
         return this._mouse;
     }
 
-    get buffer() {
-        return this._inputBuffer;
-    }
-
     getKey(keyCode) {
         return this._keyStates[keyCode];
     }
@@ -131,12 +60,10 @@ export default class InputListener {
 
 
     update(client) {
-        this._inputBuffer.update(this, client);
         client.setOutboundPacketData("input", {
             keyStates: this._keyStates,
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
-            lastInputSeq: this._inputBuffer.lastInputSeq
         });
     }
 
@@ -152,7 +79,6 @@ export default class InputListener {
         } else {
             this._keyCallbacks[keyCode] = [callback];
         }
-        this._inputBuffer.allocateKeyInput(keyCode);
     }
 
 

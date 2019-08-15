@@ -2,13 +2,11 @@
 // This singleton class also renders those entities.
 import CEntity from "../../Game/Entity/CEntity.js"
 import EntityTypeSpawner from "../../Game/Entity/Management/EntityTypeSpawner.js";
-import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 
 export default class CEntityManager {
     constructor(client) {
         this._clientRef = client;
         this._container = {};
-        this._timeSyncer = new ServerTimeSyncer();
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
 
@@ -59,12 +57,11 @@ export default class CEntityManager {
         });
 
         client.addServerUpdateListener("updateEntity", dataPack => {
-            this._timeSyncer.onServerUpdate(client._latency);
             for (var id in dataPack.entityData) {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntity(entityData);
-                    existingEntity.updateFromDataPack(entityData, client, this._timeSyncer);
+                    existingEntity.updateFromDataPack(entityData, client);
                 } else {
                     //console.warn("Attempted to update a non existent entity. There's a hole in your programming...");
                     throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
@@ -84,15 +81,9 @@ export default class CEntityManager {
     }
 
     updateEntities(deltaTime, client) {
-        if (this.shouldMoveSimulation) {
-            for (var id in this._container) {
-                this._container[id].update(deltaTime, client, this._timeSyncer);
-            }
+        for (var id in this._container) {
+            this._container[id].update(deltaTime, client);
         }
-    }
-
-    get shouldMoveSimulation() {
-        return this._timeSyncer.moveSimulation();
     }
 
     drawEntities() {
