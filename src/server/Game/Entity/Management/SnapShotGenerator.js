@@ -80,7 +80,7 @@ class SnapShotGenerator {
 
     update(entityManager, composedEntity, deltaTime) {
         this._snapShot.deltaTime = deltaTime;
-        this._snapShot.timeStamp = entityManager.timeStamp;
+        this._snapShot.serverTimeStamp = Date.now();
 
         for (let key of this._dynamicValues) {
             this._snapShot[key] = composedEntity[key];

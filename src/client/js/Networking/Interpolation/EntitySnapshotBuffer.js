@@ -11,9 +11,9 @@ export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
         this._result = initDataPack;
         this._buffer = []; // Keeps snapshots of the history
-        this._serverTime = initDataPack.timeStamp;
-        this._clientTime = initDataPack.timeStamp;
-        this._size = 6;
+        this._serverTime = initDataPack.serverTimeStamp;
+        this._clientTime = initDataPack.serverTimeStamp;
+        this._size = 2;
     }
 
     get length() {
@@ -40,27 +40,66 @@ export default class EntitySnapshotBuffer {
         this._buffer.splice(0, alloc);
     }
 
-
     t_directServerUpdate(data, entity) {
         this._result = data;
         entity._output = this._result;
     }
 
-
-
     onServerUpdateReceived(data, entity, client) {
-        this.t_directServerUpdate(data, entity);
+        //this.t_directServerUpdate(data, entity);
+        data.localTimeStamp = Date.now();
+        this.pushBack(data);
+        if (this.length > this._size) {
+            this.popFront();
+        }
     }
 
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, client) {
+        //this.t_directServerUpdate(data, entity, client);
         this.onServerUpdateReceived(data, entity, client)
     }
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client) {
+        let currentTime = Date.now();
+        let target = null;
+        let previous = null;
+        for (let i = 0; i < this.length - 1; i++) {
+            let point = this.get(i);
+            let next = this.get(i + 1);
+            if (currentTime - INTERPOLATION_OFFSET > point.timeStamp && currentTime < next.timeStamp) {
+                target = next;
+                previous = point;
+                break;
+            }
+        }
 
+        if (!target) {
+            target = previous = this.get(0);
+        }
+
+        if (target && previous) {
+            let targetTime = target.timeStamp;
+            var difference = targetTime - currentTime;
+            var maxDiff = (target.timeStamp - previous.timeStamp).fixed(3);
+            var timePoint = (difference / maxDiff).fixed(3);
+
+            if (isNaN(timePoint) || Math.abs(timePoint) === Infinity) {
+                timePoint = 0;
+            }
+            for (let key in target) {
+                if (key !== "_pos") {
+                    entity._output[key] = target[key];
+                }
+            }
+
+            entity._output._pos =
+                vectorLinearInterpolation(entity._output._pos,
+                    vectorLinearInterpolation(previous._pos, target._pos, timePoint),
+                    SMOOTHING_PERCENTAGE);
+        }
     }
 
     remove(i) {

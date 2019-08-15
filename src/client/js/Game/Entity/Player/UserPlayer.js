@@ -7,6 +7,10 @@ export default class UserPlayer extends RemotePlayer {
         super(data);
     }
 
+    updateFromDataPack(dataPack, client) {
+        super.updateFromDataPack(dataPack, client);
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         this.serverReconciliation(deltaTime, client);
@@ -27,8 +31,6 @@ export default class UserPlayer extends RemotePlayer {
         }
     }
 
-    updateFromDataPack(dataPack, client) {
-        super.updateFromDataPack(dataPack, client);
-    }
+
 
 }

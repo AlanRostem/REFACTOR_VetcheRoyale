@@ -3,6 +3,11 @@
 
 const TICK_RATE = 40;
 
+function validateInput(input) {
+    // TODO:
+    return Math.abs(input.pressTime) < 1 / TICK_RATE;
+}
+
 class InputReceiver {
     constructor(client) {
         // Holds all key states of corresponding key codes
@@ -15,18 +20,13 @@ class InputReceiver {
         client.addClientUpdateListener("processInput", data => {
             const input = data.input;
             if (input) {
-                if (this.validateInput(input)) {
+                if (validateInput(input)) {
                     this.applyInput(input);
                     client.setOutboundPacketData(
-                        "lastProcessedInputSequence", input.sequence)
+                        "lastProcessedInputSequence", input.sequence);
                 }
             }
         });
-    }
-
-    validateInput(input) {
-        // TODO:
-        return Math.abs(input.pressTime) < 1/ TICK_RATE;
     }
 
     applyInput(input) {

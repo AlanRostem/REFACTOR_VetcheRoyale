@@ -234,6 +234,8 @@ Client.prototype.interpolateEntities = function() {
             buffer.shift();
         }
 
+
+
         // Interpolate between the two surrounding authoritative positions.
         if (buffer.length >= 2 && buffer[0][0] <= render_timestamp && render_timestamp <= buffer[1][0]) {
             var x0 = buffer[0][1];
