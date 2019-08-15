@@ -106,7 +106,6 @@ export default class CClient {
         var e = entityManager.getEntityByID(this.id);
         if (e) {
             Scene.currentMapName = this.player.output._gameData.mapName;
-            R.camera.update(e.getRealtimeProperty("_center"));
         }
         this._inputListener.update(this);
         this.emit("clientPacketToServer", this._clientEmitPacket.object);
