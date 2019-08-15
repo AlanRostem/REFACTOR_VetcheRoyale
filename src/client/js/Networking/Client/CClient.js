@@ -29,33 +29,14 @@ export default class CClient {
         this.defineSocketEvents();
         this._latency = 0;
 
-        this._packetBuffer = [];
     }
 
     onServerUpdateReceived(packet) {
         this._timeSyncer.onServerUpdate(this._latency);
         this._lastReceivedData = packet;
-
         for (let callback of this._serverUpdateCallbacks.array) {
             callback(packet);
         }
-
-        /*
-
-        this._packetBuffer.push(packet);
-
-        let now = Date.now();
-        for (let i = 0; i < this._packetBuffer.length; i++) {
-            let pack = this._packetBuffer[i];
-            if (pack.now <= now) {
-                for (let callback of this._serverUpdateCallbacks.array) {
-                    callback(packet);
-                }
-                this._packetBuffer.splice(i, 1);
-            }
-        }
-        
-         */
     }
 
     get input() {
