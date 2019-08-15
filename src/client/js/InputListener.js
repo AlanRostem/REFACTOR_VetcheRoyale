@@ -9,7 +9,7 @@ class InputBuffer {
         this._sequence = 0;
         this._size = size;
         client.addServerUpdateListener("inputSeq", data => {
-            this.lastServerInputSeq = data.lastServerInputSeq;
+
         });
     }
 
