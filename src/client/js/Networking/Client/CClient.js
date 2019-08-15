@@ -35,6 +35,13 @@ export default class CClient {
     onServerUpdateReceived(packet) {
         this._timeSyncer.onServerUpdate(this._latency);
         this._lastReceivedData = packet;
+
+        for (let callback of this._serverUpdateCallbacks.array) {
+            callback(packet);
+        }
+
+        /*
+
         this._packetBuffer.push(packet);
 
         let now = Date.now();
@@ -47,7 +54,8 @@ export default class CClient {
                 this._packetBuffer.splice(i, 1);
             }
         }
-        console.log(this._packetBuffer.length);
+        
+         */
     }
 
     get input() {
