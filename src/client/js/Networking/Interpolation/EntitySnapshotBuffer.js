@@ -11,7 +11,7 @@ export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
         this._result = initDataPack;
         this._buffer = []; // Keeps snapshots of the history
-        this._size = 6;
+        this._size = 4;
     }
 
     get length() {

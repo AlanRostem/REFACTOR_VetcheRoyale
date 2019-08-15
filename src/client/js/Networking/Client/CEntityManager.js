@@ -80,9 +80,9 @@ export default class CEntityManager {
 
     }
 
-    updateEntities(deltaTime, client) {
+    updateEntities(deltaTime, client, map) {
         for (var id in this._container) {
-            this._container[id].update(deltaTime, client);
+            this._container[id].update(deltaTime, client, map);
         }
     }
 

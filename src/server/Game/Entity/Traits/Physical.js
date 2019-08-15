@@ -15,9 +15,19 @@ class Physical extends Entity {
         this._acc = new Vector2D(0, 0);
         this._movementTracker = new MovementTracker();
         this._movementState = this._movementTracker.movementStates;
+        this.side = {
+            left: false,
+            right: false,
+            top: false,
+            bottom: false,
+            reset: () => {
+                this.side.left = this.side.right = this.side.top = this.side.bottom = false;
+            }
+        };
         this.addStaticSnapShotData([
             "_vel",
             "_movementState",
+            "side",
         ]);
 
         this._physicsConfig = {
@@ -30,15 +40,6 @@ class Physical extends Entity {
 
         this._collisionResponseID = "Physical";
 
-        this.side = {
-            left: false,
-            right: false,
-            top: false,
-            bottom: false,
-            reset: () => {
-                this.side.left = this.side.right = this.side.top = this.side.bottom = false;
-            }
-        };
     }
 
 

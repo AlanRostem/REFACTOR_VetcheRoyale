@@ -30,4 +30,8 @@ export default class CTileMap {
     withinRange(x, y) {
         return x >= 0 && x <= this.w && y >= 0 && y <= this.h;
     }
+
+    isSolid(id) {
+        return id < 17;
+    }
 }

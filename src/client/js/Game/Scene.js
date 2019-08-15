@@ -69,7 +69,7 @@ const Scene = {
         if (AssetManager.done()) {
             Scene._clientRef.update(Scene._entityManager, Scene.deltaTime);
             UI.update(Scene._clientRef, Scene._entityManager);
-            Scene._entityManager.updateEntities(Scene.deltaTime, Scene._clientRef);
+            Scene._entityManager.updateEntities(Scene.deltaTime, Scene._clientRef, Scene.tileMaps.getMap(Scene._currentMap));
             let e = Scene._clientRef.player;
             if (e) {
                 R.camera.update(e.getRealtimeProperty("_center"));
