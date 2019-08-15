@@ -11,9 +11,7 @@ export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
         this._result = initDataPack;
         this._buffer = []; // Keeps snapshots of the history
-        this._serverTime = initDataPack.serverTimeStamp;
-        this._clientTime = initDataPack.serverTimeStamp;
-        this._size = 2;
+        this._size = 6;
     }
 
     get length() {
@@ -63,13 +61,13 @@ export default class EntitySnapshotBuffer {
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client) {
-        let currentTime = Date.now();
+        let currentTime = Date.now() - client._latency;
         let target = null;
         let previous = null;
         for (let i = 0; i < this.length - 1; i++) {
             let point = this.get(i);
             let next = this.get(i + 1);
-            if (currentTime - INTERPOLATION_OFFSET > point.timeStamp && currentTime < next.timeStamp) {
+            if (currentTime > point.timeStamp && currentTime < next.timeStamp) {
                 target = next;
                 previous = point;
                 break;

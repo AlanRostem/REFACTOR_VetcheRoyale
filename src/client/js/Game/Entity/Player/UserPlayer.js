@@ -2,21 +2,23 @@ import RemotePlayer from "./RemotePlayer.js";
 
 // The player the client controls. It contains the client prediction code.
 
+let set = 0;
 export default class UserPlayer extends RemotePlayer {
     constructor(data) {
         super(data);
     }
 
     updateFromDataPack(dataPack, client) {
-        super.updateFromDataPack(dataPack, client);
+        //super.updateFromDataPack(dataPack, client);
+        this._output = dataPack;
+        this.serverReconciliation(client);
     }
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
-        this.serverReconciliation(deltaTime, client);
     }
 
-    serverReconciliation(deltaTime, client) {
+    serverReconciliation(client) {
         let pending = client.input.pending;
         let j = 0;
         while (j < pending.length) {
@@ -30,7 +32,6 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
     }
-
 
 
 }

@@ -320,6 +320,8 @@ Server.prototype.processInputs = function() {
         if (!message) {
             break;
         }
+        console.log(message)
+
 
         // Update the state of the entity, based on its input.
         // We just ignore inputs that don't look valid; this is what prevents clients from cheating.
