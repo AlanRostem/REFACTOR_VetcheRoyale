@@ -23,13 +23,6 @@ export default class UserPlayer extends RemotePlayer {
         this._serverState = dataPack;
         //this._output = dataPack;
         this.serverReconciliation(client);
-
-        if (!set) {
-            set = 1;
-            this._output = dataPack;
-            this._localPos._x = dataPack._pos._x;
-            this._localPos._y = dataPack._pos._y;
-        }
     }
 
     overlapTile(e) {
