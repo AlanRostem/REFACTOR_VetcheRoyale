@@ -32,6 +32,6 @@ export default class CTileMap {
     }
 
     isSolid(id) {
-        return id < 17;
+        return id < 17 && id !== 0;
     }
 }
