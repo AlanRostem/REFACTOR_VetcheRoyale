@@ -2,10 +2,8 @@ import RemotePlayer from "./RemotePlayer.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
-import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 
 const TILE_SIZE = 8;
-const SMOOTHING_PERCENTAGE = .36;
 
 let set = 0;
 
@@ -62,29 +60,20 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     update(deltaTime, client, currentMap) {
-        this._currentMap = currentMap;
-
         super.update(deltaTime, client);
-        this.interpolateSelf(deltaTime, client);
+        this.updateRemainingServerData(deltaTime, client);
         this.physics(deltaTime, client, currentMap);
+        this._output._pos = this._localPos;
     }
 
-    interpolateSelf(deltaTime, client) {
+    updateRemainingServerData(deltaTime, client) {
         for (let key in this._serverState) {
             if (key !== "_pos") {
                 this._output[key] = this._serverState[key];
             }
         }
-
-        this._localPos = this._serverState._pos;
-        this._output._pos = this._localPos;
-
-        /*
-        this._output._pos =
-            vectorLinearInterpolation(this._output._pos,
-                vectorLinearInterpolation(this._localPos, this._serverState._pos, 0.7),
-                SMOOTHING_PERCENTAGE);
-         */
+        this._localPos.x = this._serverState._pos._x;
+        this._localPos.y = this._serverState._pos._y;
     }
 
     physics(deltaTime, client, currentMap) {
@@ -190,6 +179,7 @@ export default class UserPlayer extends RemotePlayer {
                         if (this._localVel.y < 0) {
                             if (pos._y < tile.y + TILE_SIZE) {
                                 pos._y = tile.y + TILE_SIZE;
+                                this._localVel.y = 0;
                             }
                         }
                     }
@@ -210,10 +200,7 @@ export default class UserPlayer extends RemotePlayer {
             if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
                 pending.splice(j, 1);
             } else {
-                // TODO
                 this._pendingKeys = input.keyStates;
-                //this._localVel.x = Math.sign(input.pressTime) * 65;
-                //this._output._pos._x += Math.sign(input.pressTime); //* 65;
                 j++;
             }
         }
