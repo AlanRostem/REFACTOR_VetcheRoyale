@@ -55,7 +55,7 @@ export default class InputListener {
         client.setOutboundPacketData("input", input);
 
         // TODO: CLIENT SIDE PREDICTION
-        client.player._output._pos._x += input.pressTime * 65;
+        //client.player._output._pos._x += input.pressTime * 65;
 
         this._pendingInputs.push(input);
 

@@ -2,8 +2,10 @@ import RemotePlayer from "./RemotePlayer.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
+import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 
 const TILE_SIZE = 8;
+const SMOOTHING_PERCENTAGE = .36;
 
 let set = 0;
 
@@ -11,29 +13,32 @@ let set = 0;
 export default class UserPlayer extends RemotePlayer {
     constructor(data) {
         super(data);
-        this._old = data._pos;
+
         this._serverState = data;
         this._localVel = new Vector2D(0, 0);
+        this._localPos = new Vector2D(data._pos._x, data._pos._y);
+        this._pendingKeys = {};
     }
 
     updateFromDataPack(dataPack, client) {
         //super.updateFromDataPack(dataPack, client);
         this._serverState = dataPack;
-        this._output = dataPack;
+        //this._output = dataPack;
         this.serverReconciliation(client);
-        /*
+
         if (!set) {
             set = 1;
             this._output = dataPack;
+            this._localPos._x = dataPack._pos._x;
+            this._localPos._y = dataPack._pos._y;
         }
-         */
     }
 
     overlapTile(e) {
-        return this._output._pos._y + this._height > e.y
-            && this._output._pos._y < (e.y + TILE_SIZE)
-            && this._output._pos._x + this._width > e.x
-            && this._output._pos._x < (e.x + TILE_SIZE);
+        return this._localPos.y + this._height > e.y
+            && this._localPos.y < (e.y + TILE_SIZE)
+            && this._localPos.x + this._width > e.x
+            && this._localPos.x < (e.x + TILE_SIZE);
     }
 
     t_drawGhost() {
@@ -58,34 +63,63 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, currentMap) {
         this._currentMap = currentMap;
-        this._old = this._output._pos;
+
         super.update(deltaTime, client);
-        this.physics(deltaTime, client, currentMap)
+        this.interpolateSelf(deltaTime, client);
+        this.physics(deltaTime, client, currentMap);
     }
 
-    physics(deltaTime, client, currentMap) {
-        //this._localVel.y += 500; // TEST GRAVITY VALUE
+    interpolateSelf(deltaTime, client) {
+        for (let key in this._serverState) {
+            if (key !== "_pos") {
+                this._output[key] = this._serverState[key];
+            }
+        }
+
+        this._localPos = this._serverState._pos;
+        this._output._pos = this._localPos;
+
         /*
-        this._localVel.x = 0;
-        if (client.input.getKey(68)) {
-            this._localVel.x = 65;
-        }
-
-        if (client.input.getKey(65)) {
-            this._localVel.x = -65;
-        }
-
-
-        this._output._pos._x += this._localVel.x * deltaTime;
-        this.reconciledCollisionCorrectionX(currentMap);
-        this._output._pos._y += this._localVel.y * deltaTime;
-        this.reconciledCollisionCorrectionY(currentMap);
+        this._output._pos =
+            vectorLinearInterpolation(this._output._pos,
+                vectorLinearInterpolation(this._localPos, this._serverState._pos, 0.7),
+                SMOOTHING_PERCENTAGE);
          */
     }
 
+    physics(deltaTime, client, currentMap) {
+        this._localVel.y += 500 * deltaTime; // TEST GRAVITY VALUE
+
+        this._localVel.x = 0;
+        if (this.getPendingKey(68)) {
+            this._localVel.x = 65;
+        }
+
+        if (this.getPendingKey(65)) {
+            this._localVel.x = -65;
+        }
+
+        if (this.getPendingKey(32)) {
+            if (!this._jumping) {
+                this._jumping = true;
+                this._localVel.y = -190;
+            }
+        }
+
+        this._localPos.x += this._localVel.x * deltaTime;
+        this.reconciledCollisionCorrectionX(currentMap);
+        this._localPos.y += this._localVel.y * deltaTime;
+        this.reconciledCollisionCorrectionY(currentMap);
+
+        if (this._localVel.y !== 0) {
+            this._jumping = true;
+        }
+
+    }
+
     reconciledCollisionCorrectionX(currentMap) {
-        var cx = Math.floor(this._output._pos._x / TILE_SIZE);
-        var cy = Math.floor(this._output._pos._y / TILE_SIZE);
+        var cx = Math.floor(this._localPos.x / TILE_SIZE);
+        var cy = Math.floor(this._localPos.y / TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
@@ -104,18 +138,19 @@ export default class UserPlayer extends RemotePlayer {
 
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
-                    let pos = this._output._pos;
-                    let old = this._old;
-
-                    console.log(true)
-                    if (pos._x + this._width > tile.x && old._x + this._width <= tile.x) {
-                        pos._x = tile.x - this._width;
-                    }
-
-                    if (pos._x < tile.x + TILE_SIZE && old._x >= tile.x + TILE_SIZE) {
-                        pos._x = tile.x + TILE_SIZE;
-                    }
+                    let pos = this._localPos;
                     if (this.overlapTile(tile)) {
+                        if (this._localVel.x > 0) {
+                            if (pos._x + this._width > tile.x) {
+                                pos._x = tile.x - this._width;
+                            }
+                        }
+
+                        if (this._localVel.x < 0) {
+                            if (pos._x < tile.x + TILE_SIZE) {
+                                pos._x = tile.x + TILE_SIZE;
+                            }
+                        }
                     }
                 }
             }
@@ -123,8 +158,8 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     reconciledCollisionCorrectionY(currentMap) {
-        var cx = Math.floor(this._output._pos._x / TILE_SIZE);
-        var cy = Math.floor(this._output._pos._y / TILE_SIZE);
+        var cx = Math.floor(this._localPos.x / TILE_SIZE);
+        var cy = Math.floor(this._localPos.y / TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
@@ -143,23 +178,29 @@ export default class UserPlayer extends RemotePlayer {
 
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
-                    let pos = this._output._pos;
-
-                    let old = this._old;
-                    if (pos._y + this._height > tile.y && old._y + this._height <= tile.y) {
-                        pos._y = tile.y - this._height;
-
-                    }
-                    if (pos._y < tile.y + TILE_SIZE && old._y >= tile.y + TILE_SIZE) {
-                        pos._y = tile.y + TILE_SIZE;
-                    }
+                    let pos = this._localPos;
                     if (this.overlapTile(tile)) {
+                        if (this._localVel.y > 0) {
+                            if (pos._y + this._height > tile.y) {
+                                pos._y = tile.y - this._height;
+                                this._localVel.y = 0;
+                                this._jumping = false;
+                            }
+                        }
+                        if (this._localVel.y < 0) {
+                            if (pos._y < tile.y + TILE_SIZE) {
+                                pos._y = tile.y + TILE_SIZE;
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
+    getPendingKey(keyCode) {
+        return this._pendingKeys[keyCode];
+    }
 
     serverReconciliation(client) {
         let pending = client.input.pending;
@@ -170,8 +211,9 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 // TODO
+                this._pendingKeys = input.keyStates;
                 //this._localVel.x = Math.sign(input.pressTime) * 65;
-                this._output._pos._x += Math.sign(input.pressTime); //* 65;
+                //this._output._pos._x += Math.sign(input.pressTime); //* 65;
                 j++;
             }
         }

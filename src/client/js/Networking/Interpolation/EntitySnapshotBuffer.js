@@ -79,9 +79,9 @@ export default class EntitySnapshotBuffer {
         }
 
         if (target && previous) {
-            let targetTime = target.timeStamp;
+            let targetTime = target.serverTimeStamp;
             var difference = targetTime - currentTime;
-            var maxDiff = (target.timeStamp - previous.timeStamp).fixed(3);
+            var maxDiff = (target.serverTimeStamp - previous.serverTimeStamp).fixed(3);
             var timePoint = (difference / maxDiff).fixed(3);
 
             if (isNaN(timePoint) || Math.abs(timePoint) === Infinity) {
