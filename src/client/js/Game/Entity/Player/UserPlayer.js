@@ -2,6 +2,8 @@ import RemotePlayer from "./RemotePlayer.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
+import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
+
 
 const TILE_SIZE = 8;
 
@@ -9,7 +11,6 @@ const TILE_SIZE = 8;
 export default class UserPlayer extends RemotePlayer {
     constructor(data) {
         super(data);
-
         this._serverState = data;
         this._localVel = new Vector2D(0, 0);
         this._localPos = new Vector2D(data._pos._x, data._pos._y);
@@ -53,7 +54,16 @@ export default class UserPlayer extends RemotePlayer {
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this.physics(deltaTime, client, currentMap);
-        this._output._pos = this._localPos;
+        //console.log(Date.now() - client._latency, this._serverState.serverTimeStamp);
+        let t = client._latency / 1000;
+        if (Date.now() - client._latency <= this._serverState.serverTimeStamp) {
+            this._output._pos =
+                vectorLinearInterpolation(this._output._pos,
+                    vectorLinearInterpolation(this._serverState._pos, this._localPos, 60 * t),
+                    .36);
+        } else {
+            this._output._pos = this._localPos;
+        }
     }
 
     updateRemainingServerData(client) {
@@ -67,7 +77,8 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     physics(deltaTime, client, currentMap) {
-        this._localVel.y += 500 * deltaTime; // TEST GRAVITY VALUE
+        if (!this._onGround)
+            this._localVel.y += 500 * deltaTime; // TEST GRAVITY VALUE
 
         this._localVel.x = 0;
         if (this.getPendingKey(68)) {
@@ -94,6 +105,7 @@ export default class UserPlayer extends RemotePlayer {
             this._jumping = true;
         }
 
+        this._onGround = false;
     }
 
     reconciledCollisionCorrectionX(currentMap) {
@@ -163,6 +175,7 @@ export default class UserPlayer extends RemotePlayer {
                             if (pos._y + this._height > tile.y) {
                                 pos._y = tile.y - this._height;
                                 this._localVel.y = 0;
+                                this._onGround = true;
                                 this._jumping = false;
                             }
                         }
