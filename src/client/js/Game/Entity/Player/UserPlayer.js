@@ -19,6 +19,7 @@ export default class UserPlayer extends RemotePlayer {
     updateFromDataPack(dataPack, client) {
         //super.updateFromDataPack(dataPack, client);
         this._serverState = dataPack;
+        this.updateRemainingServerData(client);
         this.serverReconciliation(client);
     }
 
@@ -51,12 +52,11 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
-        this.updateRemainingServerData(deltaTime, client);
-        //this.physics(deltaTime, client, currentMap);
+        this.physics(deltaTime, client, currentMap);
         this._output._pos = this._localPos;
     }
 
-    updateRemainingServerData(deltaTime, client) {
+    updateRemainingServerData(client) {
         for (let key in this._serverState) {
             if (key !== "_pos") {
                 this._output[key] = this._serverState[key];
@@ -191,7 +191,6 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 this._pendingKeys = input.keyStates;
-                this._output._pos._x += Math.sign(input.pressTime);
                 j++;
             }
         }
