@@ -52,7 +52,7 @@ export default class UserPlayer extends RemotePlayer {
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this.updateRemainingServerData(deltaTime, client);
-        this.physics(deltaTime, client, currentMap);
+        //this.physics(deltaTime, client, currentMap);
         this._output._pos = this._localPos;
     }
 
@@ -191,6 +191,7 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 this._pendingKeys = input.keyStates;
+                this._output._pos._x += Math.sign(input.pressTime);
                 j++;
             }
         }
