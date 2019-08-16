@@ -20,7 +20,8 @@ export default class UserPlayer extends RemotePlayer {
     updateFromDataPack(dataPack, client) {
         //super.updateFromDataPack(dataPack, client);
         this._serverState = dataPack;
-        this.updateRemainingServerData(client);
+        this._output = dataPack;
+        //this.updateRemainingServerData(client);
         this.serverReconciliation(client);
     }
 
@@ -55,6 +56,7 @@ export default class UserPlayer extends RemotePlayer {
         super.update(deltaTime, client);
         this.physics(deltaTime, client, currentMap);
         //console.log(Date.now() - client._latency, this._serverState.serverTimeStamp);
+        /*
         let t = client._latency / 1000;
         if (Date.now() - client._latency <= this._serverState.serverTimeStamp) {
             this._output._pos =
@@ -64,6 +66,8 @@ export default class UserPlayer extends RemotePlayer {
         } else {
             this._output._pos = this._localPos;
         }
+
+         */
     }
 
     updateRemainingServerData(client) {
@@ -76,10 +80,12 @@ export default class UserPlayer extends RemotePlayer {
         this._localPos.y = this._serverState._pos._y;
     }
 
-    physics(deltaTime, client, currentMap) {
+    physics(deltaTime, client, currentMap)  {
         if (!this._onGround)
-            this._localVel.y += 500 * deltaTime; // TEST GRAVITY VALUE
+            ;
+            //this._localVel.y += 500 * deltaTime; // TEST GRAVITY VALUE
 
+        /*
         this._localVel.x = 0;
         if (this.getPendingKey(68)) {
             this._localVel.x = 65;
@@ -96,10 +102,12 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
 
+         */
+
         this._localPos.x += this._localVel.x * deltaTime;
-        this.reconciledCollisionCorrectionX(currentMap);
+        //this.reconciledCollisionCorrectionX(currentMap);
         this._localPos.y += this._localVel.y * deltaTime;
-        this.reconciledCollisionCorrectionY(currentMap);
+        //this.reconciledCollisionCorrectionY(currentMap);
 
         if (this._localVel.y !== 0) {
             this._jumping = true;
@@ -129,7 +137,7 @@ export default class UserPlayer extends RemotePlayer {
 
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
-                    let pos = this._localPos;
+                    let pos = this._output._pos;
                     if (this.overlapTile(tile)) {
                         if (this._localVel.x > 0) {
                             if (pos._x + this._width > tile.x) {
@@ -169,21 +177,21 @@ export default class UserPlayer extends RemotePlayer {
 
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
-                    let pos = this._localPos;
+                    let pos = this._output._pos;
                     if (this.overlapTile(tile)) {
+                        if (pos._y + this._height > tile.y) {
+                            pos._y = tile.y - this._height;
+                            this._localVel.y = 0;
+                            this._onGround = true;
+                            this._jumping = false;
+                        }
                         if (this._localVel.y > 0) {
-                            if (pos._y + this._height > tile.y) {
-                                pos._y = tile.y - this._height;
-                                this._localVel.y = 0;
-                                this._onGround = true;
-                                this._jumping = false;
-                            }
+                        }
+                        if (pos._y < tile.y + TILE_SIZE) {
+                            pos._y = tile.y + TILE_SIZE;
+                            this._localVel.y = 0;
                         }
                         if (this._localVel.y < 0) {
-                            if (pos._y < tile.y + TILE_SIZE) {
-                                pos._y = tile.y + TILE_SIZE;
-                                this._localVel.y = 0;
-                            }
                         }
                     }
                 }
@@ -204,6 +212,7 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 this._pendingKeys = input.keyStates;
+                this._output._pos._x += this._localVel.x = Math.sign(input.pressTime);
                 j++;
             }
         }

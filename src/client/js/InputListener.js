@@ -57,7 +57,7 @@ export default class InputListener {
         // TODO: CLIENT SIDE PREDICTION
         //client.player._output._pos._x += input.pressTime * 65;
         client.player._pendingKeys = input.keyStates;
-        client.player._output._pos._x += Math.sign(input.pressTime);
+        client.player._output._pos._x += client.player._localVel.x = Math.sign(input.pressTime);
 
         this._pendingInputs.push(input);
 
