@@ -1,12 +1,9 @@
 import RemotePlayer from "./RemotePlayer.js";
-import Scene from "../../Scene.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 
 const TILE_SIZE = 8;
-
-let set = 0;
 
 // The player the client controls. It contains the client prediction code.
 export default class UserPlayer extends RemotePlayer {
@@ -22,7 +19,6 @@ export default class UserPlayer extends RemotePlayer {
     updateFromDataPack(dataPack, client) {
         //super.updateFromDataPack(dataPack, client);
         this._serverState = dataPack;
-        //this._output = dataPack;
         this.serverReconciliation(client);
     }
 
@@ -54,9 +50,9 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     update(deltaTime, client, currentMap) {
-        this._currentMap = currentMap;
         super.update(deltaTime, client);
         this.updateRemainingServerData(deltaTime, client);
+        this.physics(deltaTime, client, currentMap);
         this._output._pos = this._localPos;
     }
 
@@ -195,7 +191,6 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 this._pendingKeys = input.keyStates;
-                this.physics(Scene.deltaTime, client, this._currentMap);
                 j++;
             }
         }
