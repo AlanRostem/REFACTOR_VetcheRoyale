@@ -27,7 +27,7 @@ export default class UserPlayer extends RemotePlayer {
 
     updateFromDataPack(dataPack, client) {
         //super.updateFromDataPack(dataPack, client);
-        this._serverState = dataPack;
+        this._serverState = Object.create(dataPack);
         this._output = dataPack;
         //this.updateRemainingServerData(client);
         this.serverReconciliation(client);
