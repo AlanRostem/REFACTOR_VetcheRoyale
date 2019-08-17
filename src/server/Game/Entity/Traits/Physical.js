@@ -3,7 +3,11 @@ const Tile = require("../../TileBased/Tile.js");
 const EntityCollider = require("../Management/EntityCollider.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
-const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+//const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
+
+const SSharedImportJS = require("../../../../shared/code/SSharedImportJS.js");
+
+const Vector2D = SSharedImportJS("src/shared/code/Math/Vector2D.js");
 
 // Entity with tile tileCollision and movement.
 class Physical extends Entity {

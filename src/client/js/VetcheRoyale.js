@@ -5,6 +5,7 @@ import CEntityManager from "./Networking/Client/CEntityManager.js"
 import AssetManager from "./AssetManager/AssetManager.js";
 import FontMaking from "./AssetManager/FontMaking.js";
 import ConsoleCommands from "./ConsoleCommands.js";
+import typeCheck from "../../shared/code/Debugging/CtypeCheck.js";
 
 // This is the initialization entry point
 
@@ -20,3 +21,4 @@ FontMaking.queue();
 R.setup();
 
 Scene.run(entityDataReceiver, client);
+console.log("Time it took to load all files:", Math.abs(Date.now() - typeCheck.timeSinceStart));

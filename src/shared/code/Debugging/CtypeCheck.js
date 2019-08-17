@@ -27,5 +27,6 @@ class DataTypeError extends Error {
     }
 }
 
+typeCheck.timeSinceStart = Date.now();
 
 export {typeCheck, DataTypeError};
