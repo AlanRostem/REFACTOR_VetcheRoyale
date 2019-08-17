@@ -26,11 +26,12 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     updateFromDataPack(dataPack, client) {
+        this._dataBuffer.t_directServerUpdate(dataPack, this);
         //super.updateFromDataPack(dataPack, client);
-        this._serverState = dataPack;
-        this._output = dataPack;
+        //this._serverState = dataPack;
+        //this._output = dataPack;
         //this.updateRemainingServerData(client);
-        this.serverReconciliation(client);
+        //this.serverReconciliation(client);
     }
 
     overlapTile(pos, e) {
@@ -57,7 +58,7 @@ export default class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
-        this.t_drawGhost();
+        //this.t_drawGhost();
     }
 
     update(deltaTime, client, currentMap) {
