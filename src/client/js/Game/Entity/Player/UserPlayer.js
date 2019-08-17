@@ -1,15 +1,19 @@
 import RemotePlayer from "./RemotePlayer.js";
-import Scene from "../../../Game/Scene.js";
+import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
-
+import CSharedImportJS from "../../../../../shared/code/CSharedImportJS.js";
 
 const TILE_SIZE = 8;
+
+let TC = CSharedImportJS("shared/code/TileBased/TileCollider.js");
+console.log(TC.object);
 
 // The player the client controls. It contains the client prediction code.
 export default class UserPlayer extends RemotePlayer {
     constructor(data) {
         super(data);
+        this._serverState = data;
         this._localVel = new Vector2D(0, 0);
         this._localPos = new Vector2D(data._pos._x, data._pos._y);
         this._localSides = {
@@ -21,11 +25,18 @@ export default class UserPlayer extends RemotePlayer {
                 this._localSides.left = this._localSides.right = this._localSides.top = this._localSides.bottom = false;
             }
         };
+        this._t_set = 0;
     }
 
     updateFromDataPack(dataPack, client) {
+
+
+        if (!this._t_set) {
+            this._t_set = 1;
+            this._output._pos = dataPack._pos;
+        }
+        this._serverState = dataPack;
         //super.updateFromDataPack(dataPack, client);
-        this._output = dataPack;
         this.serverReconciliation(client);
     }
 
@@ -34,6 +45,26 @@ export default class UserPlayer extends RemotePlayer {
             && pos._y < (e.y + TILE_SIZE)
             && pos._x + this._width > e.x
             && pos._x < (e.x + TILE_SIZE);
+    }
+
+    t_drawGhost() {
+        R.ctx.save();
+        R.ctx.globalAlpha = 0.4;
+        //this.animations.animate(RemotePlayer.sprite, this._serverState._teamName, 16, 16);
+        SpriteSheet.beginChanges();
+        if (this._serverState._movementState.direction === "left") {
+            RemotePlayer.sprite.flipX();
+        }
+        RemotePlayer.sprite.drawAnimated(
+            Math.round(this._serverState._pos._x) + R.camera.boundPos.x,
+            Math.round(this._serverState._pos._y) + R.camera.boundPos.y);
+        SpriteSheet.end();
+        R.ctx.restore();
+    }
+
+    draw() {
+        super.draw();
+        this.t_drawGhost();
     }
 
     update(deltaTime, client, currentMap) {
@@ -153,13 +184,13 @@ export default class UserPlayer extends RemotePlayer {
 
                 if (input.keyStates[68]) {
                     if (!this._localSides.right) {
-                        this._localVel.x = 60 * Scene.deltaTime;
+                        this._localVel.x = 60 * input.pressTime;
                     }
                 }
 
                 if (input.keyStates[65]) {
                     if (!this._localSides.left) {
-                        this._localVel.x = -60 * Scene.deltaTime;
+                        this._localVel.x = -60 * input.pressTime    ;
                     }
                 }
 

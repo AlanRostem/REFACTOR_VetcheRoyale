@@ -1,6 +1,22 @@
-const Vector2D = require("../../../shared/code/Math/SVector2D.js");
-const Tile = require("./Tile.js");
+const Tile = {};
 
+Tile.toCell = (x, y) => {
+    return {
+        x: x / Tile.SIZE | 0,
+        y: y / Tile.SIZE | 0,
+    };
+};
+
+Tile.toPos = (cx, cy) => {
+    return {
+        x: cx * Tile.SIZE,
+        y: cy * Tile.SIZE,
+    };
+};
+
+Tile.SIZE = 8;
+
+let subject;
 // Composite object that handles tile tileCollision
 // based on entity type.
 // TODO: Create the entity type mapping functionality
@@ -193,7 +209,6 @@ const TileCollider = {
     noResponse: () => {}
 };
 
-
 //Object.freeze(TileCollider); // Prevents object mutation
 
-module.exports = TileCollider;
+subject = TileCollider;

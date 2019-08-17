@@ -3,7 +3,7 @@ const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
 const Team = require("../../World/Team.js");
-const TileCollider = require("../../TileBased/TileCollider.js");
+const TileCollider = require("../../TileBased/STileCollider.js");
 const Tile = require("../../TileBased/Tile.js");
 
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");

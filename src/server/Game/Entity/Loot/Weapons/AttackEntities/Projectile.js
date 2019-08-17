@@ -1,7 +1,7 @@
 const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
-const TileCollider = require("../../../../TileBased/TileCollider.js");
+const TileCollider = require("../../../../TileBased/STileCollider.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
