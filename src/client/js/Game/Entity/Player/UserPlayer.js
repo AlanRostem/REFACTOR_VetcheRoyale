@@ -1,7 +1,8 @@
 import RemotePlayer from "./RemotePlayer.js";
-import R from "../../../Graphics/Renderer.js";
+import Scene from "../../../Game/Scene.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
+
 
 const TILE_SIZE = 8;
 
@@ -152,13 +153,13 @@ export default class UserPlayer extends RemotePlayer {
 
                 if (input.keyStates[68]) {
                     if (!this._localSides.right) {
-                        this._localVel.x = 60 * input.pressTime;
+                        this._localVel.x = 60 * Scene.deltaTime;
                     }
                 }
 
                 if (input.keyStates[65]) {
                     if (!this._localSides.left) {
-                        this._localVel.x = -60 * input.pressTime;
+                        this._localVel.x = -60 * Scene.deltaTime;
                     }
                 }
 
