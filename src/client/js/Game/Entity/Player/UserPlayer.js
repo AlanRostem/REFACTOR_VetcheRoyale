@@ -14,7 +14,15 @@ export default class UserPlayer extends RemotePlayer {
         this._serverState = data;
         this._localVel = new Vector2D(0, 0);
         this._localPos = new Vector2D(data._pos._x, data._pos._y);
-        this._pendingKeys = {};
+        this._localSides = {
+            left: false,
+            right: false,
+            top: false,
+            bottom: false,
+            reset: () => {
+                this._localSides.left = this._localSides.right = this._localSides.top = this._localSides.bottom = false;
+            }
+        };
     }
 
     updateFromDataPack(dataPack, client) {
@@ -25,11 +33,11 @@ export default class UserPlayer extends RemotePlayer {
         this.serverReconciliation(client);
     }
 
-    overlapTile(e) {
-        return this._localPos.y + this._height > e.y
-            && this._localPos.y < (e.y + TILE_SIZE)
-            && this._localPos.x + this._width > e.x
-            && this._localPos.x < (e.x + TILE_SIZE);
+    overlapTile(pos, e) {
+        return pos._y + this._height > e.y
+            && pos._y < (e.y + TILE_SIZE)
+            && pos._x + this._width > e.x
+            && pos._x < (e.x + TILE_SIZE);
     }
 
     t_drawGhost() {
@@ -54,7 +62,7 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
-        this.physics(deltaTime, client, currentMap);
+        this._currentMap = currentMap;
         //console.log(Date.now() - client._latency, this._serverState.serverTimeStamp);
         /*
         let t = client._latency / 1000;
@@ -81,44 +89,15 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     physics(deltaTime, client, currentMap)  {
-        if (!this._onGround)
-            ;
-            //this._localVel.y += 500 * deltaTime; // TEST GRAVITY VALUE
-
-        /*
-        this._localVel.x = 0;
-        if (this.getPendingKey(68)) {
-            this._localVel.x = 65;
-        }
-
-        if (this.getPendingKey(65)) {
-            this._localVel.x = -65;
-        }
-
-        if (this.getPendingKey(32)) {
-            if (!this._jumping) {
-                this._jumping = true;
-                this._localVel.y = -190;
-            }
-        }
-
-         */
-
-        this._localPos.x += this._localVel.x * deltaTime;
-        //this.reconciledCollisionCorrectionX(currentMap);
-        this._localPos.y += this._localVel.y * deltaTime;
-        //this.reconciledCollisionCorrectionY(currentMap);
-
-        if (this._localVel.y !== 0) {
-            this._jumping = true;
-        }
-
-        this._onGround = false;
+        this._localSides.reset();
+        this.reconciledCollisionCorrectionX(currentMap);
+        this.reconciledCollisionCorrectionY(currentMap);
     }
 
     reconciledCollisionCorrectionX(currentMap) {
-        var cx = Math.floor(this._localPos.x / TILE_SIZE);
-        var cy = Math.floor(this._localPos.y / TILE_SIZE);
+        let pos = this._output._pos;
+        var cx = Math.floor(pos._x / TILE_SIZE);
+        var cy = Math.floor(pos._y / TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
@@ -137,19 +116,21 @@ export default class UserPlayer extends RemotePlayer {
 
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
-                    let pos = this._output._pos;
-                    if (this.overlapTile(tile)) {
+                    if (this.overlapTile(pos, tile)) {
+                        if (pos._x + this._width > tile.x && this._oldPos._x + this._width <= tile.x) {
+                            pos._x = tile.x - this._width;
+                            this._localSides.right = true;
+                        }
+                        if (pos._x < tile.x + TILE_SIZE && this._oldPos._x >= tile.x + TILE_SIZE) {
+                            pos._x = tile.x + TILE_SIZE;
+                            this._localSides.left = true;
+                        }
+                        /*
                         if (this._localVel.x > 0) {
-                            if (pos._x + this._width > tile.x) {
-                                pos._x = tile.x - this._width;
-                            }
                         }
-
                         if (this._localVel.x < 0) {
-                            if (pos._x < tile.x + TILE_SIZE) {
-                                pos._x = tile.x + TILE_SIZE;
-                            }
                         }
+                         */
                     }
                 }
             }
@@ -157,8 +138,9 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     reconciledCollisionCorrectionY(currentMap) {
-        var cx = Math.floor(this._localPos.x / TILE_SIZE);
-        var cy = Math.floor(this._localPos.y / TILE_SIZE);
+        let pos = this._output._pos;
+        var cx = Math.floor(pos._x / TILE_SIZE);
+        var cy = Math.floor(pos._y / TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
@@ -177,30 +159,25 @@ export default class UserPlayer extends RemotePlayer {
 
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
-                    let pos = this._output._pos;
-                    if (this.overlapTile(tile)) {
-                        if (pos._y + this._height > tile.y) {
+                    if (this.overlapTile(pos, tile)) {
+                        if (pos._y + this._height > tile.y && this._oldPos._y + this._height <= tile.y) {
                             pos._y = tile.y - this._height;
-                            this._localVel.y = 0;
-                            this._onGround = true;
-                            this._jumping = false;
+                            this._localSides.bottom = true;
                         }
-                        if (this._localVel.y > 0) {
-                        }
-                        if (pos._y < tile.y + TILE_SIZE) {
+                        if (pos._y < tile.y + TILE_SIZE && this._oldPos._y >= tile.y + TILE_SIZE) {
                             pos._y = tile.y + TILE_SIZE;
-                            this._localVel.y = 0;
+                            this._localSides.top = true;
+                        }
+                        /*
+                        if (this._localVel.y > 0) {
                         }
                         if (this._localVel.y < 0) {
                         }
+                         */
                     }
                 }
             }
         }
-    }
-
-    getPendingKey(keyCode) {
-        return this._pendingKeys[keyCode];
     }
 
     serverReconciliation(client) {
@@ -211,8 +188,23 @@ export default class UserPlayer extends RemotePlayer {
             if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
                 pending.splice(j, 1);
             } else {
-                this._pendingKeys = input.keyStates;
-                this._output._pos._x += this._localVel.x = Math.sign(input.pressTime);
+                // TODO: SCALABILITY
+                this._oldPos = this._output._pos;
+
+                if (input.keyStates[68]) {
+                    if (!this._localSides.right) {
+                        this._output._pos._x += 1;
+                    }
+                }
+
+                if (input.keyStates[65]) {
+                    if (!this._localSides.left) {
+                        this._output._pos._x -= 1;
+                    }
+                }
+
+                this.physics(input.pressTime, client, this._currentMap);
+
                 j++;
             }
         }
