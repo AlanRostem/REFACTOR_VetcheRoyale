@@ -88,8 +88,9 @@ export default class UserPlayer extends RemotePlayer {
         this._localPos.y = this._serverState._pos._y;
     }
 
-    physics(deltaTime, client, currentMap)  {
+    physics(deltaTime, client, currentMap) {
         this._localSides.reset();
+        this._output._pos._x += this._localVel.x;
         this.reconciledCollisionCorrectionX(currentMap);
         this.reconciledCollisionCorrectionY(currentMap);
     }
@@ -117,20 +118,22 @@ export default class UserPlayer extends RemotePlayer {
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
-                        if (pos._x + this._width > tile.x && this._oldPos._x + this._width <= tile.x) {
+                        if (pos._x + this._width > tile.x
+                            && this._oldPos._x + this._width <= tile.x
+                            && this._localVel.x > 0
+                        ) {
                             pos._x = tile.x - this._width;
+                            this._localVel.x = 0;
                             this._localSides.right = true;
                         }
-                        if (pos._x < tile.x + TILE_SIZE && this._oldPos._x >= tile.x + TILE_SIZE) {
+                        if (pos._x < tile.x + TILE_SIZE
+                            && this._oldPos._x >= tile.x + TILE_SIZE
+                            && this._localVel.x < 0
+                        ) {
                             pos._x = tile.x + TILE_SIZE;
+                            this._localVel.x = 0;
                             this._localSides.left = true;
                         }
-                        /*
-                        if (this._localVel.x > 0) {
-                        }
-                        if (this._localVel.x < 0) {
-                        }
-                         */
                     }
                 }
             }
@@ -190,20 +193,22 @@ export default class UserPlayer extends RemotePlayer {
             } else {
                 // TODO: SCALABILITY
                 this._oldPos = this._output._pos;
+                this._localVel.x = 0;
 
                 if (input.keyStates[68]) {
                     if (!this._localSides.right) {
-                        this._output._pos._x += 1;
+                        this._localVel.x = 1;
                     }
                 }
 
                 if (input.keyStates[65]) {
                     if (!this._localSides.left) {
-                        this._output._pos._x -= 1;
+                        this._localVel.x = -1;
                     }
                 }
 
                 this.physics(input.pressTime, client, this._currentMap);
+
 
                 j++;
             }
