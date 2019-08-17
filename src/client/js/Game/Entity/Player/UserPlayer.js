@@ -2,8 +2,6 @@ import RemotePlayer from "./RemotePlayer.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
-import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
-
 
 const TILE_SIZE = 8;
 
@@ -26,11 +24,12 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     updateFromDataPack(dataPack, client) {
-        //super.updateFromDataPack(dataPack, client);
+        super.updateFromDataPack(dataPack, client);
+        this.serverReconciliation(client);
+        /*
         this._serverState = Object.create(dataPack);
         this._output = dataPack;
-        //this.updateRemainingServerData(client);
-        this.serverReconciliation(client);
+         */
     }
 
     overlapTile(pos, e) {
@@ -63,29 +62,6 @@ export default class UserPlayer extends RemotePlayer {
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this._currentMap = currentMap;
-        //console.log(Date.now() - client._latency, this._serverState.serverTimeStamp);
-        /*
-        let t = client._latency / 1000;
-        if (Date.now() - client._latency <= this._serverState.serverTimeStamp) {
-            this._output._pos =
-                vectorLinearInterpolation(this._output._pos,
-                    vectorLinearInterpolation(this._serverState._pos, this._localPos, 60 * t),
-                    .36);
-        } else {
-            this._output._pos = this._localPos;
-        }
-
-         */
-    }
-
-    updateRemainingServerData(client) {
-        for (let key in this._serverState) {
-            if (key !== "_pos") {
-                this._output[key] = this._serverState[key];
-            }
-        }
-        this._localPos.x = this._serverState._pos._x;
-        this._localPos.y = this._serverState._pos._y;
     }
 
     physics(deltaTime, client, currentMap) {
@@ -163,11 +139,15 @@ export default class UserPlayer extends RemotePlayer {
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
-                        if (pos._y + this._height > tile.y && this._oldPos._y + this._height <= tile.y) {
+                        if (pos._y + this._height > tile.y
+                            //&& this._oldPos._y + this._height <= tile.y
+                        ) {
                             pos._y = tile.y - this._height;
                             this._localSides.bottom = true;
                         }
-                        if (pos._y < tile.y + TILE_SIZE && this._oldPos._y >= tile.y + TILE_SIZE) {
+                        if (pos._y < tile.y + TILE_SIZE
+                            //&& this._oldPos._y >= tile.y + TILE_SIZE
+                        ) {
                             pos._y = tile.y + TILE_SIZE;
                             this._localSides.top = true;
                         }
@@ -208,7 +188,6 @@ export default class UserPlayer extends RemotePlayer {
                 }
 
                 this.physics(input.pressTime, client, this._currentMap);
-
 
                 j++;
             }

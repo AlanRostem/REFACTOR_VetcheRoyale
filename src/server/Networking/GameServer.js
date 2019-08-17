@@ -8,7 +8,7 @@ class GameServer {
         this.mainSocket = new WebSocket(socket, this.matchMaker);
         this._deltaTime = 0;
         this._lastTime = 0;
-        this._tickRate = 60; // Hz (TEMPORARY)
+        this._tickRate = 24; // Hz (TEMPORARY)
         this._started = false;
     }
 
