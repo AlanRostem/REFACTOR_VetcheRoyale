@@ -119,7 +119,7 @@ export default class UserPlayer extends RemotePlayer {
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
                         if (pos._x + this._width > tile.x
-                            && this._oldPos._x + this._width <= tile.x
+                            //&& this._oldPos._x + this._width <= tile.x
                             && this._localVel.x > 0
                         ) {
                             pos._x = tile.x - this._width;
@@ -127,7 +127,7 @@ export default class UserPlayer extends RemotePlayer {
                             this._localSides.right = true;
                         }
                         if (pos._x < tile.x + TILE_SIZE
-                            && this._oldPos._x >= tile.x + TILE_SIZE
+                            //&& this._oldPos._x >= tile.x + TILE_SIZE
                             && this._localVel.x < 0
                         ) {
                             pos._x = tile.x + TILE_SIZE;
