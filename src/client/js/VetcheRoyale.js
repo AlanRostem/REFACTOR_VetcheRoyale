@@ -21,4 +21,4 @@ FontMaking.queue();
 R.setup();
 
 Scene.run(entityDataReceiver, client);
-console.log("Time it took to load all files:", Math.abs(Date.now() - typeCheck.timeSinceStart));
+console.log("Time it took to compile all .js files:", Math.abs(Date.now() - typeCheck.timeSinceStart) + "ms");

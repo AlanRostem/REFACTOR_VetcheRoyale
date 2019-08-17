@@ -27,6 +27,7 @@ class DataTypeError extends Error {
     }
 }
 
+// typeCheck is the first ever file that gets loaded
 typeCheck.timeSinceStart = Date.now();
 
 export {typeCheck, DataTypeError};
