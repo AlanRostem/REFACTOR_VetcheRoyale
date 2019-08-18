@@ -4,7 +4,6 @@ const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
 const Team = require("../../World/Team.js");
 const TileCollider = require("../../TileBased/STileCollider.js");
-const Tile = require("../../TileBased/Tile.js");
 
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const Loot = require("../Loot/Loot.js");
@@ -262,12 +261,12 @@ TileCollider.createCollisionResponse("Player", "ONE_WAY", "Y", (entity, tile, de
 
 TileCollider.createCollisionResponse("Player", "SLOPE_UP_LEFT", "Y", (entity, tile, deltaTime) => {
     if (entity.overlapTile(tile)) {
-        let eLeftToSlopeRightDiff = tile.x + Tile.SIZE - entity.pos.x;
+        let eLeftToSlopeRightDiff = tile.x + TileCollider.TILE_SIZE - entity.pos.x;
 
-        let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
+        let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + TileCollider.TILE_SIZE;
         entity.setMovementState("slope", "true");
 
-        if (eLeftToSlopeRightDiff > Tile.SIZE) {
+        if (eLeftToSlopeRightDiff > TileCollider.TILE_SIZE) {
             entity.jumping = false;
             entity.vel.y = 0;
             entity.pos.y = tile.y - entity.height;
@@ -294,10 +293,10 @@ TileCollider.createCollisionResponse("Player", "SLOPE_UP_RIGHT", "Y", (entity, t
         if (entity.overlapTile(tile)) {
             let eRightToSlopeLeftDiff = entity.pos.x + entity.width - tile.x;
 
-            let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
+            let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + TileCollider.TILE_SIZE;
             entity.setMovementState("slope", "true");
 
-            if (eRightToSlopeLeftDiff > Tile.SIZE) {
+            if (eRightToSlopeLeftDiff > TileCollider.TILE_SIZE) {
                 entity.jumping = false;
                 entity.vel.y = 0;
                 entity.pos.y = tile.y - entity.height;

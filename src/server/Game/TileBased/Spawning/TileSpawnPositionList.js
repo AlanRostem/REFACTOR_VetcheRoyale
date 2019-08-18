@@ -1,7 +1,8 @@
-const Tile = require("../Tile.js");
 const LootCrate = require("../../Entity/Loot/Boxes/LootCrate.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const SpawnLocation = require("./SpawnLocation.js");
+const TileCollider = require("../STileCollider.js");
+
 
 // Compositor class for TileMap that stores positions
 // of certain entities to be spawned.
@@ -24,13 +25,13 @@ class TileSpawnPositionList {
                             this._spawners.set(tileID, []);
                         } else {
                             this._spawners.set(tileID,
-                                SpawnLocation.createSpawner(tileID, x * Tile.SIZE, y * Tile.SIZE));
+                                SpawnLocation.createSpawner(tileID, x * TileCollider.TILE_SIZE, y * TileCollider.TILE_SIZE));
                         }
                     }
                     if (SpawnLocation.getSpawnerByID(tileID).replicate) {
                         this._spawners.get(tileID).push(
                             SpawnLocation.createSpawner(
-                                tileID, x * Tile.SIZE, y * Tile.SIZE));
+                                tileID, x * TileCollider.TILE_SIZE, y * TileCollider.TILE_SIZE));
                     }
                 }
             }

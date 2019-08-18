@@ -1,7 +1,7 @@
-const Tile = require("../../TileBased/Tile.js");
 const GameClock = require("../../Entity/Management/GameClock.js");
 const QuadTree = require("./QuadTree.js");
 const Rect = require("./QTRect.js");
+const TileCollider = require("../../TileBased/STileCollider.js");
 
 // Updates entities and manages proximity queries in the quad tree
 class EntityManager {
@@ -18,10 +18,10 @@ class EntityManager {
             // Create a singular quad tree with the size of
             // the whole tile map.
             this._qt = new QuadTree(new Rect(
-                this._tileMap.w * Tile.SIZE / 2,
-                this._tileMap.h * Tile.SIZE / 2,
-                this._tileMap.w * Tile.SIZE / 2,
-                this._tileMap.h * Tile.SIZE / 2,
+                this._tileMap.w * TileCollider.TILE_SIZE / 2,
+                this._tileMap.h * TileCollider.TILE_SIZE / 2,
+                this._tileMap.w * TileCollider.TILE_SIZE / 2,
+                this._tileMap.h * TileCollider.TILE_SIZE / 2,
             ));
         }
     }

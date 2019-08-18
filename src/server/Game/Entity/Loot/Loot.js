@@ -1,5 +1,6 @@
 const Interactable = require("../Traits/Interactable.js");
-const Tile = require("../../TileBased/Tile.js");
+const TileCollider = require("../../TileBased/STileCollider.js");
+
 
 class Loot extends Interactable {
     constructor(x, y, shouldRemove = false) {
@@ -42,6 +43,6 @@ class Loot extends Interactable {
 }
 
 Loot.AIR_FRICTION = 0.9;
-Loot.PICK_UP_RANGE = Tile.SIZE * 6;
+Loot.PICK_UP_RANGE = TileCollider.TILE_SIZE * 6;
 
 module.exports = Loot;

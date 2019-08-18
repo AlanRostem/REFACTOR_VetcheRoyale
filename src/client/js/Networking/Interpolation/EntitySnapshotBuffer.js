@@ -61,6 +61,8 @@ export default class EntitySnapshotBuffer {
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client) {
+        if (entity._output._id === client.id) return;
+
         let currentTime = Date.now() - client._latency;
         let target = null;
         let previous = null;

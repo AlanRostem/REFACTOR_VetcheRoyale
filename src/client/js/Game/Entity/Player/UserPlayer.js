@@ -3,11 +3,12 @@ import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import CSharedImportJS from "../../../../../shared/code/CSharedImportJS.js";
+import {linearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 
 const TILE_SIZE = 8;
 
 let TC = CSharedImportJS("shared/code/TileBased/TileCollider.js");
-console.log(TC.object);
+window.TC = TC;
 
 // The player the client controls. It contains the client prediction code.
 export default class UserPlayer extends RemotePlayer {
@@ -26,18 +27,7 @@ export default class UserPlayer extends RemotePlayer {
             }
         };
         this._t_set = 0;
-    }
-
-    updateFromDataPack(dataPack, client) {
-        /*
-        if (!this._t_set) {
-            this._t_set = 1;
-        }
-        */
-        this._output = dataPack;
-        //super.updateFromDataPack(dataPack, client);
-        this._serverState = dataPack;
-        this.serverReconciliation(client);
+        this._dataBuffer._size = 2;
     }
 
     overlapTile(pos, e) {
@@ -67,16 +57,72 @@ export default class UserPlayer extends RemotePlayer {
         this.t_drawGhost();
     }
 
+    updateFromDataPack(dataPack, client) {
+
+        //super.updateFromDataPack(dataPack, client);
+        this._dataBuffer.onServerUpdateReceived(dataPack, this, client);
+        if (!this._t_set) {
+            this._t_set = 1;
+            this._output._pos = dataPack._pos;
+        }
+        for (let key in dataPack) {
+            if (key !== "_pos") {
+                this._output[key] = dataPack[key];
+            }
+        }
+        this._output._pos._x = dataPack._pos._x;
+        this._serverState = dataPack;
+        this.serverReconciliation(client);
+    }
+
+    interpolateY(deltaTime, client) {
+        let currentTime = Date.now() - client._latency;
+        let target = null;
+        let previous = null;
+        for (let i = 0; i < this.length - 1; i++) {
+            let point = this._dataBuffer.get(i);
+            let next = this._dataBuffer.get(i + 1);
+            if (currentTime > point.timeStamp && currentTime < next.timeStamp) {
+                target = next;
+                previous = point;
+                break;
+            }
+        }
+
+        if (!target) {
+            target = previous = this._dataBuffer.get(0);
+        }
+
+        if (target && previous) {
+            let targetTime = target.serverTimeStamp;
+            var difference = targetTime - currentTime;
+            var maxDiff = (target.serverTimeStamp - previous.serverTimeStamp).fixed(3);
+            var timePoint = (difference / maxDiff).fixed(3);
+
+            if (isNaN(timePoint) || Math.abs(timePoint) === Infinity) {
+                timePoint = 0;
+            }
+
+            this._output._pos._y =
+                linearInterpolation(this._output._pos._y,
+                    linearInterpolation(previous._pos._y, target._pos._y, timePoint),
+                    .36);
+        }
+    }
+
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this._currentMap = currentMap;
+        this._oldPos = this._serverState._pos;
+        this.interpolateY(deltaTime, client);
+        this.reconciledCollisionCorrectionY(currentMap);
     }
 
     physics(deltaTime, client, currentMap) {
         this._localSides.reset();
+        if (!currentMap) return;
         this._output._pos._x += this._localVel.x;
         this.reconciledCollisionCorrectionX(currentMap);
-        this.reconciledCollisionCorrectionY(currentMap);
     }
 
     reconciledCollisionCorrectionX(currentMap) {
@@ -148,15 +194,17 @@ export default class UserPlayer extends RemotePlayer {
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
                         if (pos._y + this._height > tile.y
-                        //&& this._oldPos._y + this._height <= tile.y
+                        && this._oldPos._y + this._height <= tile.y
                         ) {
                             pos._y = tile.y - this._height;
+                            this._localVel.y = 0;
                             this._localSides.bottom = true;
                         }
                         if (pos._y < tile.y + TILE_SIZE
-                        //&& this._oldPos._y >= tile.y + TILE_SIZE
+                        && this._oldPos._y >= tile.y + TILE_SIZE
                         ) {
                             pos._y = tile.y + TILE_SIZE;
+                            this._localVel.y = 0;
                             this._localSides.top = true;
                         }
                         /*
@@ -189,6 +237,7 @@ export default class UserPlayer extends RemotePlayer {
 
     processReconciledInput(client, input) {
         this._localVel.x = 0;
+
 
         if (input.keyStates[68]) {
             if (!this._localSides.right) {

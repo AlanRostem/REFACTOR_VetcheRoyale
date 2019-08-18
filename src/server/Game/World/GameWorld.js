@@ -1,8 +1,9 @@
 const EntityManager = require("../Entity/Management/EntityManager.js");
 const TeamManager = require("./TeamManager.js");
-const Tile = require("../TileBased/Tile");
 const ClientList = require("../../Networking/ClientList.js");
 const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
+const TileCollider = require("../TileBased/STileCollider.js");
+
 
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
@@ -30,19 +31,19 @@ class GameWorld extends EntityManager {
 
         for (var i = 0; i < 2; i++) {
             this.spawnEntity(
-                66 * Tile.SIZE + Tile.SIZE * 10 * i,
-                105 * Tile.SIZE,
+                66 * TileCollider.TILE_SIZE + TileCollider.TILE_SIZE * 10 * i,
+                105 * TileCollider.TILE_SIZE,
                 new LootCrate(0, 0, 3));
         }
 
         let p1 = this.spawnEntity(
-            50 * Tile.SIZE,
-            108 * Tile.SIZE,
+            50 * TileCollider.TILE_SIZE,
+            108 * TileCollider.TILE_SIZE,
             new Portal(0, 0, null));
 
         let p2 = this.spawnEntity(
-            45 * Tile.SIZE,
-            90 * Tile.SIZE,
+            45 * TileCollider.TILE_SIZE,
+            90 * TileCollider.TILE_SIZE,
             new Portal(0, 0, null));
 
         p1.link(p2);

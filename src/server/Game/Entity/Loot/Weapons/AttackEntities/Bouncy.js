@@ -1,6 +1,5 @@
 const Projectile = require("./Projectile.js");
 const TileCollider = require("../../../../../../shared/code/TileBased/TileCollider.js");
-const Tile = require("../../../../TileBased/Tile.js");
 // A bouncy projectile. Requires to be manually removed in overridden class.
 class Bouncy extends Projectile {
     constructor(ownerID, x, y, w, h, cos, sin, speed, arc) {

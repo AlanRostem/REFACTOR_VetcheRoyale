@@ -1,7 +1,6 @@
-const Tile = require("./Tile.js");
 const JSONFile = require("../../ResourceManagement/SJSONFile.js");
 const EntitySpawnerLocator = require("./Spawning/TileSpawnPositionList.js");
-const TileCollider = require("../../../shared/code/TileBased/TileCollider.js");
+const TileCollider = require("./STileCollider.js");
 
 // Specify global file path relative to app.js
 // for the JSON tile map file
@@ -11,7 +10,7 @@ class TileMap {
         this.array = json.get().layers[0].data;
         this.w = json.get().width;
         this.h = json.get().height;
-        this.tileSize = Tile.SIZE;
+        this.tileSize = TileCollider.TILE_SIZE;
         this._name = name;
         this._spawner = new EntitySpawnerLocator(this);
     }

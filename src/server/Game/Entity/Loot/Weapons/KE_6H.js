@@ -1,10 +1,10 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
-const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Player = require("../../Player/SPlayer.js");
+const TileCollider = require("../../../TileBased/STileCollider.js");
 
 // Applies a knock back effect to players hit by the
 // area of effect damage.
@@ -35,7 +35,7 @@ class KineticBomb extends Bouncy {
         var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
         exceptions.remove(ownerID);
 
-        this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
+        this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, TileCollider.TILE_SIZE * 4, 300, 15, exceptions);
     }
 
     onTileHit(entityManager, deltaTime) {

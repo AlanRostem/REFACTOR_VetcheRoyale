@@ -1,5 +1,4 @@
 const Entity = require("../SEntity.js");
-const Tile = require("../../TileBased/Tile.js");
 const EntityCollider = require("../Management/EntityCollider.js");
 const TileCollider = require("../../TileBased/STileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
@@ -103,28 +102,28 @@ class Physical extends Entity {
 
     overlapTile(e) {
         return this.pos.y + this.height > e.y
-            && this.pos.y < (e.y + Tile.SIZE)
+            && this.pos.y < (e.y + TileCollider.TILE_SIZE)
             && this.pos.x + this.width > e.x
-            && this.pos.x < (e.x + Tile.SIZE);
+            && this.pos.x < (e.x + TileCollider.TILE_SIZE);
     }
 
     // Tile tileCollision checks and resolution for x-axis-aligned
     // bounds of the rectangle shape of the entity.
     tileCollisionX(tileMap, deltaTime) {
-        var cx = Math.floor(this.pos.x / Tile.SIZE);
-        var cy = Math.floor(this.pos.y / Tile.SIZE);
+        var cx = Math.floor(this.pos.x / TileCollider.TILE_SIZE);
+        var cy = Math.floor(this.pos.y / TileCollider.TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
-        var tileX = Math.floor(this.width / Tile.SIZE) + proxy;
-        var tileY = Math.floor(this.height / Tile.SIZE) + proxy;
+        var tileX = Math.floor(this.width / TileCollider.TILE_SIZE) + proxy;
+        var tileY = Math.floor(this.height / TileCollider.TILE_SIZE) + proxy;
 
         for (var y = -proxy; y < tileY; y++) {
             for (var x = -proxy; x < tileX; x++) {
                 var xx = cx + x;
                 var yy = cy + y;
 
-                var tile = Tile.toPos(xx, yy);
+                var tile = TileCollider.toPos(xx, yy);
                 tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
                     TileCollider.handleCollisionX(this, tileMap.getID(xx, yy), tile, deltaTime);
@@ -136,20 +135,20 @@ class Physical extends Entity {
     // Tile tileCollision checks and resolution for x-axis-aligned
     // bounds of the rectangle shape of the entity.
     tileCollisionY(tileMap, deltaTime) {
-        var cx = Math.floor(this.pos.x / Tile.SIZE);
-        var cy = Math.floor(this.pos.y / Tile.SIZE);
+        var cx = Math.floor(this.pos.x / TileCollider.TILE_SIZE);
+        var cy = Math.floor(this.pos.y / TileCollider.TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
-        var tileX = Math.floor(this.width / Tile.SIZE) + proxy;
-        var tileY = Math.floor(this.height / Tile.SIZE) + proxy;
+        var tileX = Math.floor(this.width / TileCollider.TILE_SIZE) + proxy;
+        var tileY = Math.floor(this.height / TileCollider.TILE_SIZE) + proxy;
 
         for (var y = -proxy; y < tileY; y++) {
             for (var x = -proxy; x < tileX; x++) {
                 var xx = cx + x;
                 var yy = cy + y;
 
-                var tile = Tile.toPos(xx, yy);
+                var tile = TileCollider.toPos(xx, yy);
                 tile.id = tileMap.getID(xx, yy);
                 if (tileMap.withinRange(xx, yy)) {
                     TileCollider.handleCollisionY(this, tileMap.getID(xx, yy), tile, deltaTime);
@@ -174,7 +173,7 @@ class Physical extends Entity {
 
     onLeftCollision(tile) {
         if (this._physicsConfig.stop) this.vel.x = 0;
-        this.pos.x = tile.x + Tile.SIZE;
+        this.pos.x = tile.x + TileCollider.TILE_SIZE;
     }
 
     onRightCollision(tile) {
@@ -184,7 +183,7 @@ class Physical extends Entity {
 
     onTopCollision(tile) {
         if (this._physicsConfig.stop) this.vel.y = 0;
-        this.pos.y = tile.y + Tile.SIZE;
+        this.pos.y = tile.y + TileCollider.TILE_SIZE;
     }
 
     onBottomCollision(tile) {

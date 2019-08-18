@@ -1,5 +1,4 @@
 const Player = require("../Game/Entity/Player/SPlayer.js");
-const Tile = require("../Game/TileBased/Tile.js");
 const QuadTree = require("../Game/Entity/Management/QuadTree.js");
 const InputReceiver = require("./InputReceiver.js");
 const ONMap = require("../../shared/code/DataStructures/SObjectNotationMap.js");
