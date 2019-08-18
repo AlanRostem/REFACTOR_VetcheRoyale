@@ -58,6 +58,7 @@ export default class InputListener {
         //client.player._output._pos._x += input.pressTime * 65;
         //client.player._pendingKeys = input.keyStates;
         //client.player._output._pos._x += client.player._localVel.x = Math.sign(input.pressTime);
+        client.player.processReconciledInput(client, input);
 
         this._pendingInputs.push(input);
 

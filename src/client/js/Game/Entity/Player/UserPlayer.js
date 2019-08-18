@@ -29,14 +29,14 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     updateFromDataPack(dataPack, client) {
-
-
+        /*
         if (!this._t_set) {
             this._t_set = 1;
-            this._output._pos = dataPack._pos;
         }
-        this._serverState = dataPack;
+        */
+        this._output = dataPack;
         //super.updateFromDataPack(dataPack, client);
+        this._serverState = dataPack;
         this.serverReconciliation(client);
     }
 
@@ -148,13 +148,13 @@ export default class UserPlayer extends RemotePlayer {
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
                         if (pos._y + this._height > tile.y
-                            //&& this._oldPos._y + this._height <= tile.y
+                        //&& this._oldPos._y + this._height <= tile.y
                         ) {
                             pos._y = tile.y - this._height;
                             this._localSides.bottom = true;
                         }
                         if (pos._y < tile.y + TILE_SIZE
-                            //&& this._oldPos._y >= tile.y + TILE_SIZE
+                        //&& this._oldPos._y >= tile.y + TILE_SIZE
                         ) {
                             pos._y = tile.y + TILE_SIZE;
                             this._localSides.top = true;
@@ -180,25 +180,29 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 // TODO: SCALABILITY
-                this._localVel.x = 0;
-
-                if (input.keyStates[68]) {
-                    if (!this._localSides.right) {
-                        this._localVel.x = 60 * input.pressTime;
-                    }
-                }
-
-                if (input.keyStates[65]) {
-                    if (!this._localSides.left) {
-                        this._localVel.x = -60 * input.pressTime    ;
-                    }
-                }
-
-                this.physics(input.pressTime, client, this._currentMap);
+                this.processReconciledInput(client, input);
 
                 j++;
             }
         }
+    }
+
+    processReconciledInput(client, input) {
+        this._localVel.x = 0;
+
+        if (input.keyStates[68]) {
+            if (!this._localSides.right) {
+                this._localVel.x = 60 * input.pressTime;
+            }
+        }
+
+        if (input.keyStates[65]) {
+            if (!this._localSides.left) {
+                this._localVel.x = 60 * input.pressTime;
+            }
+        }
+
+        this.physics(input.pressTime, client, this._currentMap);
     }
 
 

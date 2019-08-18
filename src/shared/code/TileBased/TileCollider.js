@@ -16,7 +16,6 @@ Tile.toPos = (cx, cy) => {
 
 Tile.SIZE = 8;
 
-let subject;
 // Composite object that handles tile tileCollision
 // based on entity type.
 // TODO: Create the entity type mapping functionality
