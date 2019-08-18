@@ -4,8 +4,7 @@
 import {vectorLinearInterpolation, addVec, vecSub, vecMulScalar} from "../../../../shared/code/Math/CCustomMath.js";
 import {linearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
 
-const INTERPOLATION_OFFSET = 0.2; // Milliseconds in the past
-const SMOOTHING_PERCENTAGE = .36;
+const SMOOTHING_VALUE = 22;
 
 export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
@@ -98,7 +97,7 @@ export default class EntitySnapshotBuffer {
             entity._output._pos =
                 vectorLinearInterpolation(entity._output._pos,
                     vectorLinearInterpolation(previous._pos, target._pos, timePoint),
-                    SMOOTHING_PERCENTAGE);
+                    SMOOTHING_VALUE * deltaTime);
         }
     }
 
