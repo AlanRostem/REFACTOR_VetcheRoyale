@@ -54,7 +54,8 @@ export default class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
-        this.t_drawGhost();
+        // this.t_drawGhost();
+
     }
 
     updateFromDataPack(dataPack, client) {
@@ -116,6 +117,10 @@ export default class UserPlayer extends RemotePlayer {
         this._oldPos = this._serverState._pos;
         this.interpolateY(deltaTime, client);
         this.reconciledCollisionCorrectionY(currentMap);
+        R.camera.update({
+            _x: this._output._pos._x + this._width / 2,
+            _y: this._output._pos._y + this._height / 2,
+        });
     }
 
     physics(deltaTime, client, currentMap) {
@@ -194,14 +199,14 @@ export default class UserPlayer extends RemotePlayer {
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
                         if (pos._y + this._height > tile.y
-                        && this._oldPos._y + this._height <= tile.y
+                            && this._oldPos._y + this._height <= tile.y
                         ) {
                             pos._y = tile.y - this._height;
                             this._localVel.y = 0;
                             this._localSides.bottom = true;
                         }
                         if (pos._y < tile.y + TILE_SIZE
-                        && this._oldPos._y >= tile.y + TILE_SIZE
+                            && this._oldPos._y >= tile.y + TILE_SIZE
                         ) {
                             pos._y = tile.y + TILE_SIZE;
                             this._localVel.y = 0;
