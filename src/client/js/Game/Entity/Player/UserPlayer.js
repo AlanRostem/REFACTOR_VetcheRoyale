@@ -6,6 +6,7 @@ import CSharedImportJS from "../../../../../shared/code/CSharedImportJS.js";
 import {linearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 
 const TILE_SIZE = 8;
+const SMOOTHING_VALUE = 22;
 
 let TC = CSharedImportJS("shared/code/TileBased/TileCollider.js");
 window.TC = TC;
@@ -54,8 +55,7 @@ export default class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
-        // this.t_drawGhost();
-
+        this.t_drawGhost();
     }
 
     updateFromDataPack(dataPack, client) {
@@ -107,7 +107,7 @@ export default class UserPlayer extends RemotePlayer {
             this._output._pos._y =
                 linearInterpolation(this._output._pos._y,
                     linearInterpolation(previous._pos._y, target._pos._y, timePoint),
-                    .36);
+                    SMOOTHING_VALUE * deltaTime);
         }
     }
 
