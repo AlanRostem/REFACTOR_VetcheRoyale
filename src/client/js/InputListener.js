@@ -40,22 +40,38 @@ export default class InputListener {
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
             sequence: this._sequence++,
+            pressTime: dt_sec
         };
+        /*
+
+        let go = 0;
+        for (let key in input.keyStates) {
+            if (input.keyStates[key] !== false || input.keyStates[key] !== undefined) {
+                go = 1;
+                break;
+            }
+        }
+
 
         // TODO: Calculate press time for each of the
         // TODO: different input types (keys or mouse)
+        if (go) {
+            return;
+        }
+
+*/
         if (this.getKey(68)) {
-            input.pressTime = dt_sec;
         } else if (this.getKey(65)) {
-            input.pressTime = -dt_sec;
         } else {
             return;
         }
 
-        client.setOutboundPacketData("input", input);
 
-        // TODO: CLIENT SIDE PREDICTION
-        client.player.processReconciledInput(client, input);
+        client.setOutboundPacketData("input", input);
+        if (client.player) {
+            // TODO: CLIENT SIDE PREDICTION
+            client.player.processReconciledInput(client, input);
+        }
 
         this._pendingInputs.push(input);
 
@@ -76,8 +92,6 @@ export default class InputListener {
     getMouse(buttonCode) {
         return this._mouseStates[buttonCode];
     }
-
-
 
 
     // Set a callback function mapped to a key code.

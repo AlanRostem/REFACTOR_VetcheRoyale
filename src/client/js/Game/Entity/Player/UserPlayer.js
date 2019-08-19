@@ -227,10 +227,9 @@ export default class UserPlayer extends RemotePlayer {
         super.update(deltaTime, client);
         this._currentMap = currentMap;
         this._oldPos = this._serverState._pos;
-        this.interpolateY(deltaTime, client);
-        //if (!this._localSides.bottom)
-          //  this._localVel.y += 500 * deltaTime;
-        //this._output._pos._y += this._localVel.y;
+        //this.interpolateY(deltaTime, client);
+        if (!this._localSides.bottom) this._localVel.y += 500 * deltaTime;
+        this._output._pos._y += this._localVel.y * deltaTime;
         this.reconciledCollisionCorrectionY(currentMap);
         R.camera.update({
             _x: this._output._pos._x + this._width / 2,
@@ -311,7 +310,6 @@ export default class UserPlayer extends RemotePlayer {
             } else {
                 // TODO: SCALABILITY
                 this.processReconciledInput(client, input);
-
                 j++;
             }
         }
@@ -319,7 +317,6 @@ export default class UserPlayer extends RemotePlayer {
 
     processReconciledInput(client, input) {
         this._localVel.x = 0;
-
 
         if (input.keyStates[68]) {
             if (!this._localSides.right) {
@@ -329,7 +326,7 @@ export default class UserPlayer extends RemotePlayer {
 
         if (input.keyStates[65]) {
             if (!this._localSides.left) {
-                this._localVel.x = 60 * input.pressTime;
+                this._localVel.x = -60 * input.pressTime;
             }
         }
 
@@ -337,7 +334,7 @@ export default class UserPlayer extends RemotePlayer {
             if (!this._localSides.top) {
                 if (!this._jumping) {
                     this._jumping = true;
-                    this._localVel.y = -190 * Math.abs(input.pressTime);
+                    this._localVel.y = -190 * input.pressTime;
                 }
             }
         }
