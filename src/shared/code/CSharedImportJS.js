@@ -11,6 +11,9 @@ const CSharedImportJS = (src) => {
             content.string = blob;
             eval(content.string);
             content.object = subject;
+            if (content.onload) {
+                content.onload(subject);
+            }
         });
     return content;
 };

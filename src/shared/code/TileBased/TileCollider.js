@@ -1,6 +1,7 @@
 // Composite object that handles tile tileCollision
 // based on entity type.
 // TODO: Create the entity type mapping functionality
+
 const TileCollider = {
         TYPE_RANGE: {
             PASS: 95, // TODO: Remove test values
@@ -241,4 +242,9 @@ const TileCollider = {
 
 //Object.freeze(TileCollider); // Prevents object mutation
 
-subject = TileCollider;
+try {
+    window["subject"] = TileCollider;
+} catch (e) {
+    subject = TileCollider;
+}
+

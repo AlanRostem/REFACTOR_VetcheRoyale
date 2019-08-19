@@ -4,12 +4,122 @@ import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js"
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import CSharedImportJS from "../../../../../shared/code/CSharedImportJS.js";
 import {linearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
+import Scene from "../../Scene.js"
 
 const TILE_SIZE = 8;
 const SMOOTHING_VALUE = 22;
 
 let TC = CSharedImportJS("shared/code/TileBased/TileCollider.js");
-window.TC = TC;
+
+TC.onload = self => {
+    self.createCollisionResponse("UserPlayer", "SLOPE_UP_RIGHT", "Y", (entity, tile, deltaTime) => {
+        if (entity.overlapTile(tile)) {
+            let eRightToSlopeLeftDiff = entity._output._pos._x + entity._width - tile.x;
+
+            let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + self.TILE_SIZE;
+
+            if (eRightToSlopeLeftDiff > self.TILE_SIZE) {
+                entity.jumping = false;
+                entity._localVel.y = 0;
+                entity._output._pos._y = tile.y - entity._height;
+                entity._localSides.bottom = true;
+                if (entity._output._pos._x < 0) {
+                    entity._localVel._y = -entity._localVel._x;
+                }
+            } else if (entity._output._pos._y + entity._height > steppingPosY) {
+                entity._jumping = false;
+                entity._localVel._y = 0;
+                entity._output._pos._y = steppingPosY - entity._height;
+                entity._localSides.bottom = true;
+                if (entity._localVel._x < 0) {
+                    entity._localVel._y = -entity._localVel._x;
+                }
+            }
+        }
+    });
+    self.createCollisionResponse("UserPlayer", "SLOPE_UP_LEFT", "Y", (entity, tile, deltaTime) => {
+        if (entity.overlapTile(tile)) {
+            let eLeftToSlopeRightDiff = tile.x + self.TILE_SIZE - entity._output._pos._x;
+
+            let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + self.TILE_SIZE;
+
+            if (eLeftToSlopeRightDiff > self.TILE_SIZE) {
+                entity._jumping = false;
+                entity._localVel.y = 0;
+                entity._output._pos._y = tile.y - entity._height;
+                entity._localSides.bottom = true;
+                if (entity._localVel.x > 0) {
+                    entity._localVel.y = entity._localVel.x;
+                }
+            } else if (entity._output._pos._y + entity._height > steppingPosY) {
+                entity._jumping = false;
+                entity._localVel.y = 0;
+                entity._output._pos._y = steppingPosY - entity._height;
+                entity._localSides.bottom = true;
+                if (entity._localVel.x > 0) {
+                    entity._localVel.y = entity._localVel.x;
+                }
+            }
+        }
+    })
+    self.createCollisionResponse("UserPlayer", "SOLID", "X", (entity, tile, deltaTime) => {
+        let pos = entity._output._pos;
+        if (entity.overlapTile(tile)) {
+            if (pos._x + entity._width > tile.x
+                //&& this._oldPos._x + this._width <= tile.x
+                && entity._localVel.x > 0
+            ) {
+                pos._x = tile.x - entity._width;
+                entity._localVel.x = 0;
+                entity._localSides.right = true;
+            }
+            if (pos._x < tile.x + TILE_SIZE
+                //&& this._oldPos._x >= tile.x + TILE_SIZE
+                && entity._localVel.x < 0
+            ) {
+                pos._x = tile.x + TILE_SIZE;
+                entity._localVel.x = 0;
+                entity._localSides.left = true;
+            }
+        }
+    })
+    self.createCollisionResponse("UserPlayer", "SOLID", "Y", (entity, tile, deltaTime) => {
+        let pos = entity._output._pos;
+        if (entity.overlapTile(tile)) {
+            if (entity._localVel.y > 0) {
+                if (pos._y + entity._height > tile.y
+                //&& this._oldPos._y + this._height <= tile.y
+                ) {
+                    pos._y = tile.y - entity._height;
+                    entity._localVel.y = 0;
+                    entity._localSides.bottom = true;
+                    entity._jumping = false;
+                }
+            }
+            if (entity._localVel.y < 0) {
+                if (pos._y < tile.y + TILE_SIZE
+                //&& this._oldPos._y >= tile.y + TILE_SIZE
+                ) {
+                    pos._y = tile.y + TILE_SIZE;
+                    entity._localVel.y = 0;
+                    entity._localSides.top = true;
+                }
+            }
+        }
+
+    })
+    self.createCollisionResponse("UserPlayer", "ONE_WAY", "Y", (entity, tile, deltaTime) => {
+        if (entity.overlapTile(tile)) {
+            if (entity._output._pos._y + entity._height > tile.y && entity._oldPos.y + entity._height <= tile.y) {
+                entity._output._pos._y = tile.y - entity._height;
+                entity._localVel.y = 0;
+                entity._jumping = false;
+                entity._localSides.bottom = true;
+            }
+        }
+    },)
+
+};
 
 // The player the client controls. It contains the client prediction code.
 export default class UserPlayer extends RemotePlayer {
@@ -29,9 +139,11 @@ export default class UserPlayer extends RemotePlayer {
         };
         this._t_set = 0;
         this._dataBuffer._size = 2;
+        this.CR_ID = "UserPlayer";
     }
 
-    overlapTile(pos, e) {
+    overlapTile(e) {
+        let pos = this._output._pos;
         return pos._y + this._height > e.y
             && pos._y < (e.y + TILE_SIZE)
             && pos._x + this._width > e.x
@@ -116,6 +228,9 @@ export default class UserPlayer extends RemotePlayer {
         this._currentMap = currentMap;
         this._oldPos = this._serverState._pos;
         this.interpolateY(deltaTime, client);
+        //if (!this._localSides.bottom)
+          //  this._localVel.y += 500 * deltaTime;
+        //this._output._pos._y += this._localVel.y;
         this.reconciledCollisionCorrectionY(currentMap);
         R.camera.update({
             _x: this._output._pos._x + this._width / 2,
@@ -151,25 +266,8 @@ export default class UserPlayer extends RemotePlayer {
                 };
 
                 let id = currentMap.getID(xx, yy);
-                if (currentMap.isSolid(id)) {
-                    if (this.overlapTile(pos, tile)) {
-                        if (pos._x + this._width > tile.x
-                            //&& this._oldPos._x + this._width <= tile.x
-                            && this._localVel.x > 0
-                        ) {
-                            pos._x = tile.x - this._width;
-                            this._localVel.x = 0;
-                            this._localSides.right = true;
-                        }
-                        if (pos._x < tile.x + TILE_SIZE
-                            //&& this._oldPos._x >= tile.x + TILE_SIZE
-                            && this._localVel.x < 0
-                        ) {
-                            pos._x = tile.x + TILE_SIZE;
-                            this._localVel.x = 0;
-                            this._localSides.left = true;
-                        }
-                    }
+                if (TC.object) {
+                    TC.object.handleCollisionX(this, id, tile, Scene.deltaTime);
                 }
             }
         }
@@ -196,29 +294,8 @@ export default class UserPlayer extends RemotePlayer {
                 };
 
                 let id = currentMap.getID(xx, yy);
-                if (currentMap.isSolid(id)) {
-                    if (this.overlapTile(pos, tile)) {
-                        if (pos._y + this._height > tile.y
-                            && this._oldPos._y + this._height <= tile.y
-                        ) {
-                            pos._y = tile.y - this._height;
-                            this._localVel.y = 0;
-                            this._localSides.bottom = true;
-                        }
-                        if (pos._y < tile.y + TILE_SIZE
-                            && this._oldPos._y >= tile.y + TILE_SIZE
-                        ) {
-                            pos._y = tile.y + TILE_SIZE;
-                            this._localVel.y = 0;
-                            this._localSides.top = true;
-                        }
-                        /*
-                        if (this._localVel.y > 0) {
-                        }
-                        if (this._localVel.y < 0) {
-                        }
-                         */
-                    }
+                if (TC.object) {
+                    TC.object.handleCollisionY(this, id, tile, Scene.deltaTime);
                 }
             }
         }
@@ -253,6 +330,15 @@ export default class UserPlayer extends RemotePlayer {
         if (input.keyStates[65]) {
             if (!this._localSides.left) {
                 this._localVel.x = 60 * input.pressTime;
+            }
+        }
+
+        if (input.keyStates[32]) {
+            if (!this._localSides.top) {
+                if (!this._jumping) {
+                    this._jumping = true;
+                    this._localVel.y = -190 * Math.abs(input.pressTime);
+                }
             }
         }
 
