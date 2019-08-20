@@ -125,6 +125,7 @@ export default class UserPlayer extends RemotePlayer {
         }
 
         this._localSides.reset();
+
         if (!currentMap) return;
 
         this._output._pos._x += this._localVel.x * deltaTime;
@@ -162,7 +163,6 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
     }
-
     reconciledCollisionCorrectionY(currentMap) {
         let pos = this._output._pos;
         var cx = Math.floor(pos._x / TILE_SIZE);
@@ -199,7 +199,7 @@ export default class UserPlayer extends RemotePlayer {
             if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
                 pending.splice(j, 1);
             } else {
-                // TODO: SCALABILITY
+                // TODO: Implement a separate reconciliation algorithm for physics certain events
                 this.processReconciledInput(client, input);
                 j++;
             }
