@@ -29,7 +29,7 @@ export default class InputListener {
         this.listenTo(client);
     }
 
-    update(client) {
+    clientPrediction(client) {
         var now_ts = +new Date();
         var last_ts = this.last_ts || now_ts;
         var dt_sec = (now_ts - last_ts) / 1000.0;
@@ -40,7 +40,6 @@ export default class InputListener {
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
             sequence: this._sequence++,
-            pressTime: dt_sec
         };
         /*
 
@@ -58,14 +57,18 @@ export default class InputListener {
         if (go) {
             return;
         }
-
-*/
-        if (this.getKey(68)) {
-        } else if (this.getKey(65)) {
-        } else {
-            return;
+        */
+        let process = false;
+        for (let key of this._allocatedCodes) {
+            if (input.keyStates[key]) {
+                process = true;
+                input.pressTime = dt_sec;
+            }
         }
 
+        if (!process) {
+            return;
+        }
 
         client.setOutboundPacketData("input", input);
         if (client.player) {

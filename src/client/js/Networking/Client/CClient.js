@@ -18,8 +18,12 @@ export default class CClient {
         this._inputListener = new InputListener(this);
         this._timeSyncer = new ServerTimeSyncer();
 
-        [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
+        [83, 87, 69, 71, 82, 81].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
+        });
+
+        [32, 68, 65].forEach(keyCode => {
+           this.allocateClientPredKey(keyCode);
         });
 
         [1, 2, 3].forEach(mouseButton => {
@@ -55,6 +59,12 @@ export default class CClient {
         });
     }
 
+    allocateClientPredKey(keyCode, callback) {
+        this.addKeyEmitter(keyCode, callback);
+        if (!this.input._allocatedCodes.includes(keyCode))
+            this.input._allocatedCodes.push(keyCode);
+    }
+
     get inputBufferArray() {
         return this._inputListener._inputBuffer._buffer;
     }
@@ -66,7 +76,6 @@ export default class CClient {
     addServerUpdateListener(eventName, callback) {
         this._serverUpdateCallbacks.set(eventName, callback);
     }
-
 
 
     get inboundPacket() {
@@ -107,7 +116,6 @@ export default class CClient {
         if (e) {
             Scene.currentMapName = this.player.output._gameData.mapName;
         }
-        this._inputListener.update(this);
         this.emit("clientPacketToServer", this._clientEmitPacket.object);
     }
 
@@ -141,7 +149,7 @@ export default class CClient {
         });
 
         this.on('broadcast-newPlayer', data => {
-           console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
+            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
 
         this.on("gameEvent-changeMap", data => {

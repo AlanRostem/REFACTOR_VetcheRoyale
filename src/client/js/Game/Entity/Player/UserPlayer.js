@@ -61,7 +61,7 @@ TC.onload = self => {
                 }
             }
         }
-    })
+    });
     self.createCollisionResponse("UserPlayer", "SOLID", "X", (entity, tile, deltaTime) => {
         let pos = entity._output._pos;
         if (entity.overlapTile(tile)) {
@@ -82,7 +82,7 @@ TC.onload = self => {
                 entity._localSides.left = true;
             }
         }
-    })
+    });
     self.createCollisionResponse("UserPlayer", "SOLID", "Y", (entity, tile, deltaTime) => {
         let pos = entity._output._pos;
         if (entity.overlapTile(tile)) {
@@ -107,7 +107,7 @@ TC.onload = self => {
             }
         }
 
-    })
+    });
     self.createCollisionResponse("UserPlayer", "ONE_WAY", "Y", (entity, tile, deltaTime) => {
         if (entity.overlapTile(tile)) {
             if (entity._output._pos._y + entity._height > tile.y && entity._oldPos.y + entity._height <= tile.y) {
@@ -226,6 +226,7 @@ export default class UserPlayer extends RemotePlayer {
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this._currentMap = currentMap;
+        this._localVel.x = 0;
         this._oldPos = this._serverState._pos;
         //this.interpolateY(deltaTime, client);
         if (!this._localSides.bottom) this._localVel.y += 500 * deltaTime;
@@ -235,6 +236,9 @@ export default class UserPlayer extends RemotePlayer {
             _x: this._output._pos._x + this._width / 2,
             _y: this._output._pos._y + this._height / 2,
         });
+
+        client.input.clientPrediction(client);
+        this.physics(deltaTime, client, currentMap);
     }
 
     physics(deltaTime, client, currentMap) {
@@ -316,7 +320,6 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     processReconciledInput(client, input) {
-        this._localVel.x = 0;
 
         if (input.keyStates[68]) {
             if (!this._localSides.right) {
@@ -339,7 +342,6 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
 
-        this.physics(input.pressTime, client, this._currentMap);
     }
 
 
