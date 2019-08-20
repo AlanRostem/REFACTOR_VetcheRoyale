@@ -41,23 +41,7 @@ export default class InputListener {
             mouseStates: this._mouseStates,
             sequence: this._sequence++,
         };
-        /*
 
-        let go = 0;
-        for (let key in input.keyStates) {
-            if (input.keyStates[key] !== false || input.keyStates[key] !== undefined) {
-                go = 1;
-                break;
-            }
-        }
-
-
-        // TODO: Calculate press time for each of the
-        // TODO: different input types (keys or mouse)
-        if (go) {
-            return;
-        }
-        */
         let process = false;
         for (let key of this._allocatedCodes) {
             if (input.keyStates[key]) {
@@ -72,12 +56,9 @@ export default class InputListener {
 
         client.setOutboundPacketData("input", input);
         if (client.player) {
-            // TODO: CLIENT SIDE PREDICTION
             client.player.processReconciledInput(client, input);
         }
-
         this._pendingInputs.push(input);
-
     }
 
     get pending() {

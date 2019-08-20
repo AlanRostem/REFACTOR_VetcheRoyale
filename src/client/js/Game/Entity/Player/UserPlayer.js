@@ -184,6 +184,7 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
         this._output._pos._x = dataPack._pos._x;
+        this._output._pos._y = dataPack._pos._y;
         this._serverState = dataPack;
         this.serverReconciliation(client);
     }
@@ -225,13 +226,15 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
-        this._currentMap = currentMap;
         this._localVel.x = 0;
         this._oldPos = this._serverState._pos;
-        //this.interpolateY(deltaTime, client);
-        if (!this._localSides.bottom) this._localVel.y += 500 * deltaTime;
+
+        if (!this._localSides.bottom)
+            this._localVel.y += 500 * deltaTime;
+
         this._output._pos._y += this._localVel.y * deltaTime;
         this.reconciledCollisionCorrectionY(currentMap);
+
         R.camera.update({
             _x: this._output._pos._x + this._width / 2,
             _y: this._output._pos._y + this._height / 2,
@@ -244,7 +247,7 @@ export default class UserPlayer extends RemotePlayer {
     physics(deltaTime, client, currentMap) {
         this._localSides.reset();
         if (!currentMap) return;
-        this._output._pos._x += this._localVel.x;
+        this._output._pos._x += this._localVel.x * deltaTime;
         this.reconciledCollisionCorrectionX(currentMap);
     }
 
@@ -320,16 +323,15 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     processReconciledInput(client, input) {
-
         if (input.keyStates[68]) {
             if (!this._localSides.right) {
-                this._localVel.x = 60 * input.pressTime;
+                this._localVel.x = 60;
             }
         }
 
         if (input.keyStates[65]) {
             if (!this._localSides.left) {
-                this._localVel.x = -60 * input.pressTime;
+                this._localVel.x = -60;
             }
         }
 
@@ -337,12 +339,9 @@ export default class UserPlayer extends RemotePlayer {
             if (!this._localSides.top) {
                 if (!this._jumping) {
                     this._jumping = true;
-                    this._localVel.y = -190 * input.pressTime;
+                    this._localVel.y = -190;
                 }
             }
         }
-
     }
-
-
 }
