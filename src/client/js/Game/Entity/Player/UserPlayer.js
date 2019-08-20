@@ -128,6 +128,7 @@ export default class UserPlayer extends RemotePlayer {
         this._serverState = data;
         this._localVel = new Vector2D(0, 0);
         this._localPos = new Vector2D(data._pos._x, data._pos._y);
+        this._localGravity = 0;
         this._localSides = {
             left: false,
             right: false,
@@ -174,6 +175,7 @@ export default class UserPlayer extends RemotePlayer {
 
         //super.updateFromDataPack(dataPack, client);
         this._dataBuffer.onServerUpdateReceived(dataPack, this, client);
+        this._serverState = dataPack;
         if (!this._t_set) {
             this._t_set = 1;
             this._output._pos = dataPack._pos;
@@ -183,58 +185,39 @@ export default class UserPlayer extends RemotePlayer {
                 this._output[key] = dataPack[key];
             }
         }
-        this._output._pos._x = dataPack._pos._x;
-        this._output._pos._y = dataPack._pos._y;
-        this._serverState = dataPack;
+        //this.interpolateX(Scene.deltaTime, client);
+        //this.interpolateY(Scene.deltaTime, client);
+        this.updateServerX(dataPack);
+        this.updateServerY(dataPack);
         this.serverReconciliation(client);
     }
 
+    updateServerX(dataPack) {
+        this._output._pos._x = dataPack._pos._x;
+    }
+
+    updateServerY(dataPack) {
+        this._output._pos._y = dataPack._pos._y;
+    }
+
+    interpolateX(deltaTime, client) {
+        this._output._pos._x =
+            linearInterpolation(this._output._pos._x,
+                this._serverState._pos._x,
+                SMOOTHING_VALUE * deltaTime);
+    }
+
     interpolateY(deltaTime, client) {
-        let currentTime = Date.now() - client._latency;
-        let target = null;
-        let previous = null;
-        for (let i = 0; i < this.length - 1; i++) {
-            let point = this._dataBuffer.get(i);
-            let next = this._dataBuffer.get(i + 1);
-            if (currentTime > point.timeStamp && currentTime < next.timeStamp) {
-                target = next;
-                previous = point;
-                break;
-            }
-        }
-
-        if (!target) {
-            target = previous = this._dataBuffer.get(0);
-        }
-
-        if (target && previous) {
-            let targetTime = target.serverTimeStamp;
-            var difference = targetTime - currentTime;
-            var maxDiff = (target.serverTimeStamp - previous.serverTimeStamp).fixed(3);
-            var timePoint = (difference / maxDiff).fixed(3);
-
-            if (isNaN(timePoint) || Math.abs(timePoint) === Infinity) {
-                timePoint = 0;
-            }
-
-            this._output._pos._y =
-                linearInterpolation(this._output._pos._y,
-                    linearInterpolation(previous._pos._y, target._pos._y, timePoint),
-                    SMOOTHING_VALUE * deltaTime);
-        }
+        this._output._pos._y =
+            linearInterpolation(this._output._pos._y,
+                this._serverState._pos._y,
+                SMOOTHING_VALUE * deltaTime);
     }
 
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this._localVel.x = 0;
         this._oldPos = this._serverState._pos;
-
-        if (!this._localSides.bottom)
-            this._localVel.y += 500 * deltaTime;
-
-        this._output._pos._y += this._localVel.y * deltaTime;
-        this.reconciledCollisionCorrectionY(currentMap);
-
         R.camera.update({
             _x: this._output._pos._x + this._width / 2,
             _y: this._output._pos._y + this._height / 2,
@@ -245,10 +228,20 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     physics(deltaTime, client, currentMap) {
+        if (!this._localSides.bottom) {
+        }
+        client.input.setReconciliationProcess("gravity", true);
+
         this._localSides.reset();
+        this._localGravity = 0;
         if (!currentMap) return;
+
         this._output._pos._x += this._localVel.x * deltaTime;
         this.reconciledCollisionCorrectionX(currentMap);
+
+        this._localVel.y += this._localGravity * deltaTime;
+        this._output._pos._y += this._localVel.y * deltaTime;
+        this.reconciledCollisionCorrectionY(currentMap);
     }
 
     reconciledCollisionCorrectionX(currentMap) {
@@ -324,13 +317,13 @@ export default class UserPlayer extends RemotePlayer {
 
     processReconciledInput(client, input) {
         if (input.keyStates[68]) {
-            if (!this._localSides.right) {
+            if (!this._localSides.right && !this._serverState.side.right) {
                 this._localVel.x = 60;
             }
         }
 
         if (input.keyStates[65]) {
-            if (!this._localSides.left) {
+            if (!this._localSides.left && !this._serverState.side.left) {
                 this._localVel.x = -60;
             }
         }
@@ -342,6 +335,10 @@ export default class UserPlayer extends RemotePlayer {
                     this._localVel.y = -190;
                 }
             }
+        }
+
+        if (input.processes["gravity"]) {
+            this._localGravity = 500;
         }
     }
 }
