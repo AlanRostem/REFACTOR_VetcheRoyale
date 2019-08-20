@@ -20,23 +20,34 @@ class InputReceiver {
         client.addClientUpdateListener("processInput", data => {
             const input = data.input;
             if (input) {
-                if (validateInput(input)) {
-                    this.applyInput(input);
-                    client.setOutboundPacketData(
-                        "lastProcessedInputSequence", input.sequence);
+                this._mouseStates = input.mouseStates;
+                this._mouseData = input.mouseData;
+                for (let key in input.keyStates) {
+                    if (!input.predictionKeys) {
+                        this._keyStates[key] = input.keyStates[key];
+                        continue;
+                    }
+                    if (input.predictionKeys.includes(key)) {
+                        if (validateInput(input)) {
+                            this.applyInput(key, input.keyStates[key]);
+                            client.setOutboundPacketData(
+                                "lastProcessedInputSequence", input.sequence);
+                        }
+                    } else {
+                        this._keyStates[key] = input.keyStates[key];
+                    }
                 }
+
             }
         });
     }
 
-    applyInput(input) {
-        this._keyStates = input.keyStates;
-        this._mouseStates = input.mouseStates;
-        this._mouseData = input.mouseData;
+    applyInput(key, value) {
+        this._keyStates[key] = value;
+
     }
 
-    update(client) {
-    }
+    update(client) {}
 
     get mouseData() {
         return this._mouseData;

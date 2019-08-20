@@ -45,16 +45,11 @@ export default class InputListener {
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
             sequence: this._sequence++,
-            processes: this._reconcilationProcessStates
+            processes: this._reconcilationProcessStates,
+            predictionKeys: this._allocatedCodes
         };
 
         let process = false;
-
-        for (let processID in this._reconcilationProcessStates) {
-            if (this._reconcilationProcessStates[processID]) {
-                process = true;
-            }
-        }
 
         for (let key of this._allocatedCodes) {
             if (input.keyStates[key]) {
@@ -62,12 +57,12 @@ export default class InputListener {
                 input.pressTime = dt_sec;
             }
         }
+        client.setOutboundPacketData("input", input);
 
         if (!process) {
             return;
         }
 
-        client.setOutboundPacketData("input", input);
         if (client.player) {
             client.player.processReconciledInput(client, input);
         }
