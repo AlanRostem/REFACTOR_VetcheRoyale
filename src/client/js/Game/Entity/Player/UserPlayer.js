@@ -115,7 +115,7 @@ export default class UserPlayer extends RemotePlayer {
             _y: this._output._pos._y + this._height / 2,
         });
 
-        client.input.clientPrediction(client);
+        client.input.onClientUpdate(client);
         this.physics(deltaTime, client, currentMap);
     }
 

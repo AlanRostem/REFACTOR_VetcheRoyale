@@ -24,17 +24,13 @@ export default class InputListener {
         this._buffer = [];
         this._pendingInputs = [];
         this._allocatedCodes = [];
-        this._reconcilationProcessStates = {};
         this._sequence = 0;
 
         this.listenTo(client);
     }
 
-    setReconciliationProcess(codeID, boolean) {
-        this._reconcilationProcessStates[codeID] = boolean;
-    }
 
-    clientPrediction(client) {
+    onClientUpdate(client) {
         var now_ts = +new Date();
         var last_ts = this.last_ts || now_ts;
         var dt_sec = (now_ts - last_ts) / 1000.0;
@@ -45,7 +41,6 @@ export default class InputListener {
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
             sequence: this._sequence++,
-            processes: this._reconcilationProcessStates,
             predictionKeys: this._allocatedCodes
         };
 
