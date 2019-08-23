@@ -28,16 +28,25 @@ export default class MiniMap extends UIElement {
         map.tileSizeW = tileMap.w / map.tiles;
         map.tileSizeH = tileMap.h / map.tiles;
 
+
         for (var k = 0; k < map.tiles; k++) {
             map.array.push(new Array(map.tiles).fill(0))
         }
 
         for (var i = 0; i < tileMap.h; i++) {
             for (var j = 0; j < tileMap.w; j++) {
-                if (tileMap.array[i * tileMap.w + j] !== 0)
-                    map.array[i / map.tileSizeH | 0][j / map.tileSizeW | 0] += 1;
+                if (tileMap.array[i * tileMap.w + j] !== 0) {
+                    try {
+                        map.array[i / map.tileSizeH | 0][j / map.tileSizeW | 0] += 1;
+
+                    } catch (e) {
+                        console.log(i / map.tileSizeH | 0, j / map.tileSizeW | 0);
+                    }
+                }
             }
         }
+
+        console.log(map.array);
 
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
