@@ -69,33 +69,25 @@ class Player extends GameDataLinker {
 
         this._itemsNearby = new ONMap();
         this._itemScanner = new HitScanner([], false);
-    }
-
-    // Using this function to scan for items the player
-    // is able to pick up.
-    forEachNearbyEntity(entity, entityManager) {
-        super.forEachNearbyEntity(entity, entityManager);
-        if (this.input.keyHeldDown(69)) {
-            if (!this._pressedE) {
-                if (entity instanceof Loot) {
-                    let distance = Vector2D.distance(this.center, entity.center);
-                    this._itemScanner.scan(this.id, this.center, entity.center, entityManager, entityManager.tileMap);
-                    if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
-                        && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
-                        this._itemsNearby.set(entity.id, distance);
-                    }
-                }
-                this._pressedE = true;
-            }
-        } else {
-            this._pressedE = false;
-        }
+        this._scanItems = false;
     }
 
     // Calculates the closest item capable of being picked
     // up and then picks it up.
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
+            for (let id in game.container) {
+                let entity = this._entitiesInProximity.getEntity(id);
+                if (entity instanceof Loot) {
+                    let distance = Vector2D.distance(this.center, entity.center);
+                    this._itemScanner.scan(this.id, this.center, entity.center, game, game.tileMap);
+                    if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
+                        && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
+                        this._itemsNearby.set(entity.id, distance);
+                    }
+                }
+            }
+
             let closest = Math.min(...this._itemsNearby.array);
             for (let id in this._itemsNearby.object) {
                 let loot = game.getEntity(id);
