@@ -65,7 +65,6 @@ export default class CClient {
             this.input._allocatedCodes.push(keyCode);
     }
 
-
     setOutboundPacketData(key, value) {
         this._clientEmitPacket.set(key, value);
     }
@@ -73,7 +72,6 @@ export default class CClient {
     addServerUpdateListener(eventName, callback) {
         this._serverUpdateCallbacks.set(eventName, callback);
     }
-
 
     get inboundPacket() {
         return this._lastReceivedData;

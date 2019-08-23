@@ -56,13 +56,12 @@ export default class InputListener {
             keyStates: this._keyStates,
             mouseData: this._mouse,
             mouseStates: this._mouseStates,
-            sequence: this._sequence++,
-            predictionKeys: this._allocatedCodes
+            sequence: this._sequence++
         };
 
         let process = false;
 
-        for (let key of this._allocatedCodes) {
+        for (let key in this._keyStates) {
             if (input.keyStates[key]) {
                 process = true;
                 input.pressTime = dt_sec;
