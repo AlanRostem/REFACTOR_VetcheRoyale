@@ -68,7 +68,7 @@ class KE_6H extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "KE-6H", 0, 0, 0);
         this._detonate = false;
-        this.configureAttackStats(2.5, 5, 1, 100);
+        this.configureAttackStats(2.5, 24, 1, 100);
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticDetonation = true;
         };

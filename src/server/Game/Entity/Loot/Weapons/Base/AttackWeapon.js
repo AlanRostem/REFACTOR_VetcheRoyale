@@ -9,14 +9,13 @@ const Firerer = require("./Firerer.js");
 // picks up the weapon all tileCollision of the item version is
 // disabled and follows the player.
 class AttackWeapon extends WeaponItem {
-    constructor(x, y, displayName, weaponClass = "pistol", modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15, ...modes) {
+    constructor(x, y, displayName, weaponClass = "pistol", modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15) {
         super(x, y, displayName, weaponClass);
         this._modAbility = new ModAbility(modDuration, modCoolDown);
         this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
         this._superCharge = 0;
         this._modCoolDown = 0;
-        modes.push("auto");
-        this._firerer = new Firerer(modes);
+        this._firerer = new Firerer(0, 3, 0.05);
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
