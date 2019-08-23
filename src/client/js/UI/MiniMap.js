@@ -40,13 +40,13 @@ export default class MiniMap extends UIElement {
                         map.array[i / map.tileSizeH | 0][j / map.tileSizeW | 0] += 1;
 
                     } catch (e) {
-                        console.log(i / map.tileSizeH | 0, j / map.tileSizeW | 0);
+                        //console.log(i / map.tileSizeH | 0, j / map.tileSizeW | 0);
                     }
                 }
             }
         }
 
-        console.log(map.array);
+        //console.log(map.array);
 
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
