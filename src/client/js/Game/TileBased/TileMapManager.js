@@ -7,7 +7,11 @@ export default class TileMapManager {
     }
 
     createMap(name, src) {
-        this._maps[name] = new CTileMap(src, "tileSet.png");
+        this._maps[name] = new CTileMap(src, "tileSet.png", name);
+    }
+
+    getAllMaps(){
+        return this._maps;
     }
 
     getMap(name) {
