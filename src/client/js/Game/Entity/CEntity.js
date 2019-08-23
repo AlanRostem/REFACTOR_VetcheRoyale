@@ -50,6 +50,6 @@ export default class CEntity {
             this._width, this._height, true);
         R.drawText(this._output._eType,
             this._output._pos._x - R.ctx.measureText(this._output._eType).width / 4,
-            this._output._pos._y, "blue", true);
+            this._output._pos._y, "Blue", true);
     }
 }

@@ -57,7 +57,7 @@ export default class Announcement extends UIElement {
             R.drawText(a.string,
                 (this.pos.x + this.width) - a.x,
                 (this.pos.y + 10),
-                "lime"
+                "Green"
             );
         }
     }

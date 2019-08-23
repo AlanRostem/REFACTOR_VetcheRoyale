@@ -102,17 +102,22 @@ const R = {
         R.context.clearRect(0, 0, R._canvas.width, R._canvas.height);
     },
 
-    drawText(str, x, y, color = "white", useCamera = false, size = 5) {
+    drawText(str, x, y, color = "White", useCamera = false, size = 5) {
         R.context.save();
+        var img = AssetManager.get("font/ascii" + color + ".png");
+
+        if (!img)  return;
+
         str = str.toString();
         for (var i = 0; i < str.length; i++) {
-            var img = FontMaking.get(str[i].toUpperCase());
-
-            if (!img) return;
+            var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;
             R.context.drawImage(img,
+                (asciiCode % 8 * 4),
+                ((asciiCode / 8) | 0) * 5,
+                4, 5,
                 Math.round(x + i * 5 + (useCamera ? R._camera.x : 0)),
-                Math.round(y + (useCamera ? R._camera.y : 0)));
-
+                Math.round(y + (useCamera ? R._camera.y : 0)),
+                4, 5);
         }
         R.context.restore();
     },

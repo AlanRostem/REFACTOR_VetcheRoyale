@@ -35,7 +35,7 @@ export default class GunBox extends UIElement {
         if (this.hasWeapon) {
             R.ctx.save();
 
-            R.drawText(this.loadedAmmo + "/" + this.playerAmmo, R.WIDTH - 72, R.HEIGHT - 44, "LIME", false, 7);
+            R.drawText(this.loadedAmmo + "/" + this.playerAmmo, R.WIDTH - 72, R.HEIGHT - 44, "Green", false, 7);
 
             R.ctx.drawImage(this.src,
                 0,
