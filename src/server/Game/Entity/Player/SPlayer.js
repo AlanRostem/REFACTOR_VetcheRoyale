@@ -76,14 +76,19 @@ class Player extends GameDataLinker {
     forEachNearbyEntity(entity, entityManager) {
         super.forEachNearbyEntity(entity, entityManager);
         if (this.input.keyHeldDown(69)) {
-            if (entity instanceof Loot) {
-                let distance = Vector2D.distance(this.center, entity.center);
-                this._itemScanner.scan(this.id, this.center, entity.center, entityManager, entityManager.tileMap);
-                if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
-                    && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
-                    this._itemsNearby.set(entity.id, distance);
+            if (!this._pressedE) {
+                if (entity instanceof Loot) {
+                    let distance = Vector2D.distance(this.center, entity.center);
+                    this._itemScanner.scan(this.id, this.center, entity.center, entityManager, entityManager.tileMap);
+                    if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
+                        && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
+                        this._itemsNearby.set(entity.id, distance);
+                    }
                 }
+                this._pressedE = true;
             }
+        } else {
+            this._pressedE = false;
         }
     }
 
