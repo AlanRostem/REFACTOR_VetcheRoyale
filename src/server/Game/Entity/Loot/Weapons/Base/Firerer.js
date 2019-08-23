@@ -10,11 +10,6 @@ class Firerer {
 
         this._maxBurstDelay = burstDelay;
         this._burstDelay = burstDelay;
-
-        this._modes = {
-            "charge": false,
-            "burst": false,
-        }
     }
 
     update(weapon, player, entityManager, deltaTime) {
