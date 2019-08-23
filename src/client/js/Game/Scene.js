@@ -57,6 +57,10 @@ const Scene = {
 
     },
 
+    getCurrentTileMap() {
+        return Scene.tileMaps.getMap(Scene.currentMapName);
+    },
+
     run(entityManager, client) {
         Scene._clientRef = client;
         Scene._entityManager = entityManager;
