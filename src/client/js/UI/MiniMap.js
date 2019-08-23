@@ -75,10 +75,8 @@ export default class MiniMap extends UIElement {
     update(client, entityList) {
         this.pos.x = R.WIDTH - 33;
         if (client.player) {
-            //this.p_Pos = client.player._output._pos;
             this.p_Pos._x = client.player._output._pos._x / this.images.get(Scene._currentMap).mapInfo.tileSizeW / 8 | 0;
             this.p_Pos._y = client.player._output._pos._y / this.images.get(Scene._currentMap).mapInfo.tileSizeH / 8 | 0;
-            console.log(this.p_Pos);
         }
     }
 
