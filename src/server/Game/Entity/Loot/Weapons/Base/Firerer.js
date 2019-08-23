@@ -1,7 +1,9 @@
 const ONMap = require("../../../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
 class Firerer {
-    constructor() {
+    constructor(chargeTime = 0) {
+        this._chargeTime = 0;
+        this._maxChargeTime = chargeTime;
         this._modes = {
             "charge": false,
             "burst": false,
@@ -27,8 +29,7 @@ class Firerer {
             if (weapon._currentFireTime <= 0 && !weapon._reloading) {
                 weapon._currentFireTime = (1 / deltaTime) / weapon._fireRate;
 
-                if (this._modes["charge"]) {
-
+                if (this._chargeTime > 0) {
                 } else {
                     if (weapon._currentAmmo >= weapon._ammoPerShot) {
                         weapon.fire(player, entityManager, deltaTime);
