@@ -40,13 +40,13 @@ export default class MiniMap extends UIElement {
                         map.array[i / map.tileSizeH | 0][j / map.tileSizeW | 0] += 1;
 
                     } catch (e) {
-                        console.log(i / map.tileSizeH | 0, j / map.tileSizeW | 0);
+                        //console.log(i / map.tileSizeH | 0, j / map.tileSizeW | 0);
                     }
                 }
             }
         }
 
-        console.log(map.array);
+        //console.log(map.array);
 
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
@@ -68,19 +68,27 @@ export default class MiniMap extends UIElement {
                 ctx.restore();
             }
         }
-        return canvas;
+        return {canvas: canvas, mapInfo: map};
     }
 
 
     update(client, entityList) {
         this.pos.x = R.WIDTH - 33;
         if (client.player) {
-            this.p_Pos = client.player._output._pos;
+            this.p_Pos._x = client.player._output._pos._x / this.images.get(Scene._currentMap).mapInfo.tileSizeW / 8 | 0;
+            this.p_Pos._y = client.player._output._pos._y / this.images.get(Scene._currentMap).mapInfo.tileSizeH / 8 | 0;
         }
     }
 
     draw() {
-        R.ctx.drawImage(this.images.get(Scene._currentMap), this.pos.x, this.pos.y, 32 * 8, 32 * 8);
+        R.ctx.drawImage(this.images.get(Scene._currentMap).canvas, this.pos.x, this.pos.y, 32 * 8, 32 * 8);
+        R.drawRect(
+            "Red",
+            this.pos.x + this.p_Pos._x,
+            this.pos.y + this.p_Pos._y,
+            1,
+            1
+        )
     }
 }
 
