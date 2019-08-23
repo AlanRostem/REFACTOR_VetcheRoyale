@@ -33,7 +33,7 @@ export default class Stats extends UIElement {
                 this.frame.x, // TODO: Cannot be 0 cus of FireFox
                 this.frame.y,  // TODO: Cannot be 0 cus of FireFox
             );
-            R.drawText(this.playersAlive,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 116, "White", false, 5);
+            R.drawText(this.playersAlive,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120, "White", false, 5);
             R.ctx.drawImage(this.src,
                 this.frame.x,
                 92,
@@ -44,7 +44,7 @@ export default class Stats extends UIElement {
                 this.frame.x, // TODO: Cannot be 0 cus of FireFox
                 this.frame.y,  // TODO: Cannot be 0 cus of FireFox
             );
-            R.drawText(this.killCount,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 116 + this.frame.y + 2, "Red");
+            R.drawText(this.killCount,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120 + this.frame.y + 2, "Red");
 
         R.ctx.restore();
     }
