@@ -47,6 +47,7 @@ class Firerer {
                     } else {
                         this.doSingleFire(weapon, player, entityManager, deltaTime);
                     }
+                    weapon._currentFireTime = (1 / deltaTime) / weapon._fireRate;
                 }
             } else {
                 if (weapon._currentFireTime <= 0 && !weapon._reloading) {

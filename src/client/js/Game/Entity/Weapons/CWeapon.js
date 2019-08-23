@@ -24,3 +24,4 @@ export default class CWeapon extends CEntity {
 
 CWeapon.sprite = new SpriteSheet("entity/guns.png");
 CWeapon.sprite.bind("KE-6H-World", 64, 37, 28, 11);
+CWeapon.sprite.bind("B.I.G Motorizer-World", 64, 52, 27, 12);

@@ -2,7 +2,7 @@
 // player inventory data such as ammo and weapon.
 class Inventory {
     constructor() {
-        this._ammoCount = 24;
+        this._ammoCount = Infinity;
         this._equippedWeapon = null;
     }
 
