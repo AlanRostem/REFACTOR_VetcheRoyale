@@ -111,7 +111,6 @@ export default class UserPlayer extends RemotePlayer {
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this._localVel.x = 0;
-        this._oldPos = this._serverState._pos;
         R.camera.update({
             _x: this._output._pos._x + this._width / 2,
             _y: this._output._pos._y + this._height / 2,
@@ -134,9 +133,10 @@ export default class UserPlayer extends RemotePlayer {
         this._output._pos._x += this._localVel.x * deltaTime;
         this.reconciledCollisionCorrectionX(currentMap);
 
-
         this._output._pos._y += this._localVel.y * deltaTime;
         this.reconciledCollisionCorrectionY(currentMap);
+
+        this._oldPos = this._serverState._pos;
     }
 
     reconciledCollisionCorrectionX(currentMap) {
@@ -193,8 +193,6 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
     }
-
-
 
     processReconciledPhysics(client, events) {
         if (events.eventStates["falling"]) {
