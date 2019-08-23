@@ -48,8 +48,7 @@ export default class CompositePhysicsListener {
             if (process.sequence <= client.inboundPacket.lastProcessedPhysicsSequence) {
                 pending.splice(j, 1);
             } else {
-                // TODO: Implement a separate reconciliation algorithm for physics certain events
-                client.player.processReconciledPhysics(client, process);
+                //client.player.processReconciledPhysics(client, process);
                 j++;
             }
         }

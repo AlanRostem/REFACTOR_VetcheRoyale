@@ -61,7 +61,7 @@ export default class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
-        this.t_drawGhost();
+        //this.t_drawGhost();
     }
 
     updateFromDataPack(dataPack, client) {
@@ -123,7 +123,6 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     physics(deltaTime, client, currentMap) {
-        this._physicsProcessor.setPhysicsEvent("falling", false);
         if (!this._localSides.bottom) {
             this._physicsProcessor.setPhysicsEvent("falling", true);
         }
@@ -198,8 +197,8 @@ export default class UserPlayer extends RemotePlayer {
 
 
     processReconciledPhysics(client, events) {
-        if (events["falling"]) {
-            this._localVel.y += this._localGravity * deltaTime;
+        if (events.eventStates["falling"]) {
+            this._localVel.y += this._localGravity * Scene.deltaTime;
         }
     }
 
