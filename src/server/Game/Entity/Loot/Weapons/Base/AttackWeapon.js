@@ -2,18 +2,21 @@ const WeaponItem = require("./WeaponItem.js");
 const ModAbility = require("./ModAbility.js");
 const SuperAbility = require("./SuperAbility.js");
 const Projectile = require("../AttackEntities/Projectile.js");
+const Firerer = require("./Firerer.js");
 
 // Composition abstraction class for the weapon abilities.
 // It extends the item version of the weapon. When the player
 // picks up the weapon all tileCollision of the item version is
 // disabled and follows the player.
 class AttackWeapon extends WeaponItem {
-    constructor(x, y, displayName, weaponClass = "pistol", modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15) {
+    constructor(x, y, displayName, weaponClass = "pistol", modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15, ...modes) {
         super(x, y, displayName, weaponClass);
         this._modAbility = new ModAbility(modDuration, modCoolDown);
         this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
         this._superCharge = 0;
         this._modCoolDown = 0;
+        modes.push("auto");
+        this._firerer = new Firerer(modes);
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
@@ -29,7 +32,6 @@ class AttackWeapon extends WeaponItem {
     get superCharge() {
         return this._superAbility._currentCharge;
     }
-
 
     set superCharge(val) {
         this._superAbility._currentCharge += val;
@@ -65,6 +67,8 @@ class AttackWeapon extends WeaponItem {
         this._fireRate = fireRateRPM;
         this._currentFireTime = 0;
         this._reloading = false;
+
+
     }
 
     // Happens when the player drops the weapon. Good for resetting
@@ -111,25 +115,8 @@ class AttackWeapon extends WeaponItem {
     // Listens to mouse and key input to perform different actions
     // on the weapon such as firing, ability usage and reloading.
     listenToInput(player, entityManager, deltaTime) {
-        // Can spam the mouse but the weapon always fires at the
-        // same designated rate of fire.
-        if (this._currentFireTime > 0) {
-            this._currentFireTime -= deltaTime;
-        }
 
-        // Checks for mouse down and fires automatically when
-        // clip size is more than zero. Otherwise it reloads.
-        if (player.input.mouseHeldDown(1)) {
-            if (this._currentFireTime <= 0 && !this._reloading) {
-                this._currentFireTime = 60 / this._fireRate;
-                if (this._currentAmmo >= this._ammoPerShot) {
-                    this.fire(player, entityManager, deltaTime);
-                    this._currentAmmo -= this._ammoPerShot;
-                } else if (player.inventory.ammo > 0) {
-                    this.activateReloadAction();
-                }
-            }
-        }
+        this._firerer.update(this, player, entityManager, deltaTime);
 
         if (player.input.singleMousePress(3)) {
             this._modAbility.activate(this, entityManager, deltaTime);
