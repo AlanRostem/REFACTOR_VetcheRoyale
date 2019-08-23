@@ -61,7 +61,7 @@ export default class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
-        //this.t_drawGhost();
+        this.t_drawGhost();
     }
 
     updateFromDataPack(dataPack, client) {
@@ -130,6 +130,7 @@ export default class UserPlayer extends RemotePlayer {
 
         if (!currentMap) return;
 
+        this.shouldUpdate = false;
         this._output._pos._x += this._localVel.x * deltaTime;
         this.reconciledCollisionCorrectionX(currentMap);
 
@@ -231,19 +232,21 @@ TC.onload = self => {
 
             let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + self.TILE_SIZE;
 
+
             if (eRightToSlopeLeftDiff > self.TILE_SIZE) {
                 entity.jumping = false;
-                entity._localVel.y = 0;
                 entity._output._pos._y = tile.y - entity._height;
                 entity._localSides.bottom = true;
+                entity._localVel.y = 0;
             } else if (entity._output._pos._y + entity._height > steppingPosY) {
                 entity._jumping = false;
-                entity._localVel._y = 0;
                 entity._output._pos._y = steppingPosY - entity._height;
                 entity._localSides.bottom = true;
+                entity._localVel.y = 0;
             }
         }
     });
+
     self.createCollisionResponse("UserPlayer", "SLOPE_UP_LEFT", "Y", (entity, tile, deltaTime) => {
         if (entity.overlapTile(tile)) {
             let eLeftToSlopeRightDiff = tile.x + self.TILE_SIZE - entity._output._pos._x;
@@ -252,14 +255,14 @@ TC.onload = self => {
 
             if (eLeftToSlopeRightDiff > self.TILE_SIZE) {
                 entity._jumping = false;
-                entity._localVel.y = 0;
                 entity._output._pos._y = tile.y - entity._height;
                 entity._localSides.bottom = true;
+                entity._localVel.y = 0;
             } else if (entity._output._pos._y + entity._height > steppingPosY) {
                 entity._jumping = false;
-                entity._localVel.y = 0;
                 entity._output._pos._y = steppingPosY - entity._height;
                 entity._localSides.bottom = true;
+                entity._localVel.y = 0;
             }
         }
     });
