@@ -52,6 +52,11 @@ class Player extends GameDataLinker {
             "_statData"
         ]);
 
+        client.addClientUpdateListener("physicsProcessSequence", (packet) => {
+            if (packet.input) {
+                this.lastProcessedPhysicsSequence = packet.input.sequence;
+            }
+        });
 
         // PHYSICS DATA
 
@@ -242,6 +247,8 @@ class Player extends GameDataLinker {
 
         this._center._x = this.center.x;
         this._center._y = this.center.y;
+
+        this.client.setOutboundPacketData("lastProcessedPhysicsSequence", this.lastProcessedPhysicsSequence);
     }
 }
 

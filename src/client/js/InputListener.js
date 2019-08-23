@@ -21,7 +21,6 @@ export default class InputListener {
             sinCenter: 0,
         };
 
-        this._buffer = [];
         this._pendingInputs = [];
         this._allocatedCodes = [];
         this._sequence = 0;
@@ -29,6 +28,23 @@ export default class InputListener {
         this.listenTo(client);
     }
 
+    serverReconciliation(client) {
+        let pending = this._pendingInputs;
+        let j = 0;
+        while (j < pending.length) {
+            let input = pending[j];
+            if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
+                pending.splice(j, 1);
+            } else {
+                client.player.processReconciledInput(client, input);
+                j++;
+            }
+        }
+    }
+
+    onServerUpdate(client) {
+        this.serverReconciliation(client);
+    }
 
     onClientUpdate(client) {
         var now_ts = +new Date();

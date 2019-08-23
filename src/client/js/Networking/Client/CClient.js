@@ -65,9 +65,6 @@ export default class CClient {
             this.input._allocatedCodes.push(keyCode);
     }
 
-    get inputBufferArray() {
-        return this._inputListener._inputBuffer._buffer;
-    }
 
     setOutboundPacketData(key, value) {
         this._clientEmitPacket.set(key, value);

@@ -23,21 +23,13 @@ class InputReceiver {
                 this._mouseStates = input.mouseStates;
                 this._mouseData = input.mouseData;
                 for (let key in input.keyStates) {
-                    if (!input.predictionKeys) {
-                        this._keyStates[key] = input.keyStates[key];
-                        continue;
-                    }
-                    if (input.predictionKeys.includes(key)) {
-                        if (validateInput(input)) {
-                            this.applyInput(key, input.keyStates[key]);
-                            client.setOutboundPacketData(
-                                "lastProcessedInputSequence", input.sequence);
-                        }
-                    } else {
+                    if (validateInput(input)) {
+                        this.applyInput(key, input.keyStates[key]);
+                        client.setOutboundPacketData(
+                            "lastProcessedInputSequence", input.sequence);
                         this._keyStates[key] = input.keyStates[key];
                     }
                 }
-
             }
         });
     }

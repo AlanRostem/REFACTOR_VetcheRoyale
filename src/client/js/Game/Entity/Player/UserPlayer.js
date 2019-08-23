@@ -5,12 +5,12 @@ import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import CSharedImportJS from "../../../../../shared/code/CSharedImportJS.js";
 import {linearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import Scene from "../../Scene.js"
+import CompositePhysicsListener from "./CompositePhysicsListener.js";
 
 const TILE_SIZE = 8;
 const SMOOTHING_VALUE = 22;
 
 let TC = CSharedImportJS("shared/code/TileBased/TileCollider.js");
-
 
 // The player the client controls. It contains the client prediction code.
 export default class UserPlayer extends RemotePlayer {
@@ -33,6 +33,7 @@ export default class UserPlayer extends RemotePlayer {
         this._t_set = 0;
         this._dataBuffer._size = 2;
         this.CR_ID = "UserPlayer";
+        this._physicsProcessor = new CompositePhysicsListener();
     }
 
     overlapTile(e) {
@@ -81,7 +82,8 @@ export default class UserPlayer extends RemotePlayer {
         //this.interpolateY(Scene.deltaTime, client);
         this.updateServerX(dataPack);
         this.updateServerY(dataPack);
-        this.serverReconciliation(client);
+        client.input.onServerUpdate(client);
+        this._physicsProcessor.onServerUpdate(client);
     }
 
     updateServerX(dataPack) {
@@ -116,12 +118,14 @@ export default class UserPlayer extends RemotePlayer {
         });
 
         client.input.onClientUpdate(client);
+        this._physicsProcessor.onClientUpdate(client);
         this.physics(deltaTime, client, currentMap);
     }
 
     physics(deltaTime, client, currentMap) {
+        this._physicsProcessor.setPhysicsEvent("falling", false);
         if (!this._localSides.bottom) {
-            this._localVel.y += this._localGravity * deltaTime;
+            this._physicsProcessor.setPhysicsEvent("falling", true);
         }
 
         this._localSides.reset();
@@ -191,18 +195,11 @@ export default class UserPlayer extends RemotePlayer {
         }
     }
 
-    serverReconciliation(client) {
-        let pending = client.input.pending;
-        let j = 0;
-        while (j < pending.length) {
-            let input = pending[j];
-            if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
-                pending.splice(j, 1);
-            } else {
-                // TODO: Implement a separate reconciliation algorithm for physics certain events
-                this.processReconciledInput(client, input);
-                j++;
-            }
+
+
+    processReconciledPhysics(client, events) {
+        if (events["falling"]) {
+            this._localVel.y += this._localGravity * deltaTime;
         }
     }
 
@@ -242,17 +239,11 @@ TC.onload = self => {
                 entity._localVel.y = 0;
                 entity._output._pos._y = tile.y - entity._height;
                 entity._localSides.bottom = true;
-                if (entity._output._pos._x < 0) {
-                    entity._localVel._y = -entity._localVel._x;
-                }
             } else if (entity._output._pos._y + entity._height > steppingPosY) {
                 entity._jumping = false;
                 entity._localVel._y = 0;
                 entity._output._pos._y = steppingPosY - entity._height;
                 entity._localSides.bottom = true;
-                if (entity._localVel._x < 0) {
-                    entity._localVel._y = -entity._localVel._x;
-                }
             }
         }
     });
@@ -267,17 +258,11 @@ TC.onload = self => {
                 entity._localVel.y = 0;
                 entity._output._pos._y = tile.y - entity._height;
                 entity._localSides.bottom = true;
-                if (entity._localVel.x > 0) {
-                    entity._localVel.y = entity._localVel.x;
-                }
             } else if (entity._output._pos._y + entity._height > steppingPosY) {
                 entity._jumping = false;
                 entity._localVel.y = 0;
                 entity._output._pos._y = steppingPosY - entity._height;
                 entity._localSides.bottom = true;
-                if (entity._localVel.x > 0) {
-                    entity._localVel.y = entity._localVel.x;
-                }
             }
         }
     });

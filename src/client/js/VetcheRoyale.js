@@ -9,16 +9,18 @@ import typeCheck from "../../shared/code/Debugging/CtypeCheck.js";
 
 // This is the initialization entry point
 
-var client = new CClient(io());
-io = undefined; // Restricting console from using this function.
-var entityDataReceiver = new CEntityManager(client);
+(function () {
+    var client = new CClient(io());
+    io = undefined; // Restricting console from using this function.
+    var entityDataReceiver = new CEntityManager(client);
 
-window.FontMaking = FontMaking;
-window.AssetManager = AssetManager;
-AssetManager.queue("client/config/assets.cfg");
-FontMaking.queue();
+    window.FontMaking = FontMaking;
+    window.AssetManager = AssetManager;
+    AssetManager.queue("client/config/assets.cfg");
+    FontMaking.queue();
 
-R.setup();
+    R.setup();
 
-Scene.run(entityDataReceiver, client);
-console.log("Time it took to compile all .js files:", Math.abs(Date.now() - typeCheck.timeSinceStart) + "ms");
+    Scene.run(entityDataReceiver, client);
+    console.log("Time it took to compile all .js files:", Math.abs(Date.now() - typeCheck.timeSinceStart) + "ms");
+})();
