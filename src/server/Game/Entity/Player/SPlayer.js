@@ -49,10 +49,12 @@ class Player extends GameDataLinker {
             "_invWeaponID",
         ]);
 
-        this.addStaticSnapShotData([
-            "_statData"
-        ]);
+        this._teamData = {};
 
+        this.addStaticSnapShotData([
+            "_statData",
+            "_teamData"
+        ]);
 
         // PHYSICS DATA
 
@@ -144,6 +146,7 @@ class Player extends GameDataLinker {
             for (var id in this.team.players) {
                 if (id !== this.id) {
                     var p = this.team.players[id];
+                    this._teamData[id] = p.getDataPack();
                     if (this.overlapEntity(p) && !p._jumping) {
                         if (this.pos.y + this.height > p.pos.y && this._old.y + this.height <= p.pos.y) {
                             this.pos.y = p.pos.y - this.height;
