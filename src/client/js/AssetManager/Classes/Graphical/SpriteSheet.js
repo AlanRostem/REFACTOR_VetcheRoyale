@@ -114,8 +114,8 @@ export default class SpriteSheet {
             rect.x, rect.y, rect.w, rect.h,
             Math.round(!this.flipped ? x - this.centralOffset : -w + this.centralOffset / 2),
             Math.round(!this.flipped ? y - this.centralOffset : 0),
-            w, h
-        );
+            w, h);
+
         this.flipped = false;
     }
 }

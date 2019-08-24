@@ -1,3 +1,5 @@
+import ONMap from "../../../shared/code/DataStructures/CObjectNotationMap.js";
+
 class AssetManager {
 
     constructor() {
@@ -6,6 +8,12 @@ class AssetManager {
         this.cache = {};
         this.downloadQueue = [];
         this.downloadCallbacks = [];
+        this.onFileDownloadedCallbacks = new ONMap;
+
+    }
+
+    mapFilePathCallback(path, callback) {
+        this.onFileDownloadedCallbacks.set(path, callback);
     }
 
     loadJSON(path, loadedCallback, failureCallback) {
@@ -71,10 +79,16 @@ class AssetManager {
             switch (type) {
                 case "ogg":
                     var audio = new Audio();
+                    audio.testPath = path;
                     audio.addEventListener('canplaythrough', function () {
                         _this.successCount++;
                         if (_this.done()) {
                             downloadCallback();
+                        }
+
+                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                            _this.onFileDownloadedCallbacks.remove(this.testPath);
                         }
                     }, false);
 
@@ -90,10 +104,16 @@ class AssetManager {
                     break;
                 case "png":
                     var img = new Image();
+                    img.testPath = path;
                     img.addEventListener("load", function () {
                         _this.successCount++;
                         if (_this.done()) {
                             downloadCallback();
+                        }
+
+                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                            _this.onFileDownloadedCallbacks.remove(this.testPath);
                         }
                     }, false);
                     img.addEventListener("error", function () {
@@ -111,12 +131,17 @@ class AssetManager {
                         if (_this.done()) {
                             downloadCallback();
                         }
+                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                            _this.onFileDownloadedCallbacks.remove(this.testPath);
+                        }
                     }, () => {
                         _this.errorCount++;
                         if (_this.done()) {
                             downloadCallback();
                         }
                     });
+                    txt.testPath = path;
                     this.cache[path] = txt;
                     break;
                 default:

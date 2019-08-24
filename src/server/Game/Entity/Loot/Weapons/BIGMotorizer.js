@@ -1,5 +1,6 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Projectile = require("./AttackEntities/Projectile.js");
+const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 
 class MicroMissile extends Projectile {
     constructor(ownerID, x, y, cos, sin) {
@@ -32,6 +33,21 @@ class MicroMissile extends Projectile {
         this.vel.y = this._speed * Math.sin(this._trajectoryAngleY + theta);
     }
 
+    onTileHit(entityManager, deltaTime) {
+        super.onTileHit(entityManager, deltaTime);
+        this.dealDamage(entityManager);
+    }
+
+    onPlayerHit(player, entityManager) {
+        super.onPlayerHit(player, entityManager);
+        this.dealDamage(entityManager);
+
+    }
+
+    dealDamage(entityManager) {
+        new AOEDamage(this._ownerID, this.center.x, this.center.y, 8, 17)
+            .applyAreaOfEffect(this._ownerID, entityManager, entityManager.getEntity(this._ownerID).team.array);
+    }
 
 }
 
