@@ -47,6 +47,7 @@ class AssetManager {
                         for (var fun of _this.downloadCallbacks) {
                             fun();
                         }
+                        _this.downloadCallbacks = null;
                         console.log('%cThe program loaded in ' + (_this.successCount) + ' assets.', 'color: green; font-weight: bold;');
                         if (_this.errorCount > 0) console.error(_this.errorCount + " asset(s) failed to load.");
                     }, false);
@@ -133,6 +134,11 @@ class AssetManager {
     get(path) {
         if(this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
         return this.cache[path];
+    }
+
+    addPainting(img, key)
+    {
+        this.cache[key] = img;
     }
 
     addDownloadCallback(callback) {
