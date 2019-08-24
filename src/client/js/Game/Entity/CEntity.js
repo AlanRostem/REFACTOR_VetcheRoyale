@@ -3,6 +3,7 @@
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "../../Networking/Interpolation/EntitySnapshotBuffer.js";
+import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 export default class CEntity {
     constructor(initDataPack) {
@@ -53,3 +54,5 @@ export default class CEntity {
             this._output._pos._y, "Blue", true);
     }
 }
+
+CEntity.defaultSprite = new SpriteSheet("entity/entities.png");

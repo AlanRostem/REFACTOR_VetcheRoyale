@@ -5,6 +5,8 @@ const Loot = require("../Loot.js");
 class Bottle extends Loot {
     constructor(x, y) {
         super(x, y, true);
+        this._snapShotGenerator._snapShot.entityType = "Bottle";
+        this._type = "none";
     }
 }
 

@@ -10,7 +10,7 @@ class MicroMissile extends Projectile {
 class BIGMotorizer extends  AttackWeapon {
     constructor(x, y) {
         super(x, y, "B.I.G Motorizer", "rifle", 0, 10, 0, 2, 18, 0.4, 6, 0.05);
-        this.configureAttackStats(1.5, 36, 1, 120);
+        this.configureAttackStats(1.5, 36, 1, 320);
     }
 
     fire(player, entityManager, deltaTime) {
