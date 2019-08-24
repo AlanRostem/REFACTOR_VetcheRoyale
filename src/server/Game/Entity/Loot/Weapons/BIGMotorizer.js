@@ -9,7 +9,10 @@ class MicroMissile extends Projectile {
 
         this._speed = 160;
         this._theta = 0;
-        this._sign = 1;
+        this._time = 0;
+
+        this._freq = .3;
+        this._amp = .4;
     }
 
     update(entityManager, deltaTime) {
@@ -18,14 +21,8 @@ class MicroMissile extends Projectile {
     }
 
     calcTheta(deltaTime) {
-        let maxAngleAbs = Math.PI / 8 + Math.PI / 4 * Math.random();
-        let incr = Math.PI / 15;
-        this._theta += this._sign * incr;
-        if (this._theta < -maxAngleAbs) {
-            this._sign = 1;
-        } else if (this._theta > maxAngleAbs) {
-            this._sign = -1;
-        }
+        this._time--;
+        this._theta = Math.sin(this._time * this._freq) * this._amp;
         return this._theta;
     }
 
