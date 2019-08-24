@@ -13,7 +13,7 @@ export default class CPortal extends CEntity {
         CEntity.defaultSprite.animate("portal", this.animation, 16, 16);
         CEntity.defaultSprite.drawAnimated(
             pos._x + R.camera.x - 3,
-            pos._y + R.camera.y, 16, 16, "p");
+            pos._y + R.camera.y - 3, 16, 16, "p");
     }
 };
 
