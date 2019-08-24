@@ -14,6 +14,7 @@ export default class SpriteSheet {
         this.posRect = new SpriteSheet.Rect(0, 0, 0, 0);
         this.animRect = new SpriteSheet.Rect(0, 0, 1, 1);
         this.offsetTileRect = new SpriteSheet.Rect(0, 0, 0, 0);
+        this.centralOffset = 0;
     }
 
     // Map a name to a bounding rect on the sprite

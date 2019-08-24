@@ -9,7 +9,6 @@ class AssetManager {
         this.downloadQueue = [];
         this.downloadCallbacks = [];
         this.onFileDownloadedCallbacks = new ONMap;
-
     }
 
     mapFilePathCallback(path, callback) {
