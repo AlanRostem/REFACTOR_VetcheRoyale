@@ -8,8 +8,12 @@ class Portal extends Interactable {
         super(x, y, 10, 16);
         this._frameColor = frameColor;
         this._destination = destinationPos;
+        this._pairData = null;
         this.addStaticSnapShotData([
             "_frameColor",
+        ]);
+        this.addDynamicSnapShotData([
+            "_pairData"
         ]);
         this._link = null;
     }
@@ -19,6 +23,7 @@ class Portal extends Interactable {
         this.setDestination(portal.center);
         portal._link = this;
         this._link = portal;
+        this._pairData = portal.getDataPack();
     }
 
     setDestination(pos) {
