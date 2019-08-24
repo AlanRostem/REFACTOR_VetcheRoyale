@@ -17,6 +17,13 @@ export default class CWeapon extends CEntity {
                 CWeapon.sprite.drawStill(name,
                     pos._x - rect.w / 2 + R.camera.x,
                     pos._y + R.camera.y - Math.abs(rect.h - h));
+            } else {
+                let pos = this.getRealtimeProperty("_pos");
+                let h = this.getRealtimeProperty("_height");
+                rect = CWeapon.sprite.offsetRects.get("none");
+                CWeapon.sprite.drawStill("none",
+                    pos._x - rect.w / 2 + R.camera.x,
+                    pos._y + R.camera.y - Math.abs(rect.h - h));
             }
         }
     }
@@ -24,4 +31,4 @@ export default class CWeapon extends CEntity {
 
 CWeapon.sprite = new SpriteSheet("entity/guns.png");
 CWeapon.sprite.bind("KE-6H-World", 64, 37, 28, 11);
-CWeapon.sprite.bind("B.I.G Motorizer-World", 64, 52, 27, 12);
+CWeapon.sprite.bind("none", 64, 52, 27, 12);

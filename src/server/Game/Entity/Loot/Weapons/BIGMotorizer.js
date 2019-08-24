@@ -11,8 +11,8 @@ class MicroMissile extends Projectile {
         this._theta = 0;
         this._time = 0;
 
-        this._freq = .3;
-        this._amp = .4;
+        this._freq = .4;
+        this._amp = .4 + .5 * Math.random();
     }
 
     update(entityManager, deltaTime) {
