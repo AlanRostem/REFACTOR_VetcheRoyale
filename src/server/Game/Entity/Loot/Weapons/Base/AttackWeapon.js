@@ -12,22 +12,26 @@ class AttackWeapon extends WeaponItem {
     constructor(x, y,
                 displayName, weaponClass = "pistol",
                 modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15,
+                spread = 0, recoil = 0, accurator = 0,
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
         super(x, y, displayName, weaponClass);
         this._modAbility = new ModAbility(modDuration, modCoolDown);
         this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
         this._superCharge = 0;
         this._modCoolDown = 0;
-        this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay);
+        this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
         this._firing = false;
         this._holdingDownFireButton = false;
+        this._spreadAngle = 0;
         this._canUseSuper = true;
         this._canUseMod = true;
+        this._canFire = true;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
             "_modCoolDown",
-            "_currentAmmo"
+            "_currentAmmo",
+            "_spreadAngle",
         ]);
     }
 
@@ -85,8 +89,6 @@ class AttackWeapon extends WeaponItem {
         this._fireRate = fireRateRPM;
         this._currentFireTime = 0;
         this._reloading = false;
-
-
     }
 
     // Happens when the player drops the weapon. Good for resetting
@@ -106,10 +108,17 @@ class AttackWeapon extends WeaponItem {
                 angle, 200));
     }
 
+    configureAccuracy(spread, recoil, accurator) {
+        this._firerer._recoil = recoil;
+        this._firerer._defaultSpread = spread;
+        this._firerer._accurator = accurator;
+    }
+
     // Called when pressing the reload key.
     activateReloadAction() {
         if (this._currentAmmo < this._maxAmmo) {
             this._reloading = true;
+            this._canFire = false;
             this._currentReloadTime = this._maxReloadTime;
         }
     }
@@ -121,9 +130,11 @@ class AttackWeapon extends WeaponItem {
                 let ammoDiff = this._maxAmmo - this._currentAmmo;
                 this._currentAmmo += ammoDiff;
                 player.inventory.ammo -= ammoDiff;
+                this._canFire = true;
             } else {
                 this._currentAmmo += player.inventory.ammo;
                 player.inventory.ammo = 0;
+                this._canFire = true;
             }
         }
     }
@@ -159,6 +170,7 @@ class AttackWeapon extends WeaponItem {
     // Looping function that is called when the player has
     // picked up the weapon.
     updateWhenEquipped(player, entityManager, deltaTime) {
+        this._canFire = this._currentAmmo > 0;
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.listenToInput(player, entityManager, deltaTime);
         this._modAbility.update(this, entityManager, deltaTime);

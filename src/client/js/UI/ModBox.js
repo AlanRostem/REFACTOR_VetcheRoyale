@@ -13,7 +13,7 @@ export default class ModBox extends UIElement {
 
     }
 
-    update(client, entityList) {
+    update(deltaTime, client, entityList) {
         if (client.player) {
             var gun = entityList.getEntityByID(client.player.output._invWeaponID);
             gun ? this.hasWeapon = true : this.hasWeapon = false;

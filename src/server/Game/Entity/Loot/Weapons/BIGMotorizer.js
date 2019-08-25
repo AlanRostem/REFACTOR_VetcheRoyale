@@ -3,7 +3,7 @@ const Projectile = require("./AttackEntities/Projectile.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 
 class MicroMissile extends Projectile {
-    constructor(ownerID, x, y, angle, harmonic = true) {
+    constructor(ownerID, x, y, angle, entityManager, harmonic = true) {
         super(ownerID, x, y, 2, 2, angle, 150);
         this._trajectoryAngle = angle;
 
@@ -15,6 +15,9 @@ class MicroMissile extends Projectile {
         this._amp = .4 + .5 * Math.random();
 
         this._harmonic = harmonic;
+        this.exceptions = entityManager.getEntity(this._ownerID).team.array
+
+
     }
 
     update(entityManager, deltaTime) {
@@ -50,17 +53,19 @@ class MicroMissile extends Projectile {
 
     dealDamage(entityManager) {
         new AOEDamage(this._ownerID, this.center.x, this.center.y, 8, 17)
-            .applyAreaOfEffect(this._ownerID, entityManager, entityManager.getEntity(this._ownerID).team.array);
+            .applyAreaOfEffect(this._ownerID, entityManager, this.exceptions);
     }
 
 }
 
 class BIGMotorizer extends AttackWeapon {
     constructor(x, y) {
-        super(x, y, "B.I.G Motorizer", "rifle", 0, 10, 0,
-            50, //Charge gain
-            18, 0.4, 6, 0.05);
-        this._minFireRate = 120;
+        super(x, y, "B.I.G Motorizer", "rifle", 0, 10, 0, 50, 15,
+            5 * Math.PI / 180,
+             Math.PI / 180,
+            0.07 * Math.PI / 180,
+            0.5, 6, 0.05);
+        this._minFireRate = 100;
         this.configureAttackStats(1.5, 36, 1, this._minFireRate);
         this._upgradeStage = 0;
     }
@@ -68,9 +73,14 @@ class BIGMotorizer extends AttackWeapon {
     onSuperActivation(entityManager, deltaTime) {
         if (this._upgradeStage >= 4) {
             this._currentAmmo = this._maxAmmo;
+            this._reloading = false;
+            this._currentReloadTime = 0;
             return;
         }
         this._upgradeStage++;
+        if (this._upgradeStage === 1) {
+            this._firerer._recoil = 0;
+        }
         if (this._upgradeStage >= 2) {
             this._firerer._maxChargeTime = 0;
             this._firerer._maxBurstCount = 0;
@@ -80,7 +90,7 @@ class BIGMotorizer extends AttackWeapon {
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player.id, 0, 0,
-                angle, this._upgradeStage < 1));
+                angle, entityManager, this._upgradeStage < 1));
     }
 
     activateReloadAction() {

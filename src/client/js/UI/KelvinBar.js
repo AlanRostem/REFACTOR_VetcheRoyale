@@ -22,7 +22,7 @@ export default class KelvinBar extends UIElement {
         this.hasWeapon = false;
     }
 
-    update(client, entityList) {
+    update(deltaTime, client, entityList) {
 
         if (client.player) {
             var gun = entityList.getEntityByID(client.player.output._invWeaponID);

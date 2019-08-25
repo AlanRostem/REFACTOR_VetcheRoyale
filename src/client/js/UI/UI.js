@@ -26,9 +26,9 @@ const UI = {
         delete UI.elements[element.id];
     },
 
-    update(client, entityList) {
+    update(deltaTime, client, entityList) {
         for (var key in UI.elements) {
-            UI.elements[key].update(client, entityList);
+            UI.elements[key].update(deltaTime, client, entityList);
         }
     },
 

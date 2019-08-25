@@ -5,21 +5,23 @@ import ObjectNotationMap from "../../../shared/code/DataStructures/CObjectNotati
 
 export default class MiniMap extends UIElement {
     constructor() {
-        super("minimap", R.WIDTH - 33, 1, 1, 1);
+        super("minimap", R.WIDTH - 36, 4, 1, 1);
         this.p_Pos = {_x: 0, _y: 0};
         this.tiles = 32;
 
-        this.images = new ObjectNotationMap();
         AssetManager.addDownloadCallback(() => {
             for (var key in Scene.tileMaps.getAllMaps()) {
                 var tileMap = Scene.tileMaps.getAllMaps()[key];
-                this.images.set(tileMap._name, this.paintImage(tileMap));
+                //this.images.set(tileMap._name, this.paintImage(tileMap));
+                AssetManager.addPainting(this.paintImage(tileMap), tileMap._name);
             }
         });
     }
 
+
     paintImage(tileMap) {
         var map = {
+            name: tileMap._name,
             array: [],
             tileSizeW: (tileMap.w / this.tiles),
             tileSizeH: (tileMap.h / this.tiles)
@@ -33,7 +35,6 @@ export default class MiniMap extends UIElement {
         for (var k = 0; k < this.tiles; k++) {
             map.array.push(new Array(this.tiles).fill(0))
         }
-        console.log(map);
 
         for (var i = 0; i < tileMap.h; i++) {
             for (var j = 0; j < tileMap.w; j++) {
@@ -62,24 +63,29 @@ export default class MiniMap extends UIElement {
         return {canvas: canvas, mapInfo: map};
     }
 
-
     posOnMap(pos) {
-        return {
-            _x: pos._x / this.images.get(Scene._currentMap).mapInfo.tileSizeW / 8 | 0,
-            _y: pos._y / this.images.get(Scene._currentMap).mapInfo.tileSizeH / 8 | 0
-        }
+
+        var x = pos._x / (Scene.getCurrentTileMap().w * AssetManager.get(Scene._currentMap).mapInfo.tileSizeW) | 0;
+        var y = pos._y / (Scene.getCurrentTileMap().h * AssetManager.get(Scene._currentMap).mapInfo.tileSizH) | 0;
+
+        return {_x: x, _y: y};
     }
 
 
-    update(client, entityList) {
-        this.pos.x = R.WIDTH - 33;
-        if (client.player)
+    update(deltaTime, client, entityList) {
+        this.pos.x = R.WIDTH - 36;
+        if (client.player) {
             this.p_Pos = this.posOnMap(client.player._output._pos);
+            console.log(this.p_Pos);
+
+        }
+        //TODO: Get image only when map change
     }
 
     draw() {
         R.ctx.drawImage(
-            this.images.get(Scene._currentMap).canvas,
+            //this.images.get(Scene._currentMap).canvas,
+            AssetManager.get(Scene._currentMap).canvas,
             this.pos.x,
             this.pos.y,
             this.tiles * 8,
