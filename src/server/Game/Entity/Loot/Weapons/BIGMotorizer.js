@@ -75,7 +75,6 @@ class BIGMotorizer extends AttackWeapon {
             this._firerer._maxChargeTime = 0;
             this._firerer._maxBurstCount = 0;
         }
-        console.log(this._upgradeStage)
     }
 
     fire(player, entityManager, deltaTime) {
