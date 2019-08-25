@@ -100,12 +100,10 @@ class AttackWeapon extends WeaponItem {
     // Overridable method for when the weapon fires.
     // Is called at the rate of fire. Spawn any damaging
     // entity or call hit-scans depending on the weapon idea.
-    fire(player, entityManager, deltaTime) {
+    fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new Projectile(player.id, 0, 0, 2, 2,
-                player.input.mouseData.cosCenter,
-                player.input.mouseData.sinCenter,
-                200))
+                angle, 200));
     }
 
     // Called when pressing the reload key.

@@ -26,8 +26,8 @@ class AOEKnockBackDamage extends AOEDamage {
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
-    constructor(ownerID, weaponID, x, y, cos, sin, entityManager) {
-        super(ownerID, x, y, 2, 2, cos, sin, 120, 0);
+    constructor(ownerID, weaponID, x, y, angle, entityManager) {
+        super(ownerID, x, y, 2, 2, angle, 120, 0);
         this._hits = 4;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30, ownerID);
@@ -87,11 +87,10 @@ class KE_6H extends AttackWeapon {
         super.update(entityManager, deltaTime);
     }
 
-    fire(player, entityManager, deltaTime) {
+    fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(player.id, this.id, 0, 0,
-                player.input.mouseData.cosCenter,
-                player.input.mouseData.sinCenter, entityManager));
+                angle, entityManager));
     }
 
 }

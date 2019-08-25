@@ -5,12 +5,12 @@ const TileCollider = require("../../../../TileBased/TileCollider.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
-    constructor(ownerID, x, y, w, h, cos, sin, speed, arc = 0, shouldRemove = true) {
+    constructor(ownerID, x, y, w, h, angle, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
         this._ownerID = ownerID;
         this._shouldRemove = shouldRemove;
-        this.vel.x = cos * speed;
-        this.vel.y = sin * speed;
+        this.vel.x = Math.cos(angle) * speed;
+        this.vel.y = Math.sin(angle)* speed;
         this._hitTile = false;
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
@@ -78,8 +78,9 @@ class Projectile extends Physical {
     }
 
 }
-TileCollider.createCollisionResponse("Projectile", "ONE_WAY",       "Y");
-TileCollider.createCollisionResponse("Projectile", "SLOPE_UP_LEFT",     "Y");
+
+TileCollider.createCollisionResponse("Projectile", "ONE_WAY", "Y");
+TileCollider.createCollisionResponse("Projectile", "SLOPE_UP_LEFT", "Y");
 TileCollider.createCollisionResponse("Projectile", "SLOPE_UP_RIGHT", "Y");
 
 

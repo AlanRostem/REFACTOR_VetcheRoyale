@@ -16,9 +16,14 @@ class Firerer {
         this.firingUpdate(weapon, player, entityManager, deltaTime);
     }
 
+    getRecoilAngle(weapon, player, deltaTime) {
+        return player.input.mouseData.angleCenter;
+    }
+
     doSingleFire(weapon, player, entityManager, deltaTime) {
+        let angle = this.getRecoilAngle(weapon, player, deltaTime);
         if (weapon._currentAmmo >= weapon._ammoPerShot) {
-            weapon.fire(player, entityManager, deltaTime);
+            weapon.fire(player, entityManager, deltaTime, angle);
             weapon._firing = true;
             weapon._currentAmmo -= weapon._ammoPerShot;
         } else if (player.inventory.ammo > 0) {

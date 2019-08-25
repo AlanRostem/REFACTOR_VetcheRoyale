@@ -3,10 +3,9 @@ const Projectile = require("./AttackEntities/Projectile.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 
 class MicroMissile extends Projectile {
-    constructor(ownerID, x, y, cos, sin, harmonic = true) {
-        super(ownerID, x, y, 2, 2, cos, sin, 150);
-        this._trajectoryAngleX = Math.acos(cos);
-        this._trajectoryAngleY = Math.asin(sin);
+    constructor(ownerID, x, y, angle, harmonic = true) {
+        super(ownerID, x, y, 2, 2, angle, 150);
+        this._trajectoryAngle = angle;
 
         this._speed = 160;
         this._theta = 0;
@@ -34,8 +33,8 @@ class MicroMissile extends Projectile {
         if (this._harmonic) {
             theta = this.calcTheta(deltaTime);
         }
-        this.vel.x = this._speed * Math.cos(this._trajectoryAngleX + theta);
-        this.vel.y = this._speed * Math.sin(this._trajectoryAngleY + theta);
+        this.vel.x = this._speed * Math.cos(this._trajectoryAngle + theta);
+        this.vel.y = this._speed * Math.sin(this._trajectoryAngle + theta);
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -78,11 +77,10 @@ class BIGMotorizer extends AttackWeapon {
         }
     }
 
-    fire(player, entityManager, deltaTime) {
+    fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player.id, 0, 0,
-                player.input.mouseData.cosCenter,
-                player.input.mouseData.sinCenter, this._upgradeStage < 1));
+                angle, this._upgradeStage < 1));
     }
 
     activateReloadAction() {
