@@ -12,22 +12,25 @@ class AttackWeapon extends WeaponItem {
     constructor(x, y,
                 displayName, weaponClass = "pistol",
                 modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15,
+                spread = 0, recoil = 0, accurator = 0,
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
         super(x, y, displayName, weaponClass);
         this._modAbility = new ModAbility(modDuration, modCoolDown);
         this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
         this._superCharge = 0;
         this._modCoolDown = 0;
-        this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay);
+        this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
         this._firing = false;
         this._holdingDownFireButton = false;
+        this._spreadAngle = 0;
         this._canUseSuper = true;
         this._canUseMod = true;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
             "_modCoolDown",
-            "_currentAmmo"
+            "_currentAmmo",
+            "_spreadAngle",
         ]);
     }
 
@@ -104,6 +107,12 @@ class AttackWeapon extends WeaponItem {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new Projectile(player.id, 0, 0, 2, 2,
                 angle, 200));
+    }
+
+    configureAccuracy(spread, recoil, accurator) {
+        this._firerer._recoil = recoil;
+        this._firerer._defaultSpread = spread;
+        this._firerer._accurator = accurator;
     }
 
     // Called when pressing the reload key.
