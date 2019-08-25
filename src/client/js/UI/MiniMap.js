@@ -65,8 +65,8 @@ export default class MiniMap extends UIElement {
 
     posOnMap(pos) {
 
-        var x = pos._x / (Scene.getCurrentTileMap().w * AssetManager.get(Scene._currentMap).mapInfo.tileSizeW) | 0;
-        var y = pos._y / (Scene.getCurrentTileMap().h * AssetManager.get(Scene._currentMap).mapInfo.tileSizH) | 0;
+        var x = pos._x / 8 / AssetManager.get(Scene._currentMap).mapInfo.tileSizeW | 0;
+        var y = pos._y / 8 / AssetManager.get(Scene._currentMap).mapInfo.tileSizeH | 0;
 
         return {_x: x, _y: y};
     }
@@ -76,8 +76,6 @@ export default class MiniMap extends UIElement {
         this.pos.x = R.WIDTH - 36;
         if (client.player) {
             this.p_Pos = this.posOnMap(client.player._output._pos);
-            console.log(this.p_Pos);
-
         }
         //TODO: Get image only when map change
     }

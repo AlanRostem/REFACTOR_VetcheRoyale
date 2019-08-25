@@ -4,58 +4,65 @@ import CTimer from "../../../shared/code/Tools/CTimer.js";
 
 export default class Announcement extends UIElement {
     constructor() {
-        super("announcement", R.WIDTH / 2 - 64, 4, 128, 16);
+        super("announcement", R.WIDTH / 2 - 64 | 0, 4, 128, 16);
         this._color = "Red";
         this._queue = [];
-        this.element = undefined;
+        this._elm = undefined;
 
-        this._timer = new CTimer(0.03, () => {
-            if (this.element !== undefined)
-                this.element._x--;
-
+        this._timer = new CTimer(0.3, () => {
+            if (this._elm !== undefined)
+                this._elm._x -= 5;
         }, true);
 
-        this.add("test", "Blue");
-        this.add("test2", "Blue");
-        this.addPriority("Removing elements from a JavaScript array is a common programming paradigm that developers often run into. As with a lot of things JavaScript, this isn’t as simple as it probably should be.", "Blue");
+        this.add("TestTestTest", "Blue");
+        this.add("TestTestTest", "Blue");
+        this.addPriority("The substr() method extracts parts of a string, beginning at the character at the specified position, and returns the specified number of characters.", "Blue");
     }
-
 
     addPriority(string, color) {
         this._queue.unshift({
             _string: string,
             _color: color,
-            _x: this.pos.x + this.width
+            _x: this.width
         });
     }
-
 
     add(string, color) {
         this._queue.push({
+            _dString: "",
             _string: string,
             _color: color,
-            _x: this.pos.x + this.width
+            _x: this.width
         });
     }
 
-
     updateQueue() {
-        if (this._queue.length !== 0 && this.element === undefined)
-            this.element = this._queue.shift();
+        if (this._queue.length !== 0 && this._elm === undefined)
+            this._elm = this._queue.shift();
     }
 
+    updateElm() {
+        if (this._elm !== undefined) {
+            this._elm._dString = this._elm._string.substring(
+                this._elm._x < 0 ? -this._elm._x / 5 | 0 : 0,
+                (this.width - this._elm._x) / 5 | 0);
+
+            if (this._elm._x + this._elm._string.length * 5 - 1 <= 0)
+                delete this._elm;
+        }
+    }
 
     update(deltaTime, client, entityList) {
+        this.pos.x = R.WIDTH / 2 - 64 | 0;
         this.updateQueue();
+        this.updateElm();
         this._timer.tick(deltaTime);
     }
 
     draw() {
-
-        if (this.element !== undefined) {
-            R.drawText(this.element._string, this.element._x, this.pos.y + 5, this.element._color);
+        if (this._elm !== undefined) {
+            R.drawText(this._elm._dString, this._elm._x > 0 ? this.pos.x + this._elm._x : this.pos.x, this.pos.y + 5, this._elm._color);
         }
-
 
         R.ctx.save();
         R.ctx.strokeStyle = this._color;
