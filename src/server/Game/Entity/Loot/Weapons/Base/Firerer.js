@@ -19,6 +19,7 @@ class Firerer {
     doSingleFire(weapon, player, entityManager, deltaTime) {
         if (weapon._currentAmmo >= weapon._ammoPerShot) {
             weapon.fire(player, entityManager, deltaTime);
+            weapon._firing = true;
             weapon._currentAmmo -= weapon._ammoPerShot;
         } else if (player.inventory.ammo > 0) {
             weapon.activateReloadAction();
@@ -26,6 +27,7 @@ class Firerer {
     }
 
     firingUpdate(weapon, player, entityManager, deltaTime) {
+        weapon._firing = false;
         // Can spam the mouse but the weapon always fires at the
         // same designated rate of fire.
         if (!this._queueBurst) {
@@ -37,6 +39,8 @@ class Firerer {
         // Checks for mouse down and fires automatically when
         // clip size is more than zero. Otherwise it reloads.
         if (player.input.mouseHeldDown(1)) {
+            weapon.onFireButton(entityManager, deltaTime);
+            weapon._holdingDownFireButton = true;
             if (this._maxChargeTime > 0) { // Check if we have charge mode on
                 if (this._chargeTime > 0) {
                     this._chargeTime -= deltaTime;
@@ -47,7 +51,7 @@ class Firerer {
                     } else {
                         this.doSingleFire(weapon, player, entityManager, deltaTime);
                     }
-                    weapon._currentFireTime = (1 / deltaTime) / weapon._fireRate;
+                    weapon._currentFireTime = 60 / weapon._fireRate;
                 }
             } else {
                 if (weapon._currentFireTime <= 0 && !weapon._reloading) {
@@ -56,10 +60,11 @@ class Firerer {
                     } else {
                         this.doSingleFire(weapon, player, entityManager, deltaTime);
                     }
-                    weapon._currentFireTime = (1 / deltaTime) / weapon._fireRate;
+                    weapon._currentFireTime = 60 / weapon._fireRate;
                 }
             }
         } else {
+            weapon._holdingDownFireButton = false;
             if (this._maxChargeTime > 0) {
                 if (this._chargeTime < this._maxChargeTime) {
                     this._chargeTime += deltaTime / 4;

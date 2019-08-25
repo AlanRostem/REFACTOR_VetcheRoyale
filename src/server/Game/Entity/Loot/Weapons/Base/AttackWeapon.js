@@ -19,6 +19,8 @@ class AttackWeapon extends WeaponItem {
         this._superCharge = 0;
         this._modCoolDown = 0;
         this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay);
+        this._firing = false;
+        this._holdingDownFireButton = false;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
@@ -42,6 +44,14 @@ class AttackWeapon extends WeaponItem {
         }
     }
 
+    onSuperActivation(entityManager, deltaTime) {
+
+    }
+
+    onModActivation(entityManager, deltaTime) {
+
+    }
+
     // Override to new ability object
     setModAbility(overridden) {
         this._modAbility = overridden;
@@ -50,6 +60,10 @@ class AttackWeapon extends WeaponItem {
     // Override to new ability object
     setSuperAbility(overridden) {
         this._superAbility = overridden;
+    }
+
+    onFireButton(entityManager, deltaTime) {
+
     }
 
     // When the player gets a kill, this function is called.
@@ -130,8 +144,10 @@ class AttackWeapon extends WeaponItem {
 
         // Reload when inventory ammo is over zero.
         if (player.input.singleKeyPress(82)) {
-            if (player.inventory.ammo > 0) {
-                this.activateReloadAction();
+            if (!player.input.mouseHeldDown(1)) {
+                if (player.inventory.ammo > 0) {
+                    this.activateReloadAction();
+                }
             }
         }
     }
