@@ -55,8 +55,9 @@ class HitScanner {
         b.x = endPos.x;
         b.y = endPos.y;
 
-        var width = Math.floor(this._qtRange.w * 2 / tileMap.tileSize);
-        var height = Math.floor(this._qtRange.h * 2 / tileMap.tileSize);
+        var d = Vector2D.distance(originPos, endPos);
+        var height;
+        var width = height = Math.floor(d / tileMap.tileSize);
 
         var startX = Math.floor(a.x / tileMap.tileSize - width / 2);
         var startY = Math.floor(a.y / tileMap.tileSize - height / 2);

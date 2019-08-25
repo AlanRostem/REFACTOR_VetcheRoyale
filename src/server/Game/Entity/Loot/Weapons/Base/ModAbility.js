@@ -36,6 +36,7 @@ class ModAbility {
                 this._onCoolDown = false;
             }
         }
+        composedWeapon._canUseMod = !this._active || !this._onCoolDown;
     }
 
     // Callback when deactivating the ability.

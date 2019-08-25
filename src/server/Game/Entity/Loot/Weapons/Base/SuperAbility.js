@@ -39,6 +39,7 @@ class SuperAbility {
                 this._fullyCharged = true;
             }
         }
+        composedWeapon._canUseSuper = !this._active;
     }
 
     // Callback when deactivating the ability.

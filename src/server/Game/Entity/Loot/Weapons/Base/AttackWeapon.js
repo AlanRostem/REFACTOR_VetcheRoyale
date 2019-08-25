@@ -21,6 +21,8 @@ class AttackWeapon extends WeaponItem {
         this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay);
         this._firing = false;
         this._holdingDownFireButton = false;
+        this._canUseSuper = true;
+        this._canUseMod = true;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
@@ -135,11 +137,15 @@ class AttackWeapon extends WeaponItem {
         this._firerer.update(this, player, entityManager, deltaTime);
 
         if (player.input.singleMousePress(3)) {
-            this._modAbility.activate(this, entityManager, deltaTime);
+            if (this._canUseMod) {
+                this._modAbility.activate(this, entityManager, deltaTime);
+            }
         }
 
         if (player.input.singleKeyPress(81)) {
-            this._superAbility.activate(this, entityManager, deltaTime);
+            if (this._canUseSuper) {
+                this._superAbility.activate(this, entityManager, deltaTime);
+            }
         }
 
         // Reload when inventory ammo is over zero.
