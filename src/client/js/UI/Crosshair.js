@@ -15,7 +15,6 @@ export default class CrossHair extends UIElement {
         let weapon = entityList.getEntityByID(client.player.getRealtimeProperty("_invWeaponID"));
         if (weapon) {
             this.gap = Math.floor(weapon.getRealtimeProperty("_spreadAngle") * 50);
-            console.log(this.gap, weapon.getRealtimeProperty("_spreadAngle"))
         }
     }
 
