@@ -58,12 +58,20 @@ export default class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
+        if (this._weapon) {
+            if (this._weapon.getRealtimeProperty("_modCoolDown") > 0) {
+                R.drawText(this._weapon.getRealtimeProperty("_modCoolDown") | 0,
+                    this._output._pos._x,
+                    this._output._pos._y - 9, "White", true);
+            }
+        }
         //this.t_drawGhost();
     }
 
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this._currentMap = currentMap;
+        this._weapon = Scene.entities.getEntityByID(this._output._invWeaponID);
         //console.log(Date.now() - client._latency, this._serverState.serverTimeStamp);
         /*
         let t = client._latency / 1000;

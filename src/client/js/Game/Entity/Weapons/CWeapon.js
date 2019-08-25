@@ -1,6 +1,7 @@
 import CEntity from "../CEntity.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
+import CVector2D from "../../../../../shared/code/Math/CVector2D.js";
 
 export default class CWeapon extends CEntity {
     constructor(data) {
