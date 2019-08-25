@@ -73,6 +73,8 @@ class BIGMotorizer extends AttackWeapon {
     onSuperActivation(entityManager, deltaTime) {
         if (this._upgradeStage >= 4) {
             this._currentAmmo = this._maxAmmo;
+            this._reloading = false;
+            this._currentReloadTime = 0;
             return;
         }
         this._upgradeStage++;
