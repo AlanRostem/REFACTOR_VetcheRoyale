@@ -39,6 +39,7 @@ class SuperAbility {
                 this._fullyCharged = true;
             }
         }
+        composedWeapon._canUseSuper = !this._active;
     }
 
     // Callback when deactivating the ability.
@@ -60,6 +61,7 @@ class SuperAbility {
     activate(composedWeapon, entityManager, deltaTime) {
         if (!this._active && this._fullyCharged) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
+            composedWeapon.onSuperActivation(entityManager, deltaTime);
             this._currentDuration = this._maxDuration;
             this._currentCharge = 0;
             this._fullyCharged = false;

@@ -2,6 +2,7 @@ import CEntity from "../CEntity.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
 import AnimationManager from "../../../AssetManager/Classes/Graphical/AnimationManager.js";
+import AssetManager from "../../../AssetManager/AssetManager.js"
 
 // Other players in the game
 
@@ -24,8 +25,6 @@ export default class RemotePlayer extends CEntity {
         this._output._center._y = this._output._pos._y + this._height / 2;
     }
 
-
-
     draw() {
         this.animations.animate(RemotePlayer.sprite, this.output._teamName, 16, 16);
         SpriteSheet.beginChanges();
@@ -40,6 +39,11 @@ export default class RemotePlayer extends CEntity {
 }
 
 RemotePlayer.sprite = new SpriteSheet("entity/player.png");
+
+AssetManager.mapFilePathCallback("entity/player.png", cache => {
+    console.log("GG we loaded in entity/player.png");
+});
+
 RemotePlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
 RemotePlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);
 RemotePlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);

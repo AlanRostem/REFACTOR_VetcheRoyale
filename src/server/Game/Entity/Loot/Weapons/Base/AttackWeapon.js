@@ -19,6 +19,10 @@ class AttackWeapon extends WeaponItem {
         this._superCharge = 0;
         this._modCoolDown = 0;
         this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay);
+        this._firing = false;
+        this._holdingDownFireButton = false;
+        this._canUseSuper = true;
+        this._canUseMod = true;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
@@ -42,6 +46,14 @@ class AttackWeapon extends WeaponItem {
         }
     }
 
+    onSuperActivation(entityManager, deltaTime) {
+
+    }
+
+    onModActivation(entityManager, deltaTime) {
+
+    }
+
     // Override to new ability object
     setModAbility(overridden) {
         this._modAbility = overridden;
@@ -50,6 +62,10 @@ class AttackWeapon extends WeaponItem {
     // Override to new ability object
     setSuperAbility(overridden) {
         this._superAbility = overridden;
+    }
+
+    onFireButton(entityManager, deltaTime) {
+
     }
 
     // When the player gets a kill, this function is called.
@@ -84,12 +100,10 @@ class AttackWeapon extends WeaponItem {
     // Overridable method for when the weapon fires.
     // Is called at the rate of fire. Spawn any damaging
     // entity or call hit-scans depending on the weapon idea.
-    fire(player, entityManager, deltaTime) {
+    fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new Projectile(player.id, 0, 0, 2, 2,
-                player.input.mouseData.cosCenter,
-                player.input.mouseData.sinCenter,
-                200))
+                angle, 200));
     }
 
     // Called when pressing the reload key.
@@ -121,17 +135,23 @@ class AttackWeapon extends WeaponItem {
         this._firerer.update(this, player, entityManager, deltaTime);
 
         if (player.input.singleMousePress(3)) {
-            this._modAbility.activate(this, entityManager, deltaTime);
+            if (this._canUseMod) {
+                this._modAbility.activate(this, entityManager, deltaTime);
+            }
         }
 
         if (player.input.singleKeyPress(81)) {
-            this._superAbility.activate(this, entityManager, deltaTime);
+            if (this._canUseSuper) {
+                this._superAbility.activate(this, entityManager, deltaTime);
+            }
         }
 
         // Reload when inventory ammo is over zero.
         if (player.input.singleKeyPress(82)) {
-            if (player.inventory.ammo > 0) {
-                this.activateReloadAction();
+            if (!player.input.mouseHeldDown(1)) {
+                if (player.inventory.ammo > 0) {
+                    this.activateReloadAction();
+                }
             }
         }
     }

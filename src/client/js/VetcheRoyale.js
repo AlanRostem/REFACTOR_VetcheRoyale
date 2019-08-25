@@ -15,5 +15,4 @@ window.AssetManager = AssetManager;
 AssetManager.queue("client/config/assets.cfg");
 
 R.setup();
-
 Scene.run(entityDataReceiver, client);

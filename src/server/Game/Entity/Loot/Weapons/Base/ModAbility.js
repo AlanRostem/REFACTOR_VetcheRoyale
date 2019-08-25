@@ -18,6 +18,8 @@ class ModAbility {
         this._maxCoolDown = coolDown;
     }
 
+
+
     update(composedWeapon, entityManager, deltaTime) {
         if (this._active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
@@ -34,6 +36,7 @@ class ModAbility {
                 this._onCoolDown = false;
             }
         }
+        composedWeapon._canUseMod = !this._active || !this._onCoolDown;
     }
 
     // Callback when deactivating the ability.
@@ -57,6 +60,7 @@ class ModAbility {
     activate(composedWeapon, entityManager, deltaTime) {
         if (!this._active && !this._onCoolDown) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
+            composedWeapon.onModActivation(entityManager, deltaTime);
             this._currentDuration = this._maxDuration;
             this._active = true;
         }

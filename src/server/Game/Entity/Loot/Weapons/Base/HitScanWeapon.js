@@ -38,10 +38,10 @@ class HitScanWeapon extends AttackWeapon {
 
     // Scans the map geometry and entities in proximity
     // obtained from the game world quad tree
-    fire(player, entityManager, deltaTime) {
-        super.fire(player, entityManager, deltaTime);
-        this._endFirePos.x = this.center.x + this._range * player.input.mouseData.cosCenter;
-        this._endFirePos.y = this.center.y + this._range * player.input.mouseData.sinCenter;
+    fire(player, entityManager, deltaTime, angle) {
+        super.fire(player, entityManager, deltaTime, angle);
+        this._endFirePos.x = this.center.x + this._range * Math.cos(angle);
+        this._endFirePos.y = this.center.y + this._range * Math.sin(angle);
         this._scanner.scan(this.id, this.center, this._endFirePos, entityManager, entityManager.tileMap);
     }
 
