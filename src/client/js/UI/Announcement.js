@@ -1,87 +1,64 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
+import CTimer from "../../../shared/code/Tools/CTimer.js";
 
 export default class Announcement extends UIElement {
     constructor() {
-        super("announcement", R.WIDTH / 2 - 64, 1, 128, 16);
-        this.color = "Red";
-        this.annoucements = [];
-        this.activeAnnoucement = 0;
+        super("announcement", R.WIDTH / 2 - 64, 4, 128, 16);
+        this._color = "Red";
+        this._queue = [];
+        this.element = undefined;
+
+        this._timer = new CTimer(0.03, () => {
+            if (this.element !== undefined)
+                this.element._x--;
+
+        }, true);
+
+        this.add("test", "Blue");
+        this.add("test2", "Blue");
+        this.addPriority("Removing elements from a JavaScript array is a common programming paradigm that developers often run into. As with a lot of things JavaScript, this isn’t as simple as it probably should be.", "Blue");
     }
 
-    static Announce = class {
-        constructor(string, life) {
-            this.wholeString = string;
-            this.life = life;
-            this.outOfscreen = false;
-            this.string = "";
-            this.spd = 0.5;
-            this.x = 0;
-            this.time = 0;
-        }
 
-        update(width) {
-            this.time += Game.getDeltaTime();
-
-            this.outOfscreen = false;
-            if (this.x > width + R.ctx.measureText(this.string).width) {
-                this.outOfscreen = true;
-                this.life -= 1;
-                this.x = 0;
-                this.string = "";
-            }
-
-            if (this.time > .5) {
-                this.time = 0;
-
-                var stringSize = R.ctx.measureText(this.wholeString).width / this.wholeString.length + 1 | 0;
-
-                this.x += stringSize;
-
-                var iStart = (this.x - width) / stringSize | 0;
-                var iEnd = (this.x) / stringSize | 0;
-
-                this.string = this.wholeString.slice((iStart <= 0) ? 0 : iStart, iEnd);
-            }
-        }
-    };
-
-    addAnnouncement(string, life) {
-        this.annoucements.push(new Annoucement.Annouce(string, life));
-        console.log(this.annoucements);
+    addPriority(string, color) {
+        this._queue.unshift({
+            _string: string,
+            _color: color,
+            _x: this.pos.x + this.width
+        });
     }
 
-    drawAnnouncement() {
-        var a = this.annoucements[this.activeAnnoucement];
-        if (a !== undefined) {
-            R.drawText(a.string,
-                (this.pos.x + this.width) - a.x,
-                (this.pos.y + 10),
-                "Green"
-            );
-        }
+
+    add(string, color) {
+        this._queue.push({
+            _string: string,
+            _color: color,
+            _x: this.pos.x + this.width
+        });
     }
 
-    update(client, entityList) {
-        this.pos.x = R.WIDTH / 2 - 64;
-        var a = this.annoucements[this.activeAnnoucement];
-        if (a !== undefined) {
-            a.update(this.width);
-            if (a.outOfscreen === true) {
-                console.log(a);
-                if (a.life <= 0)
-                    delete this.annoucements.splice(this.activeAnnoucement, 1);
-                else
-                    this.activeAnnoucement++;
-            }
-            if (this.activeAnnoucement >= this.annoucements.length)
-                this.activeAnnoucement = 0;
-        }
+
+    updateQueue() {
+        if (this._queue.length !== 0 && this.element === undefined)
+            this.element = this._queue.shift();
+    }
+
+
+    update(deltaTime, client, entityList) {
+        this.updateQueue();
+        this._timer.tick(deltaTime);
     }
 
     draw() {
+
+        if (this.element !== undefined) {
+            R.drawText(this.element._string, this.element._x, this.pos.y + 5, this.element._color);
+        }
+
+
         R.ctx.save();
-        R.ctx.strokeStyle = this.color;
+        R.ctx.strokeStyle = this._color;
         R.ctx.beginPath();
         R.ctx.rect(
             this.pos.x | 0,
@@ -90,7 +67,6 @@ export default class Announcement extends UIElement {
             this.height
         );
         R.ctx.stroke();
-        this.drawAnnouncement();
         R.ctx.restore();
     }
 }

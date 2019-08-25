@@ -14,7 +14,7 @@ export default class Stats extends UIElement {
 
     }
 
-    update(client, entityList) {
+    update(deltaTime, client, entityList) {
         if (client.player) {
             this.killCount = client.player.output._statData.Kills;
             this.playersAlive = client.player._output._gameData.playerCount;
