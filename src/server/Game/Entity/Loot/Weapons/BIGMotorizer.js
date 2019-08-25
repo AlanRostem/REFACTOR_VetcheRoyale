@@ -76,6 +76,9 @@ class BIGMotorizer extends AttackWeapon {
             return;
         }
         this._upgradeStage++;
+        if (this._upgradeStage === 1) {
+            this._firerer._recoil = 0;
+        }
         if (this._upgradeStage >= 2) {
             this._firerer._maxChargeTime = 0;
             this._firerer._maxBurstCount = 0;
