@@ -62,8 +62,8 @@ class BIGMotorizer extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "B.I.G Motorizer", "rifle", 0, 10, 0, 50, 15,
             5 * Math.PI / 180,
-            1 * Math.PI / 180,
-            0.5 * Math.PI / 180,
+             Math.PI / 180,
+            0.07 * Math.PI / 180,
             0.5, 6, 0.05);
         this._minFireRate = 100;
         this.configureAttackStats(1.5, 36, 1, this._minFireRate);

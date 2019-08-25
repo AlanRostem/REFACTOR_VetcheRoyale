@@ -25,6 +25,7 @@ class AttackWeapon extends WeaponItem {
         this._spreadAngle = 0;
         this._canUseSuper = true;
         this._canUseMod = true;
+        this._canFire = true;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
@@ -88,8 +89,6 @@ class AttackWeapon extends WeaponItem {
         this._fireRate = fireRateRPM;
         this._currentFireTime = 0;
         this._reloading = false;
-
-
     }
 
     // Happens when the player drops the weapon. Good for resetting
@@ -119,6 +118,7 @@ class AttackWeapon extends WeaponItem {
     activateReloadAction() {
         if (this._currentAmmo < this._maxAmmo) {
             this._reloading = true;
+            this._canFire = false;
             this._currentReloadTime = this._maxReloadTime;
         }
     }
@@ -130,9 +130,11 @@ class AttackWeapon extends WeaponItem {
                 let ammoDiff = this._maxAmmo - this._currentAmmo;
                 this._currentAmmo += ammoDiff;
                 player.inventory.ammo -= ammoDiff;
+                this._canFire = true;
             } else {
                 this._currentAmmo += player.inventory.ammo;
                 player.inventory.ammo = 0;
+                this._canFire = true;
             }
         }
     }
@@ -168,6 +170,7 @@ class AttackWeapon extends WeaponItem {
     // Looping function that is called when the player has
     // picked up the weapon.
     updateWhenEquipped(player, entityManager, deltaTime) {
+        this._canFire = this._currentAmmo > 0;
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.listenToInput(player, entityManager, deltaTime);
         this._modAbility.update(this, entityManager, deltaTime);
