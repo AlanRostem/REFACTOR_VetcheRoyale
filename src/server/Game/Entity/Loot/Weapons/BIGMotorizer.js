@@ -88,10 +88,6 @@ class BIGMotorizer extends AttackWeapon {
             }
         };
         this._thunderPulseRange = 12 * 8;
-        this._end = {};
-        this.addDynamicSnapShotData([
-            "_end"
-        ])
     }
 
     onModActivation(entityManager, deltaTime) {
@@ -99,7 +95,6 @@ class BIGMotorizer extends AttackWeapon {
         let end = {};
         end.x = this.center.x + Math.cos(this._fireAngle) * this._thunderPulseRange;
         end.y = this.center.y + Math.sin(this._fireAngle) * this._thunderPulseRange;
-        this._end = end;
         this._thunderPulse.scan(this._playerID, this.center, end, entityManager, entityManager.tileMap);
     }
 
