@@ -3,7 +3,7 @@ const Projectile = require("./AttackEntities/Projectile.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 
 class MicroMissile extends Projectile {
-    constructor(ownerID, x, y, angle, harmonic = true) {
+    constructor(ownerID, x, y, angle, entityManager, harmonic = true) {
         super(ownerID, x, y, 2, 2, angle, 150);
         this._trajectoryAngle = angle;
 
@@ -15,6 +15,7 @@ class MicroMissile extends Projectile {
         this._amp = .4 + .5 * Math.random();
 
         this._harmonic = harmonic;
+        this.exceptions = entityManager.getEntity(this._ownerID).team.array
 
 
     }
@@ -52,7 +53,7 @@ class MicroMissile extends Projectile {
 
     dealDamage(entityManager) {
         new AOEDamage(this._ownerID, this.center.x, this.center.y, 8, 17)
-            .applyAreaOfEffect(this._ownerID, entityManager, entityManager.getEntity(this._ownerID).team.array);
+            .applyAreaOfEffect(this._ownerID, entityManager, this.exceptions);
     }
 
 }
@@ -84,7 +85,7 @@ class BIGMotorizer extends AttackWeapon {
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player.id, 0, 0,
-                angle, this._upgradeStage < 1));
+                angle, entityManager, this._upgradeStage < 1));
     }
 
     activateReloadAction() {
