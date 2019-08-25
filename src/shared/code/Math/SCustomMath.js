@@ -39,7 +39,9 @@ const VMath = {
         var xx = pos2.x - pos2.x;
         var m = sqrt(xx**2 + yy**2);
         return xx / m;
-    }
+    },
+
+
 };
 
 Number.prototype.fixed = function(n) { n = n || 3; return parseFloat(this.toFixed(n)); };

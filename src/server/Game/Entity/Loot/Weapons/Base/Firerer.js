@@ -1,7 +1,11 @@
 const ONMap = require("../../../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
+function randMinMax(min, max) {
+    return (Math.random() * (max - min)) + min;
+}
+
 class Firerer {
-    constructor(chargeTime = 0, burstCount = 0, burstDelay = 0) {
+    constructor(chargeTime = 0, burstCount = 0, burstDelay = 0, spread = 0, recoil =0, accurator = 0) {
         this._chargeTime = chargeTime;
         this._maxChargeTime = chargeTime;
 
@@ -10,20 +14,36 @@ class Firerer {
 
         this._maxBurstDelay = burstDelay;
         this._burstDelay = burstDelay;
+
+        this._defaultSpread = spread;
+        this._recoil = recoil;
+        this._accurator = accurator;
+        this._currentRecoil = 0;
     }
 
     update(weapon, player, entityManager, deltaTime) {
         this.firingUpdate(weapon, player, entityManager, deltaTime);
     }
 
+    getRecoilAngle(weapon, player, deltaTime) {
+        this._currentRecoil += this._recoil;
+        return (
+            player.input.mouseData.angleCenter
+            + randMinMax(-this._defaultSpread/2, this._defaultSpread/2)
+            + randMinMax(-this._currentRecoil/2, this._currentRecoil/2)
+        );
+    }
+
     doSingleFire(weapon, player, entityManager, deltaTime) {
+        let angle = this.getRecoilAngle(weapon, player, deltaTime);
         if (weapon._currentAmmo >= weapon._ammoPerShot) {
-            weapon.fire(player, entityManager, deltaTime);
+            weapon.fire(player, entityManager, deltaTime, angle);
             weapon._firing = true;
             weapon._currentAmmo -= weapon._ammoPerShot;
         } else if (player.inventory.ammo > 0) {
             weapon.activateReloadAction();
         }
+        return angle;
     }
 
     firingUpdate(weapon, player, entityManager, deltaTime) {
@@ -46,7 +66,7 @@ class Firerer {
                     this._chargeTime -= deltaTime;
                 } else {
                     this._chargeTime = this._maxChargeTime;
-                    if (this._burstCount > 0) {
+                    if (this._maxBurstCount > 0) {
                         this._queueBurst = true;
                     } else {
                         this.doSingleFire(weapon, player, entityManager, deltaTime);
@@ -86,6 +106,16 @@ class Firerer {
                 }
             }
         }
+
+        if (!this._firing) {
+            if (this._currentRecoil > 0) {
+                this._currentRecoil -= this._accurator;
+            } else {
+                this._currentRecoil = 0;
+            }
+        }
+
+        weapon._spreadAngle = this._currentRecoil + this._defaultSpread;
     }
 
 }
