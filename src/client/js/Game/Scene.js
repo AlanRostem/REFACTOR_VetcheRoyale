@@ -14,6 +14,7 @@ import Stats from "../UI/Stats.js";
 
 
 import TileMapManager from "./TileBased/TileMapManager.js"
+import Announcement from "../UI/Announcement.js";
 
 const Scene = {
     _deltaTime: 0,
@@ -45,6 +46,7 @@ const Scene = {
         AssetManager.addDownloadCallback(() => {
             UI.setup(() => {
                 UI.append(new MiniMap());
+                UI.append(new Announcement());
                 UI.append(new KelvinBar());
                 UI.append(new HPBar());
                 UI.append(new GunBox());
@@ -72,7 +74,7 @@ const Scene = {
     update() {
         if (AssetManager.done()) {
             Scene._clientRef.update(Scene._entityManager, Scene.deltaTime);
-            UI.update(Scene._clientRef, Scene._entityManager);
+            UI.update(Scene.deltaTime, Scene._clientRef, Scene._entityManager);
             Scene._entityManager.updateEntities(Scene.deltaTime, Scene._clientRef, Scene.tileMaps.getMap(Scene._currentMap));
             let e = Scene._clientRef.player;
             if (e) {

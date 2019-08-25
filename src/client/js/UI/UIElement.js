@@ -8,7 +8,7 @@ export default class UIElement {
         this.id = name;
     }
 
-    update(client, entityList) {
+    update(deltaTime, client, entityList) {
 
     }
 
