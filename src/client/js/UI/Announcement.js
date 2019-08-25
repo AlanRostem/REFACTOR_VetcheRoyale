@@ -4,8 +4,8 @@ import CTimer from "../../../shared/code/Tools/CTimer.js";
 
 export default class Announcement extends UIElement {
     constructor() {
-        super("announcement", R.WIDTH / 2 - 64 | 0, 4, 128, 16);
-        this._color = "Red";
+        super("announcement", R.WIDTH / 2 - 64 | 0, 4, 126, 16);
+        this._color = "#222034";
         this._queue = [];
         this._elm = undefined;
 
@@ -60,20 +60,33 @@ export default class Announcement extends UIElement {
     }
 
     draw() {
-        if (this._elm !== undefined) {
-            R.drawText(this._elm._dString, this._elm._x > 0 ? this.pos.x + this._elm._x : this.pos.x, this.pos.y + 5, this._elm._color);
-        }
 
         R.ctx.save();
         R.ctx.strokeStyle = this._color;
-        R.ctx.beginPath();
-        R.ctx.rect(
+        R.ctx.lineWidth = 2;
+        R.ctx.fillStyle = "white";
+        R.ctx.fillRect(
             this.pos.x | 0,
             this.pos.y | 0,
             this.width,
             this.height
         );
-        R.ctx.stroke();
+        R.ctx.strokeRect(
+            this.pos.x | 0,
+            this.pos.y | 0,
+            this.width,
+            this.height
+        );
         R.ctx.restore();
+
+
+        if (this._elm !== undefined) {
+            R.drawText(
+                this._elm._dString,
+                this._elm._x > 0 ? this.pos.x + this._elm._x : this.pos.x + 1,
+                this.pos.y + 5, this._elm._color
+            );
+        }
+
     }
 }
