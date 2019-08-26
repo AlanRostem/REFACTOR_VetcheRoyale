@@ -9,13 +9,13 @@ export default class Announcement extends UIElement {
         this._queue = [];
         this._elm = undefined;
 
-        this._timer = new CTimer(0.3, () => {
+        this._timer = new CTimer(0.01, () => {
             if (this._elm !== undefined)
-                this._elm._x -= 5;
+                this._elm._x--;
         }, true);
 
-        this.add("TestTestTest", "Blue");
-        this.add("TestTestTest", "Blue");
+        this.add("TestTestTest", "Yellow");
+        this.add(" !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`", "Red");
         this.addPriority("The substr() method extracts parts of a string, beginning at the character at the specified position, and returns the specified number of characters.", "Blue");
     }
 
@@ -43,9 +43,10 @@ export default class Announcement extends UIElement {
 
     updateElm() {
         if (this._elm !== undefined) {
+            this.start = this._elm._x < 0 ? -this._elm._x / 5 | 0 : 0;
             this._elm._dString = this._elm._string.substring(
-                this._elm._x < 0 ? -this._elm._x / 5 | 0 : 0,
-                (this.width - this._elm._x) / 5 | 0);
+                this.start,
+                (this.width - this._elm._x +5) / 5 | 0);
 
             if (this._elm._x + this._elm._string.length * 5 - 1 <= 0)
                 delete this._elm;
@@ -62,8 +63,7 @@ export default class Announcement extends UIElement {
     draw() {
 
         R.ctx.save();
-        R.ctx.strokeStyle = this._color;
-        R.ctx.lineWidth = 2;
+
         R.ctx.fillStyle = "white";
         R.ctx.fillRect(
             this.pos.x | 0,
@@ -71,6 +71,20 @@ export default class Announcement extends UIElement {
             this.width,
             this.height
         );
+
+        R.ctx.restore();
+
+
+        if (this._elm !== undefined) {
+            R.drawText(
+                this._elm._dString,
+                this.pos.x + this._elm._x + this.start * 5 + 1,
+                this.pos.y + 5, this._elm._color
+            );
+        }
+        R.ctx.save();
+        R.ctx.strokeStyle = this._color;
+        R.ctx.lineWidth = 2;
         R.ctx.strokeRect(
             this.pos.x | 0,
             this.pos.y | 0,
@@ -78,15 +92,6 @@ export default class Announcement extends UIElement {
             this.height
         );
         R.ctx.restore();
-
-
-        if (this._elm !== undefined) {
-            R.drawText(
-                this._elm._dString,
-                this._elm._x > 0 ? this.pos.x + this._elm._x : this.pos.x + 1,
-                this.pos.y + 5, this._elm._color
-            );
-        }
 
     }
 }
