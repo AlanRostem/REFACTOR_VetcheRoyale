@@ -54,7 +54,23 @@ class AttackWeapon extends WeaponItem {
 
     }
 
+    onSuperBuffs(entityManager, deltaTime) {
+
+    }
+
+    onSuperDeactivation(entityManager, deltaTime) {
+
+    }
+
     onModActivation(entityManager, deltaTime) {
+
+    }
+
+    onModBuffs(entityManager, deltaTime) {
+
+    }
+
+    onModDeactivation(entityManager, deltaTime) {
 
     }
 

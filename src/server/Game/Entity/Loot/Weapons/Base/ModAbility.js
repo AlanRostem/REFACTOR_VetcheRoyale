@@ -41,7 +41,7 @@ class ModAbility {
 
     // Callback when deactivating the ability.
     onDeactivation(composedWeapon, entityManager, deltaTime) {
-
+        composedWeapon.onModDeactivation(entityManager, deltaTime);
     }
 
     deActivate(composedWeapon, entityManager, deltaTime) {
@@ -69,7 +69,7 @@ class ModAbility {
     // Overridable looping method for what happens while
     // the ability is active.
     buffs(composedWeapon, entityManager, deltaTime) {
-
+        composedWeapon.onModBuffs(entityManager, deltaTime);
     }
 
     get active() {

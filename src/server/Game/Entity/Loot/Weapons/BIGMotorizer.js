@@ -6,7 +6,7 @@ const Effect = require("../../../Mechanics/Effect/Effect.js");
 const Affectable = require("../../../Entity/Traits/Affectable.js");
 
 class MicroMissile extends Projectile {
-    constructor(ownerID, x, y, angle, entityManager, harmonic = true) {
+    constructor(ownerID, x, y, angle, entityManager, harmonic = true, left = false) {
         super(ownerID, x, y, 2, 2, angle, 150);
         this._trajectoryAngle = angle;
 
@@ -18,6 +18,7 @@ class MicroMissile extends Projectile {
         this._amp = .4 + .5 * Math.random();
 
         this._harmonic = harmonic;
+        this._facingLeft = left;
         this.exceptions = entityManager.getEntity(this._ownerID).team.array
     }
 
@@ -27,13 +28,14 @@ class MicroMissile extends Projectile {
     }
 
     calcTheta(deltaTime) {
-        this._time--;
+        this._time += this._facingLeft ? 1 : -1;
         this._theta = Math.sin(this._time * this._freq) * this._amp;
         return this._theta;
     }
 
     harmonicMovement(deltaTime) {
         let theta = 0;
+        this._amp = .4 + .7 * Math.random();
         if (this._harmonic) {
             theta = this.calcTheta(deltaTime);
         }
@@ -118,7 +120,8 @@ class BIGMotorizer extends AttackWeapon {
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player.id, 0, 0,
-                angle, entityManager, this._upgradeStage < 3));
+                angle, entityManager, this._upgradeStage < 3,
+        player.checkMovementState("direction", "left")));
     }
 
     activateReloadAction() {
