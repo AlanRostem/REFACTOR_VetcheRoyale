@@ -188,7 +188,7 @@ class AttackWeapon extends WeaponItem {
     // Looping function that is called when the player has
     // picked up the weapon.
     updateWhenEquipped(player, entityManager, deltaTime) {
-        this._canFire = this._currentAmmo > 0;
+        //this._canFire = this._currentAmmo > 0;
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.listenToInput(player, entityManager, deltaTime);
         this._modAbility.update(this, entityManager, deltaTime);

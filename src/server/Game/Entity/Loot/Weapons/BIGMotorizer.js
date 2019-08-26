@@ -82,6 +82,7 @@ class BIGMotorizer extends AttackWeapon {
             0.5, 6, 0.05);
         this._minFireRate = 100;
         this.configureAttackStats(1.5, 36, 1, this._minFireRate);
+        this._modAbility.configureStats(1, 10);
         this._upgradeStage = 0;
         this._thunderPulse = new HitScanner([]);
         this._thunderPulse.onEntityHit = (entity, game, angle) => {
@@ -100,14 +101,28 @@ class BIGMotorizer extends AttackWeapon {
         this._thunderPulse.scan(this._playerID, this.center, end, entityManager, entityManager.tileMap);
     }
 
+    onModBuffs(entityManager, deltaTime) {
+        super.onModBuffs(entityManager, deltaTime);
+        if (this._upgradeStage < 2) {
+            this._canFire = false;
+        }
+    }
+
+    onModDeactivation(entityManager, deltaTime) {
+        super.onModDeactivation(entityManager, deltaTime);
+        if (this._upgradeStage < 2) {
+            this._canFire = true;
+        }
+    }
+
     onSuperActivation(entityManager, deltaTime) {
+        this._upgradeStage++;
         if (this._upgradeStage >= 4) {
             this._currentAmmo = this._maxAmmo;
             this._reloading = false;
             this._currentReloadTime = 0;
             return;
         }
-        this._upgradeStage++;
         if (this._upgradeStage === 1) {
             this._firerer._maxChargeTime = 0;
             this._firerer._maxBurstCount = 0;
