@@ -15,6 +15,7 @@ class Projectile extends Physical {
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
         this.setCollisionResponseID("Projectile");
+        this.setQuadTreeRange(w * 2, h * 2);
         if (arc) {
             this.acc.y = arc; // Gravity for the projectile
             this.setPhysicsConfiguration("gravity", true);

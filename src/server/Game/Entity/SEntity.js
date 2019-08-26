@@ -34,6 +34,15 @@ class SEntity {
         return this._homeWorldID;
     }
 
+    // Configure the maximum range the entity checks for other
+    // entities in the quad tree. Entities such as projectiles
+    // should have the least amount of iteration depending on
+    // their size in the world.
+    setQuadTreeRange(x, y) {
+        this._entitiesInProximity._qtBounds.w = x;
+        this._entitiesInProximity._qtBounds.h = y;
+    }
+
     setStaticSnapshotData(key, value) {
         this._snapShotGenerator.setStaticSnapshotData(key, value);
     }

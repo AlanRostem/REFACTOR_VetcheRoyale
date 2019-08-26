@@ -6,6 +6,7 @@ class Loot extends Interactable {
         super(x, y, 4, 6); // All loot hit boxes should be of this size
         this._shouldRemove = shouldRemove;
         this._acc.y = 500;
+        this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
 
     // Return true based on some data of the player
