@@ -16,7 +16,7 @@ export default class Announcement extends UIElement {
         }, true);
 
 
-        this._timer2 = new CTimer(10, () => {
+        this._timer2 = new CTimer(7, () => {
             this.add("Alert!", "Red");
             this.add("Alan e en kuk ;)", "Yellow");
         }, true);
