@@ -24,8 +24,8 @@ export default class Stats extends UIElement {
     draw() {
             R.ctx.save();
             R.ctx.drawImage(this.src,
-                0,
-                92,
+                40,
+                68,
                 this.frame.x, // TODO: Cannot be 0 cus of FireFox
                 this.frame.y,  // TODO: Cannot be 0 cus of FireFox
                 R.WIDTH - 36,
@@ -35,8 +35,8 @@ export default class Stats extends UIElement {
             );
             R.drawText(this.playersAlive,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120, "White", false, 5);
             R.ctx.drawImage(this.src,
-                this.frame.x,
-                92,
+                this.frame.x + 40,
+                68,
                 this.frame.x, // TODO: Cannot be 0 cus of FireFox
                 this.frame.y,  // TODO: Cannot be 0 cus of FireFox
                 R.WIDTH - 36,
