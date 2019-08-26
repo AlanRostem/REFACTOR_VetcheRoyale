@@ -128,7 +128,9 @@ class BIGMotorizer extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        this._fireAngle = entityManager.getEntity(this._playerID).input.mouseData.angleCenter;
+        if (entityManager.getEntity(this._playerID)) {
+            this._fireAngle = entityManager.getEntity(this._playerID).input.mouseData.angleCenter;
+        }
         if (!this._holdingDownFireButton) {
             this._fireRate = this._minFireRate;
         }
