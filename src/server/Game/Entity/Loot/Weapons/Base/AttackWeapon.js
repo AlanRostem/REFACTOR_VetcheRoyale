@@ -94,7 +94,9 @@ class AttackWeapon extends WeaponItem {
     // Happens when the player drops the weapon. Good for resetting
     // certain abilities to retain the flow of the game.
     onDrop(player, entityManager, deltaTime) {
-        this._modAbility.deActivate(this, entityManager, deltaTime);
+        if (this._modAbility._active) {
+            this._modAbility.deActivate(this, entityManager, deltaTime);
+        }
         this._currentReloadTime = 0;
         this._reloading = false;
     }
