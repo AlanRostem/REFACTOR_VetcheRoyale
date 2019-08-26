@@ -18,7 +18,7 @@ export default class Announcement extends UIElement {
 
         this._timer2 = new CTimer(10, () => {
             this.add("Alert!", "Red");
-            this.add("Alan e en kuk ;-)", "Yellow");
+            this.add("Alan e en kuk ;)", "Yellow");
         }, true);
 
         this._image = AssetManager.get("ui/ui.png");
