@@ -7,6 +7,7 @@ export default class InputListener {
 
         // Holds the current state of the key (up or down).
         this._keyStates = {};
+        this._localKeys = {};
 
         // Holds callback functions for each key code.
         this._keyCallbacks = {};
@@ -44,9 +45,9 @@ export default class InputListener {
 
         // TODO: Calculate press time for each of the
         // TODO: different input types (keys or mouse)
-        if (this.getKey(68)) {
+        if (this.getReconKey(68)) {
             input.pressTime = dt_sec;
-        } else if (this.getKey(65)) {
+        } else if (this.getReconKey(65)) {
             input.pressTime = -dt_sec;
         } else {
             return;
@@ -71,8 +72,12 @@ export default class InputListener {
         return this._mouse;
     }
 
-    getKey(keyCode) {
+    getReconKey(keyCode) {
         return this._keyStates[keyCode];
+    }
+
+    getLocalKey(keyCode) {
+        return this._localKeys[keyCode];
     }
 
     getMouse(buttonCode) {
@@ -105,6 +110,7 @@ export default class InputListener {
 
         event.preventDefault();
         const keyState = event.type === "keydown"; // Pressed = true, released = false
+        this._localKeys[keyCode] = keyState;
         if (this._keyStates[keyCode] === keyState) return;
 
         this._keyStates[keyCode] = keyState;
