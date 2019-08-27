@@ -20,7 +20,6 @@ class MicroMissile extends Projectile {
         this._harmonic = harmonic;
         this._facingLeft = left;
         this.exceptions = entityManager.getEntity(this._ownerID).team.array
-        this._sign = 1;
     }
 
     update(entityManager, deltaTime) {
@@ -29,7 +28,7 @@ class MicroMissile extends Projectile {
     }
 
     calcTheta(deltaTime) {
-        this._time += this._sign * -1;
+        this._time += this._facingLeft ? 1 : -1;
         this._theta = Math.sin(this._time * this._freq) * this._amp;
         return this._theta;
     }
