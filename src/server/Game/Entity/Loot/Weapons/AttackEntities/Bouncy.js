@@ -3,8 +3,8 @@ const TileCollider = require("../../../../TileBased/TileCollider.js");
 const Tile = require("../../../../TileBased/Tile.js");
 // A bouncy projectile. Requires to be manually removed in overridden class.
 class Bouncy extends Projectile {
-    constructor(ownerID, x, y, w, h, cos, sin, speed, arc) {
-        super(ownerID, x, y, w, h, cos, sin, speed, arc, false);
+    constructor(ownerID, x, y, w, h, angle, speed, arc) {
+        super(ownerID, x, y, w, h, angle, speed, arc, false);
         this.vy = 0;
         this.vx = 0;
         this.setPhysicsConfiguration("stop", false);
@@ -36,12 +36,20 @@ class Bouncy extends Projectile {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
-        if (this.side.left || this.side.right)
+        if (this.side.left || this.side.right) {
             this.vel.x = this.vx;
+        }
 
-        if (this.side.bottom || this.side.top)
+        if (this.side.bottom || this.side.top) {
             this.vel.y = this.vy;
+        }
     }
+
+    onTileHit(entityManager, deltaTime) {
+        super.onTileHit(entityManager, deltaTime);
+    }
+
+
 }
 
 module.exports = Bouncy;

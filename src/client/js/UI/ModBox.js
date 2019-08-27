@@ -20,7 +20,8 @@ export default class ModBox extends UIElement {
             var gun = entityList.getEntityByID(client.player.output._invWeaponID);
             gun ? this.hasWeapon = true : this.hasWeapon = false;
         }
-        if (client.input.getMouse(1) && this.test1++===10 && (this.test1 = 0)===0)         AssetManager.get("Weapons/ke-l_s.oggp");
+        // Sykt dårlig plass du låg an hahaha
+        //if (client.input.getMouse(1) && this.test1++===10 && (this.test1 = 0)===0)         AssetManager.get("Weapons/ke-l_s.oggp");
 
     }
 

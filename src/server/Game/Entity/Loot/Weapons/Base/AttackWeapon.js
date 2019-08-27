@@ -29,9 +29,12 @@ class AttackWeapon extends WeaponItem {
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
+            "_canUseSuper",
             "_modCoolDown",
+            "_canUseMod",
             "_currentAmmo",
             "_spreadAngle",
+            "_firing",
         ]);
     }
 

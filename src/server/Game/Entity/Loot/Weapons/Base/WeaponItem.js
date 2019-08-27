@@ -12,7 +12,6 @@ class WeaponItem extends Loot {
         // All possible weapon classes:
         // pistol, rifle
 
-        this.setStaticSnapshotData("entityType", "Weapon");
         this.addStaticSnapShotData([
             "_displayName",
             "_weaponClass"

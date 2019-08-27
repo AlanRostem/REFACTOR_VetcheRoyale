@@ -4,6 +4,7 @@ import UserPlayer from "../Player/UserPlayer.js";
 import CWeapon from "../Weapons/CWeapon.js";
 import CBottle from "../CBottle.js";
 import CPortal from "../CPortal.js";
+import CKE_6H from "../Weapons/CKE_6H.js";
 
 
 // Creates client versions of inbound entity data
@@ -29,8 +30,12 @@ const EntityTypeSpawner = {
 
 EntityTypeSpawner.createSpawner("Player", RemotePlayer);
 EntityTypeSpawner.createSpawner("SEntity", CEntity);
-EntityTypeSpawner.createSpawner("Weapon", CWeapon);
+
 EntityTypeSpawner.createSpawner("Bottle", CBottle);
 EntityTypeSpawner.createSpawner("Portal", CPortal);
+
+EntityTypeSpawner.createSpawner("AttackWeapon", CWeapon);
+EntityTypeSpawner.createSpawner("BIGMotorizer", CWeapon);
+EntityTypeSpawner.createSpawner("KE_6H", CKE_6H);
 
 export default EntityTypeSpawner;

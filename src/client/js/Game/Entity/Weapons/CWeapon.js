@@ -8,6 +8,17 @@ export default class CWeapon extends CEntity {
         super(data);
     }
 
+    onFire(client, deltaTime) {
+
+    }
+
+    update(deltaTime, client) {
+        super.update(deltaTime, client);
+        if (this.getRealtimeProperty("_firing")) {
+            this.onFire(client, deltaTime);
+        }
+    }
+
     draw() {
         if (!this.getRealtimeProperty("_equippedToPlayer")) {
             let name = this.getRealtimeProperty("_displayName") + "-World";
