@@ -67,12 +67,10 @@ export default class Announcement extends UIElement {
         if (this.pos.y < 0) {
             this.pos.y++;
         }
-
-
     }
 
     hideAnnouncement() {
-        if (this.pos.y >= -this.height) {
+        if (this.pos.y >= -this.height - 4) {
             this.pos.y--;
         }
     }
@@ -82,7 +80,7 @@ export default class Announcement extends UIElement {
         this.pos.x = R.WIDTH / 2 - 64 | 0;
         if (this._elm !== undefined || this._queue.length !== 0)
             this.showAnnouncement();
-        else if(this._queue.length === 0)
+        else if (this._queue.length === 0)
             this.hideAnnouncement();
 
 
@@ -93,7 +91,7 @@ export default class Announcement extends UIElement {
     }
 
     draw() {
-        if (this.pos.y > -this.height) {
+        if (this.pos.y > -this.height - 4) {
             R.ctx.drawImage(
                 this._image,
                 0,
@@ -106,7 +104,6 @@ export default class Announcement extends UIElement {
                 this.height - 4
             );
 
-
             if (this._elm !== undefined) {
                 R.drawText(
                     this._elm._dString,
@@ -114,7 +111,6 @@ export default class Announcement extends UIElement {
                     this.pos.y + 11, this._elm._color
                 );
             }
-
 
             R.ctx.drawImage(
                 this._image,
