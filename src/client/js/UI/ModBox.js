@@ -11,6 +11,8 @@ export default class ModBox extends UIElement {
 
         this.hasWeapon = false;
 
+        this.test1 = 0;
+
     }
 
     update(deltaTime, client, entityList) {
@@ -18,10 +20,12 @@ export default class ModBox extends UIElement {
             var gun = entityList.getEntityByID(client.player.output._invWeaponID);
             gun ? this.hasWeapon = true : this.hasWeapon = false;
         }
+        if (client.input.getMouse(1) && this.test1++===10 && (this.test1 = 0)===0)         AssetManager.get("Weapons/ke-l_s.oggp");
+
     }
 
     draw() {
-        if(this.hasWeapon) {
+        if (this.hasWeapon) {
             R.ctx.save();
             R.ctx.drawImage(this.src,
                 0,

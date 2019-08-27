@@ -199,6 +199,7 @@ class Player extends GameDataLinker {
             if (!this._jumping) {
                 this.vel.y = this._speed.jump;
                 this._jumping = true;
+                //AssetManager.get("Player/jump_ascend.oggp");
             }
         }
 

@@ -9,6 +9,7 @@ class AssetManager {
         this.downloadQueue = [];
         this.downloadCallbacks = [];
         this.onFileDownloadedCallbacks = new ONMap;
+        this.maxPool = 5;
     }
 
     mapFilePathCallback(path, callback) {
@@ -102,6 +103,38 @@ class AssetManager {
                     audio.src = "public/assets/audio/" + path;
                     this.cache[path] = audio;
                     break;
+                case "oggp":
+                    path = path.slice(0, -1);
+                    var cachePath = path + 'p';
+                    this.cache[cachePath] = [];
+                    var downloadAudio = new Audio();
+                    downloadAudio.addEventListener('canplaythrough', function () {
+                        _this.successCount++;
+                        if (_this.done()) {
+                            downloadCallback();
+                        }
+
+                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                            _this.onFileDownloadedCallbacks.remove(this.testPath);
+                        }
+                    }, false);
+
+                    downloadAudio.addEventListener("error", function () {
+                        _this.errorCount++;
+                        if (_this.done()) {
+                            downloadCallback();
+                        }
+                    }, false);
+
+                    downloadAudio.src = "public/assets/audio/" + path;
+
+                    for (var p = 0; p < _this.maxPool; p++) {
+                        var audioPool = new Audio();
+                        audioPool.src = downloadAudio.src;
+                        this.cache[cachePath][p] = audioPool;
+                    }
+                    break;
                 case "png":
                     var img = new Image();
                     img.testPath = path;
@@ -156,12 +189,22 @@ class AssetManager {
     }
 
     get(path) {
-        if(this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
+        if (this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
+        else if (path.substring(path.lastIndexOf(('.')) + 1 === "oggp")) {
+            for (var p = 0; p <  this.maxPool; p++) {
+                if (this.cache[path][p] !== undefined) {
+                    if (this.cache[path][p].paused) {
+                        this.cache[path][p].play();
+                        return;
+                    }
+                    if (p ===  this.maxPool) return;
+                }
+            }
+        }
         return this.cache[path];
     }
 
-    addPainting(img, key)
-    {
+    addPainting(img, key) {
         this.cache[key] = img;
     }
 
