@@ -121,6 +121,7 @@ class BIGMotorizer extends AttackWeapon {
             this._currentAmmo = this._maxAmmo;
             this._reloading = false;
             this._currentReloadTime = 0;
+            this._canFire = true;
             return;
         }
         if (this._upgradeStage === 1) {
