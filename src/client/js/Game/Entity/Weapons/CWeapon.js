@@ -14,7 +14,7 @@ export default class CWeapon extends CEntity {
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
-        if (this.getRealtimeProperty("_firing")) {
+        if (this.getRealtimeProperty("_firing") && this.getRealtimeProperty("_equippedToPlayer")) {
             this.onFire(client, deltaTime);
         }
     }

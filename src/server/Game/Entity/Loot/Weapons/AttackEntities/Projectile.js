@@ -69,7 +69,7 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Player) {
-            if (!entity.team.array.includes(this._ownerID)) {
+            if (!entity.team.hasEntity(this._ownerID)) {
                 this.onPlayerHit(entity, entityManager);
                 if (this._shouldRemove) {
                     this.remove();

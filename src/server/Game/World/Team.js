@@ -26,6 +26,10 @@ class Team {
         this._name = val;
     }
 
+    hasEntity(id) {
+        return this._players.hasOwnProperty(id);
+    }
+
     removePlayer(player) {
         player.team = null;
         //player._teamName = "none"; // Well this dont work...

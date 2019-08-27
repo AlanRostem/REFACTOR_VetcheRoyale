@@ -35,6 +35,7 @@ class AttackWeapon extends WeaponItem {
             "_currentAmmo",
             "_spreadAngle",
             "_firing",
+
         ]);
     }
 
@@ -118,6 +119,7 @@ class AttackWeapon extends WeaponItem {
         }
         this._currentReloadTime = 0;
         this._reloading = false;
+        this._firing = false;
     }
 
     // Overridable method for when the weapon fires.
