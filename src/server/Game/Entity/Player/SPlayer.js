@@ -53,6 +53,7 @@ class Player extends GameDataLinker {
             "_statData"
         ]);
 
+        this.setEntityOrder(1);
 
         // PHYSICS DATA
 

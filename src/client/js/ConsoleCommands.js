@@ -13,7 +13,7 @@ window.player = () => {
 };
 
 window.entities = () => {
-    return Object.create(Scene._entityManager._container);
+    return Scene._entityManager._container;
 };
 
 export default {}
