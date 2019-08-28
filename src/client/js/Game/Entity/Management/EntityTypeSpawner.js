@@ -6,6 +6,7 @@ import CBottle from "../CBottle.js";
 import CPortal from "../CPortal.js";
 import CKE_6H from "../Weapons/CKE_6H.js";
 import CBIGMotorizer from "../Weapons/CBIGMotorizer.js";
+import CSEW_9 from "../Weapons/CSEW-9.js";
 
 
 // Creates client versions of inbound entity data
@@ -38,5 +39,6 @@ EntityTypeSpawner.createSpawner("Portal", CPortal);
 EntityTypeSpawner.createSpawner("AttackWeapon", CWeapon);
 EntityTypeSpawner.createSpawner("BIGMotorizer", CBIGMotorizer);
 EntityTypeSpawner.createSpawner("KE_6H", CKE_6H);
+EntityTypeSpawner.createSpawner("SEW-9", CSEW_9);
 
 export default EntityTypeSpawner;
