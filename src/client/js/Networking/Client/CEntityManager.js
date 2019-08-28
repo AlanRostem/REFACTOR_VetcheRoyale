@@ -23,9 +23,12 @@ export default class CEntityManager {
         let entity = EntityTypeSpawner.spawn(dataPack.entityType, dataPack, client);
         this._container.set(dataPack._id, entity);
         entity.onClientSpawn(dataPack, client);
-        if (this._container.size < 1) return;
 
-        this._container = new Map([...this._container.entries()].sort((a, b) => {
+        if (this._container.size < 1) return;
+        let toArray = [...this._container.entries()];
+
+        //if (dataPack._entityOrder >= toArray[toArray.length-2][1].getRealtimeProperty("_entityOrder")) return;
+        this._container = new Map(toArray.sort((a, b) => {
             return a[1].getRealtimeProperty("_entityOrder") -
                    b[1].getRealtimeProperty("_entityOrder");
         }));
