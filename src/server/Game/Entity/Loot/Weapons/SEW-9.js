@@ -43,6 +43,8 @@ class ElectricSphere extends Projectile {
 
 }
 
+// Nice copy pasta bro xD
+
 class SEW_9 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "SEW-9", 0, 0, 0);
