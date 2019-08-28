@@ -11,7 +11,7 @@ export default class CEntityManager {
     }
 
     clear() {
-        this._container = {};
+        this._container.clear();
     }
 
     existsOnClient(id) {
