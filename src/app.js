@@ -39,3 +39,12 @@ var io = require('socket.io').listen(server);
 var GameServer = require("./server/Networking/GameServer.js");
 var gameServer = new GameServer(io);
 gameServer.start();
+
+process.stdin.on("data", (data) => {
+   try {
+      let object = eval(data.toString());
+      console.log(object);
+   } catch (e) {
+      console.log("Not found");
+   }
+});
