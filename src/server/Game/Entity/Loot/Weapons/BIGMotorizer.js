@@ -29,6 +29,9 @@ class MicroMissile extends Projectile {
 
     calcTheta(deltaTime) {
         this._time += this._facingLeft ? 1 : -1;
+        if (Math.abs(this._time) < 10) {
+            return 0;
+        }
         this._theta = Math.sin(this._time * this._freq) * this._amp;
         return this._theta;
     }
