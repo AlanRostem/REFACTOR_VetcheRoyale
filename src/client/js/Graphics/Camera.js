@@ -12,11 +12,24 @@ export default class Camera {
             x: offsetX,
             y: offsetY,
         };
+
+        this._originalOffset = {
+            x: offsetX,
+            y: offsetY,
+        };
+
     }
 
     update(pos) {
         this._boundPos.x = -Math.round(pos._x - this._offset.x);
         this._boundPos.y = -Math.round(pos._y - this._offset.y);
+        this._offset.x = this._originalOffset.x;
+        this._offset.y = this._originalOffset.y;
+    }
+
+    shift(x, y) {
+        this._offset.x = this._originalOffset.x + x;
+        this._offset.y = this._originalOffset.y + y;
     }
 
     get x() {
