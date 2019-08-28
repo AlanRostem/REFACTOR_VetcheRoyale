@@ -6,7 +6,7 @@ import EntityTypeSpawner from "../../Game/Entity/Management/EntityTypeSpawner.js
 export default class CEntityManager {
     constructor(client) {
         this._clientRef = client;
-        this._container = {};
+        this._container = new Map();
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
 
@@ -15,26 +15,27 @@ export default class CEntityManager {
     }
 
     existsOnClient(id) {
-        return this._container.hasOwnProperty(id);
+        return this._container.has(id);
     }
 
     addEntityFromDataPack(dataPack, client) {
         //if (dataPack._removed) return;
-        (this._container[dataPack._id] = EntityTypeSpawner.spawn(dataPack.entityType, dataPack, client))
-            .onClientSpawn(dataPack, client);
+        let entity = EntityTypeSpawner.spawn(dataPack.entityType, dataPack, client);
+        this._container.set(dataPack._id, entity);
+        entity.onClientSpawn(dataPack, client);
     }
 
     getEntity(entityData) {
-        return this._container[entityData._id];
+        return this._container.get(entityData._id);
     }
 
     getEntityByID(id) {
-        return this._container[id];
+        return this._container.get(id);
     }
 
     removeEntity(id) {
-        this._container[id].onClientDelete(this._clientRef);
-        delete this._container[id];
+        this._container.get(id).onClientDelete(this._clientRef);
+        this._container.delete(id);
     }
 
     defineSocketEvents(client) {
@@ -70,8 +71,8 @@ export default class CEntityManager {
         });
 
         client.on("gameEvent-changeWorld", data => {
-           this.clear();
-           this.addEntityFromDataPack(data, client);
+            this.clear();
+            this.addEntityFromDataPack(data, client);
         });
 
         client.on('spawnEntity', entityData => {
@@ -81,14 +82,14 @@ export default class CEntityManager {
     }
 
     updateEntities(deltaTime, client, map) {
-        for (var id in this._container) {
-            this._container[id].update(deltaTime, client, map);
+        for (var pair of this._container) {
+            pair[1].update(deltaTime, client, map);
         }
     }
 
     drawEntities() {
-        for (var id in this._container) {
-            this._container[id].draw();
+        for (var pair of this._container) {
+            pair[1].draw();
         }
     }
 }
