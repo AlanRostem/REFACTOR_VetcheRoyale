@@ -57,8 +57,8 @@ const R = {
         R._canvas.width = R._screenDimensions.x;
         R._canvas.height = R._screenDimensions.y;
 
-        R._camera._offset.x = R._screenDimensions.x / 2 | 0;
-        R._camera._offset.y = R._screenDimensions.y / 2 | 0;
+        R._camera._originalOffset.x = R._screenDimensions.x / 2 | 0;
+        R._camera._originalOffset.y = R._screenDimensions.y / 2 | 0;
     },
 
     get camera() {
