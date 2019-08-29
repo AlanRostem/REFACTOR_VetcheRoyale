@@ -14,6 +14,7 @@ class SEntity {
         this._eType = this.constructor.name;
         this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
         this._homeWorldID = -1;
+        this._entityOrder = 0;
         this._snapShotGenerator = new SnapShotGenerator(this,
         [
             "_id",
@@ -24,7 +25,8 @@ class SEntity {
         [
             "_removed",
             "_color",
-            "_eType"
+            "_eType",
+            "_entityOrder"
         ]);
 
         this._entitiesInProximity = new ProximityEntityManager(this);
@@ -32,6 +34,10 @@ class SEntity {
 
     get gameID() {
         return this._homeWorldID;
+    }
+
+    setEntityOrder(int) {
+        this._entityOrder = int;
     }
 
     // Configure the maximum range the entity checks for other

@@ -2,7 +2,7 @@ const Interactable = require("../../Traits/Interactable.js");
 const LootRNG = require("../LootRNG.js");
 
 class LootCrate extends Interactable {
-    constructor(x, y, level = 1, capacity = 5, levelGuarantee = 1) {
+    constructor(x, y, level = 1, capacity = 15, levelGuarantee = 1) {
         super(x, y, 16, 8);
         this._level = level;
         this._capacity = capacity;
