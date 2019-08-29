@@ -32,8 +32,11 @@ class KineticBomb extends Bouncy {
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30, ownerID);
 
-        var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
-        exceptions.remove(ownerID);
+        var exceptions = {};
+        for (let key in entityManager.getEntity(ownerID).team.players) {
+            exceptions[key] = entityManager.getEntity(ownerID).team.players[key];
+        }
+        delete exceptions[ownerID];
 
         this._areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
     }
@@ -51,7 +54,7 @@ class KineticBomb extends Bouncy {
     detonate(entityManager) {
         this._areaDmg.x = this.center.x;
         this._areaDmg.y = this.center.y;
-        this._areaDmg.applyAreaOfEffect(this.id, entityManager);
+        this._areaDmg.applyAreaOfEffect(entityManager);
         this.remove();
     }
 

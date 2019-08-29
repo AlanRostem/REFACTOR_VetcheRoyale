@@ -7,7 +7,7 @@ class HitScanWeapon extends AttackWeapon {
     constructor(x, y, displayName, weaponClass = "pistol", maxRange = 200, hitEntities = true, hitTiles = true) {
         super(x, y, displayName, weaponClass);
         this._range = maxRange; // Max range of the scan-line
-        this._scanner = new HitScanner([], hitEntities, hitTiles);
+        this._scanner = new HitScanner({}, hitEntities, hitTiles);
         this._scanner.onTileHit = (hitPos, entityManager) => {
             this.onTileHit(hitPos, entityManager); // Overriding
         };
@@ -42,7 +42,7 @@ class HitScanWeapon extends AttackWeapon {
         super.fire(player, entityManager, deltaTime, angle);
         this._endFirePos.x = this.center.x + this._range * Math.cos(angle);
         this._endFirePos.y = this.center.y + this._range * Math.sin(angle);
-        this._scanner.scan(this.id, this.center, this._endFirePos, entityManager, entityManager.tileMap);
+        this._scanner.scan(this.center, this._endFirePos, entityManager, entityManager.tileMap);
     }
 
     // Adds the entity scan exception array to the hit scanner.

@@ -5,7 +5,7 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 // Scans the map geometry for available line of sight
 // to deal damage to entities in an area.
 class AOEDamage extends Damage {
-    constructor(ownerID, x, y, radius, value, exceptions = []) {
+    constructor(ownerID, x, y, radius, value, exceptions = {}) {
         super(value, ownerID);
         this._pos = new Vector2D(x, y);
         this._scanner = new AOELOSScanner(radius, exceptions);
@@ -22,8 +22,8 @@ class AOEDamage extends Damage {
         this._pos.y = val;
     }
 
-    applyAreaOfEffect(ownerID, entityManager) {
-        this._scanner.areaScan(ownerID, this._pos, entityManager);
+    applyAreaOfEffect(entityManager) {
+        this._scanner.areaScan(this._pos, entityManager);
     }
 }
 

@@ -4,14 +4,14 @@ const TileCollider = require("../../TileBased/TileCollider.js");
 
 // Scan line that collides with map geometry or entities (can be set however you like).
 class HitScanner {
-    constructor(exceptions = [], entityCollision = true, tileCollision = true) {
+    constructor(entityIDExclusions = {}, entityCollision = true, tileCollision = true) {
         this._scanEntities = entityCollision;
         this._scanTiles = tileCollision;
         this._stopAtEntity = true;
         this._stopAtTile = true;
         this._qtRange = new QTRect(0, 0, 360, 160);
         this._end = new Vector2D(0, 0);
-        this._entityExceptions = exceptions;
+        this._entityExceptions = entityIDExclusions;
     }
 
     set entityScanEnabled(val) {
@@ -46,16 +46,9 @@ class HitScanner {
         this._entityExceptions = val;
     }
 
-    scan(ownerID, originPos, endPos, entityManager, tileMap) {
-        var a = originPos;
-        this._qtRange.x = a.x;
-        this._qtRange.y = a.y;
+    scanGeometry(a, b, entityManager, tileMap) {
 
-        var b = this._end;
-        b.x = endPos.x;
-        b.y = endPos.y;
-
-        var d = Vector2D.distance(originPos, endPos);
+        var d = Vector2D.distance(a, b);
         var height;
         var width = height = Math.floor(d / tileMap.tileSize);
 
@@ -98,14 +91,14 @@ class HitScanner {
                 }
             }
         }
+    }
 
+    scanEntities(entityManager, a, b) {
         if (this._scanEntities) {
             var entities = entityManager.quadTree.query(this._qtRange);
             for (var e of entities) {
-                if (this._entityExceptions.includes(e.id) || e.id === ownerID) {
-                    continue;
-                }
-
+                if (this._entityExceptions.hasOwnProperty(e.id)) continue;
+                console.log(e.constructor.name, e.id);
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                     if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
                     let ang = Math.atan2(a.y - b.y, a.x - b.x);
@@ -131,8 +124,24 @@ class HitScanner {
                 }
             }
         }
+    }
+
+    scan(originPos, endPos, entityManager, tileMap) {
+        var a = originPos;
+        this._qtRange.x = a.x;
+        this._qtRange.y = a.y;
+
+        var b = this._end;
+        b.x = endPos.x;
+        b.y = endPos.y;
+
+        this.scanGeometry(a, b, entityManager, tileMap);
+        this.scanEntities(entityManager, a, b);
+
         return this._end;
     }
+
+
 
     onTileHit(hitPos, entityManager) {
 

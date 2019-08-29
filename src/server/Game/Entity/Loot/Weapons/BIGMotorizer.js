@@ -19,7 +19,7 @@ class MicroMissile extends Projectile {
 
         this._harmonic = harmonic;
         this._facingLeft = left;
-        this.exceptions = entityManager.getEntity(this._ownerID).team.array
+        this.exceptions = entityManager.getEntity(this._ownerID).team.players;
     }
 
     update(entityManager, deltaTime) {
@@ -59,7 +59,7 @@ class MicroMissile extends Projectile {
 
     dealDamage(entityManager) {
         new AOEDamage(this._ownerID, this.center.x, this.center.y, 8, 17, this.exceptions)
-            .applyAreaOfEffect(this._ownerID, entityManager);
+            .applyAreaOfEffect(entityManager);
     }
 
 }
@@ -101,7 +101,7 @@ class BIGMotorizer extends AttackWeapon {
         let end = {};
         end.x = this.center.x + Math.cos(this._fireAngle) * this._thunderPulseRange;
         end.y = this.center.y + Math.sin(this._fireAngle) * this._thunderPulseRange;
-        this._thunderPulse.scan(this._playerID, this.center, end, entityManager, entityManager.tileMap);
+        this._thunderPulse.scan(this.center, end, entityManager, entityManager.tileMap);
     }
 
     onModBuffs(entityManager, deltaTime) {

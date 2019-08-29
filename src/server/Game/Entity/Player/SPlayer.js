@@ -69,7 +69,7 @@ class Player extends GameDataLinker {
         this.acc.x = this._speed.ground;
 
         this._itemsNearby = new ONMap();
-        this._itemScanner = new HitScanner([], false);
+        this._itemScanner = new HitScanner({}, false);
         this._scanItems = false;
     }
 
@@ -81,7 +81,7 @@ class Player extends GameDataLinker {
                 let entity = this._entitiesInProximity.getEntity(id);
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
-                    this._itemScanner.scan(this.id, this.center, entity.center, game, game.tileMap);
+                    this._itemScanner.scan(this.center, entity.center, game, game.tileMap);
                     if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
                         && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
                         this._itemsNearby.set(entity.id, distance);

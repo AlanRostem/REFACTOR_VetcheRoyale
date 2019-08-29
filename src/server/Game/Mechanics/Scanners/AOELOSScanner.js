@@ -7,12 +7,12 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 // that collides with the map geometry. The line has to intersect
 // the entity to do the events.
 class AOELOSScanner extends HitScanner {
-    constructor(radius, exceptions = [], tileCollision = true) {
+    constructor(radius, exceptions = {}, tileCollision = true) {
         super(exceptions, false, tileCollision);
         this._radius = radius;
     }
 
-    areaScan(ownerID, originPos, entityManager) {
+    areaScan(originPos, entityManager) {
         this._qtRange.x = originPos.x;
         this._qtRange.y = originPos.y;
 
@@ -25,9 +25,8 @@ class AOELOSScanner extends HitScanner {
                 originPos.x + this._radius * Math.cos(angle),
                 originPos.y + this._radius * Math.sin(angle));
             var a = originPos;
-            var b = this.scan(ownerID, originPos, rangePos, entityManager, entityManager.tileMap);
-            if (this._entityExceptions.includes(e.id) || e.id === ownerID)
-                continue;
+            var b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
+            if (this._entityExceptions.hasOwnProperty(e.id)) continue;
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
