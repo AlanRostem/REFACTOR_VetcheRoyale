@@ -7,7 +7,7 @@ const PacketValidator = {
         return true;
     },
     validateData(client, data, expectedType) {
-        if (data === null || data === undefined) {
+        if (data === null || data === undefined || typeof data !== expectedType) {
             client.disconnect("Invalid packet data");
             return false;
         }

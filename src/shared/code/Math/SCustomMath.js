@@ -41,6 +41,10 @@ const VMath = {
         return xx / m;
     },
 
+    randMinMax(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
 
 };
 

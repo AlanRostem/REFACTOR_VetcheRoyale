@@ -4,6 +4,7 @@ const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const HitScanner = require("../../../Mechanics/Scanners/HitScanner.js");
 const Effect = require("../../../Mechanics/Effect/Effect.js");
 const Affectable = require("../../../Entity/Traits/Affectable.js");
+const vm = require("../../../../../shared/code/Math/SCustomMath.js");
 
 class MicroMissile extends Projectile {
     constructor(ownerID, x, y, angle, entityManager, harmonic = true, left = false) {
@@ -32,7 +33,7 @@ class MicroMissile extends Projectile {
         if (Math.abs(this._time) < 10) {
             return 0;
         }
-        this._theta = Math.sin(this._time * this._freq) * this._amp;
+        this._theta = Math.sin(this._time * this._freq) * this._amp * vm.randMinMax(-3,3);
         return this._theta;
     }
 
