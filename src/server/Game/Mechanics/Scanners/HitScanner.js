@@ -98,7 +98,6 @@ class HitScanner {
             var entities = entityManager.quadTree.query(this._qtRange);
             for (var e of entities) {
                 if (this._entityExceptions.hasOwnProperty(e.id)) continue;
-                console.log(e.constructor.name, e.id);
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                     if (this._stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
                     let ang = Math.atan2(a.y - b.y, a.x - b.x);
