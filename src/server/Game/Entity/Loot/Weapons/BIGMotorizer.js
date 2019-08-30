@@ -161,6 +161,9 @@ class BIGMotorizer extends AttackWeapon {
     onFireButton(entityManager, deltaTime) {
         if (this._upgradeStage >= 1 && !this._reloading) {
             this._fireRate += 500 * deltaTime;
+            if (this._fireRate >= 1100) {
+                this._fireRate = 1100;
+            }
         }
     }
 }
