@@ -28,6 +28,7 @@ export default class CClient {
 
         this.defineSocketEvents();
         this._latency = 0;
+        this.discReasonMsg = "reason: server error";
 
     }
 

@@ -69,7 +69,9 @@ class Client {
         });
 
         this._socket.on("clientPacketToServer", packet => {
-            this.onClientUpdateReceived(packet)
+            if (PacketValidator.validatePacket(this, packet)) {
+                this.onClientUpdateReceived(packet);
+            }
         })
     }
 
