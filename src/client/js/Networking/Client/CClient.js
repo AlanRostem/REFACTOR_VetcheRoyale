@@ -129,6 +129,7 @@ export default class CClient {
         const connectedPromise = new Promise(resolve => {
             this.on('connectClient', data => {
                 this.id = data.id;
+                this.disconnected = false;
                 this._socket.emit("connectClientCallback", {id: this.id});
                 resolve();
             });
@@ -151,6 +152,20 @@ export default class CClient {
         this.on("gameEvent-changeWorld", data => {
 
         });
+
+        this.on("manualDisconnect", message => {
+            this.discReasonMsg = "reason: " +message;
+            this.disconnected = true;
+            this._socket.close();
+            document.body.style.cursor = "default";
+        });
+
+        this.on("disconnect", message => {
+            this.discActionMsg = "action: " + message;
+            this.disconnected = true;
+            this._socket.close();
+            document.body.style.cursor = "default";
+        })
     }
 }
 

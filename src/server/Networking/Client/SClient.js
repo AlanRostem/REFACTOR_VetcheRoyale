@@ -3,6 +3,7 @@ const Tile = require("../../Game/TileBased/Tile.js");
 const QuadTree = require("../../Game/Entity/Management/QuadTree.js");
 const InputReceiver = require("./InputReceiver.js");
 const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
+const PacketValidator = require("./PacketValidator.js");
 
 // Object that represents a client connected to the server
 class Client {
@@ -18,6 +19,7 @@ class Client {
         this._inputReceiver = new InputReceiver(this);
 
         this._removed = false;
+        this._disconnected = false;
 
         this._player = new Player(0, 0, this);
         this.defineSocketEvents(socket, clientList);
@@ -31,6 +33,17 @@ class Client {
         this._outboundPacket.set(key, value);
     }
 
+    disconnect(message) {
+        this._disconnected = true;
+        this._removed = true;
+        this.emit("manualDisconnect", message);
+        this._socket.close();
+    }
+
+    isDisconnected() {
+        return this._disconnected;
+    }
+
     get removed() {
         return this._removed;
     }
@@ -41,11 +54,13 @@ class Client {
 
     defineSocketEvents(socket, clientList) {
         this._socket.on("connectClientCallback", data => {
-            console.log("Client [ " + data.id + " ] successfully connected!");
-            this._socket.broadcast.emit("broadcast-newPlayer", {
-                id: this.id,
-                playerCount: clientList.length
-            });
+            if (PacketValidator.validatePacket(this, data)) {
+                console.log("Client [ " + data.id + " ] successfully connected!");
+                this._socket.broadcast.emit("broadcast-newPlayer", {
+                    id: this.id,
+                    playerCount: clientList.length
+                });
+            }
         });
 
         this._socket.on("disconnect", data => {

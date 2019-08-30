@@ -34,6 +34,12 @@ class GameServer {
             this._lastTime = Date.now();
     }
 
+    disconnectAll() {
+        for (let id in this.mainSocket.clientList) {
+            this.mainSocket.clientList[id].disconnect("Admin kicked all");
+        }
+    }
+
     start() {
         setInterval(() => this.update(), 1000 / this._tickRate);
     }

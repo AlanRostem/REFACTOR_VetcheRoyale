@@ -85,13 +85,26 @@ const Scene = {
 
     draw() {
         R.clear();
+        if (Scene._clientRef.disconnected) {
+            R.drawText("YOU HAVE BEEN DISCONNECTED", (R.screenSize.x / 2 | 0) - "YOU HAVE BEEN DISCONNECTED".length * 4 / 2,
+                R.screenSize.y / 2 | 0, "Red");
+            R.drawText(Scene._clientRef.discReasonMsg, (R.screenSize.x / 2 | 0) -
+                4 * Scene._clientRef.discReasonMsg.length / 2,
+                (R.screenSize.y / 2 | 0) + 8, "Red");
+            R.drawText(Scene._clientRef.discActionMsg, (R.screenSize.x / 2 | 0) -
+                4 * Scene._clientRef.discActionMsg.length / 2,
+                (R.screenSize.y / 2 | 0) + 16, "Red");
+            return;
+        }
+
         if (AssetManager.done()) {
             Scene.tileMaps.getMap(Scene.currentMapName).draw();
             Scene._entityManager.drawEntities();
             UI.draw();
             R.drawText(Scene._clientRef._latency + "ms", 4, 4, "White");
-
+            document.body.style.cursor = "none";
         } else {
+            document.body.style.cursor = "default";
             var str = "Loading " +
                 (((AssetManager.successCount + AssetManager.errorCount) / AssetManager.downloadQueue.length) * 100 | 0)
                 + "%";
