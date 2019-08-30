@@ -8,7 +8,7 @@ class SoundPoop {
 
     play(src) {
         let sound = new SoundEffect(src);
-        sournd.play();
+        sound.play();
         return sound;
     }
 }
