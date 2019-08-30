@@ -1,4 +1,4 @@
-const Client = require("./SClient.js");
+const Client = require("./Client/SClient.js");
 const ClientList = require("./ClientList.js");
 
 String.random = () => {

@@ -1,8 +1,8 @@
-const Player = require("../Game/Entity/Player/SPlayer.js");
-const Tile = require("../Game/TileBased/Tile.js");
-const QuadTree = require("../Game/Entity/Management/QuadTree.js");
+const Player = require("../../Game/Entity/Player/SPlayer.js");
+const Tile = require("../../Game/TileBased/Tile.js");
+const QuadTree = require("../../Game/Entity/Management/QuadTree.js");
 const InputReceiver = require("./InputReceiver.js");
-const ONMap = require("../../shared/code/DataStructures/SObjectNotationMap.js");
+const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
 
 // Object that represents a client connected to the server
 class Client {
