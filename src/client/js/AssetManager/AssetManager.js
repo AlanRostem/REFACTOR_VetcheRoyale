@@ -10,6 +10,9 @@ class AssetManager {
         this.downloadCallbacks = [];
         this.onFileDownloadedCallbacks = new ONMap;
         this.maxPool = 5;
+
+        // Web Audio API related stuff:
+        this.audioCtx = new AudioContext();
     }
 
     mapFilePathCallback(path, callback) {
@@ -134,6 +137,30 @@ class AssetManager {
                         audioPool.src = downloadAudio.src;
                         this.cache[cachePath][p] = audioPool;
                     }
+                    break;
+                case "oggSE":
+                    path = path.slice(0, -2);
+                    let request = new XMLHttpRequest();
+                    request.open("GET", "public/assets/audio/" + path, true);
+                    request.responseType = "arraybuffer";
+                    request.audioPath = path + "SE";
+                    request.onload = () => {
+                        _this.audioCtx.decodeAudioData(request.response, buffer => {
+                            _this.cache[request.audioPath] = buffer;
+                            console.log("Loaded!", buffer);
+                        }, () => console.log("Audio loading error!"));
+
+                        _this.successCount++;
+                        if (_this.done()) {
+                            downloadCallback();
+                        }
+
+                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                            _this.onFileDownloadedCallbacks.remove(this.testPath);
+                        }
+                    };
+                    request.send();
                     break;
                 case "png":
                     var img = new Image();
