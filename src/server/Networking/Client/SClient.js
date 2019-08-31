@@ -22,6 +22,8 @@ class Client {
         this._disconnected = false;
 
         this._player = new Player(0, 0, this);
+        // Used to store packets over time and check their frequency
+        this.frequencyBuffer = [];
         this.defineSocketEvents(socket, clientList);
     }
 
@@ -76,8 +78,10 @@ class Client {
     }
 
     onClientUpdateReceived(packet) {
-        for (let callback of this._inboundDataCallbacks.array) {
-            callback(packet);
+        if (PacketValidator.validatePacket(this, packet)) {
+            for (let callback of this._inboundDataCallbacks.array) {
+                callback(packet);
+            }
         }
     }
 

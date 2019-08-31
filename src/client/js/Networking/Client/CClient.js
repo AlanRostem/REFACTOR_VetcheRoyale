@@ -8,7 +8,6 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 // Class representation of the client. Holds input callbacks
 // and manages socket events.
 export default class CClient {
-
     constructor(socket) {
         this._socket = socket;
         this.id = socket.id;

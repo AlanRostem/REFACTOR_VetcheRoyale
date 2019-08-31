@@ -35,7 +35,6 @@ export default class InputListener {
             sequence: this._sequence,
         };
         client.setOutboundPacketData("input", input);
-
     }
 
     update(client) {
