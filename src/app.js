@@ -45,6 +45,6 @@ process.stdin.on("data", (data) => {
       let object = eval(data.toString());
       console.log(object);
    } catch (e) {
-      console.log("Not found");
+      console.log(e.name + ":", e.message);
    }
 });
