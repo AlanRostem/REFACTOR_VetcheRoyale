@@ -11,7 +11,7 @@ class MicroMissile extends Projectile {
         super(ownerID, x, y, 2, 2, angle, 150);
         this._trajectoryAngle = angle;
 
-        this._speed = 160;
+        this._speed = 220;
         this._theta = 0;
         this._time = 0;
 
