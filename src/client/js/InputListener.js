@@ -28,6 +28,14 @@ export default class InputListener {
         this._sequence = 0;
 
         this.listenTo(client);
+        let input = {
+            keyStates: this._keyStates,
+            mouseData: this._mouse,
+            mouseStates: this._mouseStates,
+            sequence: this._sequence,
+        };
+        client.setOutboundPacketData("input", input);
+
     }
 
     update(client) {

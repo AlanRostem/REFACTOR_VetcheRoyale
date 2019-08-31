@@ -37,7 +37,7 @@ class Client {
         this._disconnected = true;
         this._removed = true;
         this.emit("manualDisconnect", message);
-        this._socket.close();
+        this._socket.disconnect();
     }
 
     isDisconnected() {

@@ -1,6 +1,8 @@
 // Composite class that retrieves input data
 // the client emitted to the server.
 
+const PacketValidator = require("./PacketValidator.js");
+
 const TICK_RATE = 40;
 
 function validateInput(input) {
@@ -18,8 +20,8 @@ class InputReceiver {
         this._singlePressMouseButtons = {};
 
         client.addClientUpdateListener("processInput", data => {
-            const input = data.input;
-            if (input) {
+            if (PacketValidator.validateData(client, data.input, "object")) {
+                const input = data.input;
                 if (validateInput(input)) {
                     this.applyInput(input);
                     client.setOutboundPacketData(
