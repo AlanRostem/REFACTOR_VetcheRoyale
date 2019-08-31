@@ -3,7 +3,6 @@ const TeamManager = require("./TeamManager.js");
 const Tile = require("../TileBased/Tile");
 const ClientList = require("../../Networking/ClientList.js");
 const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
-
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");

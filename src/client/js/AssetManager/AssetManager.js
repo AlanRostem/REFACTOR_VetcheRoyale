@@ -107,6 +107,8 @@ class AssetManager {
                     this.cache[path] = audio;
                     break;
                 case "oggp":
+                    this.successCount++;
+                    /*
                     path = path.slice(0, -1);
                     var cachePath = path + 'p';
                     this.cache[cachePath] = [];
@@ -137,6 +139,8 @@ class AssetManager {
                         audioPool.src = downloadAudio.src;
                         this.cache[cachePath][p] = audioPool;
                     }
+
+                     */
                     break;
                 case "oggSE":
                     path = path.slice(0, -2);
