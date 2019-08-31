@@ -29,7 +29,14 @@ class WebSocket {
 
     defineSocketEvents(matchMaker) {
         this._socket.on("connection", client => {
-            console.log("Establishing connection... Client ID: [ " + client.id + " ]");
+            console.log("\nEstablishing connection... Client ID: [ " + client.id + " ]");
+
+            if (this._clientList.hasIP(client.handshake.address)) {
+                //client.disconnect("Duplicate user");
+                //console.log("Kicked duplicate client:", client.id);
+                //return;
+            }
+
             var _client = new Client(client, this._clientList);
             this._clientList.addClient(client.id, _client);
             matchMaker.queuePlayer(_client);
