@@ -1,34 +1,36 @@
 {
-  "105" : {
+  "105": {
     "name": "PlayerLobby",
     "classType": "null",
     "isPositionalData": true
   },
 
-  "90" : {
-    "name" : "LootCrate",
+  "90": {
+    "name": "LootCrate",
     "classType": "LootCrate",
     "isPositionalData": false
   },
 
-  "113" : {
-    "name" : "GunSpawner",
+  "113": {
+    "name": "GunSpawner",
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-        "id": 113
+      "id": 113
     }
   },
-  "114" : {
-    "name" : "GunSpawner",
+
+  "114": {
+    "name": "GunSpawner",
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
       "id": 114
     }
   },
-  "115" : {
-    "name" : "GunSpawner",
+
+  "115": {
+    "name": "GunSpawner",
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
