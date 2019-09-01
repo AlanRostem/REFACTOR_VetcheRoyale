@@ -1,3 +1,5 @@
+const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
 const Tile = require("../../../TileBased/Tile.js");
@@ -61,9 +63,24 @@ class KineticBomb extends Bouncy {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
         if (!entityManager.getEntity(this._weaponID)) return;
-        if (this._hits === 0 ||
-            entityManager.getEntity(this._weaponID).kineticDetonation)
+        if (entityManager.getEntity(this._weaponID).kineticImplosion) {
+            this._followPoint = true;
+            this._point = entityManager.getEntity(this._weaponID).followPoint;
+        }
+
+        if (this._followPoint) {
+            let angle = Vector2D.angle(this.center, this._point);
+            let d = Vector2D.distance(this.center, this._point);
+            this.vel.x = Math.cos(angle) * d * 10;
+            this.vel.y = Math.sin(angle) * d * 10;
+            if (Vector2D.distance(this.center, this._point) < this._point.radius) {
+                this.detonate(entityManager);
+            }
+        }
+
+        if (this._hits === 0) {
             this.detonate(entityManager);
+        }
     }
 
 }
@@ -72,18 +89,20 @@ class KE_6H extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "KE-6H", 0, 0, 0);
         this._detonate = false;
+        this.followPoint = new Vector2D(0, 0);
+        this.followPoint.radius = 8;
         this.configureAttackStats(2.5, 5, 1, 100);
+        this._modAbility.configureStats(2, 7);
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
-            composedWeapon.kineticDetonation = true;
+            composedWeapon.kineticImplosion = true;
+            composedWeapon._canFire = false;
+            this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
+            this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
         };
-    }
-
-    get kineticDetonation() {
-        return this._detonate;
-    }
-
-    set kineticDetonation(val) {
-        this._detonate = val;
+        this._modAbility.onDeactivation = (composedWeapon, entityManager) => {
+            composedWeapon.kineticImplosion = false;
+            composedWeapon._canFire = true;
+        };
     }
 
     update(entityManager, deltaTime) {
