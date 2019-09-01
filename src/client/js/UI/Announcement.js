@@ -17,8 +17,8 @@ export default class Announcement extends UIElement {
 
 
         this._timer2 = new CTimer(7, () => {
-            this.add("Alert!", "Red");
-            this.add("Alan e en kuk ;)", "Yellow");
+            //this.add("Alert!", "Red");
+            //this.add("Alan e en kuk ;)", "Yellow");
         }, true);
 
         this._image = AssetManager.get("ui/ui.png");
@@ -36,7 +36,7 @@ export default class Announcement extends UIElement {
         });
     }
 
-    add(string, color) {
+    add(string, color = "Red") {
         this._queue.push({
             _dString: "",
             _string: string,
@@ -78,6 +78,11 @@ export default class Announcement extends UIElement {
 
     update(deltaTime, client, entityList) {
         this.pos.x = R.WIDTH / 2 - 64 | 0;
+        var e = client.inboundPacket["gameData"]["Event"];
+        console.log(e);
+        if (e !== null)
+            this.add(e._name);
+
         if (this._elm !== undefined || this._queue.length !== 0)
             this.showAnnouncement();
         else if (this._queue.length === 0)

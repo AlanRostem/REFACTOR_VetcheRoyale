@@ -19,7 +19,7 @@ class Match extends GameWorld{
 
     update(deltaTime) {
         super.update(deltaTime);
-        this.eventManager.update(this);
+        this.eventManager.update(this, deltaTime);
     }
 }
 

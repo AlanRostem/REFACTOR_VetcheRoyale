@@ -11,7 +11,7 @@ class GameEvent {
         return {
             _name:this._name,
             _type:this._type,
-            _pos:this._pos
+            _arg:this._arg
         };
     }
 }
