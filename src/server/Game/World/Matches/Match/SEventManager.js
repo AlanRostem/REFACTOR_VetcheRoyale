@@ -1,7 +1,7 @@
 const GameEvent = require("./GameEvent.js");
 const STimer = require("../../../../../shared/code/Tools/STimer");
 
-class EventManager {
+class SEventManager {
     constructor() {
         this._queue = [];
         this._timer = new STimer(4, () => {
@@ -16,7 +16,7 @@ class EventManager {
     }
 
     sendEvent(gameWorld) {
-        gameWorld.setGameData("Event", null);
+        gameWorld.setGameData("Event", undefined);
         if (this._queue.length > 0) {
             let e = this._queue.pop();
             gameWorld.setGameData("Event", e.getEvent());
@@ -29,4 +29,4 @@ class EventManager {
     }
 }
 
-module.exports = EventManager;
+module.exports = SEventManager;

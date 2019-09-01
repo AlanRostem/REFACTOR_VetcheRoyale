@@ -1,6 +1,5 @@
 const GameWorld = require("../../GameWorld.js");
 const TileMapConfigs = require("../../../../../shared/code/TileBased/STileMapConfigs.js");
-
 const HubPortal = require("../../../Entity/Portal/HubPortal.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");

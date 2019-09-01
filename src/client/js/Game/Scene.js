@@ -3,6 +3,7 @@
 
 import R from "../Graphics/Renderer.js"
 import AssetManager from "../AssetManager/AssetManager.js"
+import CEventManager from "../CEventManager.js"
 import UI from "../UI/UI.js";
 import MiniMap from "../UI/MiniMap.js";
 import KelvinBar from "../UI/KelvinBar.js";
@@ -22,6 +23,7 @@ const Scene = {
     _currentMap: "MegaMap",
     _entityManager: null,
     _clientRef: null,
+    _eventManager: null,
 
     get deltaTime() {
         return Scene._deltaTime;
@@ -66,6 +68,7 @@ const Scene = {
     run(entityManager, client) {
         Scene._clientRef = client;
         Scene._entityManager = entityManager;
+        Scene._eventManager = new CEventManager(); // TODO::Kor ska denne?
 
         Scene.setup();
         Scene.tick();
@@ -74,6 +77,7 @@ const Scene = {
     update() {
         if (AssetManager.done()) {
             Scene._clientRef.update(Scene._entityManager, Scene.deltaTime);
+            Scene._eventManager.update(Scene._clientRef);
             UI.update(Scene.deltaTime, Scene._clientRef, Scene._entityManager);
             Scene._entityManager.updateEntities(Scene.deltaTime, Scene._clientRef, Scene.tileMaps.getMap(Scene._currentMap));
             let e = Scene._clientRef.player;

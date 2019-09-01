@@ -6,36 +6,28 @@ import AssetManager from "../AssetManager/AssetManager.js";
 export default class Announcement extends UIElement {
     constructor() {
         super("announcement", R.WIDTH / 2 - 64 | 0, 0, 128, 18);
-        this._color = "#222034";
-        this._queue = [];
-        this._elm = undefined;
-
-        this._timer = new CTimer(0.01, () => {
-            if (this._elm !== undefined)
-                this._elm._x--;
-        }, true);
-
-
-        this._timer2 = new CTimer(7, () => {
-            //this.add("Alert!", "Red");
-            //this.add("Alan e en kuk ;)", "Yellow");
-        }, true);
-
         this._image = AssetManager.get("ui/ui.png");
+        this._elm = undefined;
+        //this._queue = [];
+        /*
+        this._timer = new CTimer(0.01, () => {
+           // if (this._elm !== undefined)
+            // this._elm._x--;
+        }, true);
+        */
 
-
-        //this.add(" !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`", "Red");
-        //this.addPriority("The substr() method extracts parts of a string, beginning at the character at the specified position, and returns the specified number of characters.", "Blue");
+        this._timer = new CTimer(4, () => {
+            this._elm = undefined;
+        }, true);
     }
 
-    addPriority(string, color) {
-        this._queue.unshift({
-            _string: string,
-            _color: color,
-            _x: this.width - 10
-        });
+
+    set elm(evt) {
+        this._elm = evt;
+        console.log(this._elm);
     }
 
+    /*
     add(string, color = "Red") {
         this._queue.push({
             _dString: "",
@@ -44,6 +36,7 @@ export default class Announcement extends UIElement {
             _x: this.width - 10
         });
     }
+
 
     updateQueue() {
         if (this._queue.length !== 0 && this._elm === undefined)
@@ -62,7 +55,6 @@ export default class Announcement extends UIElement {
         }
     }
 
-
     showAnnouncement() {
         if (this.pos.y < 0) {
             this.pos.y++;
@@ -74,25 +66,12 @@ export default class Announcement extends UIElement {
             this.pos.y--;
         }
     }
-
+ */
 
     update(deltaTime, client, entityList) {
         this.pos.x = R.WIDTH / 2 - 64 | 0;
-        var e = client.inboundPacket["gameData"]["Event"];
-        console.log(e);
-        if (e !== null)
-            this.add(e._name);
-
-        if (this._elm !== undefined || this._queue.length !== 0)
-            this.showAnnouncement();
-        else if (this._queue.length === 0)
-            this.hideAnnouncement();
-
-
-        this.updateQueue();
-        this.updateElm();
         this._timer.tick(deltaTime);
-        this._timer2.tick(deltaTime);
+
     }
 
     draw() {
@@ -108,15 +87,15 @@ export default class Announcement extends UIElement {
                 this.width - 10,
                 this.height - 4
             );
-
-            if (this._elm !== undefined) {
-                R.drawText(
-                    this._elm._dString,
-                    this.pos.x + this._elm._x + this.start * 5 + 1,
-                    this.pos.y + 11, this._elm._color
-                );
-            }
-
+            /*
+                        if (this._elm !== undefined) {
+                            R.drawText(
+                                this._elm._dString,
+                                this.pos.x + this._elm._x + this.start * 5 + 1,
+                                this.pos.y + 11, this._elm._color
+                            );
+                        }
+            */
             R.ctx.drawImage(
                 this._image,
                 0,

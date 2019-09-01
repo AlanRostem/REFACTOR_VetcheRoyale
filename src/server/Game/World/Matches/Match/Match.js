@@ -2,7 +2,7 @@ const GameWorld = require("../../GameWorld.js");
 const Tile = require("../../../TileBased/Tile.js");
 const HubPortal = require("../../../Entity/Portal/HubPortal.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
-const EventManager = require("./EventManager.js");
+const EventManager = require("./SEventManager.js");
 
 class Match extends GameWorld{
     constructor(socket, worldList, name, maxPlayers, gameMap) {
