@@ -12,12 +12,10 @@ class ElectricSphere extends Projectile {
         super(ownerID, x, y, 5, 5, angle, 120, 0);
         this._radius = 5;
         this._weaponID = weaponID;
-        this._directHitDmg = new Damage(30, ownerID);
 
-        var exceptions = entityManager.getEntity(ownerID).team.createIDArray();
-        exceptions.remove(ownerID);
-
-        this._areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this._radius, 10, exceptions);}
+        this._areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this._radius, 10,
+            entityManager.getEntity(ownerID).team.players);
+    }
 
     onTileHit(entityManager, deltaTime) {
         this.detonate(entityManager);
@@ -38,10 +36,6 @@ class ElectricSphere extends Projectile {
         super.update(entityManager, deltaTime);
         this.pos.x = this.getOwner(entityManager).input.mouseData.world.x;
         this.pos.y = this.getOwner(entityManager).input.mouseData.world.y;
-
-        if (this._hits === 0 ||
-            entityManager.getEntity(this._weaponID).kineticDetonation)
-            this.detonate(entityManager);
     }
 
 }
@@ -53,17 +47,6 @@ class SEW_9 extends AttackWeapon {
         super(x, y, "SEW-9", 0, 0, 0);
         this._detonate = false;
         this.configureAttackStats(1.5, 1, 1, 100);
-        this._modAbility.onActivation = (composedWeapon, entityManager) => {
-            composedWeapon.kineticDetonation = true;
-        };
-    }
-
-    get kineticDetonation() {
-        return this._detonate;
-    }
-
-    set kineticDetonation(val) {
-        this._detonate = val;
     }
 
     update(entityManager, deltaTime) {
