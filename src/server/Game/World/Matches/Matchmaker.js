@@ -12,11 +12,16 @@ class Matchmaker {
         this._gameWorlds = new ONMap();
         this._lastCreatedWorldID = -1;
 
+        // TODO: FIX THIS HACK
+
         let megaMap = new GameWorld(mainSocket, "MegaMap", 24, true, TileMapConfigs.getMap("MegaMap"));
         this.addWorld(megaMap, "MegaMap");
 
         let lobby = new HubWorld(mainSocket, this._gameWorlds, "lobby", 64, TileMapConfigs.getMap("lobby"));
         this.addWorld(lobby, "lobby");
+
+        let hub = new HubWorld(mainSocket, this._gameWorlds, "hub", 64, TileMapConfigs.getMap("hub"));
+        this.addWorld(hub, "hub");
 
         let playground = new PlayGround(mainSocket, this._gameWorlds);
         this.addWorld(playground, "playground");

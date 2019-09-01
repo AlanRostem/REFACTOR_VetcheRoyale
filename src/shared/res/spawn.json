@@ -4,37 +4,109 @@
     "classType": "null",
     "isPositionalData": true
   },
-
   "90": {
     "name": "LootCrate",
     "classType": "LootCrate",
     "isPositionalData": false
   },
-
   "113": {
     "name": "GunSpawner",
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-      "id": 113
+      "id": 113,
+      "frameColor": "blue"
     }
   },
-
   "114": {
     "name": "GunSpawner",
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-      "id": 114
+      "id": 114,
+      "frameColor": "blue"
     }
   },
-
   "115": {
     "name": "GunSpawner",
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-      "id": 115
+      "id": 115,
+      "frameColor": "blue"
+    }
+  },
+  "97": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 97,
+      "frameColor": "blue"
+    }
+  },
+  "98": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 98,
+      "frameColor": "blue"
+    }
+  },
+  "99": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 99,
+      "frameColor": "blue"
+    }
+  },
+  "100": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 100,
+      "frameColor": "blue"
+    }
+  },
+  "101": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 101,
+      "frameColor": "blue"
+    }
+  },
+  "102": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 102,
+      "frameColor": "blue"
+    }
+  },
+  "103": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 103,
+      "frameColor": "blue"
+    }
+  },
+
+  "104": {
+    "name": "Portal",
+    "classType": "Portal",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 104,
+      "frameColor": "blue"
     }
   }
 }

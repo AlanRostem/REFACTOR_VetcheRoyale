@@ -2,6 +2,7 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 const SJSONFile = require("../../../ResourceManagement/SJSONFile.js");
 
 const LootCrate = require("../../Entity/Loot/Boxes/LootCrate.js");
+const Portal = require("../../Entity/Portal/Portal.js");
 const GunSpawner = require("../../World/Matches/PlayGround/GunSpawner.js");
 
 // Object stored in tile map objects that keeps track of

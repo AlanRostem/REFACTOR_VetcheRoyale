@@ -3,6 +3,7 @@ const TeamManager = require("./TeamManager.js");
 const Tile = require("../TileBased/Tile");
 const ClientList = require("../../Networking/ClientList.js");
 const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
+const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
@@ -24,24 +25,14 @@ class GameWorld extends EntityManager {
     constructor(serverSocket, name, maxPlayers = 4, pvp = false, gameMap) {
         super(true, gameMap);
         this.teamManager = new TeamManager();
+        this.dataPacket = {};
+
         this._clients = new PlayerList();
         this._maxPlayers = maxPlayers;
         this._id = name;
         this._pvp = pvp;
         this._settings = new GameConfig();
-        this.dataPacket = {};
-
-        let p1 = this.spawnEntity(
-            50 * Tile.SIZE,
-            108 * Tile.SIZE,
-            new Portal(0, 0, null));
-
-        let p2 = this.spawnEntity(
-            45 * Tile.SIZE,
-            90 * Tile.SIZE,
-            new Portal(0, 0, null));
-
-        p1.link(p2);
+        this._portals = new ONMap();
 
         this.spawner.spawnAll(this);
     }
@@ -72,6 +63,15 @@ class GameWorld extends EntityManager {
         if (entity instanceof GameDataLinker) {
             entity._gameData.mapName = this.tileMap.name;
             entity._gameData.playerCount = this.playerCount;
+        }
+        if (entity instanceof Portal) {
+            if (this._portals.has(entity.portalTileID)) {
+                this._portals.get(entity.portalTileID).push(entity);
+                this._portals.get(entity.portalTileID)[0].link(
+                    this._portals.get(entity.portalTileID)[1]);
+            } else {
+                this._portals.set(entity.portalTileID, [entity]);
+            }
         }
         return super.spawnEntity(x, y, entity);
     }

@@ -7,6 +7,7 @@ const SpawnLocation = require("./SpawnLocation.js");
 class TileSpawnPositionList {
     constructor(tileMap) {
         this._spawners = new ONMap();
+        this._portals = new ONMap();
         this.scanMap(tileMap);
     }
 
