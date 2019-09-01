@@ -16,7 +16,7 @@ class Matchmaker {
         this.addWorld(megaMap, "MegaMap");
         let lobby = new HubWorld(mainSocket, this._gameWorlds, "lobby", 64, TileMapConfigs.getMap("lobby"));
         this.addWorld(lobby, "lobby");
-        let playground = new PlayGround(mainSocket);
+        let playground = new PlayGround(mainSocket, this._gameWorlds);
         this.addWorld(playground, "lobby");
     }
 

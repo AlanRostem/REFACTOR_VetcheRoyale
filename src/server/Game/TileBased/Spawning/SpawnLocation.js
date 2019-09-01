@@ -1,4 +1,7 @@
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
+const SJSONFile = require("../../../ResourceManagement/SJSONFile.js");
+
+const LootCrate = require("../../Entity/Loot/Boxes/LootCrate.js");
 
 // Object stored in tile map objects that keeps track of
 // positions to spawn certain types of entities.
@@ -51,7 +54,16 @@ SpawnLocation.createSpawner = (tileID, x, y) => {
     return SpawnLocation.ENTITY_SPAWN_IDS.get(tileID).callback(x, y);
 };
 
+SpawnLocation.parseSpawnConfig = (filePath) => {
+    let json = new SJSONFile(filePath);
+    let content = json.get();
+    for (let tileID in content) {
+        let config = content[tileID];
+        SpawnLocation.setSpawnerByID(tileID, config.name, eval(config.classType), config.isPositionalData);
+    }
+};
+
+SpawnLocation.parseSpawnConfig("src/shared/res/spawn.json");
 //SpawnLocation.setSpawnerByID(90, "LootCrate", LootCrate);
-SpawnLocation.setSpawnerByID(105, "PlayerLobby", null, true);
 
 module.exports = SpawnLocation;

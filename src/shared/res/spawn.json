@@ -1,0 +1,13 @@
+{
+  "105" : {
+    "name": "PlayerLobby",
+    "classType": "null",
+    "isPositionalData": true
+  },
+
+  "90" : {
+    "name" : "LootCrate",
+    "classType": "LootCrate",
+    "isPositionalData": false
+  }
+}

@@ -1,5 +1,4 @@
 const Tile = require("../Tile.js");
-const LootCrate = require("../../Entity/Loot/Boxes/LootCrate.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const SpawnLocation = require("./SpawnLocation.js");
 

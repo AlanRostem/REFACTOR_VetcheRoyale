@@ -9,7 +9,9 @@ class Damage {
 
     inflict(entity, entityManager) {
         if (entity instanceof Alive) {
-            entity.takeDamage(this._value);
+            if (entityManager.pvpEnabled) {
+                entity.takeDamage(this._value);
+            }
             var player = entityManager.getEntity(this._playerID);
             if (player && player !== entity) {
                 player.stats.grantDamage(this._value);
