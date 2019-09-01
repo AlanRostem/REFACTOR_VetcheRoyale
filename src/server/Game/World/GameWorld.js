@@ -27,6 +27,7 @@ class GameWorld extends EntityManager {
         this._maxPlayers = maxPlayers;
         this._id = name;
         this._pvp = pvp;
+        this.dataPacket = {};
 
         let p1 = this.spawnEntity(
             50 * Tile.SIZE,
@@ -102,9 +103,15 @@ class GameWorld extends EntityManager {
         this._clients.removeClient(id);
     }
 
+    setGameData(key, value) {
+        this.dataPacket[key] = value;
+    }
+
     update(deltaTime) {
         // Update the entities, then create data packs
         super.update(deltaTime);
+        this.dataPacket.mapName = this.tileMap.name;
+        this.dataPacket.playerCount = this.playerCount;
         for (var id in this._clients.getContainer()) {
             var client = this._clients.getClient(id);
             // After the entities have been updated and
