@@ -25,8 +25,8 @@ class TeamManager {
     }
 
     createTeam(team) {
-        this._teams[++this._teamCount] = team;
-        team.name = Team.Names[(this._teamCount) % 4];
+        this._teams[this._teamCount] = team;
+        team.name = Team.Names[(this._teamCount++) % 4];
         return team;
     }
 }
