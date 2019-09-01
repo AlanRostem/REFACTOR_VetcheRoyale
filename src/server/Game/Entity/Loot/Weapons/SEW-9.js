@@ -9,7 +9,7 @@ const Projectile = require("./AttackEntities/Projectile.js");
 // Projectile fired by the SEW-9 weapon
 class ElectricSphere extends Projectile {
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 2, 2, angle, 120, 0);
+        super(ownerID, x, y, 5, 5, angle, 120, 0);
         this._radius = 5;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30, ownerID);
@@ -36,6 +36,9 @@ class ElectricSphere extends Projectile {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+        this.pos.x = this.getOwner(entityManager).input.mouseData.world.x;
+        this.pos.y = this.getOwner(entityManager).input.mouseData.world.y;
+
         if (this._hits === 0 ||
             entityManager.getEntity(this._weaponID).kineticDetonation)
             this.detonate(entityManager);
@@ -49,7 +52,7 @@ class SEW_9 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "SEW-9", 0, 0, 0);
         this._detonate = false;
-        this.configureAttackStats(3, 1, 1, 100);
+        this.configureAttackStats(1.5, 1, 1, 100);
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticDetonation = true;
         };
@@ -70,7 +73,7 @@ class SEW_9 extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new KineticBomb(player.id, this.id, 0, 0,
+            new ElectricSphere(player.id, this.id, 0, 0,
                 angle, entityManager));
 
     }
