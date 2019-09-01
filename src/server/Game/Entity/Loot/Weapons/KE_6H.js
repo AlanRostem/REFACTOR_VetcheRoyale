@@ -88,9 +88,8 @@ class KineticBomb extends Bouncy {
 class KE_6H extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "KE-6H", 0, 0, 0);
-        this._detonate = false;
         this.followPoint = new Vector2D(0, 0);
-        this.followPoint.radius = 8;
+        this.followPoint.radius = 2;
         this.configureAttackStats(2.5, 8, 1, 100);
         this._modAbility.configureStats(2, 7);
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
