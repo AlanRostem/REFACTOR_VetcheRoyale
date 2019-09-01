@@ -7,19 +7,20 @@ export default class CEventManager {
 
     SGetEvent(client) {
         if (client.inboundPacket !== undefined
-            && client.inboundPacket["gameData"]["Event"] !== undefined)
-            this._queue.unshift(client.inboundPacket["gameData"]["Event"]);
+            && client.inboundPacket["gameData"]["Event"] !== undefined) {
+            this._events.unshift(client.inboundPacket["gameData"]["Event"]);
+        }
     }
 
     distributeEvent() {
 
     }
 
-
     update(client) {
         this.SGetEvent(client);
-        if (this._events.length > 0) {
-            this.distributeEvent();
+        if (this._events.length > this.pre) {
+            console.log(this._events);
         }
+        this.pre = this._events.length;
     }
 }

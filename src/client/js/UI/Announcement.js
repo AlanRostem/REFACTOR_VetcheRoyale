@@ -78,10 +78,8 @@ export default class Announcement extends UIElement {
         if (this.pos.y > -this.height - 4) {
             R.ctx.drawImage(
                 this._image,
-                0,
-                110,
-                118,
-                14,
+                0, 110,
+                118, 14,
                 this.pos.x,
                 this.pos.y + 6,
                 this.width - 10,
@@ -98,10 +96,8 @@ export default class Announcement extends UIElement {
             */
             R.ctx.drawImage(
                 this._image,
-                0,
-                88,
-                128,
-                22,
+                0, 88,
+                128, 22,
                 this.pos.x - 5,
                 this.pos.y,
                 this.width,
