@@ -3,6 +3,7 @@ const HubWorld = require("./Hubs/HubWorld.js");
 const TileMapConfigs = require("../../../../shared/code/TileBased/STileMapConfigs.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const PlayGround = require("./PlayGround/PlayGround.js");
+const Match = require("./Match/Match.js");
 
 // Manages all the game worlds and match queueing.
 // TODO: Add match queueing.
@@ -17,7 +18,9 @@ class Matchmaker {
         let lobby = new HubWorld(mainSocket, this._gameWorlds, "lobby", 64, TileMapConfigs.getMap("lobby"));
         this.addWorld(lobby, "lobby");
         let playground = new PlayGround(mainSocket, this._gameWorlds);
-        this.addWorld(playground, "lobby");
+        this.addWorld(playground, "playground");
+        let MatchWorld = new Match(mainSocket, this._gameWorlds, "MatchWorld", 64, TileMapConfigs.getMap("MegaMap"));
+        this.addWorld(MatchWorld, "match");
     }
 
     addWorld(world, id) {
