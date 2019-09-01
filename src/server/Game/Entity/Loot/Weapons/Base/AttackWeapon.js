@@ -26,6 +26,8 @@ class AttackWeapon extends WeaponItem {
         this._canUseSuper = true;
         this._canUseMod = true;
         this._canFire = true;
+        this._modActive = false;
+        this._superActive = false;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "_superCharge",
@@ -35,7 +37,8 @@ class AttackWeapon extends WeaponItem {
             "_currentAmmo",
             "_spreadAngle",
             "_firing",
-
+            "_modActive",
+            "_superActive",
         ]);
     }
 

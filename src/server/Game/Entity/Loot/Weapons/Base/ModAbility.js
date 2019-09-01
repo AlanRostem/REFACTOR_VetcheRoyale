@@ -21,6 +21,7 @@ class ModAbility {
 
 
     update(composedWeapon, entityManager, deltaTime) {
+        composedWeapon._modActive = this._active;
         if (this._active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
             if (this._currentDuration > 0) {

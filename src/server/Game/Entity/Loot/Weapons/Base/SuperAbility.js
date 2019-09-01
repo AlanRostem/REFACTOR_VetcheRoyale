@@ -20,6 +20,7 @@ class SuperAbility {
     }
 
     update(composedWeapon, entityManager, deltaTime) {
+        composedWeapon._superActive = this._active;
         if (this._active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
             if (this._currentDuration > 0) {
