@@ -2,9 +2,11 @@ const Interactable = require("../Traits/Interactable.js");
 const Tile = require("../../TileBased/Tile.js");
 
 class Loot extends Interactable {
-    constructor(x, y, shouldRemove = false) {
+    constructor(x, y, shouldRemove = false, lifeTime = 6 * 60) {
         super(x, y, 4, 6); // All loot hit boxes should be of this size
         this._shouldRemove = shouldRemove;
+        this._lifeTime = lifeTime;
+        this._maxLifeTime = lifeTime;
         this._acc.y = 500;
         this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
@@ -15,6 +17,14 @@ class Loot extends Interactable {
         return true; // Override
     }
 
+    setMaxLifeTime(x) {
+        this._maxLifeTime = x;
+    }
+
+    resetLifeTime() {
+        this._lifeTime = this._maxLifeTime;
+    }
+
     // Throw the item in some direction.
     cast(x, y) {
         this.vel.x = x;
@@ -23,6 +33,13 @@ class Loot extends Interactable {
 
     // Ground physics.
     update(entityManager, deltaTime) {
+        if (!entityManager.pvpEnabled) {
+            this.setMaxLifeTime(6);
+        }
+        this._lifeTime -= deltaTime;
+        if (this._lifeTime <= 0) {
+            this.remove();
+        }
         if (!this.side.bottom) {
             this.vel.x *= Loot.AIR_FRICTION;
         }

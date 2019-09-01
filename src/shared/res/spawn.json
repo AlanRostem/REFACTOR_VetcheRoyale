@@ -9,5 +9,14 @@
     "name" : "LootCrate",
     "classType": "LootCrate",
     "isPositionalData": false
+  },
+
+  "113" : {
+    "name" : "GunSpawner",
+    "classType": "GunSpawner",
+    "isPositionalData": false,
+    "parameters": {
+        "id": 113
+    }
   }
 }

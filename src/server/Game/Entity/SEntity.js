@@ -74,6 +74,17 @@ class SEntity {
         // Override here
     }
 
+    overlapEntity(e) {
+        return this.pos.y + this.height > e.pos.y
+            && this.pos.y < (e.pos.y + e.height)
+            && this.pos.x + this.width > e.pos.x
+            && this.pos.x < (e.pos.x + e.width);
+    }
+
+    onEntityCollision(entity, entityManager) {
+
+    }
+
     update(game, deltaTime) {
         this._entitiesInProximity.update(game, deltaTime);
     }

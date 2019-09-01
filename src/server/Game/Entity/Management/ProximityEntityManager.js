@@ -40,6 +40,7 @@ class ProximityEntityManager extends EntityManager {
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
     checkProximityEntities(entityManager) {
+
         var entities = entityManager.quadTree.query(this._qtBounds);
         for (let e of entities) {
             if (e !== this._entRef) {

@@ -2,6 +2,7 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 const SJSONFile = require("../../../ResourceManagement/SJSONFile.js");
 
 const LootCrate = require("../../Entity/Loot/Boxes/LootCrate.js");
+const GunSpawner = require("../../World/Matches/PlayGround/GunSpawner.js");
 
 // Object stored in tile map objects that keeps track of
 // positions to spawn certain types of entities.
@@ -12,11 +13,12 @@ const LootCrate = require("../../Entity/Loot/Boxes/LootCrate.js");
 // all the stored positions. The extreme iteration is only performed
 // once when the server actually starts.
 class SpawnLocation {
-    constructor(x, y, name, entityClass) {
+    constructor(x, y, name, entityClass, args) {
         this.x = x;
         this.y = y;
         this._entityClass = entityClass;
         this._name = name;
+        this._args = args;
     }
 
     get name() {
@@ -25,7 +27,7 @@ class SpawnLocation {
 
     // Spawns entity at the given location.
     spawnHere(entityManager) {
-        entityManager.spawnEntity(this.x, this.y, new this._entityClass());
+        entityManager.spawnEntity(this.x, this.y, new this._entityClass(this.x, this.y, this._args));
     }
 }
 
@@ -35,15 +37,15 @@ SpawnLocation.ENTITY_SPAWN_IDS = new ONMap();
 // Object that maps the tile ID to a spawn location constructor
 // callback with the respective entity type. 
 SpawnLocation.MappingStructure = class SLMappingStructure {
-    constructor(name, classType, isOnlyPositionalData = false) {
+    constructor(name, classType, isOnlyPositionalData = false, args) {
         this.name = name;
         this.replicate = !isOnlyPositionalData;
-        this.callback = (x, y) => new SpawnLocation(x, y, name, classType);
+        this.callback = (x, y) => new SpawnLocation(x, y, name, classType, args);
     }
 };
 
-SpawnLocation.setSpawnerByID = (id, name, classType, isOnlyPositionalData = false) => {
-    SpawnLocation.ENTITY_SPAWN_IDS.set(id, new SpawnLocation.MappingStructure(name, classType, isOnlyPositionalData))
+SpawnLocation.setSpawnerByID = (id, name, classType, isOnlyPositionalData = false, args) => {
+    SpawnLocation.ENTITY_SPAWN_IDS.set(id, new SpawnLocation.MappingStructure(name, classType, isOnlyPositionalData, args))
 };
 
 SpawnLocation.getSpawnerByID = (id) => {
@@ -59,11 +61,11 @@ SpawnLocation.parseSpawnConfig = (filePath) => {
     let content = json.get();
     for (let tileID in content) {
         let config = content[tileID];
-        SpawnLocation.setSpawnerByID(tileID, config.name, eval(config.classType), config.isPositionalData);
+        SpawnLocation.setSpawnerByID(tileID, config.name, eval(config.classType),
+            config.isPositionalData, config.parameters);
     }
 };
 
 SpawnLocation.parseSpawnConfig("src/shared/res/spawn.json");
-//SpawnLocation.setSpawnerByID(90, "LootCrate", LootCrate);
 
 module.exports = SpawnLocation;

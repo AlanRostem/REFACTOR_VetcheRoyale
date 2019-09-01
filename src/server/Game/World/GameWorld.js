@@ -46,6 +46,8 @@ class GameWorld extends EntityManager {
             new Portal(0, 0, null));
 
         p1.link(p2);
+
+        this.spawner.spawnAll(this);
     }
 
     get id() {

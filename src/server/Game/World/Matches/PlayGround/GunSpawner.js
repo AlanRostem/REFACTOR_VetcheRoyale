@@ -1,13 +1,52 @@
 const Entity = require("../../../Entity/SEntity.js");
-const TileCollider = require("../../../TileBased/TileCollider.js");
+const Tile = require("../../../TileBased/Tile.js");
+
+const WeaponItem = require("../../../Entity/Loot/Weapons/Base/WeaponItem.js");
+const KE_6H = require("../../../Entity/Loot/Weapons/KE_6H.js");
 
 const START_TILE = 14 * 8; // 14 rows times 8 cols on tile-sheet
 
-module.exports = class GunSpawner extends Entity {
-    constructor(x, y, gunSpawnID) {
-        super(x, y, TileCollider.TILE_SIZE, TileCollider.TILE_SIZE);
-
-    }
+const GUN_LIST = {
+    1: (x, y) => new KE_6H(x, y),
 };
 
+class GunSpawner extends Entity {
+    constructor(x, y, args) {
+        super(x, y, Tile.SIZE, Tile.SIZE);
+        this.setQuadTreeRange(this.width, this.height);
+
+        this.gunID = args.id - START_TILE;
+        this._currentTickTime = 0;
+        this._maxTickTime = 2;
+        this._shouldSpawn = true;
+    }
+
+    onEntityCollision(entity, entityManager) {
+        super.onEntityCollision(entity, entityManager);
+        if (entity instanceof WeaponItem) {
+            this._shouldSpawn = false;
+            this._currentTickTime = this._maxTickTime;
+        }
+    }
+
+    update(game, deltaTime) {
+        this._shouldSpawn = true;
+        super.update(game, deltaTime);
+        if (this._currentTickTime > 0) {
+            this._currentTickTime -= deltaTime;
+        }
+
+        if (this._shouldSpawn) {
+            if (this._currentTickTime <= 0) {
+                game.spawnEntity(this.pos.x, this.pos.y, GUN_LIST[this.gunID](this.x, this.y));
+                this._shouldSpawn = false;
+            }
+        }
+    }
+
+
+}
+
 GunSpawner.START_TILE = START_TILE;
+
+module.exports = GunSpawner;

@@ -45,7 +45,7 @@ class TileSpawnPositionList {
 
     // Spawns all entities of a certain based on the mapped tile ID.
     spawnAllOfType(id, entityManager) {
-        if (!SpawnLocation.ENTITY_SPAWN_IDS[id][1]) {
+        if (SpawnLocation.ENTITY_SPAWN_IDS.get(id).replicate) {
             for (let spawner of this._spawners.get(id)) {
                 spawner.spawnHere(entityManager);
             }
