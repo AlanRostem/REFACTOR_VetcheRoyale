@@ -18,5 +18,21 @@
     "parameters": {
         "id": 113
     }
+  },
+  "114" : {
+    "name" : "GunSpawner",
+    "classType": "GunSpawner",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 114
+    }
+  },
+  "115" : {
+    "name" : "GunSpawner",
+    "classType": "GunSpawner",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 115
+    }
   }
 }

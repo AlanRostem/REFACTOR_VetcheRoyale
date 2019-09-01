@@ -28,13 +28,6 @@ class GameWorld extends EntityManager {
         this._id = name;
         this._pvp = pvp;
 
-        for (var i = 0; i < 2; i++) {
-            this.spawnEntity(
-                66 * Tile.SIZE + Tile.SIZE * 10 * i,
-                105 * Tile.SIZE,
-                new LootCrate(0, 0, 3));
-        }
-
         let p1 = this.spawnEntity(
             50 * Tile.SIZE,
             108 * Tile.SIZE,

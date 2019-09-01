@@ -60,6 +60,7 @@ class KineticBomb extends Bouncy {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+        if (!entityManager.getEntity(this._weaponID)) return;
         if (this._hits === 0 ||
             entityManager.getEntity(this._weaponID).kineticDetonation)
             this.detonate(entityManager);
