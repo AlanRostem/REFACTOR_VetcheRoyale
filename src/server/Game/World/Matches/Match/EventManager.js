@@ -5,10 +5,10 @@ class EventManager {
         this._queue = [];
     }
 
-    add(name, type, pos = undefined, priority = false) {
+    add(name, type, arg, priority = false) {
         priority ?
-            this._queue.push(new GameEvent(name, type, pos)):
-            this._queue.unshift(new GameEvent(name, type, pos));
+            this._queue.push(new GameEvent(name, type, arg)):
+            this._queue.unshift(new GameEvent(name, type, arg));
     }
 
     sendEvent(gameWorld){

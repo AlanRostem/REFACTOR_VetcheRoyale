@@ -1,10 +1,10 @@
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
 class GameEvent {
-    constructor(name, type, pos = undefined) {
+    constructor(name, type, arg) {
         this._name = name;
         this._type = type;
-        this._pos = pos;
+        this._arg = arg;
     }
 
     getEvent(){
