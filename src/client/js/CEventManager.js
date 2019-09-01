@@ -2,13 +2,14 @@ import UI from "./UI/UI.js";
 
 export default class CEventManager {
     constructor() {
-        this._events = [];
+        this._events = {};
     }
 
     SGetEvent(client) {
         if (client.inboundPacket !== undefined
             && client.inboundPacket["gameData"]["Event"] !== undefined) {
-            this._events.unshift(client.inboundPacket["gameData"]["Event"]);
+            let e = client.inboundPacket["gameData"]["Event"];
+            this._events[e._name] = e;
         }
     }
 
@@ -18,9 +19,9 @@ export default class CEventManager {
 
     update(client) {
         this.SGetEvent(client);
-        if (this._events.length > this.pre) {
+        if (Object.keys(this._events).length > this.pre) {
             console.log(this._events);
         }
-        this.pre = this._events.length;
+        this.pre = Object.keys(this._events).length;
     }
 }

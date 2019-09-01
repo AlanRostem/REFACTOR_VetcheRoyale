@@ -5,7 +5,7 @@ class SEventManager {
     constructor() {
         this._queue = [];
         this._timer = new STimer(4, () => {
-            this.add("test", "test", {test: "test"});
+            this.add("test" + Math.floor(Math.random() * 100 + 1), "test", {test: "test"});
         });
     }
 
