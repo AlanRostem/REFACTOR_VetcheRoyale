@@ -11,7 +11,7 @@ module.exports = class PlayGround extends GameWorld {
         super(serverSocket, "playground", 64, false, TileMapConfigs.getMap("lobby"));
         this.setGameRules({
            "lootLife": 6,
-            "pvp": false
+            "pvp": true
         });
         this.spawnEntity(
             61 * Tile.SIZE,

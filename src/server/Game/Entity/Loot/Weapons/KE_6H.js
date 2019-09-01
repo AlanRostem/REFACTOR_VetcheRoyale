@@ -106,6 +106,7 @@ class KE_6H extends AttackWeapon {
 
     update(entityManager, deltaTime) {
         this._detonate = false;
+        this._canUseMod = this._currentAmmo < this._maxAmmo;
         super.update(entityManager, deltaTime);
     }
 
