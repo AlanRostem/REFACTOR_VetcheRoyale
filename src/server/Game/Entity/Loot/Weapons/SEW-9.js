@@ -37,21 +37,34 @@ class ElectricSphere extends Projectile {
         this.pos.x = this.getOwner(entityManager).input.mouseData.world.x;
         this.pos.y = this.getOwner(entityManager).input.mouseData.world.y;
     }
-
 }
-
-// Nice copy pasta bro xD
 
 class SEW_9 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "SEW-9", 0, 0, 0);
-        this._detonate = false;
+        this._misRef = null;
+        this._misPos = null;
+        this.addDynamicSnapShotData(["_misPos"]);
         this.configureAttackStats(1.5, 1, 1, 100);
+        this._modAbility.onActivation = (weapon, entityManager) => {
+            entityManager.spawnEntity(this.center.x, this.center.y,
+                this._misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
+                    0, entityManager));
+        };
+        this._modAbility.configureStats(5, 4);
+        this._modAbility.onDeactivation = (weapon, entityManager) => {
+            if (this._misRef) {
+                this._misRef.detonate(entityManager);
+                this._misRef = null;
+            }
+        }
     }
 
     update(entityManager, deltaTime) {
-        this._detonate = false;
         super.update(entityManager, deltaTime);
+        if (this._misRef) {
+            this._misPos = this._misRef.pos;
+        }
     }
 
     fire(player, entityManager, deltaTime, angle) {
@@ -62,6 +75,5 @@ class SEW_9 extends AttackWeapon {
     }
 
 }
-
 
 module.exports = SEW_9;
