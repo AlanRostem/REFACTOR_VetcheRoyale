@@ -9,7 +9,7 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 module.exports = class PlayGround extends GameWorld {
     constructor(serverSocket, worldList) {
         super(serverSocket, "playground", 64, false, TileMapConfigs.getMap("lobby"));
-        this.configure({
+        this.setGameRules({
            "lootLife": 6,
             "pvp": false
         });

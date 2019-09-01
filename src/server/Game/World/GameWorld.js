@@ -54,7 +54,7 @@ class GameWorld extends EntityManager {
         return this._settings.getConfig(key);
     }
 
-    configure(object) {
+    setGameRules(object) {
         this._settings.configure(object);
     }
 
