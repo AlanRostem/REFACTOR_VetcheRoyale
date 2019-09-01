@@ -1,34 +1,35 @@
 Team = require("./Team.js");
 
 class TeamManager {
-    constructor() {
+    constructor(maxTeams = 4) {
         this._teams = {};
-        this._teamCount = -1;
+        this._teamCount = 0;
         this.createTeam(new Team());
+        this.MAX_TEAMS = maxTeams;
     }
 
-    getTeam(name) {
-        return this._teams[name];
+    getTeam(teamCount) {
+        return this._teams[teamCount];
     }
 
     addPlayer(player) {
-        if (!this.getTeam(Team.Names[this._teamCount]).isFull()) {
-            this.getTeam(Team.Names[this._teamCount]).addPlayer(player);
+        if (!this.getTeam(this._teamCount)) {
+            this.createTeam(new Team()).addPlayer(player);
+            return;
+        }
+        if (!this.getTeam(this._teamCount).isFull()) {
+            this.getTeam(this._teamCount).addPlayer(player);
         } else {
             this.createTeam(new Team()).addPlayer(player);
         }
     }
 
     createTeam(team) {
-        if (this._teamCount < TeamManager.MAX_TEAMS) {
-            this._teams[
-                Team.Names[++this._teamCount]] = team;
-            team.name = Team.Names[this._teamCount];
-        }
+        this._teams[++this._teamCount] = team;
+        team.name = Team.Names[(this._teamCount) % 4];
         return team;
     }
 }
 
-TeamManager.MAX_TEAMS = 4; // TODO: Increase to the wanted count
 
 module.exports = TeamManager;

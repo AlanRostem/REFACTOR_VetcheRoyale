@@ -20,12 +20,13 @@ class PlayerList extends ClientList {
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
-    constructor(serverSocket, name, maxPlayers = 4, gameMap) {
+    constructor(serverSocket, name, maxPlayers = 4, pvp = false, gameMap) {
         super(true, gameMap);
         this.teamManager = new TeamManager();
         this._clients = new PlayerList();
         this._maxPlayers = maxPlayers;
         this._id = name;
+        this._pvp = pvp;
 
         for (var i = 0; i < 2; i++) {
             this.spawnEntity(
@@ -67,6 +68,10 @@ class GameWorld extends EntityManager {
             entity._gameData.playerCount = this.playerCount;
         }
         return super.spawnEntity(x, y, entity);
+    }
+
+    get pvpEnabled() {
+        return this._pvp;
     }
 
     get spawner() {
