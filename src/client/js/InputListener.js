@@ -61,6 +61,10 @@ export default class InputListener {
         }
 
         client.setOutboundPacketData("input", input);
+        this._mouse.world = {
+            x: this._mouse.x - R.camera.boundPos.x,
+            y: this._mouse.y - R.camera.boundPos.y,
+        };
 
         // TODO: CLIENT SIDE PREDICTION
         //client.player._output._pos._x += input.pressTime * 65;
