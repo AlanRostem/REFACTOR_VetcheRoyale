@@ -30,7 +30,7 @@ class AOEKnockBackDamage extends AOEDamage {
 class KineticBomb extends Bouncy {
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
         super(ownerID, x, y, 2, 2, angle, 120, 0);
-        this._hits = 4;
+        this._hits = 6;
         this._weaponID = weaponID;
         this._directHitDmg = new Damage(30, ownerID);
 
@@ -91,7 +91,7 @@ class KE_6H extends AttackWeapon {
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
         this.configureAttackStats(2.5, 8, 1, 100);
-        this._modAbility.configureStats(2, 7);
+        this._modAbility.configureStats(2, 4);
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon._canFire = false;
