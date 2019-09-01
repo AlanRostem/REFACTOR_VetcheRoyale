@@ -56,6 +56,10 @@ class Projectile extends Physical {
 
     }
 
+    getOwner(entityManager) {
+        return entityManager.getEntity(this._ownerID);
+    }
+
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
         if (this._hitTile) {
