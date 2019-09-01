@@ -91,7 +91,7 @@ class KE_6H extends AttackWeapon {
         this._detonate = false;
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 8;
-        this.configureAttackStats(2.5, 5, 1, 100);
+        this.configureAttackStats(2.5, 8, 1, 100);
         this._modAbility.configureStats(2, 7);
         this._modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = true;
