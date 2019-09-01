@@ -30,7 +30,7 @@ class GunSpawner extends Entity {
         if (entity instanceof WeaponItem) {
             this._shouldSpawn = false;
             this._currentTickTime = this._maxTickTime;
-            entity.resetLifeTime();
+            entity.resetLifeTime(entityManager);
         }
     }
 

@@ -21,8 +21,8 @@ class Loot extends Interactable {
         this._maxLifeTime = x;
     }
 
-    resetLifeTime() {
-        this._lifeTime = this._maxLifeTime;
+    resetLifeTime(game) {
+        this._lifeTime = game.getConfig("lootLife");
     }
 
     // Throw the item in some direction.
@@ -33,9 +33,6 @@ class Loot extends Interactable {
 
     // Ground physics.
     update(entityManager, deltaTime) {
-        if (!entityManager.pvpEnabled) {
-            this.setMaxLifeTime(6);
-        }
         this._lifeTime -= deltaTime;
         if (this._lifeTime <= 0) {
             this.remove();

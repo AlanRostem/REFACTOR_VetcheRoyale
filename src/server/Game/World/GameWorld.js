@@ -6,6 +6,7 @@ const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.j
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
+const GameConfig = require("./GameConfig.js");
 
 class PlayerList extends ClientList {
     constructor() {
@@ -27,6 +28,7 @@ class GameWorld extends EntityManager {
         this._maxPlayers = maxPlayers;
         this._id = name;
         this._pvp = pvp;
+        this._settings = new GameConfig();
         this.dataPacket = {};
 
         let p1 = this.spawnEntity(
@@ -46,6 +48,14 @@ class GameWorld extends EntityManager {
 
     get id() {
         return this._id;
+    }
+
+    getConfig(key) {
+        return this._settings.getConfig(key);
+    }
+
+    configure(object) {
+        this._settings.configure(object);
     }
 
     changeMap(name) {
