@@ -40,6 +40,7 @@ class Team {
     }
 
     isFull() {
+        console.log(this._playerCount, this.MAX_PLAYERS);
         return this._playerCount === this.MAX_PLAYERS;
     }
 
