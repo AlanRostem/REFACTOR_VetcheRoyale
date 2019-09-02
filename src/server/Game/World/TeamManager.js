@@ -16,7 +16,7 @@ class TeamManager {
         if (this._teamCount === 0) {
             this.createTeam(new Team(game), game).addPlayer(player, game);
         }
-        if (!this.getTeam(this._teamCount).isFull()) {
+        if (!this.getTeam(this._teamCount).isFull(game)) {
             this.getTeam(this._teamCount).addPlayer(player, game);
         } else {
             this.createTeam(new Team(game), game).addPlayer(player, game);

@@ -1,10 +1,9 @@
 class Team {
-    constructor(game) {
+    constructor() {
         this._name = "name";
         this._players = {};
         this._arrayPlayers = [];
         this._playerCount = 0;
-        this.MAX_PLAYERS = game.getGameRule("maxTeamMembers");
     }
 
     get players() {
@@ -39,13 +38,12 @@ class Team {
         delete this._players[player.id];
     }
 
-    isFull() {
-        console.log(this._playerCount, this.MAX_PLAYERS);
-        return this._playerCount === this.MAX_PLAYERS;
+    isFull(game) {
+        return this._playerCount === game.getGameRule("maxTeamMembers");
     }
 
-    addPlayer(player) {
-        if (this.isFull()) {
+    addPlayer(player, game) {
+        if (this.isFull(game)) {
             console.log("Team " + this._name + " has reached maximum amount of players");
             return;
         }
