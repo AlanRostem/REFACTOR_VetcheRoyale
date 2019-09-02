@@ -4,12 +4,13 @@ class GameRules {
     constructor() {
         this._config = new ObjectNotationMap();
         this._config.set("lootLife", 6 * 60); // Added
-        this._config.set("dropLootOnDeath", true);
+        this._config.set("dropLootOnDeath", true); // Added
+        this._config.set("infiniteAmmo", false);
 
         this._config.set("pvp", true); // Added
 
         this._config.set("maxPlayers", 24); // Added
-        this._config.set("maxTeamMembers", 4);
+        this._config.set("maxTeamMembers", 4); // Added
 
         this._config.set("damageMultiplier", 1);
         this._config.set("superChargeTickMultiplier", 1);

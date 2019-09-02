@@ -39,7 +39,11 @@ class WeaponItem extends Loot {
                 if (entityManager.getEntity(this._playerID)) {
                     this.updateWhenEquipped(entityManager.getEntity(this._playerID), entityManager, deltaTime);
                 } else {
-                    this.t_drop();
+                    if (entityManager.getGameRule("dropLootOnDeath")) {
+                        this.dropOnPlayerRemoval();
+                    } else {
+                        this.remove();
+                    }
                 }
             }
         }
@@ -62,7 +66,7 @@ class WeaponItem extends Loot {
     }
 
     // Drops the weapon when the player disconnects (removed from game world)
-    t_drop() {
+    dropOnPlayerRemoval() {
         this._equippedToPlayer = false;
         this._playerID = null;
         this.onDrop();
