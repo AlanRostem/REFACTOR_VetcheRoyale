@@ -1,9 +1,10 @@
 class Team {
-    constructor(name) {
-        this._name = name;
+    constructor(game) {
+        this._name = "name";
         this._players = {};
         this._arrayPlayers = [];
         this._playerCount = 0;
+        this.MAX_PLAYERS = game.getGameRule("maxTeamMembers");
     }
 
     get players() {
@@ -39,7 +40,7 @@ class Team {
     }
 
     isFull() {
-        return this._playerCount === Team.MAX_PLAYERS;
+        return this._playerCount === this.MAX_PLAYERS;
     }
 
     addPlayer(player) {
@@ -60,7 +61,5 @@ Team.Names = {
     2: "green",
     3: "yellow",
 };
-
-Team.MAX_PLAYERS = 1;
 
 module.exports = Team;

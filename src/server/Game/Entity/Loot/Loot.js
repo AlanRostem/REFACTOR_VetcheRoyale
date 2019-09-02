@@ -22,7 +22,7 @@ class Loot extends Interactable {
     }
 
     resetLifeTime(game) {
-        this._lifeTime = game.getConfig("lootLife");
+        this._lifeTime = game.getGameRule("lootLife");
     }
 
     // Throw the item in some direction.

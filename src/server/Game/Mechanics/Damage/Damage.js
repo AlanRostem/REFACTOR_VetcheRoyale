@@ -9,7 +9,7 @@ class Damage {
 
     inflict(entity, entityManager) {
         if (entity instanceof Alive) {
-            if (entityManager.getConfig("pvp")) {
+            if (entityManager.getGameRule("pvp")) {
                 entity.takeDamage(this._value);
             }
             var player = entityManager.getEntity(this._playerID);

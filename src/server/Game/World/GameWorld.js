@@ -7,7 +7,7 @@ const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
-const GameConfig = require("./GameConfig.js");
+const GameRules = require("./GameRules.js");
 
 class PlayerList extends ClientList {
     constructor() {
@@ -22,16 +22,14 @@ class PlayerList extends ClientList {
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
-    constructor(serverSocket, name, maxPlayers = 4, pvp = false, gameMap) {
+    constructor(serverSocket, name, gameMap) {
         super(true, gameMap);
-        this.teamManager = new TeamManager();
+        this._settings = new GameRules();
+        this.teamManager = new TeamManager(this);
         this.dataPacket = {};
 
         this._clients = new PlayerList();
-        this._maxPlayers = maxPlayers;
         this._id = name;
-        this._pvp = pvp;
-        this._settings = new GameConfig();
         this._portals = new ONMap();
 
         this.spawner.spawnAll(this);
@@ -41,8 +39,8 @@ class GameWorld extends EntityManager {
         return this._id;
     }
 
-    getConfig(key) {
-        return this._settings.getConfig(key);
+    getGameRule(key) {
+        return this._settings.getRule(key);
     }
 
     setGameRules(object) {
@@ -76,16 +74,13 @@ class GameWorld extends EntityManager {
         return super.spawnEntity(x, y, entity);
     }
 
-    get pvpEnabled() {
-        return this._pvp;
-    }
 
     get spawner() {
         return this.tileMap._spawner;
     }
 
     get maxPlayers() {
-        return this._maxPlayers;
+        return this.getGameRule("maxPlayers");
     }
 
     get playerCount() {
@@ -93,13 +88,13 @@ class GameWorld extends EntityManager {
     }
 
     get isFull() {
-        return this.playerCount === this.maxPlayers;
+        return this.playerCount === this.getGameRule("maxPlayers");
     }
 
     spawnPlayer(client) {
         this._clients.addClient(client.id, client);
         // TODO: Add teams back later
-        this.teamManager.addPlayer(client.player);
+        this.teamManager.addPlayer(client.player, this);
         this.spawner.spawnSpecificAtPos(105, client.player, this);
         /*this.spawnEntity(
             61 * Tile.SIZE,

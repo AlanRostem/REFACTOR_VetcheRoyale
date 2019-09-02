@@ -1,32 +1,31 @@
 Team = require("./Team.js");
 
 class TeamManager {
-    constructor(maxTeams = 4) {
+    constructor(game) {
         this._teams = {};
         this._teamCount = 0;
-        this.createTeam(new Team());
-        this.MAX_TEAMS = maxTeams;
+        this.createTeam(new Team(game), game);
+        this.MAX_TEAM_COLORS = 4;
     }
 
     getTeam(teamCount) {
         return this._teams[teamCount];
     }
 
-    addPlayer(player) {
-        if (!this.getTeam(this._teamCount)) {
-            this.createTeam(new Team()).addPlayer(player);
-            return;
+    addPlayer(player, game) {
+        if (this._teamCount === 0) {
+            this.createTeam(new Team(game), game).addPlayer(player, game);
         }
         if (!this.getTeam(this._teamCount).isFull()) {
-            this.getTeam(this._teamCount).addPlayer(player);
+            this.getTeam(this._teamCount).addPlayer(player, game);
         } else {
-            this.createTeam(new Team()).addPlayer(player);
+            this.createTeam(new Team(game), game).addPlayer(player, game);
         }
     }
 
-    createTeam(team) {
-        this._teams[this._teamCount] = team;
-        team.name = Team.Names[(this._teamCount++) % 4];
+    createTeam(team, game) {
+        this._teams[++this._teamCount] = team;
+        team.name = Team.Names[(this._teamCount) % 4];
         return team;
     }
 }
