@@ -191,8 +191,10 @@ class Player extends GameDataLinker {
     update(entityManager, deltaTime) {
         if (this.dead) {
             // TODO: Temporary solution
-            this.myKiller.spectators.addSpectator(this.client);
-            this.client.setPlayer(this.myKiller);
+            if (this.myKiller) {
+                this.myKiller.spectators.addSpectator(this.client);
+                this.client.setPlayer(this.myKiller);
+            }
             this.remove();
             //this.client.setOutboundPacketData("entityData", this.myKiller.entitiesInProximity.exportDataPack());
             return;
