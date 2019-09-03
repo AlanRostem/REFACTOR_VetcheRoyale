@@ -10,13 +10,18 @@ class Damage {
     inflict(entity, entityManager) {
         if (entity instanceof Alive) {
             if (entityManager.getGameRule("pvp")) {
-                entity.takeDamage(this._value);
+                if (!entity.dead) {
+                    entity.takeDamage(this._value);
+                } else {
+                    return;
+                }
             }
             var player = entityManager.getEntity(this._playerID);
             if (player && player !== entity) {
                 player.stats.grantDamage(this._value);
                 if (entity.dead) {
                     player.stats.grantKill();
+                    entity.dieBy(player);
                     if (player.inventory.weapon) {
                         player.inventory.weapon.grantSuperCharge();
                     }

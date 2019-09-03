@@ -9,6 +9,10 @@ class Alive extends Affectable {
         this._hp = HP;
         this._isAlive = true;
         this._killed = false;
+        this._killer = null; // Player who killed this entity
+        this.addDynamicSnapShotData([
+           "_isAlive"
+        ]);
         this._shouldRegen = regen;
         if (regen) {
             this._regenPerTick = regenPerTick;
@@ -32,6 +36,16 @@ class Alive extends Affectable {
 
     get HP() {
         return this._hp;
+    }
+
+    // When inflicted enough damage upon to become dead.
+    dieBy(player) {
+        this._killer = player;
+    }
+
+    // Returns the killer of this entity
+    get myKiller() {
+        return this._killer;
     }
 
     takeDamage(value) {

@@ -60,7 +60,9 @@ export default class CEntityManager {
 
         client.on('removeEntity', id => {
             if (this.existsOnClient(id)) {
-                this.removeEntity(id);
+                if (id !== client.id) {
+                    this.removeEntity(id);
+                }
             } else {
                 console.warn("Attempted to remove a non existent entity. Something's wrong here...")
             }

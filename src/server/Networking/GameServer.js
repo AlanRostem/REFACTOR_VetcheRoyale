@@ -22,7 +22,7 @@ class GameServer {
 
         if (this._deltaTime > 1) {
             if (this._started)
-                console.warn("High throttling! Check logs.");
+                console.warn("High throttling! DT:", this._deltaTime * 1000 + "ms");
             else
                 this._started = true;
             this._deltaTime = 0;

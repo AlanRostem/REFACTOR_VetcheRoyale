@@ -46,6 +46,10 @@ class Client {
         return this._disconnected;
     }
 
+    setPlayer(player) {
+        this._player = player;
+    }
+
     get removed() {
         return this._removed;
     }

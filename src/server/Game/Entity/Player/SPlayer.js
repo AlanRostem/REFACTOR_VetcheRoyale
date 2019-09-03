@@ -179,7 +179,24 @@ class Player extends GameDataLinker {
         this.oneWayTeamCollision(deltaTime);
     }
 
+    onDead(entityManager, deltaTime) {
+        super.onDead(entityManager, deltaTime);
+        // TODO: Drop ammo and heals
+    }
+
+    get spectators() {
+        return this._entitiesInProximity.spectators;
+    }
+
     update(entityManager, deltaTime) {
+        if (this.dead) {
+            // TODO: Temporary solution
+            this.myKiller.spectators.addSpectator(this.client);
+            this.client.setPlayer(this.myKiller);
+            this.remove();
+            //this.client.setOutboundPacketData("entityData", this.myKiller.entitiesInProximity.exportDataPack());
+            return;
+        }
 
         this.setMovementState("tile", "none");
 
@@ -200,7 +217,6 @@ class Player extends GameDataLinker {
             if (!this._jumping) {
                 this.vel.y = this._speed.jump;
                 this._jumping = true;
-                //AssetManager.get("Player/jump_ascend.oggp");
             }
         }
 
