@@ -6,11 +6,11 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 // TODO: Finish this code and use it.
 
 const EntityCollider = {
-    _collisions: new ONMap(),
+    collisions: new ONMap(),
 
     applyCollisionsEffects(entity1, entity2, entityManager) {
-        if (!this._collisions.has(entity1.constructor.name)) return;
-        for (let callback of this._collisions.get(entity2.constructor.name)) {
+        if (!this.collisions.has(entity1.constructor.name)) return;
+        for (let callback of this.collisions.get(entity2.constructor.name)) {
             callback(entity1, entity2, entityManager);
         }
     },
@@ -22,10 +22,10 @@ const EntityCollider = {
     // addCollisionListener("EntityClass", (subject, entityManager) => { doStuff(); }
 
     addCollisionListener(classType, callback) {
-        if (!this._collisions.has(classType)) {
-            this._collisions.set(classType, [callback]);
+        if (!this.collisions.has(classType)) {
+            this.collisions.set(classType, [callback]);
         } else {
-            this._collisions.get(classType).push(callback);
+            this.collisions.get(classType).push(callback);
         }
     }
 };

@@ -17,18 +17,15 @@ class SpawnLocation {
     constructor(x, y, name, entityClass, args) {
         this.x = x;
         this.y = y;
-        this._entityClass = entityClass;
-        this._name = name;
-        this._args = args;
+        this.entityClass = entityClass;
+        this.name = name;
+        this.args = args;
     }
 
-    get name() {
-        return this._name;
-    }
 
     // Spawns entity at the given location.
     spawnHere(entityManager) {
-        entityManager.spawnEntity(this.x, this.y, new this._entityClass(this.x, this.y, this._args));
+        entityManager.spawnEntity(this.x, this.y, new this.entityClass(this.x, this.y, this.args));
     }
 }
 

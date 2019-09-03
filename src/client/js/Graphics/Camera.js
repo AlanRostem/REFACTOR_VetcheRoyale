@@ -2,18 +2,18 @@ import Vector2D from "../../../shared/code/Math/CVector2D.js"
 import {typeCheck} from "../../../shared/code/Debugging/CtypeCheck.js"
 export default class Camera {
     constructor(offsetX, offsetY, boundVec2D = new Vector2D(0, 0)) {
-        this._boundPos = boundVec2D;
-        this._pos = {
-            x: -(this._boundPos.x - offsetX),
-            y: -(this._boundPos.y - offsetY)
+        this.boundPos = boundVec2D;
+        this.pos = {
+            x: -(this.boundPos.x - offsetX),
+            y: -(this.boundPos.y - offsetY)
         };
 
-        this._offset = {
+        this.offset = {
             x: offsetX,
             y: offsetY,
         };
 
-        this._originalOffset = {
+        this.originalOffset = {
             x: offsetX,
             y: offsetY,
         };
@@ -21,15 +21,15 @@ export default class Camera {
     }
 
     update(pos) {
-        this._boundPos.x = -Math.round(pos._x - this._offset.x);
-        this._boundPos.y = -Math.round(pos._y - this._offset.y);
-        this._offset.x = this._originalOffset.x;
-        this._offset.y = this._originalOffset.y;
+        this.boundPos.x = -Math.round(pos.x - this.offset.x);
+        this.boundPos.y = -Math.round(pos.y - this.offset.y);
+        this.offset.x = this.originalOffset.x;
+        this.offset.y = this.originalOffset.y;
     }
 
     shift(x, y) {
-        this._offset.x = this._originalOffset.x + x;
-        this._offset.y = this._originalOffset.y + y;
+        this.offset.x = this.originalOffset.x + x;
+        this.offset.y = this.originalOffset.y + y;
     }
 
     get x() {
@@ -47,9 +47,5 @@ export default class Camera {
 
     get boundPos() {
         return this._boundPos;
-    }
-
-    get offset() {
-        return this._offset;
     }
 }

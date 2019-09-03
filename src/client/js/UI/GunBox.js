@@ -19,11 +19,11 @@ export default class GunBox extends UIElement {
 
     update(deltaTime, client, entityList) {
         if (client.player) {
-            var gun = entityList.getEntityByID(client.player.output._invWeaponID);
+            var gun = entityList.getEntityByID(client.player.output.invWeaponID);
             if (gun) {
                 this.hasWeapon = true;
-                this.playerAmmo = client.player.output._invAmmo;
-                this.loadedAmmo = gun.output._currentAmmo;
+                this.playerAmmo = client.player.output.invAmmo;
+                this.loadedAmmo = gun.output.currentAmmo;
             } else {
                 this.hasWeapon = false;
             }

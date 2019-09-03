@@ -20,20 +20,20 @@ export default class RemotePlayer extends CEntity {
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
-        this.animations.setCurrentAnimation(this.output._movementState.main);
-        this._output._center._x = this._output._pos._x + this._width / 2;
-        this._output._center._y = this._output._pos._y + this._height / 2;
+        this.animations.setCurrentAnimation(this.output.movementState.main);
+        this.output.centerData.x = this.output.pos.x + this.width / 2;
+        this.output.centerData.y = this.output.pos.y + this.height / 2;
     }
 
     draw() {
-        this.animations.animate(RemotePlayer.sprite, this.output._teamName, 16, 16);
+        this.animations.animate(RemotePlayer.sprite, this.output.teamName, 16, 16);
         SpriteSheet.beginChanges();
-        if (this.output._movementState.direction === "left") {
+        if (this.output.movementState.direction === "left") {
             RemotePlayer.sprite.flipX();
         }
         RemotePlayer.sprite.drawAnimated(
-            Math.round(this.output._pos._x) + R.camera.boundPos.x,
-            Math.round(this.output._pos._y) + R.camera.boundPos.y);
+            Math.round(this.output.pos.x) + R.camera.boundPos.x,
+            Math.round(this.output.pos.y) + R.camera.boundPos.y);
         SpriteSheet.end();
     }
 }

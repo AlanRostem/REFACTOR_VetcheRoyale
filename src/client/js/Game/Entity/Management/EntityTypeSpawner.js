@@ -11,21 +11,21 @@ import CSEW_9 from "../Weapons/CSEW-9.js";
 
 // Creates client versions of inbound entity data
 const EntityTypeSpawner = {
-    _functions: {},
+    functions: {},
     createSpawner(name, classType) {
-        EntityTypeSpawner._functions[name] = data => {
+        EntityTypeSpawner.functions[name] = data => {
             return new classType(data);
         }
     },
     spawn(name, data, client) {
-        if (!EntityTypeSpawner._functions[name]) {
+        if (!EntityTypeSpawner.functions[name]) {
             console.warn("Entity with name " + name + " does not exist in the spawner.");
             return new CEntity(data);
         }
-        if (client.id === data._id)
+        if (client.id === data.id)
             return new UserPlayer(data);
 
-        return EntityTypeSpawner._functions[name](data);
+        return EntityTypeSpawner.functions[name](data);
     }
 };
 

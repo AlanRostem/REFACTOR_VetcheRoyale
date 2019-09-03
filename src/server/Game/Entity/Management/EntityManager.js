@@ -6,70 +6,62 @@ const Rect = require("./QTRect.js");
 // Updates entities and manages proximity queries in the quad tree
 class EntityManager {
     constructor(globalManager = false, gameMap) {
-        this._container = {};
+        this.container = {};
 
         // If true it will be used as a global entity manager
         // for a game world. Otherwise it might have other use cases.
         if (globalManager) {
-            this._entitiesQueuedToDelete = [];
-            this._tileMap = gameMap;
-            this._gameClock = new GameClock(0);
+            this.entitiesQueuedToDelete = [];
+            this.tileMap = gameMap;
+            this.gameClock = new GameClock(0);
 
             // Create a singular quad tree with the size of
             // the whole tile map.
-            this._qt = new QuadTree(new Rect(
-                this._tileMap.w * Tile.SIZE / 2,
-                this._tileMap.h * Tile.SIZE / 2,
-                this._tileMap.w * Tile.SIZE / 2,
-                this._tileMap.h * Tile.SIZE / 2,
+            this.qt = new QuadTree(new Rect(
+                this.tileMap.w * Tile.SIZE / 2,
+                this.tileMap.h * Tile.SIZE / 2,
+                this.tileMap.w * Tile.SIZE / 2,
+                this.tileMap.h * Tile.SIZE / 2,
             ));
         }
     }
 
     get quadTree() {
-        return this._qt;
+        return this.qt;
     }
 
     get timeStamp() {
-        return this._gameClock.serverTimeStamp;
-    }
-
-    get tileMap() {
-        return this._tileMap;
-    }
-
-    get container() {
-        return this._container;
+        return this.gameClock.serverTimeStamp;
     }
 
     // Call only when using this class as a global
     // world entity manager.
     update(deltaTime) {
-        this._gameClock.update(deltaTime);
+        this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime);
-        for (var i = 0; i < this._entitiesQueuedToDelete.length; i++) {
-            this.quadTree.remove(this._container[this._entitiesQueuedToDelete[i]]);
-            delete this._container[this._entitiesQueuedToDelete[i]];
-            this._entitiesQueuedToDelete.splice(i);
+        for (var i = 0; i < this.entitiesQueuedToDelete.length; i++) {
+            this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
+            delete this.container[this.entitiesQueuedToDelete[i]];
+            this.entitiesQueuedToDelete.splice(i);
         }
     }
 
     // Regenerates data packs every frame for every entity
     // in the container.
     refreshEntityDataPacks(deltaTime) {
-        for (var id in this._container) {
+        for (var id in this.container) {
             if (this.exists(id)) {
-                var entity = this._container[id];
+                var entity = this.container[id];
                 entity.updateDataPack(this, deltaTime);
             }
         }
     }
 
     updateEntities(deltaTime) {
-        for (var id in this._container) {
+        for (var id in this.container) {
             if (this.exists(id)) {
-                var entity = this._container[id];
+                var entity = this.container[id];
                 if (entity.toRemove) {
                     this.removeEntity(entity.id);
                     continue;
@@ -80,30 +72,30 @@ class EntityManager {
     }
 
     exists(id) {
-        return this._container.hasOwnProperty(id);
+        return this.container.hasOwnProperty(id);
     }
 
     // Spawns an existing (or new) entity into the game world
     // on a given position.
     spawnEntity(x, y, entity) {
-        this._container[entity.id] = entity;
+        this.container[entity.id] = entity;
         entity.initFromEntityManager(this);
         entity.pos.x = x;
         entity.pos.y = y;
 
-        this._qt.insert(entity);
+        this.qt.insert(entity);
         return entity;
     }
 
     getEntity(id) {
-        return this._container[id];
+        return this.container[id];
     }
 
     // Assigns the entity as removed and queues
     // it to deletion.
     removeEntity(id) {
         this.getEntity(id).remove();
-        this._entitiesQueuedToDelete.push(id);
+        this.entitiesQueuedToDelete.push(id);
     }
 }
 

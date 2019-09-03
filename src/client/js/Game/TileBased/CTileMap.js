@@ -6,7 +6,7 @@ import AssetManager from "../../AssetManager/AssetManager.js"
 export default class CTileMap {
     constructor(jsonSrc, imgSrc, name) {
         var _this = this;
-        this._name = name;
+        this.name = name;
         this.json = new JSONFile(jsonSrc, object => {
             _this.array = object.layers[0].data;
             _this.w = object.width;

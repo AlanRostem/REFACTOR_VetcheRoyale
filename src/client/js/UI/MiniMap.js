@@ -7,13 +7,13 @@ import CClient from "../Networking/Client/CClient.js";
 export default class MiniMap extends UIElement {
     constructor() {
         super("minimap", R.WIDTH - 36, 4, 1, 1);
-        this.p_Pos = {_x: 0, _y: 0};
+        this.pPos = {x: 0, y: 0};
         this.tiles = 32;
         this.events = [];
         AssetManager.addDownloadCallback(() => {
             for (var key in Scene.tileMaps.getAllMaps()) {
                 var tileMap = Scene.tileMaps.getAllMaps()[key];
-                AssetManager.addPainting(this.paintImage(tileMap), tileMap._name);
+                AssetManager.addPainting(this.paintImage(tileMap), tileMap.name);
             }
         });
     }
@@ -21,7 +21,7 @@ export default class MiniMap extends UIElement {
 
     paintImage(tileMap) {
         var map = {
-            name: tileMap._name,
+            name: tileMap.name,
             array: [],
             tileSizeW: (tileMap.w / this.tiles),
             tileSizeH: (tileMap.h / this.tiles)
@@ -65,21 +65,21 @@ export default class MiniMap extends UIElement {
 
     posOnMap(pos) {
 
-        var x = pos._x / 8 / this.image.mapInfo.tileSizeW | 0;
-        var y = pos._y / 8 / this.image.mapInfo.tileSizeH | 0;
+        var x = pos.x / 8 / this.image.mapInfo.tileSizeW | 0;
+        var y = pos.y / 8 / this.image.mapInfo.tileSizeH | 0;
 
-        return {_x: x, _y: y};
+        return {x: x, y: y};
     }
 
 
     update(deltaTime, client, entityList) {
         this.pos.x = R.WIDTH - 36;
 
-        if (this.image === undefined || this.image.mapInfo.name !== Scene._currentMap)
-            this.image = AssetManager.get(Scene._currentMap);
+        if (this.image === undefined || this.image.mapInfo.name !== Scene.currentMap)
+            this.image = AssetManager.get(Scene.currentMap);
 
         if (client.player)
-            this.p_Pos = this.posOnMap(client.player._output._pos);
+            this.pPos = this.posOnMap(client.player.output.pos);
 
     }
 
@@ -94,8 +94,8 @@ export default class MiniMap extends UIElement {
 
         R.drawRect(
             "Red",
-            this.pos.x + this.p_Pos._x,
-            this.pos.y + this.p_Pos._y,
+            this.pos.x + this.pPos.x,
+            this.pos.y + this.pPos.y,
             1,
             1
         );
@@ -103,8 +103,8 @@ export default class MiniMap extends UIElement {
         for (var e of this.events) {
             R.drawRect(
                 e.color,
-                this.pos.x + e._x | 0,
-                this.pos.y + e._y | 0,
+                this.pos.x + e.x | 0,
+                this.pos.y + e.y | 0,
                 1,
                 1
             );

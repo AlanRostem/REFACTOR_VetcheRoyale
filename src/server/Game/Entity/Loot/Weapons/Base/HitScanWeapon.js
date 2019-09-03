@@ -6,26 +6,26 @@ const Vector2D = require("../../../../../../shared/code/Math/SVector2D.js");
 class HitScanWeapon extends AttackWeapon {
     constructor(x, y, displayName, weaponClass = "pistol", maxRange = 200, hitEntities = true, hitTiles = true) {
         super(x, y, displayName, weaponClass);
-        this._range = maxRange; // Max range of the scan-line
-        this._scanner = new HitScanner({}, hitEntities, hitTiles);
-        this._scanner.onTileHit = (hitPos, entityManager) => {
+        this.range = maxRange; // Max range of the scan-line
+        this.scanner = new HitScanner({}, hitEntities, hitTiles);
+        this.scanner.onTileHit = (hitPos, entityManager) => {
             this.onTileHit(hitPos, entityManager); // Overriding
         };
 
-        this._scanner.onEntityHit = (hitPos, entityManager, a) => {
+        this.scanner.onEntityHit = (hitPos, entityManager, a) => {
             this.onEntityHit(hitPos, entityManager, a); // Overriding
         };
 
         // The end of the scan-line.
-        this._endFirePos = new Vector2D(0, 0);
+        this.endFirePos = new Vector2D(0, 0);
     }
 
     set entityScanEnabled(val) {
-        this._scanner.entityScanEnabled = val;
+        this.scanner.entityScanEnabled = val;
     }
 
     set tileScanEnabled(val) {
-        this._scanner.tileScanEnabled = val;
+        this.scanner.tileScanEnabled = val;
     }
 
     onTileHit(hitPos, entityManager) {
@@ -40,15 +40,15 @@ class HitScanWeapon extends AttackWeapon {
     // obtained from the game world quad tree
     fire(player, entityManager, deltaTime, angle) {
         super.fire(player, entityManager, deltaTime, angle);
-        this._endFirePos.x = this.center.x + this._range * Math.cos(angle);
-        this._endFirePos.y = this.center.y + this._range * Math.sin(angle);
-        this._scanner.scan(this.center, this._endFirePos, entityManager, entityManager.tileMap);
+        this.endFirePos.x = this.center.x + this.range * Math.cos(angle);
+        this.endFirePos.y = this.center.y + this.range * Math.sin(angle);
+        this.scanner.scan(this.center, this.endFirePos, entityManager, entityManager.tileMap);
     }
 
     // Adds the entity scan exception array to the hit scanner.
     equip(player) {
         super.equip(player);
-        this._scanner.exceptions = player.team.array;
+        this.scanner.exceptions = player.team.array;
     }
 }
 

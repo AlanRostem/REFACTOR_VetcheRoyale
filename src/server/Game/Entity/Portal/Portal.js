@@ -9,38 +9,38 @@ class Portal extends Interactable {
 
 
         this.portalTileID = args.id;
-        this._frameColor = args.frameColor;
-        this._pairData = null;
-        this._link = null;
+        this.frameColor = args.frameColor;
+        this.pairData = null;
+        this.pair = null;
 
         this.addStaticSnapShotData([
-            "_frameColor",
+            "frameColor",
         ]);
 
         this.addDynamicSnapShotData([
-            "_pairData"
+            "pairData"
         ]);
     }
 
     link(portal) {
-        portal._link = this;
-        portal._destination = this.pos;
-        this._pairData = this.getDataPack();
-        this._link = portal;
-        this._pairData = portal.getDataPack();
+        portal.pair = this;
+        portal.destination = this.pos;
+        this.pairData = this.getDataPack();
+        this.pair = portal;
+        this.pairData = portal.getDataPack();
         this.setDestination(portal.pos);
     }
 
     setDestination(pos) {
-        this._destination = pos;
+        this.destination = pos;
     }
 
     teleport(entity, game) {
-        if (!this._link) {
+        if (!this.pair) {
             return;
         }
-        entity.pos.x = this._destination.x - entity.width / 2;
-        entity.pos.y = this._destination.y - entity.height / 2;
+        entity.pos.x = this.destination.x - entity.width / 2;
+        entity.pos.y = this.destination.y - entity.height / 2;
     }
 
     onPlayerInteraction(player, entityManager) {

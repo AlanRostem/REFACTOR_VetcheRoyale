@@ -3,48 +3,48 @@ const ONMap = require("../../shared/code/DataStructures/SObjectNotationMap.js");
 // clients connected to the server.
 class ClientList {
     constructor() {
-        this._container = {};
-        this._IPS = new ONMap();
+        this.container = {};
+        this.IPS = new ONMap();
     }
 
     getContainer() {
-        return this._container;
+        return this.container;
     }
 
     get length() {
-        return Object.keys(this._container).length;
+        return Object.keys(this.container).length;
     }
 
     getClient(id) {
-        if (!this._container.hasOwnProperty(id)) {
+        if (!this.container.hasOwnProperty(id)) {
             console.log("WARNING: Client list is returning undefined on 'getClient'");
         }
-        return this._container[id];
+        return this.container[id];
     }
 
     addClient(id, client) {
-        this._IPS.set(client.socket.handshake.address, true);
-        this._container[id] = client;
+        this.IPS.set(client.socket.handshake.address, true);
+        this.container[id] = client;
         return client;
     }
 
     hasIP(ip) {
-        return this._IPS.get(ip);
+        return this.IPS.get(ip);
     }
 
     removeClient(id) {
-        if (this._container.hasOwnProperty(id)) {
-            this._container[id].removed = true;
-            this._IPS.remove(this._container[id].socket.handshake.address);
-            delete this._container[id];
+        if (this.container.hasOwnProperty(id)) {
+            this.container[id].removed = true;
+            this.IPS.remove(this.container[id].socket.handshake.address);
+            delete this.container[id];
         } else {
             console.log("WARNING: Attempted to delete a non-existent client.")
         }
     }
 
     forEach(callback) {
-        for (var id in this._container) {
-            callback(this._container[id]);
+        for (var id in this.container) {
+            callback(this.container[id]);
         }
     }
 }

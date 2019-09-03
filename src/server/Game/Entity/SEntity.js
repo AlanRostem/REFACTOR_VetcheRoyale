@@ -6,38 +6,38 @@ const ProximityEntityManager = require("./Management/ProximityEntityManager.js")
 // Base class of dynamic objects in the game world.
 class SEntity {
     constructor(x, y, width, height) {
-        this._pos = new Vector2D(x, y);
-        this._width = width;
-        this._height = height;
-        this._id = String.random();
-        this._removed = false;
-        this._eType = this.constructor.name;
-        this._color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
-        this._homeWorldID = -1;
-        this._entityOrder = 0;
-        this._snapShotGenerator = new SnapShotGenerator(this,
+        this.pos = new Vector2D(x, y);
+        this.width = width;
+        this.height = height;
+        this.id = String.random();
+        this.removed = false;
+        this.eType = this.constructor.name;
+        this.color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
+        this.homeWorldID = -1;
+        this.entityOrder = 0;
+        this.snapShotGenerator = new SnapShotGenerator(this,
         [
-            "_id",
-            "_pos",
-            "_width",
-            "_height",
+            "id",
+            "pos",
+            "width",
+            "height",
         ],
         [
-            "_removed",
-            "_color",
-            "_eType",
-            "_entityOrder"
+            "removed",
+            "color",
+            "eType",
+            "entityOrder"
         ]);
 
-        this._entitiesInProximity = new ProximityEntityManager(this);
+        this.entitiesInProximity = new ProximityEntityManager(this);
     }
 
     get gameID() {
-        return this._homeWorldID;
+        return this.homeWorldID;
     }
 
     setEntityOrder(int) {
-        this._entityOrder = int;
+        this.entityOrder = int;
     }
 
     // Configure the maximum range the entity checks for other
@@ -45,24 +45,24 @@ class SEntity {
     // should have the least amount of iteration depending on
     // their size in the world.
     setQuadTreeRange(x, y) {
-        this._entitiesInProximity._qtBounds.w = x;
-        this._entitiesInProximity._qtBounds.h = y;
+        this.entitiesInProximity.qtBounds.w = x;
+        this.entitiesInProximity.qtBounds.h = y;
     }
 
     setStaticSnapshotData(key, value) {
-        this._snapShotGenerator.setStaticSnapshotData(key, value);
+        this.snapShotGenerator.setStaticSnapshotData(key, value);
     }
 
     setWorld(game) {
-        this._homeWorldID = game.id;
+        this.homeWorldID = game.id;
     }
 
     addDynamicSnapShotData(array) {
-        this._snapShotGenerator.addDynamicValues(this, array);
+        this.snapShotGenerator.addDynamicValues(this, array);
     }
 
     addStaticSnapShotData(array) {
-        this._snapShotGenerator.addReferenceValues(this, array);
+        this.snapShotGenerator.addReferenceValues(this, array);
     }
 
     initFromEntityManager(entityManager) {
@@ -86,61 +86,49 @@ class SEntity {
     }
 
     update(game, deltaTime) {
-        this._entitiesInProximity.update(game, deltaTime);
+        this.entitiesInProximity.update(game, deltaTime);
     }
 
     updateDataPack(entityManager, deltaTime) {
-        this._snapShotGenerator.update(entityManager, this, deltaTime);
+        this.snapShotGenerator.update(entityManager, this, deltaTime);
     }
 
     remove() {
-        this._removed = true;
+        this.removed = true;
     }
 
     // Getters and setters
 
     getDataPack() {
-        return this._snapShotGenerator.export();
+        return this.snapShotGenerator.export();
     }
 
     get toRemove() {
-        return this._removed;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    get width() {
-        return this._width;
-    }
-
-    get height() {
-        return this._height;
+        return this.removed;
     }
 
     get topLeft() {
-        return this._pos
+        return this.pos
     }
 
     get topRight() {
         return {
-            x: this._pos.x + this._width,
-            y: this._pos.y
+            x: this.pos.x + this.width,
+            y: this.pos.y
         };
     }
 
     get bottomLeft() {
         return {
-            x: this._pos.x,
-            y: this._pos.y + this._height
+            x: this.pos.x,
+            y: this.pos.y + this.height
         };
     }
 
     get bottomRight() {
         return {
-            x: this._pos.x + this._width,
-            y: this._pos.y + this._height
+            x: this.pos.x + this.width,
+            y: this.pos.y + this.height
         };
     }
 
@@ -149,10 +137,6 @@ class SEntity {
             x: this.pos.x + this.width / 2,
             y: this.pos.y + this.height / 2
         }
-    }
-
-    get pos() {
-        return this._pos;
     }
 }
 

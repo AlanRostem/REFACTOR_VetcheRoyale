@@ -9,45 +9,44 @@ const SMOOTHING_PERCENTAGE = .36;
 
 export default class EntitySnapshotBuffer {
     constructor(initDataPack) {
-        this._result = initDataPack;
-        this._buffer = []; // Keeps snapshots of the history
-        this._size = 4;
+        this.output = initDataPack;
+        this.buffer = []; // Keeps snapshots of the history
+        this.size = 4;
     }
 
     get length() {
-        return this._buffer.length;
+        return this.buffer.length;
     }
 
     get first() {
-        return this._buffer[0];
+        return this.buffer[0];
     }
 
     get last() {
-        return this._buffer[this.length - 1];
+        return this.buffer[this.length - 1];
     }
 
     get(i) {
-        return this._buffer[i];
+        return this.buffer[i];
     }
 
     pushBack(data) {
-        this._buffer.push(data);
+        this.buffer.push(data);
     }
 
     popFront(alloc = 1) {
-        this._buffer.splice(0, alloc);
+        this.buffer.splice(0, alloc);
     }
 
     t_directServerUpdate(data, entity) {
-        this._result = data;
-        entity._output = this._result;
+        entity.output = data;
     }
 
     onServerUpdateReceived(data, entity, client) {
-        //this.t_directServerUpdate(data, entity);
+        //this.tdirectServerUpdate(data, entity);
         data.localTimeStamp = Date.now();
         this.pushBack(data);
-        if (this.length > this._size) {
+        if (this.length > this.size) {
             this.popFront();
         }
     }
@@ -55,13 +54,13 @@ export default class EntitySnapshotBuffer {
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, client) {
-        //this.t_directServerUpdate(data, entity, client);
+        //this.tdirectServerUpdate(data, entity, client);
         this.onServerUpdateReceived(data, entity, client)
     }
 
     // Use client parameter to detect input
     updateFromClientFrame(deltaTime, entity, client) {
-        let currentTime = Date.now() - client._latency;
+        let currentTime = Date.now() - client.latency;
         let target = null;
         let previous = null;
         for (let i = 0; i < this.length - 1; i++) {
@@ -88,20 +87,20 @@ export default class EntitySnapshotBuffer {
                 timePoint = 0;
             }
             for (let key in target) {
-                if (key !== "_pos") {
-                    entity._output[key] = target[key];
+                if (key !== "pos") {
+                    entity.output[key] = target[key];
                 }
             }
 
-            entity._output._pos =
-                vectorLinearInterpolation(entity._output._pos,
-                    vectorLinearInterpolation(previous._pos, target._pos, timePoint),
+            entity.output.pos =
+                vectorLinearInterpolation(entity.output.pos,
+                    vectorLinearInterpolation(previous.pos, target.pos, timePoint),
                     SMOOTHING_PERCENTAGE);
         }
     }
 
     remove(i) {
-        this._buffer.splice(i);
+        this.buffer.splice(i);
     }
 
 

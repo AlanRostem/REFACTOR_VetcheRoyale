@@ -2,8 +2,8 @@
 // player inventory data such as ammo and weapon.
 class Inventory {
     constructor() {
-        this._ammoCount = Infinity;
-        this._equippedWeapon = null;
+        this.ammoCount = Infinity;
+        this.equippedWeapon = null;
     }
 
     pickUp(loot) {
@@ -11,25 +11,25 @@ class Inventory {
     }
 
     get ammo() {
-        return this._ammoCount
+        return this.ammoCount
     }
 
     set ammo(val) {
-        this._ammoCount = val;
+        this.ammoCount = val;
     }
 
     get weapon() {
-        return this._equippedWeapon;
+        return this.equippedWeapon;
     }
 
     set weapon(val) {
-        if (this._equippedWeapon === null)
-            this._equippedWeapon = val;
+        if (this.equippedWeapon === null)
+            this.equippedWeapon = val;
     }
 
     dropWeapon() {
-        if (this._equippedWeapon !== null) {
-            this._equippedWeapon = null;
+        if (this.equippedWeapon !== null) {
+            this.equippedWeapon = null;
         }
     }
 }
