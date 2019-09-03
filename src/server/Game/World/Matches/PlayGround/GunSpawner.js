@@ -43,7 +43,7 @@ class GunSpawner extends Entity {
 
         if (this.shouldSpawn) {
             if (this.currentTickTime <= 0) {
-                game.spawnEntity(this.pos.x, this.pos.y, GUN_LIST[this.gunID](this.x, this.y));
+                game.spawnEntity(this.pos.x, this.pos.y, GUN_LIST[this.gunID](this.pos.x, this.pos.y));
                 this.shouldSpawn = false;
             }
         }

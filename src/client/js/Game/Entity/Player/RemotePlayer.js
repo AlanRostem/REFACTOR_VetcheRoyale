@@ -21,8 +21,6 @@ export default class RemotePlayer extends CEntity {
     update(deltaTime, client) {
         super.update(deltaTime, client);
         this.animations.setCurrentAnimation(this.output.movementState.main);
-        this.output.centerData.x = this.output.pos.x + this.width / 2;
-        this.output.centerData.y = this.output.pos.y + this.height / 2;
     }
 
     draw() {

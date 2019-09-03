@@ -76,11 +76,6 @@ const Scene = {
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
             let e = Scene.clientRef.player;
             if (e) {
-                e.output.centerData.x = e.output.pos.x;
-                e.output.centerData.y = e.output.pos.y;
-                if (isNaN(e.output.centerData.x) || isNaN(e.output.centerData.y)) {
-                    return;
-                }
                 R.camera.update(e.output.centerData);
             }
         }

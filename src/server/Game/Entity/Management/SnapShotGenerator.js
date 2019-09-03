@@ -25,7 +25,11 @@ class SnapShotGenerator {
                 throw new Error(composedEntity.constructor.name +
                     " does not have property " + key + " in reference values.");
             }
+
             this.snapShot[key] = composedEntity[key];
+            if (key === "pos") {
+                console.log(this.snapShot[key]);
+            }
         }
 
         for (let key of dynamicValues) {
@@ -51,6 +55,8 @@ class SnapShotGenerator {
                 throw new Error(composedEntity.constructor.name +
                     " does not have property " + key + " in reference values.");
             }
+
+
 
             if (this.snapShot.hasOwnProperty(key)) {
                 throw new Error("Added duplicate reference value: " + key);
@@ -83,6 +89,7 @@ class SnapShotGenerator {
         this.snapShot.serverTimeStamp = Date.now();
 
         for (let key of this.dynamicValues) {
+
             this.snapShot[key] = composedEntity[key];
         }
     }
