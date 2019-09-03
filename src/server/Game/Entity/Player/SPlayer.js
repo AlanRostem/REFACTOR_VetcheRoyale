@@ -2,7 +2,6 @@ const GameDataLinker = require("./GameDataLinker.js");
 const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
-const Team = require("../../World/Team.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const Tile = require("../../TileBased/Tile.js");
 
@@ -20,7 +19,6 @@ class Player extends GameDataLinker {
 
         this._id = client.id;
         this._teamName = "red";
-        //new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
         this._snapShotGenerator._snapShot._id = this._id;
         this._clientRef = client;
         this._entitiesInProximity = new ClientPEM(this);
@@ -77,7 +75,7 @@ class Player extends GameDataLinker {
     // up and then picks it up.
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
-            for (let id in game.container) {
+            for (let id in this._entitiesInProximity.container) {
                 let entity = this._entitiesInProximity.getEntity(id);
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
