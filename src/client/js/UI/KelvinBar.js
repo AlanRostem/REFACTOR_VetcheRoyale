@@ -27,7 +27,7 @@ export default class KelvinBar extends UIElement {
         if (client.player) {
             var gun = entityList.getEntityByID(client.player.output.invWeaponID);
             if (gun) {
-                this.charge = gun.output.superCharge;
+                this.charge = gun.output.superChargeData;
 
                 if (this.charge > 18) {
                     this.liquidTop.x = 4;
