@@ -6,9 +6,9 @@ const Alive = require("../Traits/Alive.js");
 class GameDataLinker extends Alive {
     constructor(client, x, y, w, h, HP, regenCoolDown) {
         super(x, y, w, h, HP, regenCoolDown);
-        this._gameData = {};
+        this.gameData = {};
         this.addStaticSnapShotData([
-            "_gameData"
+            "gameData"
         ]);
         this.defineSocketEvents(client);
     }

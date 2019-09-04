@@ -1,18 +1,18 @@
 // Tracks all stats of the player.
 class StatTracker {
     constructor(playerID) {
-        this._statMap = {
+        this.statMap = {
             "Kills": 0,
             "Damage": 0,
         }
     }
 
     getStat(name) {
-        return this._statMap[name];
+        return this.statMap[name];
     }
 
     grantStat(name, value = 1) {
-        this._statMap[name] += value;
+        this.statMap[name] += value;
     }
 
     grantKill() {

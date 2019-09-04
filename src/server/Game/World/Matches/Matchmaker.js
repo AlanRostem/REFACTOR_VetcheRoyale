@@ -8,22 +8,22 @@ const PlayGround = require("./PlayGround/PlayGround.js");
 // TODO: Add match queueing.
 class Matchmaker {
     constructor(mainSocket) {
-        this._queuedPlayers = {};
-        this._gameWorlds = new ONMap();
-        this._lastCreatedWorldID = -1;
+        this.queuedPlayers = {};
+        this.gameWorlds = new ONMap();
+        this.lastCreatedWorldID = -1;
 
         // TODO: FIX THIS HACK
 
         let megaMap = new GameWorld(mainSocket, "MegaMap", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(megaMap, "MegaMap");
 
-        let lobby = new HubWorld(mainSocket, this._gameWorlds, "lobby", TileMapConfigs.getMap("lobby"));
+        let lobby = new HubWorld(mainSocket, this.gameWorlds, "lobby", TileMapConfigs.getMap("lobby"));
         this.addWorld(lobby, "lobby");
 
-        let hub = new HubWorld(mainSocket, this._gameWorlds, "hub", TileMapConfigs.getMap("hub"));
+        let hub = new HubWorld(mainSocket, this.gameWorlds, "hub", TileMapConfigs.getMap("hub"));
         this.addWorld(hub, "hub");
 
-        let playground = new PlayGround(mainSocket, this._gameWorlds);
+        let playground = new PlayGround(mainSocket, this.gameWorlds);
         this.addWorld(playground, "playground");
     }
 
@@ -31,35 +31,35 @@ class Matchmaker {
         if (!id) {
             id = String.random();
         }
-        this._gameWorlds.set(id, world);
-        world._id = id;
-        this._lastCreatedWorldID = id;
+        this.gameWorlds.set(id, world);
+        world.id = id;
+        this.lastCreatedWorldID = id;
     }
 
     createWorld(socket, tileMapName = "lobby", id) {
         if (!id) {
             id = String.random();
         }
-        this._lastCreatedWorldID = id;
-        return this._gameWorlds.set(id, new GameWorld(socket, id, 24, TileMapConfigs.getMap(tileMapName)));
+        this.lastCreatedWorldID = id;
+        return this.gameWorlds.set(id, new GameWorld(socket, id, 24, TileMapConfigs.getMap(tileMapName)));
     }
 
     putPlayerInGame(playerID, gameID) {
-        const client = this._queuedPlayers[playerID];
-        const world = this._gameWorlds.get(gameID);
+        const client = this.queuedPlayers[playerID];
+        const world = this.gameWorlds.get(gameID);
         world.spawnPlayer(client);
-        delete this._queuedPlayers[playerID];
+        delete this.queuedPlayers[playerID];
     }
 
     queuePlayer(client) {
-        this._queuedPlayers[client.id] = client;
+        this.queuedPlayers[client.id] = client;
     }
 
     checkQueuedPlayers(webSocket, server) {
-        for (let id in this._queuedPlayers) {
+        for (let id in this.queuedPlayers) {
             // TEST: Creating a new game instantly after it exceeds the player max count
-            if (!this._gameWorlds.get(this._lastCreatedWorldID).isFull) {
-                this.putPlayerInGame(id, this._lastCreatedWorldID);
+            if (!this.gameWorlds.get(this.lastCreatedWorldID).isFull) {
+                this.putPlayerInGame(id, this.lastCreatedWorldID);
             } else {
                 this.createWorld(webSocket);
             }
@@ -68,9 +68,9 @@ class Matchmaker {
 
     update(webSocket, server) {
         this.checkQueuedPlayers(webSocket, server);
-        for (let worldID in this._gameWorlds.object) {
-            if (this._gameWorlds.has(worldID))
-                this._gameWorlds.get(worldID).update(server.deltaTime);
+        for (let worldID in this.gameWorlds.object) {
+            if (this.gameWorlds.has(worldID))
+                this.gameWorlds.get(worldID).update(server.deltaTime);
         }
     }
 }

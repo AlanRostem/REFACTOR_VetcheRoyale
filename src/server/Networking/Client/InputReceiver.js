@@ -13,11 +13,11 @@ function validateInput(input) {
 class InputReceiver {
     constructor(client) {
         // Holds all key states of corresponding key codes
-        this._keyStates = {};
-        this._singlePressKeys = {};
+        this.keyStates = {};
+        this.singlePressKeys = {};
         // Holds all mouse states of corresponding mouse button numbers
-        this._mouseStates = {};
-        this._singlePressMouseButtons = {};
+        this.mouseStates = {};
+        this.singlePressMouseButtons = {};
 
         client.addClientUpdateListener("processInput", data => {
             if (PacketValidator.validateData(client, data.input, "object")) {
@@ -32,60 +32,57 @@ class InputReceiver {
     }
 
     applyInput(input) {
-        this._keyStates = input.keyStates;
-        this._mouseStates = input.mouseStates;
-        this._mouseData = input.mouseData;
+        this.keyStates = input.keyStates;
+        this.mouseStates = input.mouseStates;
+        this.mouseData = input.mouseData;
     }
 
     update(client) {
     }
 
-    get mouseData() {
-        return this._mouseData;
-    }
 
     mouseHeldDown(button) {
-        return this._mouseStates[button];
+        return this.mouseStates[button];
     }
 
     singleMousePress(button) {
         var mouseState;
-        if (this._mouseStates[button]) {
-            if (!this._singlePressMouseButtons[button]) {
+        if (this.mouseStates[button]) {
+            if (!this.singlePressMouseButtons[button]) {
                 mouseState = true;
             }
-            this._singlePressMouseButtons[button] = true;
+            this.singlePressMouseButtons[button] = true;
         } else {
-            this._singlePressMouseButtons[button] = false;
+            this.singlePressMouseButtons[button] = false;
             mouseState = false;
         }
         return mouseState;
     }
 
     keyHeldDown(keyCode) {
-        return this._keyStates[keyCode];
+        return this.keyStates[keyCode];
     }
 
     singleKeyPress(keyCode) {
         var keyState;
-        if (this._keyStates[keyCode]) {
-            if (!this._singlePressKeys[keyCode]) {
+        if (this.keyStates[keyCode]) {
+            if (!this.singlePressKeys[keyCode]) {
                 keyState = true;
             }
-            this._singlePressKeys[keyCode] = true;
+            this.singlePressKeys[keyCode] = true;
         } else {
-            this._singlePressKeys[keyCode] = false;
+            this.singlePressKeys[keyCode] = false;
             keyState = false;
         }
         return keyState;
     }
 
     get keys() {
-        return this._keyStates;
+        return this.keyStates;
     }
 
     get mouseButtons() {
-        return this._mouseStates;
+        return this.mouseStates;
     }
 }
 

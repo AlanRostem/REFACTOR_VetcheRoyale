@@ -84,7 +84,7 @@ const TileCollider = {
             "Physical": {
                 "Y": (entity, tile, deltaTime) => {
                     if (entity.overlapTile(tile)) {
-                        if (entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y) {
+                        if (entity.pos.y + entity.height > tile.y && entity.old.y + entity.height <= tile.y) {
                             entity.onBottomCollision(tile);
                             entity.side.bottom = true;
                         }

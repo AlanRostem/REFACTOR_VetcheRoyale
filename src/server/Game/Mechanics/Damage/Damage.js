@@ -3,22 +3,22 @@ const Alive = require("../../Entity/Traits/Alive.js");
 // Composition class for objects that deal damage.
 class Damage {
     constructor(value, playerID) {
-        this._value = value;
-        this._playerID = playerID;
+        this.value = value;
+        this.playerID = playerID;
     }
 
     inflict(entity, entityManager) {
         if (entity instanceof Alive) {
             if (entityManager.getGameRule("pvp")) {
                 if (!entity.dead) {
-                    entity.takeDamage(this._value);
+                    entity.takeDamage(this.value);
                 } else {
                     return;
                 }
             }
-            var player = entityManager.getEntity(this._playerID);
+            var player = entityManager.getEntity(this.playerID);
             if (player && player !== entity) {
-                player.stats.grantDamage(this._value);
+                player.stats.grantDamage(this.value);
                 if (entity.dead) {
                     player.stats.grantKill();
                     entity.dieBy(player);

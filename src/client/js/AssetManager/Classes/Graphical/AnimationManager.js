@@ -1,29 +1,29 @@
 // Manages animations for an object
 export default class AnimationManager {
     constructor() {
-        this._animations = {};
+        this.animations = {};
     }
 
     // Sets the current animation key
     setCurrentAnimation(name) {
-        this._currentAnimName = name;
+        this.currentAnimName = name;
     }
 
     // Map an Animation object to a key
     addAnimation(name, animation) {
-        this._animations[name] = animation;
+        this.animations[name] = animation;
     }
 
 
     getAnimation(name) {
-        if (!this._animations[name]) {
+        if (!this.animations[name]) {
             throw new Error("No animation such as " + name + " found!");
         }
-        return this._animations[name];
+        return this.animations[name];
     }
 
-    // Animates the current animation mapped to _currentAnimName
+    // Animates the current animation mapped to currentAnimName
     animate(spriteSheetObj, spriteLocationName, fw, fh) {
-        spriteSheetObj.animate(spriteLocationName, this.getAnimation(this._currentAnimName), fw, fh);
+        spriteSheetObj.animate(spriteLocationName, this.getAnimation(this.currentAnimName), fw, fh);
     }
 }

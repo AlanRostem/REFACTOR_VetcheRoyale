@@ -7,33 +7,29 @@ import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 export default class CEntity {
     constructor(initDataPack) {
-        this._output = initDataPack;
+        this.output = initDataPack;
 
-        this._dataBuffer = new EntitySnapshotBuffer(initDataPack);
+        this.dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
         // TODO: Initialize constants in a better way
-        this._color = this._output._color;
-        this._width = this._output._width;
-        this._height = this._output._height;
+        this.color = this.output.color;
+        this.width = this.output.width;
+        this.height = this.output.height;
     }
 
     // This function is run from the client emit callback.
     updateFromDataPack(dataPack, client) {
-        this._dataBuffer.updateFromServerFrame(dataPack, this, client);
+        this.dataBuffer.updateFromServerFrame(dataPack, this, client);
     }
 
     update(deltaTime, client) {
-        this._dataBuffer.updateFromClientFrame(deltaTime, this, client);
-    }
-
-    get output() {
-        return this._output;
+        this.dataBuffer.updateFromClientFrame(deltaTime, this, client);
     }
 
     // Returns the property value of the entity based on correct
     // interpolations in sync with the server.
     getRealtimeProperty(string) {
-        return this._output[string];
+        return this.output[string];
     }
 
     onClientSpawn(dataPack, client) {
@@ -45,15 +41,15 @@ export default class CEntity {
     }
 
     draw() {
-        R.drawRect(this._color,
-            this._output._pos._x /*+ (this._output._vel._x * Scene.deltaTime | 0) */,
-            this._output._pos._y /*+ (this._output._vel._y * Scene.deltaTime | 0) */,
-            this._width, this._height, true);
+        R.drawRect(this.color,
+            this.output.pos.x /*+ (this.output.vel.x * Scene.deltaTime | 0) */,
+            this.output.pos.y /*+ (this.output.vel.y * Scene.deltaTime | 0) */,
+            this.width, this.height, true);
         /*
 
-        R.drawText(this._output._eType,
-            this._output._pos._x - R.ctx.measureText(this._output._eType).width / 4,
-            this._output._pos._y, "Blue", true);
+        R.drawText(this.output.eType,
+            this.output.pos.x - R.ctx.measureText(this.output.eType).width / 4,
+            this.output.pos.y, "Blue", true);
     */
     }
 }

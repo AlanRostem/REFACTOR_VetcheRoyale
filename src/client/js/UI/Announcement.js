@@ -6,22 +6,22 @@ import AssetManager from "../AssetManager/AssetManager.js";
 export default class Announcement extends UIElement {
     constructor() {
         super("announcement", R.WIDTH / 2 - 64 | 0, 0, 128, 18);
-        this._color = "#222034";
-        this._queue = [];
-        this._elm = undefined;
+        this.color = "#222034";
+        this.queue = [];
+        this.elm = undefined;
 
-        this._timer = new CTimer(0.01, () => {
-            if (this._elm !== undefined)
-                this._elm._x--;
+        this.timer = new CTimer(0.01, () => {
+            if (this.elm !== undefined)
+                this.elm.x--;
         }, true);
 
 
-        this._timer2 = new CTimer(7, () => {
+        this.timer2 = new CTimer(7, () => {
             this.add("Alert!", "Red");
             this.add("Alan e en kuk ;)", "Yellow");
         }, true);
 
-        this._image = AssetManager.get("ui/ui.png");
+        this.image = AssetManager.get("ui/ui.png");
 
 
         //this.add(" !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`", "Red");
@@ -29,36 +29,36 @@ export default class Announcement extends UIElement {
     }
 
     addPriority(string, color) {
-        this._queue.unshift({
-            _string: string,
-            _color: color,
-            _x: this.width - 10
+        this.queue.unshift({
+            string: string,
+            color: color,
+            x: this.width - 10
         });
     }
 
     add(string, color) {
-        this._queue.push({
-            _dString: "",
-            _string: string,
-            _color: color,
-            _x: this.width - 10
+        this.queue.push({
+            dString: "",
+            string: string,
+            color: color,
+            x: this.width - 10
         });
     }
 
     updateQueue() {
-        if (this._queue.length !== 0 && this._elm === undefined)
-            this._elm = this._queue.shift();
+        if (this.queue.length !== 0 && this.elm === undefined)
+            this.elm = this.queue.shift();
     }
 
     updateElm() {
-        if (this._elm !== undefined) {
-            this.start = this._elm._x <= 0 ? -this._elm._x / 5 | 0 : 0;
-            this._elm._dString = this._elm._string.substring(
+        if (this.elm !== undefined) {
+            this.start = this.elm.x <= 0 ? -this.elm.x / 5 | 0 : 0;
+            this.elm.dString = this.elm.string.substring(
                 this.start,
-                (this.width - this._elm._x - 5) / 5 | 0);
+                (this.width - this.elm.x - 5) / 5 | 0);
 
-            if (this._elm._x + this._elm._string.length * 5 - 1 <= 0)
-                delete this._elm;
+            if (this.elm.x + this.elm.string.length * 5 - 1 <= 0)
+                delete this.elm;
         }
     }
 
@@ -78,22 +78,22 @@ export default class Announcement extends UIElement {
 
     update(deltaTime, client, entityList) {
         this.pos.x = R.WIDTH / 2 - 64 | 0;
-        if (this._elm !== undefined || this._queue.length !== 0)
+        if (this.elm !== undefined || this.queue.length !== 0)
             this.showAnnouncement();
-        else if (this._queue.length === 0)
+        else if (this.queue.length === 0)
             this.hideAnnouncement();
 
 
         this.updateQueue();
         this.updateElm();
-        this._timer.tick(deltaTime);
-        this._timer2.tick(deltaTime);
+        this.timer.tick(deltaTime);
+        this.timer2.tick(deltaTime);
     }
 
     draw() {
         if (this.pos.y > -this.height - 4) {
             R.ctx.drawImage(
-                this._image,
+                this.image,
                 0,
                 110,
                 118,
@@ -104,16 +104,16 @@ export default class Announcement extends UIElement {
                 this.height - 4
             );
 
-            if (this._elm !== undefined) {
+            if (this.elm !== undefined) {
                 R.drawText(
-                    this._elm._dString,
-                    this.pos.x + this._elm._x + this.start * 5 + 1,
-                    this.pos.y + 11, this._elm._color
+                    this.elm.dString,
+                    this.pos.x + this.elm.x + this.start * 5 + 1,
+                    this.pos.y + 11, this.elm.color
                 );
             }
 
             R.ctx.drawImage(
-                this._image,
+                this.image,
                 0,
                 88,
                 128,

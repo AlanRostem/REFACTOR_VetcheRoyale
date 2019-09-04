@@ -6,19 +6,19 @@ function randMinMax(min, max) {
 
 class Firerer {
     constructor(chargeTime = 0, burstCount = 0, burstDelay = 0, spread = 0, recoil = 0, accurator = 0) {
-        this._chargeTime = chargeTime;
-        this._maxChargeTime = chargeTime;
+        this.chargeTime = chargeTime;
+        this.maxChargeTime = chargeTime;
 
-        this._maxBurstCount = burstCount;
-        this._burstCount = burstCount;
+        this.maxBurstCount = burstCount;
+        this.burstCount = burstCount;
 
-        this._maxBurstDelay = burstDelay;
-        this._burstDelay = burstDelay;
+        this.maxBurstDelay = burstDelay;
+        this.burstDelay = burstDelay;
 
-        this._defaultSpread = spread;
-        this._recoil = recoil;
-        this._accurator = accurator;
-        this._currentRecoil = 0;
+        this.defaultSpread = spread;
+        this.recoil = recoil;
+        this.accurator = accurator;
+        this.currentRecoil = 0;
     }
 
     update(weapon, player, entityManager, deltaTime) {
@@ -26,20 +26,20 @@ class Firerer {
     }
 
     getRecoilAngle(weapon, player, deltaTime) {
-        this._currentRecoil += this._recoil;
+        this.currentRecoil += this.recoil;
         return (
             player.input.mouseData.angleCenter
-            + randMinMax(-this._defaultSpread / 2, this._defaultSpread / 2)
-            + randMinMax(-this._currentRecoil / 2, this._currentRecoil / 2)
+            + randMinMax(-this.defaultSpread / 2, this.defaultSpread / 2)
+            + randMinMax(-this.currentRecoil / 2, this.currentRecoil / 2)
         );
     }
 
     doSingleFire(weapon, player, entityManager, deltaTime) {
         let angle = this.getRecoilAngle(weapon, player, deltaTime);
-        if (weapon._currentAmmo >= weapon._ammoPerShot) {
+        if (weapon.currentAmmo >= weapon.ammoPerShot) {
             weapon.fire(player, entityManager, deltaTime, angle);
-            weapon._firing = true;
-            weapon._currentAmmo -= weapon._ammoPerShot;
+            weapon.firing = true;
+            weapon.currentAmmo -= weapon.ammoPerShot;
         } else if (player.inventory.ammo > 0) {
             weapon.activateReloadAction();
         }
@@ -47,12 +47,12 @@ class Firerer {
     }
 
     firingUpdate(weapon, player, entityManager, deltaTime) {
-        weapon._firing = false;
+        weapon.firing = false;
         // Can spam the mouse but the weapon always fires at the
         // same designated rate of fire.
-        if (!this._queueBurst) {
-            if (weapon._currentFireTime > 0) {
-                weapon._currentFireTime -= deltaTime;
+        if (!this.queueBurst) {
+            if (weapon.currentFireTime > 0) {
+                weapon.currentFireTime -= deltaTime;
             }
         }
 
@@ -61,74 +61,74 @@ class Firerer {
         if (player.input.mouseHeldDown(1)) {
 
             weapon.onFireButton(entityManager, deltaTime);
-            weapon._holdingDownFireButton = true;
-            if (weapon._canFire && !this._queueBurst) {
-                if (this._maxChargeTime > 0) { // Check if we have charge mode on
-                    if (this._chargeTime > 0) {
-                        this._chargeTime -= deltaTime;
+            weapon.holdingDownFireButton = true;
+            if (weapon.canFire && !this.queueBurst) {
+                if (this.maxChargeTime > 0) { // Check if we have charge mode on
+                    if (this.chargeTime > 0) {
+                        this.chargeTime -= deltaTime;
                     } else {
-                        this._chargeTime = this._maxChargeTime;
-                        if (this._maxBurstCount > 0) { // Check if we have burst mode on
-                            this._queueBurst = true;
+                        this.chargeTime = this.maxChargeTime;
+                        if (this.maxBurstCount > 0) { // Check if we have burst mode on
+                            this.queueBurst = true;
                         } else {
                             this.doSingleFire(weapon, player, entityManager, deltaTime);
                         }
-                        weapon._currentFireTime = 60 / weapon._fireRate;
+                        weapon.currentFireTime = 60 / weapon.fireRate;
                     }
                 } else {
-                    if (weapon._currentFireTime <= 0 && !weapon._reloading) {
-                        if (this._maxBurstCount > 0) {  // Check if we have burst mode on
-                            this._queueBurst = true;
+                    if (weapon.currentFireTime <= 0 && !weapon.reloading) {
+                        if (this.maxBurstCount > 0) {  // Check if we have burst mode on
+                            this.queueBurst = true;
                         } else {
                             this.doSingleFire(weapon, player, entityManager, deltaTime);
                         }
-                        weapon._currentFireTime = 60 / weapon._fireRate;
+                        weapon.currentFireTime = 60 / weapon.fireRate;
                     }
                 }
-            } else if (weapon._currentAmmo === 0 && player.inventory.ammo > 0){
+            } else if (weapon.currentAmmo === 0 && player.inventory.ammo > 0){
                 weapon.activateReloadAction()
             }
         }
 
 
 
-        if (this._queueBurst) {
-            if (this._burstDelay > 0) {
-                this._burstDelay -= deltaTime;
+        if (this.queueBurst) {
+            if (this.burstDelay > 0) {
+                this.burstDelay -= deltaTime;
             } else {
-                this._burstDelay = this._maxBurstDelay;
-                if (this._burstCount > 0) {
-                    this._burstCount--;
+                this.burstDelay = this.maxBurstDelay;
+                if (this.burstCount > 0) {
+                    this.burstCount--;
                     this.doSingleFire(weapon, player, entityManager, deltaTime);
                 } else {
-                    this._queueBurst = false;
-                    this._burstCount = this._maxBurstCount;
+                    this.queueBurst = false;
+                    this.burstCount = this.maxBurstCount;
                 }
             }
         }
 
-        if (!this._firing) {
-            if (this._currentRecoil > 0) {
-                this._currentRecoil -= this._accurator;
+        if (!this.firing) {
+            if (this.currentRecoil > 0) {
+                this.currentRecoil -= this.accurator;
             } else {
-                this._currentRecoil = 0;
+                this.currentRecoil = 0;
             }
         }
 
-        if (weapon._reloading) {
-            this._currentRecoil = 0;
+        if (weapon.reloading) {
+            this.currentRecoil = 0;
         }
 
         if (!player.input.mouseHeldDown(1)) {
-            weapon._holdingDownFireButton = false;
-            if (this._maxChargeTime > 0) {
-                if (this._chargeTime < this._maxChargeTime) {
-                    this._chargeTime += deltaTime / 4;
+            weapon.holdingDownFireButton = false;
+            if (this.maxChargeTime > 0) {
+                if (this.chargeTime < this.maxChargeTime) {
+                    this.chargeTime += deltaTime / 4;
                 }
             }
         }
 
-        weapon._spreadAngle = this._currentRecoil + this._defaultSpread;
+        weapon.spreadAngle = this.currentRecoil + this.defaultSpread;
     }
 
 }

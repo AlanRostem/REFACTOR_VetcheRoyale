@@ -2,32 +2,32 @@ const ObjectNotationMap = require("../../../shared/code/DataStructures/SObjectNo
 
 class GameRules {
     constructor() {
-        this._config = new ObjectNotationMap();
-        this._config.set("lootLife", 6 * 60); // Added
-        this._config.set("dropLootOnDeath", true); // Added
-        this._config.set("infiniteAmmo", false);
+        this.config = new ObjectNotationMap();
+        this.config.set("lootLife", 6 * 60); // Added
+        this.config.set("dropLootOnDeath", true); // Added
+        this.config.set("infiniteAmmo", false);
 
-        this._config.set("pvp", true); // Added
+        this.config.set("pvp", true); // Added
 
-        this._config.set("maxPlayers", 24); // Added
-        this._config.set("maxTeamMembers", 4); // Added
+        this.config.set("maxPlayers", 24); // Added
+        this.config.set("maxTeamMembers", 4); // Added
 
-        this._config.set("damageMultiplier", 1);
-        this._config.set("superChargeTickMultiplier", 1);
-        this._config.set("superChargePerKillMultiplier", 1);
-        this._config.set("modCoolDownTickMultiplier", 1);
+        this.config.set("damageMultiplier", 1);
+        this.config.set("superChargeTickMultiplier", 1);
+        this.config.set("superChargePerKillMultiplier", 1);
+        this.config.set("modCoolDownTickMultiplier", 1);
     }
 
     configure(object) {
         for (let key in object) {
-            if (this._config.has(key)) {
-                this._config.set(key, object[key]);
+            if (this.config.has(key)) {
+                this.config.set(key, object[key]);
             }
         }
     }
 
     getRule(key) {
-        return this._config.get(key);
+        return this.config.get(key);
     }
 }
 

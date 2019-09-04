@@ -6,32 +6,28 @@ class GameServer {
     constructor(socket) {
         this.matchMaker = new MatchMaker(socket);
         this.mainSocket = new WebSocket(socket, this.matchMaker);
-        this._deltaTime = 0;
-        this._lastTime = 0;
-        this._tickRate = 60; // Hz (TEMPORARY)
-        this._started = false;
-    }
-
-    get deltaTime() {
-        return this._deltaTime;
+        this.deltaTime = 0;
+        this.lastTime = 0;
+        this.tickRate = 60; // Hz (TEMPORARY)
+        this.started = false;
     }
 
     update() {
         if (Date.now() > 0)
-            this._deltaTime = (Date.now() - this._lastTime) / 1000;
+            this.deltaTime = (Date.now() - this.lastTime) / 1000;
 
-        if (this._deltaTime > 1) {
-            if (this._started)
-                console.warn("High throttling! DT:", this._deltaTime * 1000 + "ms");
+        if (this.deltaTime > 1) {
+            if (this.started)
+                console.warn("High throttling! DT:", this.deltaTime * 1000 + "ms");
             else
-                this._started = true;
-            this._deltaTime = 0;
+                this.started = true;
+            this.deltaTime = 0;
         }
 
         this.matchMaker.update(this.mainSocket.ioInstance, this);
 
         if (Date.now() > 0)
-            this._lastTime = Date.now();
+            this.lastTime = Date.now();
     }
 
     disconnectAll() {
@@ -41,7 +37,7 @@ class GameServer {
     }
 
     start() {
-        setInterval(() => this.update(), 1000 / this._tickRate);
+        setInterval(() => this.update(), 1000 / this.tickRate);
     }
 }
 

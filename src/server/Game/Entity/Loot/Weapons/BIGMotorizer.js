@@ -9,18 +9,18 @@ const vm = require("../../../../../shared/code/Math/SCustomMath.js");
 class MicroMissile extends Projectile {
     constructor(ownerID, x, y, angle, entityManager, harmonic = true, left = false) {
         super(ownerID, x, y, 2, 2, angle, 150);
-        this._trajectoryAngle = angle;
+        this.trajectoryAngle = angle;
 
-        this._speed = 220;
-        this._theta = 0;
-        this._time = 0;
+        this.speed = 220;
+        this.theta = 0;
+        this.time = 0;
 
-        this._freq = .4;
-        this._amp = .4 + .5 * Math.random();
+        this.freq = .4;
+        this.amp = .4 + .5 * Math.random();
 
-        this._harmonic = harmonic;
-        this._facingLeft = left;
-        this.exceptions = entityManager.getEntity(this._ownerID).team.players;
+        this.harmonic = harmonic;
+        this.facingLeft = left;
+        this.exceptions = entityManager.getEntity(this.ownerID).team.players;
     }
 
     update(entityManager, deltaTime) {
@@ -29,22 +29,22 @@ class MicroMissile extends Projectile {
     }
 
     calcTheta(deltaTime) {
-        this._time += this._facingLeft ? 1 : -1;
-        if (Math.abs(this._time) < 10) {
+        this.time += this.facingLeft ? 1 : -1;
+        if (Math.abs(this.time) < 10) {
             return 0;
         }
-        this._theta = Math.sin(this._time * this._freq) * this._amp * vm.randMinMax(-3,3);
-        return this._theta;
+        this.theta = Math.sin(this.time * this.freq) * this.amp * vm.randMinMax(-3,3);
+        return this.theta;
     }
 
     harmonicMovement(deltaTime) {
         let theta = 0;
-        this._amp = .4 + .7 * Math.random();
-        if (this._harmonic) {
+        this.amp = .4 + .7 * Math.random();
+        if (this.harmonic) {
             theta = this.calcTheta(deltaTime);
         }
-        this.vel.x = this._speed * Math.cos(this._trajectoryAngle + theta);
-        this.vel.y = this._speed * Math.sin(this._trajectoryAngle + theta);
+        this.vel.x = this.speed * Math.cos(this.trajectoryAngle + theta);
+        this.vel.y = this.speed * Math.sin(this.trajectoryAngle + theta);
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -59,7 +59,7 @@ class MicroMissile extends Projectile {
     }
 
     dealDamage(entityManager) {
-        new AOEDamage(this._ownerID, this.center.x, this.center.y, 8, 17, this.exceptions)
+        new AOEDamage(this.ownerID, this.center.x, this.center.y, 8, 17, this.exceptions)
             .applyAreaOfEffect(entityManager);
     }
 
@@ -84,86 +84,86 @@ class BIGMotorizer extends AttackWeapon {
             Math.PI / 180,
             0.07 * Math.PI / 180,
             0.5, 6, 0.05);
-        this._minFireRate = 100;
-        this.configureAttackStats(1.5, 36, 1, this._minFireRate);
-        this._modAbility.configureStats(1, 10);
-        this._upgradeStage = 0;
-        this._thunderPulse = new HitScanner([]);
-        this._thunderPulse.onEntityHit = (entity, game, angle) => {
+        this.minFireRate = 100;
+        this.configureAttackStats(1.5, 36, 1, this.minFireRate);
+        this.modAbility.configureStats(1, 10);
+        this.upgradeStage = 0;
+        this.thunderPulse = new HitScanner([]);
+        this.thunderPulse.onEntityHit = (entity, game, angle) => {
             if (entity instanceof Affectable) {
                 entity.applyEffect(new StunEffect(entity.id), game);
             }
         };
-        this._thunderPulseRange = 12 * 8;
+        this.thunderPulseRange = 12 * 8;
     }
 
     onModActivation(entityManager, deltaTime) {
         super.onModActivation(entityManager, deltaTime);
         let end = {};
-        end.x = this.center.x + Math.cos(this._fireAngle) * this._thunderPulseRange;
-        end.y = this.center.y + Math.sin(this._fireAngle) * this._thunderPulseRange;
-        this._thunderPulse.scan(this.center, end, entityManager, entityManager.tileMap);
+        end.x = this.center.x + Math.cos(this.fireAngle) * this.thunderPulseRange;
+        end.y = this.center.y + Math.sin(this.fireAngle) * this.thunderPulseRange;
+        this.thunderPulse.scan(this.center, end, entityManager, entityManager.tileMap);
     }
 
     onModBuffs(entityManager, deltaTime) {
         super.onModBuffs(entityManager, deltaTime);
-        if (this._upgradeStage < 2) {
-            this._canFire = false;
+        if (this.upgradeStage < 2) {
+            this.canFire = false;
         }
     }
 
     onModDeactivation(entityManager, deltaTime) {
         super.onModDeactivation(entityManager, deltaTime);
-        if (this._upgradeStage < 2) {
-            this._canFire = true;
+        if (this.upgradeStage < 2) {
+            this.canFire = true;
         }
     }
 
     onSuperActivation(entityManager, deltaTime) {
-        this._upgradeStage++;
-        if (this._upgradeStage >= 4) {
-            this._currentAmmo = this._maxAmmo;
-            this._reloading = false;
-            this._currentReloadTime = 0;
-            this._canFire = true;
+        this.upgradeStage++;
+        if (this.upgradeStage >= 4) {
+            this.currentAmmo = this.maxAmmo;
+            this.reloading = false;
+            this.currentReloadTime = 0;
+            this.canFire = true;
             return;
         }
-        if (this._upgradeStage === 1) {
-            this._firerer._maxChargeTime = 0;
-            this._firerer._maxBurstCount = 0;
+        if (this.upgradeStage === 1) {
+            this.firerer.maxChargeTime = 0;
+            this.firerer.maxBurstCount = 0;
         }
-        if (this._upgradeStage === 3) {
-            this._firerer._recoil = 0;
+        if (this.upgradeStage === 3) {
+            this.firerer.recoil = 0;
         }
     }
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player.id, 0, 0,
-                angle, entityManager, this._upgradeStage < 3,
+                angle, entityManager, this.upgradeStage < 3,
         player.checkMovementState("direction", "left")));
     }
 
     activateReloadAction() {
         super.activateReloadAction();
-        this._fireRate = this._minFireRate;
+        this.fireRate = this.minFireRate;
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (entityManager.getEntity(this._playerID)) {
-            this._fireAngle = entityManager.getEntity(this._playerID).input.mouseData.angleCenter;
+        if (entityManager.getEntity(this.playerID)) {
+            this.fireAngle = entityManager.getEntity(this.playerID).input.mouseData.angleCenter;
         }
-        if (!this._holdingDownFireButton) {
-            this._fireRate = this._minFireRate;
+        if (!this.holdingDownFireButton) {
+            this.fireRate = this.minFireRate;
         }
     }
 
     onFireButton(entityManager, deltaTime) {
-        if (this._upgradeStage >= 1 && !this._reloading) {
-            this._fireRate += 500 * deltaTime;
-            if (this._fireRate >= 1100) {
-                this._fireRate = 1100;
+        if (this.upgradeStage >= 1 && !this.reloading) {
+            this.fireRate += 500 * deltaTime;
+            if (this.fireRate >= 1100) {
+                this.fireRate = 1100;
             }
         }
     }

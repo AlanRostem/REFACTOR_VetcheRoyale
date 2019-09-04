@@ -7,32 +7,32 @@ const Rect = require("./QTRect.js");
 // such as tileCollision.
 class QuadTree {
     constructor(rect) {
-        this._boundary = rect;
-        this._entities = [];
-        this._divided = false;
+        this.boundary = rect;
+        this.entities = [];
+        this.divided = false;
     }
 
     get width() {
-        return this._w;
+        return this.w;
     }
 
     get height() {
-        return this._h;
+        return this.h;
     }
 
     // Range is a bounding rectangle (QTRect)
     query(range, found = []) {
 
-        if (!range.intersects(this._boundary)) {
+        if (!range.intersects(this.boundary)) {
             return found;
         }
 
-        for (let e of this._entities) {
+        for (let e of this.entities) {
             if (range.myContains(e)) {
                 found.push(e);
             }
         }
-        if (this._divided) {
+        if (this.divided) {
             this.northwest.query(range, found);
             this.northeast.query(range, found);
             this.southwest.query(range, found);
@@ -45,10 +45,10 @@ class QuadTree {
     // Creates more quad trees divided into smaller
     // pieces within the current quad tree.
     subdivide() {
-        let x = this._boundary.x;
-        let y = this._boundary.y;
-        let w = this._boundary.w / 2;
-        let h = this._boundary.h / 2;
+        let x = this.boundary.x;
+        let y = this.boundary.y;
+        let w = this.boundary.w / 2;
+        let h = this.boundary.h / 2;
 
         let ne = new Rect(x + w, y - h, w, h);
         this.northeast = new QuadTree(ne);
@@ -59,29 +59,29 @@ class QuadTree {
         let sw = new Rect(x - w, y + h, w, h);
         this.southwest = new QuadTree(sw);
 
-        this._divided = true;
+        this.divided = true;
     }
 
     // TODO: Maybe store the ID in the QuadTree instead.
     // Places a reference to an entity in the container.
     // We subdivides if we reach the max count.
     insert(entity) {
-        if (!this._boundary.myContains(entity)) {
-            if (this._entities.indexOf(entity) !== -1) {
+        if (!this.boundary.myContains(entity)) {
+            if (this.entities.indexOf(entity) !== -1) {
                 this.remove(entity);
             }
             return false;
         }
 
-        if (this._entities.indexOf(entity) !== -1) {
+        if (this.entities.indexOf(entity) !== -1) {
             return false;
         }
 
-        if (this._entities.length < QuadTree.MAX_ENTITIES) {
-            this._entities.push(entity);
+        if (this.entities.length < QuadTree.MAX_ENTITIES) {
+            this.entities.push(entity);
             return true;
         } else {
-            if (!this._divided) {
+            if (!this.divided) {
                 this.subdivide();
             }
 
@@ -107,16 +107,16 @@ class QuadTree {
     // Recursively removes an entity from the quad tree and
     // its subdivisions.
     remove(entity) {
-        if (this._entities.indexOf(entity) !== -1) {
-            this._entities.splice(this._entities.indexOf(entity));
-            if (this._divided) {
+        if (this.entities.indexOf(entity) !== -1) {
+            this.entities.splice(this.entities.indexOf(entity));
+            if (this.divided) {
                 this.northeast.remove(entity);
                 this.northwest.remove(entity);
                 this.southeast.remove(entity);
                 this.southwest.remove(entity);
             }
         } else {
-            if (this._divided) {
+            if (this.divided) {
                 this.northeast.remove(entity);
                 this.northwest.remove(entity);
                 this.southeast.remove(entity);
@@ -135,15 +135,15 @@ class QuadTree {
         delete this.northwest;
         delete this.southwest;
         delete this.southeast;
-        this._divided = false;
+        this.divided = false;
     }
 
     get length() {
-        return this._entities.length;
+        return this.entities.length;
     }
 
     get bounds() {
-        return this._boundary;
+        return this.boundary;
     }
 
 }

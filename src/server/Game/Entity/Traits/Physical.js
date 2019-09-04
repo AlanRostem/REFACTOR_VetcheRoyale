@@ -9,12 +9,12 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 class Physical extends Entity {
     constructor(x, y, w, h) {
         super(x, y, w, h);
-        this._old = new Vector2D(x, y);
-        this._vel = new Vector2D(0, 0);
-        this._fric = new Vector2D(0, 0);
-        this._acc = new Vector2D(0, 0);
-        this._movementTracker = new MovementTracker();
-        this._movementState = this._movementTracker.movementStates;
+        this.old = new Vector2D(x, y);
+        this.vel = new Vector2D(0, 0);
+        this.fric = new Vector2D(0, 0);
+        this.acc = new Vector2D(0, 0);
+        this.movementTracker = new MovementTracker();
+        this.movementState = this.movementTracker.movementStates;
         this.side = {
             left: false,
             right: false,
@@ -25,12 +25,12 @@ class Physical extends Entity {
             }
         };
         this.addStaticSnapShotData([
-            "_vel",
-            "_movementState",
+            "vel",
+            "movementState",
             "side",
         ]);
 
-        this._physicsConfig = {
+        this.physicsConfig = {
             tileCollision: true, // Tile tileCollision
             gravity: true, // Gravity
             static: false, // No movement
@@ -38,25 +38,25 @@ class Physical extends Entity {
             pixelatePos: true, // Rounds position to nearest integer
         };
 
-        this._collisionResponseID = "Physical";
+        this.collisionResponseID = "Physical";
 
     }
 
 
     get CR_ID() {
-        return this._collisionResponseID;
+        return this.collisionResponseID;
     }
 
     // Sets the ID of (preferably the extended constructor name) a presumably
     // mapped ID in the TileCollider to a callback function which is the
     // tileCollision response to a specific tile.
     setCollisionResponseID(string) {
-        this._collisionResponseID = string;
+        this.collisionResponseID = string;
     }
 
     // Composite method for the movement tracker
     checkMovementState(movementName, stateName) {
-        return this._movementTracker.checkMovementState(movementName, stateName);
+        return this.movementTracker.checkMovementState(movementName, stateName);
     }
 
     // Abstract method for conditional updates to the movement states.
@@ -66,20 +66,20 @@ class Physical extends Entity {
 
     // Composite method for the movement tracker
     addMovementListener(name, stateName, callback) {
-        this._movementTracker.addMovementStateListener(name, stateName, callback);
+        this.movementTracker.addMovementStateListener(name, stateName, callback);
     }
 
     // Composite method for the movement tracker
     setMovementState(name, stateName, entityManager, deltaTime) {
-        this._movementTracker.setMovementState(name, stateName, this, entityManager, deltaTime)
+        this.movementTracker.setMovementState(name, stateName, this, entityManager, deltaTime)
     }
 
     moveX(pixelsPerSecond, deltaTime) {
-        this._pos._x += (pixelsPerSecond * deltaTime);
+        this.pos.x += (pixelsPerSecond * deltaTime);
     }
 
     moveY(pixelsPerSecond, deltaTime) {
-        this._pos._y += (pixelsPerSecond * deltaTime);
+        this.pos.y += (pixelsPerSecond * deltaTime);
     }
 
     accelerateX(x, deltaTime) {
@@ -165,26 +165,26 @@ class Physical extends Entity {
       "pixelatePos":    Rounds position to nearest integer
      */
     setPhysicsConfiguration(name, value) {
-        this._physicsConfig[name] = value;
+        this.physicsConfig[name] = value;
     }
 
     onLeftCollision(tile) {
-        if (this._physicsConfig.stop) this.vel.x = 0;
+        if (this.physicsConfig.stop) this.vel.x = 0;
         this.pos.x = tile.x + Tile.SIZE;
     }
 
     onRightCollision(tile) {
-        if (this._physicsConfig.stop) this.vel.x = 0;
+        if (this.physicsConfig.stop) this.vel.x = 0;
         this.pos.x = tile.x - this.width;
     }
 
     onTopCollision(tile) {
-        if (this._physicsConfig.stop) this.vel.y = 0;
+        if (this.physicsConfig.stop) this.vel.y = 0;
         this.pos.y = tile.y + Tile.SIZE;
     }
 
     onBottomCollision(tile) {
-        if (this._physicsConfig.stop) this.vel.y = 0;
+        if (this.physicsConfig.stop) this.vel.y = 0;
         this.pos.y = tile.y - this.height;
     }
 
@@ -210,30 +210,30 @@ class Physical extends Entity {
 
     // Handling tile tileCollision physics
     physics(entityManager, deltaTime) {
-        this._old.x = this._pos.x;
-        this._old.y = this._pos.y;
+        this.old.x = this.pos.x;
+        this.old.y = this.pos.y;
 
-        if (this._physicsConfig.gravity)
+        if (this.physicsConfig.gravity)
             if (!this.side.bottom)
-                this.accelerateY(this._acc.y, deltaTime);
+                this.accelerateY(this.acc.y, deltaTime);
 
         this.side.reset();
 
-        if (!this._physicsConfig.static)
-            this.moveY(this._vel.y, deltaTime); // Adding velocity to position
-        if (this._physicsConfig.tileCollision)      // before colliding.
+        if (!this.physicsConfig.static)
+            this.moveY(this.vel.y, deltaTime); // Adding velocity to position
+        if (this.physicsConfig.tileCollision)      // before colliding.
             this.tileCollisionY(entityManager.tileMap, deltaTime);
         this.customCollisionY(entityManager, entityManager.tileMap, deltaTime);
 
-        if (!this._physicsConfig.static)
-            this.moveX(this._vel.x, deltaTime); // Adding velocity to position
-        if (this._physicsConfig.tileCollision)      // before colliding.
+        if (!this.physicsConfig.static)
+            this.moveX(this.vel.x, deltaTime); // Adding velocity to position
+        if (this.physicsConfig.tileCollision)      // before colliding.
             this.tileCollisionX(entityManager.tileMap, deltaTime);
         this.customCollisionX(entityManager, entityManager.tileMap, deltaTime);
 
         this.updateMovementStates(entityManager, deltaTime);
 
-        if (this._physicsConfig.pixelatePos) {
+        if (this.physicsConfig.pixelatePos) {
             this.pos.x = Math.round(this.pos.x);
             this.pos.y = Math.round(this.pos.y);
         }
@@ -245,32 +245,21 @@ class Physical extends Entity {
     }
 
     get x() {
-        return this._pos.x;
+        return this.pos.x;
     }
 
     get y() {
-        return this._pos.y;
+        return this.pos.y;
     }
 
     set x(x) {
-        this._pos.x = x;
+        this.pos.x = x;
     }
 
     set y(y) {
-        this._pos.y = y;
+        this.pos.y = y;
     }
 
-    get vel() {
-        return this._vel;
-    }
-
-    get acc() {
-        return this._acc;
-    }
-
-    get fric() {
-        return this._fric;
-    }
 
 }
 

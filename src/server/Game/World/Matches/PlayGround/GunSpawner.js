@@ -20,31 +20,31 @@ class GunSpawner extends Entity {
         this.setQuadTreeRange(this.width, this.height);
 
         this.gunID = args.id - START_TILE;
-        this._currentTickTime = 0;
-        this._maxTickTime = 2;
-        this._shouldSpawn = true;
+        this.currentTickTime = 0;
+        this.maxTickTime = 2;
+        this.shouldSpawn = true;
     }
 
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof WeaponItem) {
-            this._shouldSpawn = false;
-            this._currentTickTime = this._maxTickTime;
+            this.shouldSpawn = false;
+            this.currentTickTime = this.maxTickTime;
             entity.resetLifeTime(entityManager);
         }
     }
 
     update(game, deltaTime) {
-        this._shouldSpawn = true;
+        this.shouldSpawn = true;
         super.update(game, deltaTime);
-        if (this._currentTickTime > 0) {
-            this._currentTickTime -= deltaTime;
+        if (this.currentTickTime > 0) {
+            this.currentTickTime -= deltaTime;
         }
 
-        if (this._shouldSpawn) {
-            if (this._currentTickTime <= 0) {
-                game.spawnEntity(this.pos.x, this.pos.y, GUN_LIST[this.gunID](this.x, this.y));
-                this._shouldSpawn = false;
+        if (this.shouldSpawn) {
+            if (this.currentTickTime <= 0) {
+                game.spawnEntity(this.pos.x, this.pos.y, GUN_LIST[this.gunID](this.pos.x, this.pos.y));
+                this.shouldSpawn = false;
             }
         }
     }

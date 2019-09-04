@@ -3,11 +3,11 @@ const Bottle = require("./Bottle.js");
 class Charge extends Bottle {
     constructor(x, y, amount = 24) {
         super(x, y);
-        this._amount = amount;
-        this._type = "charge";
+        this.amount = amount;
+        this.type = "charge";
         this.addStaticSnapShotData([
-            "_type",
-            "_amount"
+            "type",
+            "amount"
         ]);
     }
 
@@ -20,7 +20,7 @@ class Charge extends Bottle {
     // Add percentage to the weapon in inventory
     addToInventory(inventory) {
         super.addToInventory(inventory);
-        inventory.weapon.superCharge += this._amount;
+        inventory.weapon.superCharge += this.amount;
     }
 
     // Can only pick up when the weapon has a super charge

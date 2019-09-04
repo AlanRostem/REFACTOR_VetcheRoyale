@@ -15,7 +15,9 @@ class PlayerList extends ClientList {
     }
 
     removeClient(id) {
-        this.getClient(id).player.remove();
+        if (id === this.getClient(id).player.id) {
+            this.getClient(id).player.remove();
+        }
         super.removeClient(id);
     }
 }
@@ -24,32 +26,29 @@ class PlayerList extends ClientList {
 class GameWorld extends EntityManager {
     constructor(serverSocket, name, gameMap) {
         super(true, gameMap);
-        this._settings = new GameRules();
+        this.settings = new GameRules();
         this.teamManager = new TeamManager(this);
         this.dataPacket = {};
 
-        this._clients = new PlayerList();
-        this._id = name;
-        this._portals = new ONMap();
+        this.clients = new PlayerList();
+        this.id = name;
+        this.portals = new ONMap();
 
         this.spawner.spawnAll(this);
     }
 
-    get id() {
-        return this._id;
-    }
 
     getGameRule(key) {
-        return this._settings.getRule(key);
+        return this.settings.getRule(key);
     }
 
     setGameRules(object) {
-        this._settings.configure(object);
+        this.settings.configure(object);
     }
 
     changeMap(name) {
         this.tileMap = TileMapConfigs.getMap(name);
-        this._clients.forEach(client => {
+        this.clients.forEach(client => {
             client.emit("gameEvent-changeMap", {
                 mapName: name
             });
@@ -59,16 +58,16 @@ class GameWorld extends EntityManager {
     spawnEntity(x, y, entity) {
         entity.setWorld(this);
         if (entity instanceof GameDataLinker) {
-            entity._gameData.mapName = this.tileMap.name;
-            entity._gameData.playerCount = this.playerCount;
+            entity.gameData.mapName = this.tileMap.name;
+            entity.gameData.playerCount = this.playerCount;
         }
         if (entity instanceof Portal) {
-            if (this._portals.has(entity.portalTileID)) {
-                this._portals.get(entity.portalTileID).push(entity);
-                this._portals.get(entity.portalTileID)[0].link(
-                    this._portals.get(entity.portalTileID)[1]);
+            if (this.portals.has(entity.portalTileID)) {
+                this.portals.get(entity.portalTileID).push(entity);
+                this.portals.get(entity.portalTileID)[0].link(
+                    this.portals.get(entity.portalTileID)[1]);
             } else {
-                this._portals.set(entity.portalTileID, [entity]);
+                this.portals.set(entity.portalTileID, [entity]);
             }
         }
         return super.spawnEntity(x, y, entity);
@@ -76,7 +75,7 @@ class GameWorld extends EntityManager {
 
 
     get spawner() {
-        return this.tileMap._spawner;
+        return this.tileMap.spawner;
     }
 
     get maxPlayers() {
@@ -84,7 +83,7 @@ class GameWorld extends EntityManager {
     }
 
     get playerCount() {
-        return this._clients.length;
+        return this.clients.length;
     }
 
     get isFull() {
@@ -92,7 +91,7 @@ class GameWorld extends EntityManager {
     }
 
     spawnPlayer(client) {
-        this._clients.addClient(client.id, client);
+        this.clients.addClient(client.id, client);
         // TODO: Add teams back later
         this.teamManager.addPlayer(client.player, this);
         this.spawner.spawnSpecificAtPos(105, client.player, this);
@@ -105,7 +104,7 @@ class GameWorld extends EntityManager {
 
     removePlayer(id) {
         this.removeEntity(id);
-        this._clients.removeClient(id);
+        this.clients.removeClient(id);
     }
 
     setGameData(key, value) {
@@ -117,14 +116,14 @@ class GameWorld extends EntityManager {
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
-        for (var id in this._clients.getContainer()) {
-            var client = this._clients.getClient(id);
+        for (var id in this.clients.getContainer()) {
+            var client = this.clients.getClient(id);
             // After the entities have been updated and
             // the data packs have been supplied, they
             // are queried to the client socket and then
             // emitted to the client.
             if (client.removed) {
-                this._clients.removeClient(client.id);
+                this.clients.removeClient(client.id);
             } else {
                 client.update(this);
             }

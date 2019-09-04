@@ -9,13 +9,13 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 // and manages socket events.
 export default class CClient {
     constructor(socket) {
-        this._socket = socket;
+        this.socket = socket;
         this.id = socket.id;
-        this._localTime = 0;
-        this._serverUpdateCallbacks = new ONMap();
-        this._clientEmitPacket = new ONMap();
-        this._inputListener = new InputListener(this);
-        this._timeSyncer = new ServerTimeSyncer();
+        this.localTime = 0;
+        this.serverUpdateCallbacks = new ONMap();
+        this.clientEmitPacket = new ONMap();
+        this.inputListener = new InputListener(this);
+        this.timeSyncer = new ServerTimeSyncer();
 
         [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
@@ -26,21 +26,21 @@ export default class CClient {
         });
 
         this.defineSocketEvents();
-        this._latency = 0;
+        this.latency = 0;
         this.discReasonMsg = "reason: server error";
 
     }
 
     onServerUpdateReceived(packet) {
-        this._timeSyncer.onServerUpdate(this._latency);
-        this._lastReceivedData = packet;
-        for (let callback of this._serverUpdateCallbacks.array) {
+        this.timeSyncer.onServerUpdate(this.latency);
+        this.lastReceivedData = packet;
+        for (let callback of this.serverUpdateCallbacks.array) {
             callback(packet);
         }
     }
 
     get input() {
-        return this._inputListener;
+        return this.inputListener;
     }
 
     // Map a key code to the input listener with a
@@ -48,7 +48,7 @@ export default class CClient {
     // is that upon the key state the key state data
     // is sent to the server.
     addKeyEmitter(keyCode, callback) {
-        this._inputListener.addKeyMapping(keyCode, keyState => {
+        this.inputListener.addKeyMapping(keyCode, keyState => {
             if (callback) {
                 callback(keyState);
             }
@@ -56,29 +56,29 @@ export default class CClient {
     }
 
     get inputBufferArray() {
-        return this._inputListener._inputBuffer._buffer;
+        return this.inputListener.inputBuffer.buffer;
     }
 
     setOutboundPacketData(key, value) {
-        this._clientEmitPacket.set(key, value);
+        this.clientEmitPacket.set(key, value);
     }
 
     addServerUpdateListener(eventName, callback) {
-        this._serverUpdateCallbacks.set(eventName, callback);
+        this.serverUpdateCallbacks.set(eventName, callback);
     }
 
 
 
     get inboundPacket() {
-        return this._lastReceivedData;
+        return this.lastReceivedData;
     }
 
     get outboundPacket() {
-        return this._clientEmitPacket.object;
+        return this.clientEmitPacket.object;
     }
 
     addMouseEmitter(mouseButton, callback) {
-        this._inputListener.addMouseMapping(mouseButton, mouseState => {
+        this.inputListener.addMouseMapping(mouseButton, mouseState => {
             if (callback) {
                 callback(keyState);
             }
@@ -86,41 +86,37 @@ export default class CClient {
     }
 
     static getPing() {
-        return CClient._ping;
+        return CClient.ping;
     }
 
     static get ping() {
-        return this._latency;
+        return this.latency;
     }
 
     get player() {
-        return this._eMgr.getEntityByID(this.id);
+        return this.eMgr.getEntityByID(this.id);
     }
 
     update(entityManager, deltaTime) {
-        if (!this._eMgr) {
-            this._eMgr = entityManager;
+        if (!this.eMgr) {
+            this.eMgr = entityManager;
         }
-        this._localTime += deltaTime;
-        this._startTime = Date.now();
+        this.localTime += deltaTime;
+        this.startTime = Date.now();
         var e = entityManager.getEntityByID(this.id);
         if (e) {
-            Scene.currentMapName = this.player.output._gameData.mapName;
+            Scene.currentMapName = this.player.output.gameData.mapName;
         }
-        this._inputListener.update(this);
-        this.emit("clientPacketToServer", this._clientEmitPacket.object);
-    }
-
-    get localTime() {
-        return this._localTime;
+        this.inputListener.update(this);
+        this.emit("clientPacketToServer", this.clientEmitPacket.object);
     }
 
     emit(eventType, data) {
-        this._socket.emit(eventType, data);
+        this.socket.emit(eventType, data);
     }
 
     on(eventType, callback) {
-        this._socket.on(eventType, callback);
+        this.socket.on(eventType, callback);
     }
 
     defineSocketEvents() {
@@ -130,14 +126,13 @@ export default class CClient {
             this.on('connectClient', data => {
                 this.id = data.id;
                 this.disconnected = false;
-                this._socket.emit("connectClientCallback", {id: this.id});
+                this.socket.emit("connectClientCallback", {id: this.id});
                 resolve();
             });
         });
 
         this.on('serverUpdateTick', packet => {
-            this._latency = Math.abs(Date.now() - packet.now);
-            CClient._ping = this._latency;
+            this.latency = Math.abs(Date.now() - packet.now);
             this.onServerUpdateReceived(packet);
         });
 
@@ -156,17 +151,15 @@ export default class CClient {
         this.on("manualDisconnect", message => {
             this.discReasonMsg = "reason: " +message;
             this.disconnected = true;
-            this._socket.close();
+            this.socket.close();
             document.body.style.cursor = "default";
         });
 
         this.on("disconnect", message => {
             this.discActionMsg = "action: " + message;
             this.disconnected = true;
-            this._socket.close();
+            this.socket.close();
             document.body.style.cursor = "default";
         })
     }
 }
-
-CClient._ping = 1;

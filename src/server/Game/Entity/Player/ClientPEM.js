@@ -7,39 +7,35 @@ const SpectatorManager = require("./SpectatorManager.js");
 class ClientPEM extends ProximityEntityManager {
     constructor(player) {
         super(player);
-        this._dataBox = {};
-        this._spectators = new SpectatorManager(player);
+        this.dataBox = {};
+        this.spectators = new SpectatorManager(player);
     }
 
     addEntity(entity) {
         super.addEntity(entity);
-        this._entRef.client.emit("spawnEntity", entity.getDataPack());
-        this._spectators.onSpawnEntity(entity);
-    }
-
-    get spectators() {
-        return this._spectators;
+        this.entRef.client.emit("spawnEntity", entity.getDataPack());
+        this.spectators.onSpawnEntity(entity);
     }
 
     removeEntity(id) {
         super.removeEntity(id);
-        delete this._dataBox[id];
-        this._entRef.client.emit("removeEntity", id);
-        this._spectators.onRemoveEntity(id);
+        delete this.dataBox[id];
+        this.entRef.client.emit("removeEntity", id);
+        this.spectators.onRemoveEntity(id);
     }
 
     exportDataPack() {
         for (let id in this.container) {
-            this._dataBox[id] = this.container[id].getDataPack();
-            let e = this._container[id];
+            this.dataBox[id] = this.container[id].getDataPack();
+            let e = this.container[id];
             // Removes entities out of bounds. Suboptimal location to do this.
-            if (!this._qtBounds.myContains(e) || e.toRemove) {
+            if (!this.qtBounds.myContains(e) || e.toRemove) {
                 this.removeEntity(id);
 
             }
         }
-        this._dataBox[this._entRef.id] = this._entRef.getDataPack();
-        return this._dataBox;
+        this.dataBox[this.entRef.id] = this.entRef.getDataPack();
+        return this.dataBox;
     }
 }
 

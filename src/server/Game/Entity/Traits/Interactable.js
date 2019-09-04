@@ -7,12 +7,12 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 class Interactable extends Physical {
     constructor(x, y, w, h, interactionRange = 0) {
         super(x, y, w, h);
-        this._iRange = interactionRange;
+        this.iRange = interactionRange;
     }
 
     checkInteraction(player, entityManager) {
-        if (this._iRange !== 0) {
-            if (Vector2D.distance(player.pos, this.pos) <= this._iRange) {
+        if (this.iRange !== 0) {
+            if (Vector2D.distance(player.pos, this.pos) <= this.iRange) {
                 this.handlePlayerInput(player, entityManager);
             }
         } else {

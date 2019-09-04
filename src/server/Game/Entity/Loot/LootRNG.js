@@ -8,7 +8,7 @@ const Charge = require("./Multanium/Charge.js");
 // of the designated item. This file should require all
 // files of classes that extends Loot (besides composition bases)
 const LootRNG = {
-    _levelMap: {
+    levelMap: {
         1: [],
         2: [],
         3: [],
@@ -26,8 +26,8 @@ const LootRNG = {
 
     // Pass in a level int and the constructor of the loot entity
     setLootConstructor(level, constructor) {
-        if (!LootRNG._levelMap[level].includes(constructor)) {
-            LootRNG._levelMap[level].push(constructor);
+        if (!LootRNG.levelMap[level].includes(constructor)) {
+            LootRNG.levelMap[level].push(constructor);
         }
     },
 
@@ -37,7 +37,7 @@ const LootRNG = {
     // You can also set how many items of that specific
     // you want guaranteed to spawn.
     generateLootArray(level, count, guaranteeCount = 1) {
-        var guaranteeLevel = LootRNG._levelMap[level];
+        var guaranteeLevel = LootRNG.levelMap[level];
         var countUsage = count;
         var array = [];
 
@@ -49,7 +49,7 @@ const LootRNG = {
 
         for (var j = 0; j < countUsage; j++) {
             var lvl = ((Math.random() * level) | 0) + 1;
-            var belowLevel = LootRNG._levelMap[lvl];
+            var belowLevel = LootRNG.levelMap[lvl];
             idx = (Math.random() * belowLevel.length) | 0;
             array.push(new belowLevel[idx](0, 0));
         }

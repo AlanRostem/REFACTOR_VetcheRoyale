@@ -6,8 +6,8 @@ const SpawnLocation = require("./SpawnLocation.js");
 // of certain entities to be spawned.
 class TileSpawnPositionList {
     constructor(tileMap) {
-        this._spawners = new ONMap();
-        this._portals = new ONMap();
+        this.spawners = new ONMap();
+        this.portals = new ONMap();
         this.scanMap(tileMap);
     }
 
@@ -19,16 +19,16 @@ class TileSpawnPositionList {
             for (var x = 0; x < tileMap.w; x++) {
                 var tileID = tileMap.getID(x, y);
                 if (SpawnLocation.getSpawnerByID(tileID)) {
-                    if (!this._spawners.has(tileID)) {
+                    if (!this.spawners.has(tileID)) {
                         if (SpawnLocation.getSpawnerByID(tileID).replicate) {
-                            this._spawners.set(tileID, []);
+                            this.spawners.set(tileID, []);
                         } else {
-                            this._spawners.set(tileID,
+                            this.spawners.set(tileID,
                                 SpawnLocation.createSpawner(tileID, x * Tile.SIZE, y * Tile.SIZE));
                         }
                     }
                     if (SpawnLocation.getSpawnerByID(tileID).replicate) {
-                        this._spawners.get(tileID).push(
+                        this.spawners.get(tileID).push(
                             SpawnLocation.createSpawner(
                                 tileID, x * Tile.SIZE, y * Tile.SIZE));
                     }
@@ -39,7 +39,7 @@ class TileSpawnPositionList {
 
     // Spawns all entities.
     spawnAll(entityManager) {
-        this._spawners.forEach((id, spawner) => {
+        this.spawners.forEach((id, spawner) => {
            this.spawnAllOfType(id, entityManager);
         });
     }
@@ -47,7 +47,7 @@ class TileSpawnPositionList {
     // Spawns all entities of a certain based on the mapped tile ID.
     spawnAllOfType(id, entityManager) {
         if (SpawnLocation.ENTITY_SPAWN_IDS.get(id).replicate) {
-            for (let spawner of this._spawners.get(id)) {
+            for (let spawner of this.spawners.get(id)) {
                 spawner.spawnHere(entityManager);
             }
         }
@@ -57,7 +57,7 @@ class TileSpawnPositionList {
     // of a SpawnLocation object.
     spawnSpecificAtPos(id, entity, entityManager) {
         if (!SpawnLocation.getSpawnerByID(id).replicate) {
-            entityManager.spawnEntity(this._spawners.get(id).x, this._spawners.get(id).y, entity);
+            entityManager.spawnEntity(this.spawners.get(id).x, this.spawners.get(id).y, entity);
         }
         return entity;
     }
