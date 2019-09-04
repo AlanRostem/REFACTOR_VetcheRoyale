@@ -1,19 +1,19 @@
 import Scene from "./Game/Scene.js"
 
 window.ping = () => {
-    return Scene._clientRef._latency;
+    return Scene.clientRef.latency;
 };
 
 window.client = () => {
-    return Scene._clientRef;
+    return Scene.clientRef;
 };
 
 window.player = () => {
-    return Scene._clientRef.player;
+    return Scene.clientRef.player;
 };
 
 window.entities = () => {
-    return Scene._entityManager._container;
+    return Scene.entityManager.container;
 };
 
 export default {}

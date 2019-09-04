@@ -5,46 +5,46 @@ import EntityTypeSpawner from "../../Game/Entity/Management/EntityTypeSpawner.js
 
 export default class CEntityManager {
     constructor(client) {
-        this._clientRef = client;
-        this._container = new Map();
+        this.clientRef = client;
+        this.container = new Map();
         this.defineSocketEvents(client) // Used for composing the socket emit events here
     }
 
     clear() {
-        this._container.clear();
+        this.container.clear();
     }
 
     existsOnClient(id) {
-        return this._container.has(id);
+        return this.container.has(id);
     }
 
     addEntityFromDataPack(dataPack, client) {
-        //if (dataPack._removed) return;
+        //if (dataPack.removed) return;
         let entity = EntityTypeSpawner.spawn(dataPack.entityType, dataPack, client);
-        this._container.set(dataPack._id, entity);
+        this.container.set(dataPack.id, entity);
         entity.onClientSpawn(dataPack, client);
 
-        if (this._container.size < 1) return;
-        let toArray = [...this._container.entries()];
+        if (this.container.size < 1) return;
+        let toArray = [...this.container.entries()];
 
-        //if (dataPack._entityOrder >= toArray[toArray.length-2][1].getRealtimeProperty("_entityOrder")) return;
-        this._container = new Map(toArray.sort((a, b) => {
-            return a[1].getRealtimeProperty("_entityOrder") -
-                   b[1].getRealtimeProperty("_entityOrder");
+        //if (dataPack.entityOrder >= toArray[toArray.length-2][1].getRealtimeProperty("entityOrder")) return;
+        this.container = new Map(toArray.sort((a, b) => {
+            return a[1].getRealtimeProperty("entityOrder") -
+                   b[1].getRealtimeProperty("entityOrder");
         }));
     }
 
     getEntity(entityData) {
-        return this._container.get(entityData._id);
+        return this.container.get(entityData.id);
     }
 
     getEntityByID(id) {
-        return this._container.get(id);
+        return this.container.get(id);
     }
 
     removeEntity(id) {
-        this._container.get(id).onClientDelete(this._clientRef);
-        this._container.delete(id);
+        this.container.get(id).onClientDelete(this.clientRef);
+        this.container.delete(id);
     }
 
     defineSocketEvents(client) {
@@ -60,7 +60,9 @@ export default class CEntityManager {
 
         client.on('removeEntity', id => {
             if (this.existsOnClient(id)) {
-                this.removeEntity(id);
+                if (id !== client.id) {
+                    this.removeEntity(id);
+                }
             } else {
                 console.warn("Attempted to remove a non existent entity. Something's wrong here...")
             }
@@ -91,13 +93,13 @@ export default class CEntityManager {
     }
 
     updateEntities(deltaTime, client, map) {
-        for (var pair of this._container) {
+        for (var pair of this.container) {
             pair[1].update(deltaTime, client, map);
         }
     }
 
     drawEntities() {
-        for (var pair of this._container) {
+        for (var pair of this.container) {
             pair[1].draw();
         }
     }

@@ -14,18 +14,19 @@ class SnapShotGenerator {
 
         // Pass in values that are not references but
         // require to be manually updated
-        this._dynamicValues = dynamicValues;
+        this.dynamicValues = dynamicValues;
 
-        this._snapShot = {};
+        this.snapShot = {};
 
-        this._snapShot.entityType = composedEntity.constructor.name;
+        this.snapShot.entityType = composedEntity.constructor.name;
 
         for (let key of referenceValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
                     " does not have property " + key + " in reference values.");
             }
-            this._snapShot[key] = composedEntity[key];
+
+            this.snapShot[key] = composedEntity[key];
         }
 
         for (let key of dynamicValues) {
@@ -33,12 +34,12 @@ class SnapShotGenerator {
                 throw new Error(composedEntity.constructor.name +
                     " does not have property " + key + " in dynamic values.");
             }
-            this._snapShot[key] = composedEntity[key];
+            this.snapShot[key] = composedEntity[key];
         }
     }
 
     setStaticSnapshotData(key, value) {
-        this._snapShot[key] = value;
+        this.snapShot[key] = value;
     }
 
     // Map an array of strings with existing properties of the entity
@@ -52,10 +53,12 @@ class SnapShotGenerator {
                     " does not have property " + key + " in reference values.");
             }
 
-            if (this._snapShot.hasOwnProperty(key)) {
+
+
+            if (this.snapShot.hasOwnProperty(key)) {
                 throw new Error("Added duplicate reference value: " + key);
             }
-            this._snapShot[key] = composedEntity[key];
+            this.snapShot[key] = composedEntity[key];
         }
     }
 
@@ -70,25 +73,26 @@ class SnapShotGenerator {
                     " does not have property " + key + " in dynamic values.");
             }
 
-            if (this._snapShot.hasOwnProperty(key)) {
+            if (this.snapShot.hasOwnProperty(key)) {
                 throw new Error("Added duplicate dynamic value: " + key);
             }
-            this._dynamicValues.push(key);
-            this._snapShot[key] = composedEntity[key];
+            this.dynamicValues.push(key);
+            this.snapShot[key] = composedEntity[key];
         }
     }
 
     update(entityManager, composedEntity, deltaTime) {
-        this._snapShot.deltaTime = deltaTime;
-        this._snapShot.serverTimeStamp = Date.now();
+        this.snapShot.deltaTime = deltaTime;
+        this.snapShot.serverTimeStamp = Date.now();
 
-        for (let key of this._dynamicValues) {
-            this._snapShot[key] = composedEntity[key];
+        for (let key of this.dynamicValues) {
+
+            this.snapShot[key] = composedEntity[key];
         }
     }
 
     export() {
-        return this._snapShot;
+        return this.snapShot;
     }
 
 }

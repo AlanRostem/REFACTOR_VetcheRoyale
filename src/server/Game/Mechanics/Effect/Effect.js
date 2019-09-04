@@ -4,9 +4,9 @@ const Affectable = require("../../Entity/Traits/Affectable.js");
 // Affectable entity class.
 class Effect {
     constructor(affectedEntityID, duration = Infinity) {
-        this._aeID = affectedEntityID;
-        this._currentTime = duration;
-        this._done = false;
+        this.aeID = affectedEntityID;
+        this.currentTime = duration;
+        this.done = false;
         this.id = Math.random();
     }
 
@@ -23,25 +23,25 @@ class Effect {
     }
 
     complete() {
-        this._done = true;
+        this.done = true;
     }
 
     get isDone() {
-        return this._done;
+        return this.done;
     }
 
     update(entityManager, deltaTime) {
-        var entity = entityManager.getEntity(this._aeID);
-        this._currentTime -= deltaTime;
-        if (this._currentTime > 0) {
+        var entity = entityManager.getEntity(this.aeID);
+        this.currentTime -= deltaTime;
+        if (this.currentTime > 0) {
             if (entity instanceof Affectable) {
                 this.effects(entity, entityManager, deltaTime);
             }
         } else {
-            this._done = true;
+            this.done = true;
         }
 
-        if (this._done) {
+        if (this.done) {
             if (entity instanceof Affectable) {
                 this.onDone(entity, entityManager, deltaTime);
                 entity.removeEffect(this.id);

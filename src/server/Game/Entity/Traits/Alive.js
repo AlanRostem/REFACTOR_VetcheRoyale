@@ -5,54 +5,68 @@ class Alive extends Affectable {
     constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.2, regenCoolDown = 10) {
         super(x, y, w, h);
 
-        this._maxHP = HP;
-        this._hp = HP;
-        this._isAlive = true;
-        this._killed = false;
-        this._shouldRegen = regen;
+        this.maxHP = HP;
+        this.hp = HP;
+        this.isAlive = true;
+        this.killed = false;
+        this.killer = null; // Player who killed this entity
+        this.addDynamicSnapShotData([
+           "isAlive"
+        ]);
+        this.shouldRegen = regen;
         if (regen) {
-            this._regenPerTick = regenPerTick;
-            this._currentRegenSpeed = 0;
-            this._maxRegenSpeed = regenSpeed;
-            this._currentRegenCooldown = 0;
-            this._maxRegenCooldown = regenCoolDown;
-            this._takingDamage = false;
+            this.regenPerTick = regenPerTick;
+            this.currentRegenSpeed = 0;
+            this.maxRegenSpeed = regenSpeed;
+            this.currentRegenCooldown = 0;
+            this.maxRegenCooldown = regenCoolDown;
+            this.takingDamage = false;
         }
     }
 
     set HP(val) {
         var edit = Math.max(val, 0);
-        this._hp = Math.min(edit, this._maxHP);
-        if (this._hp === 0) this._isAlive = false;
+        this.hp = Math.min(edit, this.maxHP);
+        if (this.hp === 0) this.isAlive = false;
     }
 
     get dead() {
-        return !this._isAlive;
+        return !this.isAlive;
     }
 
     get HP() {
-        return this._hp;
+        return this.hp;
+    }
+
+    // When inflicted enough damage upon to become dead.
+    dieBy(player) {
+        this.killer = player;
+    }
+
+    // Returns the killer of this entity
+    get myKiller() {
+        return this.killer;
     }
 
     takeDamage(value) {
         this.HP -= value;
-        this._takingDamage = true;
-        this._currentRegenCooldown = this._maxRegenCooldown;
+        this.takingDamage = true;
+        this.currentRegenCooldown = this.maxRegenCooldown;
     }
 
     updateRegen(deltaTime) {
-        if (this._hp < this._maxHP) {
-            if (!this._takingDamage) {
-                this._currentRegenSpeed -= deltaTime;
-                if (this._currentRegenSpeed <= 0) {
-                    this._currentRegenSpeed = this._maxRegenSpeed;
-                    this.HP += this._regenPerTick;
+        if (this.hp < this.maxHP) {
+            if (!this.takingDamage) {
+                this.currentRegenSpeed -= deltaTime;
+                if (this.currentRegenSpeed <= 0) {
+                    this.currentRegenSpeed = this.maxRegenSpeed;
+                    this.HP += this.regenPerTick;
                 }
             } else {
-                this._currentRegenCooldown -= deltaTime;
-                if (this._currentRegenCooldown <= 0) {
-                    this._currentRegenCooldown = 0;
-                    this._takingDamage = false;
+                this.currentRegenCooldown -= deltaTime;
+                if (this.currentRegenCooldown <= 0) {
+                    this.currentRegenCooldown = 0;
+                    this.takingDamage = false;
                 }
             }
         }
@@ -60,13 +74,13 @@ class Alive extends Affectable {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
-        if (this._shouldRegen) {
+        if (this.shouldRegen) {
             this.updateRegen(deltaTime);
         }
-        if (!this._isAlive) {
-            if (!this._killed) {
+        if (!this.isAlive) {
+            if (!this.killed) {
                 this.onDead(entityManager, deltaTime);
-                this._killed = true;
+                this.killed = true;
             }
         }
     }

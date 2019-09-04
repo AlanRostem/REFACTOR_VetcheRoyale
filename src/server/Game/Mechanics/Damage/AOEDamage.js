@@ -7,23 +7,23 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 class AOEDamage extends Damage {
     constructor(ownerID, x, y, radius, value, exceptions = {}) {
         super(value, ownerID);
-        this._pos = new Vector2D(x, y);
-        this._scanner = new AOELOSScanner(radius, exceptions);
-        this._scanner.onEntityHit = (entity, entityManager, angle) => {
+        this.pos = new Vector2D(x, y);
+        this.scanner = new AOELOSScanner(radius, exceptions);
+        this.scanner.onEntityHit = (entity, entityManager, angle) => {
             this.inflict(entity, entityManager, angle);
         }
     }
 
     set x(val) {
-        this._pos.x = val;
+        this.pos.x = val;
     }
 
     set y(val) {
-        this._pos.y = val;
+        this.pos.y = val;
     }
 
     applyAreaOfEffect(entityManager) {
-        this._scanner.areaScan(this._pos, entityManager);
+        this.scanner.areaScan(this.pos, entityManager);
     }
 }
 

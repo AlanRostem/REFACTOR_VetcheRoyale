@@ -11,22 +11,22 @@ const TILE_SIZE = 8;
 export default class UserPlayer extends RemotePlayer {
     constructor(data) {
         super(data);
-        this._serverState = data;
-        this._localVel = new Vector2D(0, 0);
-        this._localPos = new Vector2D(data._pos._x, data._pos._y);
-        this._localSides = {
+        this.serverState = data;
+        this.localVel = new Vector2D(0, 0);
+        this.localPos = new Vector2D(data.pos.x, data.pos.y);
+        this.localSides = {
             left: false,
             right: false,
             top: false,
             bottom: false,
             reset: () => {
-                this._localSides.left = this._localSides.right = this._localSides.top = this._localSides.bottom = false;
+                this.localSides.left = this.localSides.right = this.localSides.top = this.localSides.bottom = false;
             }
         };
     }
 
     updateFromDataPack(dataPack, client) {
-        this._dataBuffer.t_directServerUpdate(dataPack, this);
+        this.dataBuffer.t_directServerUpdate(dataPack, this);
         //super.updateFromDataPack(dataPack, client);
         //this._serverState = dataPack;
         //this._output = dataPack;
@@ -35,34 +35,34 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     overlapTile(pos, e) {
-        return pos._y + this._height > e.y
-            && pos._y < (e.y + TILE_SIZE)
-            && pos._x + this._width > e.x
-            && pos._x < (e.x + TILE_SIZE);
+        return pos.y + this.height > e.y
+            && pos.y < (e.y + TILE_SIZE)
+            && pos.x + this.width > e.x
+            && pos.x < (e.x + TILE_SIZE);
     }
 
     t_drawGhost() {
         R.ctx.save();
         R.ctx.globalAlpha = 0.4;
-        //this.animations.animate(RemotePlayer.sprite, this._serverState._teamName, 16, 16);
+        //this.animations.animate(RemotePlayer.sprite, this.serverState.teamName, 16, 16);
         SpriteSheet.beginChanges();
-        if (this._serverState._movementState.direction === "left") {
+        if (this.serverState.movementState.direction === "left") {
             RemotePlayer.sprite.flipX();
         }
         RemotePlayer.sprite.drawAnimated(
-            Math.round(this._serverState._pos._x) + R.camera.boundPos.x,
-            Math.round(this._serverState._pos._y) + R.camera.boundPos.y);
+            Math.round(this.serverState.pos.x) + R.camera.boundPos.x,
+            Math.round(this.serverState.pos.y) + R.camera.boundPos.y);
         SpriteSheet.end();
         R.ctx.restore();
     }
 
     draw() {
         super.draw();
-        if (this._weapon) {
-            if (this._weapon.getRealtimeProperty("_modCoolDown") > 0) {
-                R.drawText(this._weapon.getRealtimeProperty("_modCoolDown") | 0,
-                    this._output._pos._x,
-                    this._output._pos._y - 9, "White", true);
+        if (this.weapon) {
+            if (this.weapon.getRealtimeProperty("modCoolDownData") > 0) {
+                R.drawText(Math.round(this.weapon.getRealtimeProperty("modCoolDownData")),
+                    this.output.pos.x,
+                    this.output.pos.y - 9, "White", true);
             }
         }
         //this.t_drawGhost();
@@ -70,49 +70,49 @@ export default class UserPlayer extends RemotePlayer {
 
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
-        this._currentMap = currentMap;
-        this._weapon = Scene.entities.getEntityByID(this._output._invWeaponID);
-        //console.log(Date.now() - client._latency, this._serverState.serverTimeStamp);
+        this.currentMap = currentMap;
+        this.weapon = Scene.entities.getEntityByID(this.output.invWeaponID);
+        //console.log(Date.now() - client.latency, this.serverState.serverTimeStamp);
         /*
-        let t = client._latency / 1000;
-        if (Date.now() - client._latency <= this._serverState.serverTimeStamp) {
-            this._output._pos =
-                vectorLinearInterpolation(this._output._pos,
-                    vectorLinearInterpolation(this._serverState._pos, this._localPos, 60 * t),
+        let t = client.latency / 1000;
+        if (Date.now() - client.latency <= this.serverState.serverTimeStamp) {
+            this.output.pos =
+                vectorLinearInterpolation(this.output.pos,
+                    vectorLinearInterpolation(this.serverState.pos, this.localPos, 60 * t),
                     .36);
         } else {
-            this._output._pos = this._localPos;
+            this.output.pos = this.localPos;
         }
 
          */
     }
 
     updateRemainingServerData(client) {
-        for (let key in this._serverState) {
-            if (key !== "_pos") {
-                this._output[key] = this._serverState[key];
+        for (let key in this.serverState) {
+            if (key !== "pos") {
+                this.output[key] = this.serverState[key];
             }
         }
-        this._localPos.x = this._serverState._pos._x;
-        this._localPos.y = this._serverState._pos._y;
+        this.localPos.x = this.serverState.pos.x;
+        this.localPos.y = this.serverState.pos.y;
     }
 
     physics(deltaTime, client, currentMap) {
-        this._localSides.reset();
-        this._output._pos._x += this._localVel.x;
+        this.localSides.reset();
+        this.output.pos.x += this.localVel.x;
         this.reconciledCollisionCorrectionX(currentMap);
         this.reconciledCollisionCorrectionY(currentMap);
     }
 
     reconciledCollisionCorrectionX(currentMap) {
-        let pos = this._output._pos;
-        var cx = Math.floor(pos._x / TILE_SIZE);
-        var cy = Math.floor(pos._y / TILE_SIZE);
+        let pos = this.output.pos;
+        var cx = Math.floor(pos.x / TILE_SIZE);
+        var cy = Math.floor(pos.y / TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
-        var tileX = Math.floor(this._width / TILE_SIZE) + proxy;
-        var tileY = Math.floor(this._height / TILE_SIZE) + proxy;
+        var tileX = Math.floor(this.width / TILE_SIZE) + proxy;
+        var tileY = Math.floor(this.height / TILE_SIZE) + proxy;
 
         for (var y = -proxy; y < tileY; y++) {
             for (var x = -proxy; x < tileX; x++) {
@@ -127,21 +127,21 @@ export default class UserPlayer extends RemotePlayer {
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
-                        if (pos._x + this._width > tile.x
-                            //&& this._oldPos._x + this._width <= tile.x
-                            && this._localVel.x > 0
+                        if (pos.x + this.width > tile.x
+                            //&& this.oldPos.x + this.width <= tile.x
+                            && this.localVel.x > 0
                         ) {
-                            pos._x = tile.x - this._width;
-                            this._localVel.x = 0;
-                            this._localSides.right = true;
+                            pos.x = tile.x - this.width;
+                            this.localVel.x = 0;
+                            this.localSides.right = true;
                         }
-                        if (pos._x < tile.x + TILE_SIZE
-                            //&& this._oldPos._x >= tile.x + TILE_SIZE
-                            && this._localVel.x < 0
+                        if (pos.x < tile.x + TILE_SIZE
+                            //&& this.oldPos.x >= tile.x + TILE_SIZE
+                            && this.localVel.x < 0
                         ) {
-                            pos._x = tile.x + TILE_SIZE;
-                            this._localVel.x = 0;
-                            this._localSides.left = true;
+                            pos.x = tile.x + TILE_SIZE;
+                            this.localVel.x = 0;
+                            this.localSides.left = true;
                         }
                     }
                 }
@@ -150,14 +150,14 @@ export default class UserPlayer extends RemotePlayer {
     }
 
     reconciledCollisionCorrectionY(currentMap) {
-        let pos = this._output._pos;
-        var cx = Math.floor(pos._x / TILE_SIZE);
-        var cy = Math.floor(pos._y / TILE_SIZE);
+        let pos = this.output.pos;
+        var cx = Math.floor(pos.x / TILE_SIZE);
+        var cy = Math.floor(pos.y / TILE_SIZE);
 
         var proxy = 2; // Amount of margin of tiles around entity
 
-        var tileX = Math.floor(this._width / TILE_SIZE) + proxy;
-        var tileY = Math.floor(this._height / TILE_SIZE) + proxy;
+        var tileX = Math.floor(this.width / TILE_SIZE) + proxy;
+        var tileY = Math.floor(this.height / TILE_SIZE) + proxy;
 
         for (var y = -proxy; y < tileY; y++) {
             for (var x = -proxy; x < tileX; x++) {
@@ -172,18 +172,18 @@ export default class UserPlayer extends RemotePlayer {
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
-                        if (pos._y + this._height > tile.y && this._oldPos._y + this._height <= tile.y) {
-                            pos._y = tile.y - this._height;
-                            this._localSides.bottom = true;
+                        if (pos.y + this.height > tile.y && this.oldPos.y + this.height <= tile.y) {
+                            pos.y = tile.y - this.height;
+                            this.localSides.bottom = true;
                         }
-                        if (pos._y < tile.y + TILE_SIZE && this._oldPos._y >= tile.y + TILE_SIZE) {
-                            pos._y = tile.y + TILE_SIZE;
-                            this._localSides.top = true;
+                        if (pos.y < tile.y + TILE_SIZE && this.oldPos.y >= tile.y + TILE_SIZE) {
+                            pos.y = tile.y + TILE_SIZE;
+                            this.localSides.top = true;
                         }
                         /*
-                        if (this._localVel.y > 0) {
+                        if (this.localVel.y > 0) {
                         }
-                        if (this._localVel.y < 0) {
+                        if (this.localVel.y < 0) {
                         }
                          */
                     }
@@ -201,22 +201,22 @@ export default class UserPlayer extends RemotePlayer {
                 pending.splice(j, 1);
             } else {
                 // TODO: SCALABILITY
-                this._oldPos = this._output._pos;
-                this._localVel.x = 0;
+                this.oldPos = this.output.pos;
+                this.localVel.x = 0;
 
                 if (input.keyStates[68]) {
-                    if (!this._localSides.right) {
-                        this._localVel.x = 1;
+                    if (!this.localSides.right) {
+                        this.localVel.x = 1;
                     }
                 }
 
                 if (input.keyStates[65]) {
-                    if (!this._localSides.left) {
-                        this._localVel.x = -1;
+                    if (!this.localSides.left) {
+                        this.localVel.x = -1;
                     }
                 }
 
-                this.physics(input.pressTime, client, this._currentMap);
+                this.physics(input.pressTime, client, this.currentMap);
 
 
                 j++;

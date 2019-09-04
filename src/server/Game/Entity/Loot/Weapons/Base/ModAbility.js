@@ -2,41 +2,42 @@
 // Handles cool-downs and callbacks based on input.
 class ModAbility {
     constructor(duration, coolDown) {
-        this._currentDuration = 0;
-        this._maxDuration = duration;
+        this.currentDuration = 0;
+        this.maxDuration = duration;
 
-        this._currentCoolDown = 0;
-        this._maxCoolDown = coolDown;
+        this.currentCoolDown = 0;
+        this.maxCoolDown = coolDown;
 
-        this._active = false;
-        this._onCoolDown = false;
+        this.active = false;
+        this.onCoolDown = false;
     }
 
     // Configure cool-down and duration of the ability.
     configureStats(duration, coolDown) {
-        this._maxDuration = duration;
-        this._maxCoolDown = coolDown;
+        this.maxDuration = duration;
+        this.maxCoolDown = coolDown;
     }
 
 
 
     update(composedWeapon, entityManager, deltaTime) {
-        if (this._active) {
+        composedWeapon.modActive = this.active;
+        if (this.active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
-            if (this._currentDuration > 0) {
-                this._currentDuration -= deltaTime;
+            if (this.currentDuration > 0) {
+                this.currentDuration -= deltaTime;
             } else {
                 this.deActivate(composedWeapon, entityManager, deltaTime);
             }
-        } else if (this._onCoolDown) {
-            if (this._currentCoolDown > 0) {
-                this._currentCoolDown -= deltaTime;
+        } else if (this.onCoolDown) {
+            if (this.currentCoolDown > 0) {
+                this.currentCoolDown -= deltaTime;
             } else {
-                this._currentCoolDown = 0;
-                this._onCoolDown = false;
+                this.currentCoolDown = 0;
+                this.onCoolDown = false;
             }
         }
-        composedWeapon._canUseMod = !this._active || !this._onCoolDown;
+        composedWeapon.canUseMod = !this.active || !this.onCoolDown;
     }
 
     // Callback when deactivating the ability.
@@ -45,10 +46,10 @@ class ModAbility {
     }
 
     deActivate(composedWeapon, entityManager, deltaTime) {
-        this._active = false;
-        this._currentDuration = 0;
-        this._currentCoolDown = this._maxCoolDown;
-        this._onCoolDown = true;
+        this.active = false;
+        this.currentDuration = 0;
+        this.currentCoolDown = this.maxCoolDown;
+        this.onCoolDown = true;
         this.onDeactivation(composedWeapon, entityManager, deltaTime);
     }
 
@@ -58,11 +59,11 @@ class ModAbility {
     }
 
     activate(composedWeapon, entityManager, deltaTime) {
-        if (!this._active && !this._onCoolDown) {
+        if (!this.active && !this.onCoolDown) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
             composedWeapon.onModActivation(entityManager, deltaTime);
-            this._currentDuration = this._maxDuration;
-            this._active = true;
+            this.currentDuration = this.maxDuration;
+            this.active = true;
         }
     }
 
@@ -72,12 +73,8 @@ class ModAbility {
         composedWeapon.onModBuffs(entityManager, deltaTime);
     }
 
-    get active() {
-        return this._active;
-    }
-
     get isOnCoolDown() {
-        return this._onCoolDown;
+        return this.onCoolDown;
     }
 }
 

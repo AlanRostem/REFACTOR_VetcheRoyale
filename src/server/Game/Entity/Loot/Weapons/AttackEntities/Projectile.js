@@ -7,11 +7,11 @@ const TileCollider = require("../../../../TileBased/TileCollider.js");
 class Projectile extends Physical {
     constructor(ownerID, x, y, w, h, angle, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
-        this._ownerID = ownerID;
-        this._shouldRemove = shouldRemove;
+        this.ownerID = ownerID;
+        this.shouldRemove = shouldRemove;
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle)* speed;
-        this._hitTile = false;
+        this.hitTile = false;
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
         this.setCollisionResponseID("Projectile");
@@ -24,26 +24,26 @@ class Projectile extends Physical {
 
     onLeftCollision(tile) {
         super.onLeftCollision(tile);
-        if (this._shouldRemove) this.remove();
-        this._hitTile = true;
+        if (this.shouldRemove) this.remove();
+        this.hitTile = true;
     }
 
     onBottomCollision(tile) {
         super.onBottomCollision(tile);
-        if (this._shouldRemove) this.remove();
-        this._hitTile = true;
+        if (this.shouldRemove) this.remove();
+        this.hitTile = true;
     }
 
     onRightCollision(tile) {
         super.onRightCollision(tile);
-        if (this._shouldRemove) this.remove();
-        this._hitTile = true;
+        if (this.shouldRemove) this.remove();
+        this.hitTile = true;
     }
 
     onTopCollision(tile) {
         super.onTopCollision(tile);
-        if (this._shouldRemove) this.remove();
-        this._hitTile = true;
+        if (this.shouldRemove) this.remove();
+        this.hitTile = true;
     }
 
     // Callback when hitting a tile
@@ -56,11 +56,15 @@ class Projectile extends Physical {
 
     }
 
+    getOwner(entityManager) {
+        return entityManager.getEntity(this.ownerID);
+    }
+
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
-        if (this._hitTile) {
+        if (this.hitTile) {
             this.onTileHit(entityManager, deltaTime);
-            this._hitTile = false;
+            this.hitTile = false;
         }
     }
 
@@ -69,9 +73,9 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Player) {
-            if (!entity.team.hasEntity(this._ownerID)) {
+            if (!entity.team.hasEntity(this.ownerID)) {
                 this.onPlayerHit(entity, entityManager);
-                if (this._shouldRemove) {
+                if (this.shouldRemove) {
                     this.remove();
                 }
             }

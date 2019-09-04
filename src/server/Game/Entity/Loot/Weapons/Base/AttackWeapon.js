@@ -15,43 +15,50 @@ class AttackWeapon extends WeaponItem {
                 spread = 0, recoil = 0, accurator = 0,
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
         super(x, y, displayName, weaponClass);
-        this._modAbility = new ModAbility(modDuration, modCoolDown);
-        this._superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
-        this._superCharge = 0;
-        this._modCoolDown = 0;
-        this._firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
-        this._firing = false;
-        this._holdingDownFireButton = false;
-        this._spreadAngle = 0;
-        this._canUseSuper = true;
-        this._canUseMod = true;
-        this._canFire = true;
+        this.modAbility = new ModAbility(modDuration, modCoolDown);
+        this.superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
+        this.superChargeData = 0;
+        this.modCoolDownData = 0;
+        this.firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
+        this.firing = false;
+        this.holdingDownFireButton = false;
+        this.spreadAngle = 0;
+        this.canUseSuper = true;
+        this.canUseMod = true;
+        this.canFire = true;
+        this.modActive = false;
+        this.superActive = false;
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
-            "_superCharge",
-            "_canUseSuper",
-            "_modCoolDown",
-            "_canUseMod",
-            "_currentAmmo",
-            "_spreadAngle",
-            "_firing",
-
+            "superChargeData",
+            "canUseSuper",
+            "modCoolDownData",
+            "canUseMod",
+            "currentAmmo",
+            "spreadAngle",
+            "firing",
+            "modActive",
+            "superActive",
         ]);
     }
 
     get isSuperActive() {
-        return this._superAbility._active;
+        return this.superAbility.active;
     }
 
     get superCharge() {
-        return this._superAbility._currentCharge;
+        return this.superAbility.currentCharge;
     }
 
     set superCharge(val) {
-        this._superAbility._currentCharge += val;
-        if (this._superAbility._currentCharge > 100) {
-            this._superAbility._currentCharge = 100;
+        this.superAbility.currentCharge += val;
+        if (this.superAbility.currentCharge > 100) {
+            this.superAbility.currentCharge = 100;
         }
+    }
+
+    getOwner(entityManager) {
+        return entityManager.getEntity(this.playerID);
     }
 
     onSuperActivation(entityManager, deltaTime) {
@@ -80,12 +87,12 @@ class AttackWeapon extends WeaponItem {
 
     // Override to new ability object
     setModAbility(overridden) {
-        this._modAbility = overridden;
+        this.modAbility = overridden;
     }
 
     // Override to new ability object
     setSuperAbility(overridden) {
-        this._superAbility = overridden;
+        this.superAbility = overridden;
     }
 
     onFireButton(entityManager, deltaTime) {
@@ -94,32 +101,32 @@ class AttackWeapon extends WeaponItem {
 
     // When the player gets a kill, this function is called.
     grantSuperCharge() {
-        this.superCharge += this._superAbility._killChargeGain;
+        this.superCharge += this.superAbility.killChargeGain;
     }
 
     // Configures all stats for the primary attack of the weapon.
     configureAttackStats(reloadSpeed, clipSize, ammoUsagePerShot, fireRateRPM) {
-        this._currentAmmo = clipSize;
-        this._maxAmmo = clipSize;
+        this.currentAmmo = clipSize;
+        this.maxAmmo = clipSize;
 
-        this._currentReloadTime = 0;
-        this._maxReloadTime = reloadSpeed;
+        this.currentReloadTime = 0;
+        this.maxReloadTime = reloadSpeed;
 
-        this._ammoPerShot = ammoUsagePerShot;
-        this._fireRate = fireRateRPM;
-        this._currentFireTime = 0;
-        this._reloading = false;
+        this.ammoPerShot = ammoUsagePerShot;
+        this.fireRate = fireRateRPM;
+        this.currentFireTime = 0;
+        this.reloading = false;
     }
 
     // Happens when the player drops the weapon. Good for resetting
     // certain abilities to retain the flow of the game.
     onDrop(player, entityManager, deltaTime) {
-        if (this._modAbility._active) {
-            this._modAbility.deActivate(this, entityManager, deltaTime);
+        if (this.modAbility.active) {
+            this.modAbility.deActivate(this, entityManager, deltaTime);
         }
-        this._currentReloadTime = 0;
-        this._reloading = false;
-        this._firing = false;
+        this.currentReloadTime = 0;
+        this.reloading = false;
+        this.firing = false;
     }
 
     // Overridable method for when the weapon fires.
@@ -132,32 +139,32 @@ class AttackWeapon extends WeaponItem {
     }
 
     configureAccuracy(spread, recoil, accurator) {
-        this._firerer._recoil = recoil;
-        this._firerer._defaultSpread = spread;
-        this._firerer._accurator = accurator;
+        this.firerer.recoil = recoil;
+        this.firerer.defaultSpread = spread;
+        this.firerer.accurator = accurator;
     }
 
     // Called when pressing the reload key.
     activateReloadAction() {
-        if (this._currentAmmo < this._maxAmmo) {
-            this._reloading = true;
-            this._canFire = false;
-            this._currentReloadTime = this._maxReloadTime;
+        if (this.currentAmmo < this.maxAmmo) {
+            this.reloading = true;
+            this.canFire = false;
+            this.currentReloadTime = this.maxReloadTime;
         }
     }
 
     // Adds ammo to the clip with correct calculations.
     reload(player) {
-        if (this._maxAmmo > this._currentAmmo) {
-            if (player.inventory.ammo > (this._maxAmmo - this._currentAmmo)) {
-                let ammoDiff = this._maxAmmo - this._currentAmmo;
-                this._currentAmmo += ammoDiff;
+        if (this.maxAmmo > this.currentAmmo) {
+            if (player.inventory.ammo > (this.maxAmmo - this.currentAmmo)) {
+                let ammoDiff = this.maxAmmo - this.currentAmmo;
+                this.currentAmmo += ammoDiff;
                 player.inventory.ammo -= ammoDiff;
-                this._canFire = true;
+                this.canFire = true;
             } else {
-                this._currentAmmo += player.inventory.ammo;
+                this.currentAmmo += player.inventory.ammo;
                 player.inventory.ammo = 0;
-                this._canFire = true;
+                this.canFire = true;
             }
         }
     }
@@ -166,17 +173,17 @@ class AttackWeapon extends WeaponItem {
     // on the weapon such as firing, ability usage and reloading.
     listenToInput(player, entityManager, deltaTime) {
 
-        this._firerer.update(this, player, entityManager, deltaTime);
+        this.firerer.update(this, player, entityManager, deltaTime);
 
         if (player.input.singleMousePress(3)) {
-            if (this._canUseMod) {
-                this._modAbility.activate(this, entityManager, deltaTime);
+            if (this.canUseMod) {
+                this.modAbility.activate(this, entityManager, deltaTime);
             }
         }
 
         if (player.input.singleKeyPress(81)) {
-            if (this._canUseSuper) {
-                this._superAbility.activate(this, entityManager, deltaTime);
+            if (this.canUseSuper) {
+                this.superAbility.activate(this, entityManager, deltaTime);
             }
         }
 
@@ -193,19 +200,19 @@ class AttackWeapon extends WeaponItem {
     // Looping function that is called when the player has
     // picked up the weapon.
     updateWhenEquipped(player, entityManager, deltaTime) {
-        //this._canFire = this._currentAmmo > 0;
+        //this.canFire = this.currentAmmo > 0;
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.listenToInput(player, entityManager, deltaTime);
-        this._modAbility.update(this, entityManager, deltaTime);
-        this._superAbility.update(this, entityManager, deltaTime);
-        this._superCharge = this.superCharge;
-        this._modCoolDown = this._modAbility._currentCoolDown;
+        this.modAbility.update(this, entityManager, deltaTime);
+        this.superAbility.update(this, entityManager, deltaTime);
+        this.superChargeData = this.superCharge;
+        this.modCoolDownData = this.modAbility.currentCoolDown;
 
-        if (this._reloading) {
-            this._currentReloadTime -= deltaTime;
-            if (this._currentReloadTime <= 0) {
-                this._currentReloadTime = 0;
-                this._reloading = false;
+        if (this.reloading) {
+            this.currentReloadTime -= deltaTime;
+            if (this.currentReloadTime <= 0) {
+                this.currentReloadTime = 0;
+                this.reloading = false;
                 this.reload(player);
             }
         }

@@ -6,20 +6,20 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 // entity.
 class EntityMovementTracker {
     constructor() {
-        this._currentMovementStates = new ONMap();
-        this._movementStateCallbacks = new ONMap();
+        this.currentMovementStates = new ONMap();
+        this.movementStateCallbacks = new ONMap();
     }
 
     // Set a callback (or not) for certain movement states when they occur.
     addMovementStateListener(movementName, stateName, callback) {
-        if (!this._movementStateCallbacks.has(movementName)) {
-            this._movementStateCallbacks.set(movementName, new ONMap());
+        if (!this.movementStateCallbacks.has(movementName)) {
+            this.movementStateCallbacks.set(movementName, new ONMap());
         }
-        if (!this._currentMovementStates.has(movementName)) {
-            this._currentMovementStates.set(movementName, stateName);
+        if (!this.currentMovementStates.has(movementName)) {
+            this.currentMovementStates.set(movementName, stateName);
         }
         if (callback) {
-            this._movementStateCallbacks.get(movementName).set(stateName, callback);
+            this.movementStateCallbacks.get(movementName).set(stateName, callback);
         }
     }
 
@@ -29,15 +29,15 @@ class EntityMovementTracker {
 
     // Check if the entity is in a certain movement state.
     checkMovementState(movementName, stateName) {
-        return this._currentMovementStates.get(movementName) === stateName;
+        return this.currentMovementStates.get(movementName) === stateName;
     }
 
     // Set the movement state and perform the callback (if provided).
     setMovementState(movementName, stateName, composedEntity, entityManager, deltaTime) {
-        this._currentMovementStates.set(movementName, stateName);
-        if (this._movementStateCallbacks.has(movementName)) {
-            if (this._movementStateCallbacks.get(movementName).has(stateName)) {
-                this._movementStateCallbacks.get(movementName).get(stateName)
+        this.currentMovementStates.set(movementName, stateName);
+        if (this.movementStateCallbacks.has(movementName)) {
+            if (this.movementStateCallbacks.get(movementName).has(stateName)) {
+                this.movementStateCallbacks.get(movementName).get(stateName)
                     (movementName, stateName, composedEntity, entityManager, deltaTime);
             }
         }
@@ -45,7 +45,7 @@ class EntityMovementTracker {
 
     // Use this as a data pack of movement states.
     get movementStates() {
-        return this._currentMovementStates.object;
+        return this.currentMovementStates.object;
     }
 }
 

@@ -5,30 +5,30 @@ const Effect = require("./Effect.js");
 class KnockBackEffect extends Effect {
     constructor(id, speedX, speedY, friction = 0.95, negationSpeed = 0, tolerance = 30) {
         super(id);
-        this._friction = friction;
-        this._accel = negationSpeed;
-        this._sx = speedX;
-        this._sy = speedY;
-        this._tolerance = tolerance;
+        this.friction = friction;
+        this.accel = negationSpeed;
+        this.sx = speedX;
+        this.sy = speedY;
+        this.tolerance = tolerance;
     }
 
     onAppliedToEntity(entity, entityManager, deltaTime) {
         super.onAppliedToEntity(entity, entityManager, deltaTime);
-        entity.vel.x = this._sx;
-        entity.vel.y = this._sy /// (this._tolerance / 10);
+        entity.vel.x = this.sx;
+        entity.vel.y = this.sy /// (this.tolerance / 10);
     }
 
     effects(entity, entityManager, deltaTime) {
         super.effects(entity, entityManager, deltaTime);
-        if (this._started) {
-            if (Math.abs(entity.vel.x | 0) <= this._tolerance) {
+        if (this.started) {
+            if (Math.abs(entity.vel.x | 0) <= this.tolerance) {
                 this.complete();
             }
         }
-        entity.fric.x = this._friction;
-        entity.acc.x = this._accel;
+        entity.fric.x = this.friction;
+        entity.acc.x = this.accel;
         if (Math.abs(entity.vel.x | 0) !== 0) {
-            this._started = true;
+            this.started = true;
         }
     }
 

@@ -4,10 +4,10 @@ const Tile = require("../../TileBased/Tile.js");
 class Loot extends Interactable {
     constructor(x, y, shouldRemove = false, lifeTime = 6 * 60) {
         super(x, y, 4, 6); // All loot hit boxes should be of this size
-        this._shouldRemove = shouldRemove;
-        this._lifeTime = lifeTime;
-        this._maxLifeTime = lifeTime;
-        this._acc.y = 500;
+        this.shouldRemove = shouldRemove;
+        this.lifeTime = lifeTime;
+        this.maxLifeTime = lifeTime;
+        this.acc.y = 500;
         this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
 
@@ -18,11 +18,11 @@ class Loot extends Interactable {
     }
 
     setMaxLifeTime(x) {
-        this._maxLifeTime = x;
+        this.maxLifeTime = x;
     }
 
-    resetLifeTime() {
-        this._lifeTime = this._maxLifeTime;
+    resetLifeTime(game) {
+        this.lifeTime = game.getGameRule("lootLife");
     }
 
     // Throw the item in some direction.
@@ -33,11 +33,8 @@ class Loot extends Interactable {
 
     // Ground physics.
     update(entityManager, deltaTime) {
-        if (!entityManager.pvpEnabled) {
-            this.setMaxLifeTime(6);
-        }
-        this._lifeTime -= deltaTime;
-        if (this._lifeTime <= 0) {
+        this.lifeTime -= deltaTime;
+        if (this.lifeTime <= 0) {
             this.remove();
         }
         if (!this.side.bottom) {
@@ -55,7 +52,7 @@ class Loot extends Interactable {
     onPlayerInteraction(player, entityManager) {
         super.onPlayerInteraction(player, entityManager);
         player.inventory.pickUp(this);
-        if (this._shouldRemove) this.remove();
+        if (this.shouldRemove) this.remove();
     }
 }
 

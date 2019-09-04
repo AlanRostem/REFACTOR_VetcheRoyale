@@ -2,26 +2,8 @@ var typeCheck = require("../Debugging/StypeCheck.js");
 // 2D vector with mathematical methods
 class Vector2D {
     constructor(x, y) {
-        this._x = x;
-        this._y = y;
-    }
-
-    set x(val) {
-        typeCheck.primitive(0, val);
-        this._x = val;
-    }
-
-    set y(val) {
-        typeCheck.primitive(0, val);
-        this._y = val;
-    }
-
-    get x() {
-        return this._x;
-    }
-
-    get y() {
-        return this._y;
+        this.x = x;
+        this.y = y;
     }
 
     add(vec) {

@@ -8,8 +8,8 @@ const Rect = require("./QTRect.js");
 class ProximityEntityManager extends EntityManager {
     constructor(entity) {
         super(false);
-        this._entRef = entity;
-        this._qtBounds = new Rect(entity.center.x, entity.center.y,
+        this.entRef = entity;
+        this.qtBounds = new Rect(entity.center.x, entity.center.y,
             // These rectangle bounds start from the center, so the
             // actual entity check range would be a 320*2 by 160*2
             // rectangle around the entity.
@@ -17,22 +17,22 @@ class ProximityEntityManager extends EntityManager {
     }
 
     addEntity(entity) {
-        this._container[entity.id] = entity;
+        this.container[entity.id] = entity;
     }
 
     removeEntity(id) {
-        delete this._container[id];
+        delete this.container[id];
     }
 
     quadTreePlacement(entityManager) {
-        entityManager.quadTree.insert(this._entRef);
+        entityManager.quadTree.insert(this.entRef);
     }
 
     // Binds the quad tree range bounding rect to
     // the entity's center and does interaction checks.
     update(entityManager, deltaTime) {
-        this._qtBounds.x = this._entRef.center.x;
-        this._qtBounds.y = this._entRef.center.y;
+        this.qtBounds.x = this.entRef.center.x;
+        this.qtBounds.y = this.entRef.center.y;
         this.quadTreePlacement(entityManager);
         this.checkProximityEntities(entityManager);
     }
@@ -41,17 +41,17 @@ class ProximityEntityManager extends EntityManager {
     // bounding rectangle.
     checkProximityEntities(entityManager) {
 
-        var entities = entityManager.quadTree.query(this._qtBounds);
+        var entities = entityManager.quadTree.query(this.qtBounds);
         for (let e of entities) {
-            if (e !== this._entRef) {
+            if (e !== this.entRef) {
                 if (!this.exists(e.id)) {
                     this.addEntity(e);
                 } else {
-                    this._entRef.forEachNearbyEntity(e, entityManager);
-                    if (this._entRef.overlapEntity(e)) {
-                        this._entRef.onEntityCollision(e, entityManager);
+                    this.entRef.forEachNearbyEntity(e, entityManager);
+                    if (this.entRef.overlapEntity(e)) {
+                        this.entRef.onEntityCollision(e, entityManager);
                     }
-                    if (e.toRemove || !entityManager.exists(e.id) || !this._qtBounds.myContains(e)) {
+                    if (e.toRemove || !entityManager.exists(e.id) || !this.qtBounds.myContains(e)) {
                         this.removeEntity(e.id);
                     }
                 }
@@ -61,9 +61,9 @@ class ProximityEntityManager extends EntityManager {
 
     // Called when player spawns in the world
     initProximityEntityData(entityManager) {
-        var entities = entityManager.quadTree.query(this._qtBounds);
+        var entities = entityManager.quadTree.query(this.qtBounds);
         for (var e of entities) {
-            if (e !== this._entRef && this._qtBounds.contains(e)) {
+            if (e !== this.entRef && this.qtBounds.contains(e)) {
                 this.addEntity(e);
             }
         }

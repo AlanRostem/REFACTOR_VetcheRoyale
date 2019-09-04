@@ -4,35 +4,43 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 // Teleports players to a given position. Can also be linked to
 // another portal.
 class Portal extends Interactable {
-    constructor(x, y, destinationPos, frameColor = "blue") {
+    constructor(x, y, args) {
         super(x, y, 10, 16);
-        this._frameColor = frameColor;
-        this._destination = destinationPos;
-        this._pairData = null;
+
+
+        this.portalTileID = args.id;
+        this.frameColor = args.frameColor;
+        this.pairData = null;
+        this.pair = null;
+
         this.addStaticSnapShotData([
-            "_frameColor",
+            "frameColor",
         ]);
+
         this.addDynamicSnapShotData([
-            "_pairData"
+            "pairData"
         ]);
-        this._link = null;
     }
 
     link(portal) {
-        portal.setDestination(this.center);
-        this.setDestination(portal.center);
-        portal._link = this;
-        this._link = portal;
-        this._pairData = portal.getDataPack();
+        portal.pair = this;
+        portal.destination = this.pos;
+        this.pairData = this.getDataPack();
+        this.pair = portal;
+        this.pairData = portal.getDataPack();
+        this.setDestination(portal.pos);
     }
 
     setDestination(pos) {
-        this._destination = pos;
+        this.destination = pos;
     }
 
     teleport(entity, game) {
-        entity.pos.x = this._destination.x - entity.width / 2;
-        entity.pos.y = this._destination.y - entity.height / 2;
+        if (!this.pair) {
+            return;
+        }
+        entity.pos.x = this.destination.x - entity.width / 2;
+        entity.pos.y = this.destination.y - entity.height / 2;
     }
 
     onPlayerInteraction(player, entityManager) {

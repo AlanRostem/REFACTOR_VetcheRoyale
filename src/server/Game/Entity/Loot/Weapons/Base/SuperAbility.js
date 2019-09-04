@@ -1,45 +1,46 @@
 class SuperAbility {
     constructor(duration, chargeGainPerTick, chargeGainPerKill) {
-        this._currentDuration = 0;
-        this._maxDuration = duration;
+        this.currentDuration = 0;
+        this.maxDuration = duration;
 
-        this._currentCharge = 0;
-        this._currentChargeTickTime = 3;
-        this._killChargeGain = chargeGainPerKill;
-        this._tickChargeGain = chargeGainPerTick;
+        this.currentCharge = 0;
+        this.currentChargeTickTime = 3;
+        this.killChargeGain = chargeGainPerKill;
+        this.tickChargeGain = chargeGainPerTick;
 
-        this._fullyCharged = false;
-        this._active = false;
+        this.fullyCharged = false;
+        this.active = false;
     }
 
     // Configure charge stats and duration of the ability.
     configureStats(duration, tickChargeGain, killChargeGain) {
-        this._maxDuration = duration;
-        this._tickChargeGain = tickChargeGain;
-        this._killChargeGain = killChargeGain;
+        this.maxDuration = duration;
+        this.tickChargeGain = tickChargeGain;
+        this.killChargeGain = killChargeGain;
     }
 
     update(composedWeapon, entityManager, deltaTime) {
-        if (this._active) {
+        composedWeapon.superActive = this.active;
+        if (this.active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
-            if (this._currentDuration > 0) {
-                this._currentDuration -= deltaTime;
+            if (this.currentDuration > 0) {
+                this.currentDuration -= deltaTime;
             } else {
                 this.deActivate(composedWeapon, entityManager, deltaTime);
             }
         } else {
-            if (this._currentCharge < 100) {
-                this._currentChargeTickTime -= deltaTime;
-                if (this._currentChargeTickTime <= 0) {
-                    this._currentCharge += this._tickChargeGain;
-                    this._currentChargeTickTime = 3; // Seconds
+            if (this.currentCharge < 100) {
+                this.currentChargeTickTime -= deltaTime;
+                if (this.currentChargeTickTime <= 0) {
+                    this.currentCharge += this.tickChargeGain;
+                    this.currentChargeTickTime = 3; // Seconds
                 }
             } else {
-                this._currentCharge = 100; // In case it adds more than 100
-                this._fullyCharged = true;
+                this.currentCharge = 100; // In case it adds more than 100
+                this.fullyCharged = true;
             }
         }
-        composedWeapon._canUseSuper = !this._active;
+        composedWeapon.canUseSuper = !this.active;
     }
 
     // Callback when deactivating the ability.
@@ -48,8 +49,8 @@ class SuperAbility {
     }
 
     deActivate(composedWeapon, entityManager, deltaTime) {
-        this._active = false;
-        this._currentDuration = 0;
+        this.active = false;
+        this.currentDuration = 0;
         this.onDeactivation(composedWeapon, entityManager, deltaTime);
     }
 
@@ -59,13 +60,13 @@ class SuperAbility {
     }
 
     activate(composedWeapon, entityManager, deltaTime) {
-        if (!this._active && this._fullyCharged) {
+        if (!this.active && this.fullyCharged) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
             composedWeapon.onSuperActivation(entityManager, deltaTime);
-            this._currentDuration = this._maxDuration;
-            this._currentCharge = 0;
-            this._fullyCharged = false;
-            this._active = true;
+            this.currentDuration = this.maxDuration;
+            this.currentCharge = 0;
+            this.fullyCharged = false;
+            this.active = true;
         }
     }
 
@@ -75,9 +76,6 @@ class SuperAbility {
         composedWeapon.onSuperBuffs(entityManager, deltaTime)
     }
 
-    get active() {
-        return this._active;
-    }
 }
 
 module.exports = SuperAbility;

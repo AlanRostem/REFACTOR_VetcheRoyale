@@ -12,16 +12,8 @@ class TileMap {
         this.w = json.get().width;
         this.h = json.get().height;
         this.tileSize = Tile.SIZE;
-        this._name = name;
-        this._spawner = new EntitySpawnerLocator(this);
-    }
-
-    get spawner() {
-        return this._spawner;
-    }
-
-    get name() {
-        return this._name;
+        this.name = name;
+        this.spawner = new EntitySpawnerLocator(this);
     }
 
     withinRange(x, y) {

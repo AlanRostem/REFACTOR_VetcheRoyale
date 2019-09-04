@@ -2,7 +2,6 @@ const GameDataLinker = require("./GameDataLinker.js");
 const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
-const Team = require("../../World/Team.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const Tile = require("../../TileBased/Tile.js");
 
@@ -18,23 +17,23 @@ class Player extends GameDataLinker {
 
         // MISC VAR INITS
 
-        this._id = client.id;
-        this._teamName = "red";
-        //new Team(Team.Names[Math.random() * 4 | 0]).addPlayer(this);
-        this._snapShotGenerator._snapShot._id = this._id;
-        this._clientRef = client;
-        this._entitiesInProximity = new ClientPEM(this);
-        this._inventory = new Inventory();
-        this._invWeaponID = null;
-        this._invAmmo = null;
-        this._stats = new StatTracker(this.id);
-        this._statData = this._stats._statMap;
+        this.id = client.id;
+        this.teamName = "red";
+        this.snapShotGenerator.snapShot.id = this.id;
+        this.clientRef = client;
+        this.entitiesInProximity = new ClientPEM(this);
+        this.inventory = new Inventory();
+        this.invWeaponID = null;
+        this.invAmmo = null;
+        this.stats = new StatTracker(this.id);
+        this.statData = this.stats.statMap;
 
-        this._jumping = false;
-        this._center = {
-            _x: x + this._width / 2,
-            _y: y + this._height / 2,
+        this.jumping = false;
+        this.centerData = {
+            x: x + this.width / 2,
+            y: y + this.height / 2,
         };
+
 
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
@@ -42,22 +41,22 @@ class Player extends GameDataLinker {
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
-            "_teamName",
-            "_center",
-            "_hp",
-            "_invAmmo",
-            "_invWeaponID",
+            "teamName",
+            "centerData",
+            "hp",
+            "invAmmo",
+            "invWeaponID",
         ]);
 
         this.addStaticSnapShotData([
-            "_statData"
+            "statData"
         ]);
 
         this.setEntityOrder(1);
 
         // PHYSICS DATA
 
-        this._speed = {
+        this.speed = {
             ground: 65 * 55,
             jump: -190,
             gravity: 500
@@ -65,78 +64,63 @@ class Player extends GameDataLinker {
 
         this.setCollisionResponseID("Player");
 
-        this.acc.y = this._speed.gravity;
-        this.acc.x = this._speed.ground;
+        this.acc.y = this.speed.gravity;
+        this.acc.x = this.speed.ground;
 
-        this._itemsNearby = new ONMap();
-        this._itemScanner = new HitScanner({}, false);
-        this._scanItems = false;
+        this.itemsNearby = new ONMap();
+        this.itemScanner = new HitScanner({}, false);
+        this.scanItems = false;
     }
 
     // Calculates the closest item capable of being picked
     // up and then picks it up.
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
-            for (let id in game.container) {
-                let entity = this._entitiesInProximity.getEntity(id);
+            for (let id in this.entitiesInProximity.container) {
+                let entity = this.entitiesInProximity.getEntity(id);
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
-                    this._itemScanner.scan(this.center, entity.center, game, game.tileMap);
-                    if (HitScanner.intersectsEntity(this.center, this._itemScanner._end, entity)
+                    this.itemScanner.scan(this.center, entity.center, game, game.tileMap);
+                    if (HitScanner.intersectsEntity(this.center, this.itemScanner.end, entity)
                         && entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
-                        this._itemsNearby.set(entity.id, distance);
+                        this.itemsNearby.set(entity.id, distance);
                     }
                 }
             }
 
-            let closest = Math.min(...this._itemsNearby.array);
-            for (let id in this._itemsNearby.object) {
+            let closest = Math.min(...this.itemsNearby.array);
+            for (let id in this.itemsNearby.object) {
                 let loot = game.getEntity(id);
                 if (loot) {
-                    if (this._itemsNearby.get(loot.id) === closest) {
+                    if (this.itemsNearby.get(loot.id) === closest) {
                         loot.onPlayerInteraction(this, game);
                     }
                 }
             }
-            this._itemsNearby.clear();
+            this.itemsNearby.clear();
         }
-    }
-
-    get stats() {
-        return this._stats;
-    }
-
-    get speed() {
-        return this._speed;
     }
 
     // Sends the initial data pack to the client.
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
-        this._entitiesInProximity.initProximityEntityData(entityManager);
-        this._clientRef.emit("initEntity", this._entitiesInProximity.exportDataPack())
+        this.entitiesInProximity.initProximityEntityData(entityManager);
+        this.clientRef.emit("initEntity", this.entitiesInProximity.exportDataPack())
     }
 
-    get inventory() {
-        return this._inventory;
-    }
-
-    get entitiesInProximity() {
-        return this._entitiesInProximity;
-    }
 
     get client() {
-        return this._clientRef;
+        return this.clientRef;
     }
 
     get input() {
-        return this._clientRef.inputReceiver;
+        return this.clientRef.inputReceiver;
     }
 
 
     setTeam(team) {
         this.team = team;
-        this._teamName = team.name;
+        this.teamName = team.name;
     }
 
     // Performs one way team tileCollision.
@@ -145,11 +129,11 @@ class Player extends GameDataLinker {
             for (var id in this.team.players) {
                 if (id !== this.id) {
                     var p = this.team.players[id];
-                    if (this.overlapEntity(p) && !p._jumping) {
-                        if (this.pos.y + this.height > p.pos.y && this._old.y + this.height <= p.pos.y) {
+                    if (this.overlapEntity(p) && !p.jumping) {
+                        if (this.pos.y + this.height > p.pos.y && this.old.y + this.height <= p.pos.y) {
                             this.pos.y = p.pos.y - this.height;
                             this.vel.y = 0;
-                            this._jumping = false;
+                            this.jumping = false;
                             this.side.bottom = true;
                             this.setMovementState("main", "stand");
                         }
@@ -179,28 +163,46 @@ class Player extends GameDataLinker {
         this.oneWayTeamCollision(deltaTime);
     }
 
+    onDead(entityManager, deltaTime) {
+        super.onDead(entityManager, deltaTime);
+        // TODO: Drop ammo and heals
+    }
+
+    get spectators() {
+        return this.entitiesInProximity.spectators;
+    }
+
     update(entityManager, deltaTime) {
+        if (this.dead) {
+            // TODO: Temporary solution
+            if (this.myKiller) {
+                this.myKiller.spectators.addSpectator(this.client);
+                this.client.setPlayer(this.myKiller);
+            }
+            this.remove();
+            //this.client.setOutboundPacketData("entityData", this.myKiller.entitiesInProximity.exportDataPack());
+            return;
+        }
 
         this.setMovementState("tile", "none");
 
-        this._invAmmo = this.inventory.ammo;
+        this.invAmmo = this.inventory.ammo;
         if (this.inventory.weapon) {
-            this._invWeaponID = this.inventory.weapon.id;
+            this.invWeaponID = this.inventory.weapon.id;
         } else {
-            this._invWeaponID = null;
+            this.invWeaponID = null;
         }
 
         if (this.side.bottom) {
             this.setMovementState("main", "stand");
         } else {
-            this._jumping = true;
+            this.jumping = true;
         }
 
         if (this.input.keyHeldDown(32)) {
-            if (!this._jumping) {
-                this.vel.y = this._speed.jump;
-                this._jumping = true;
-                //AssetManager.get("Player/jump_ascend.oggp");
+            if (!this.jumping) {
+                this.vel.y = this.speed.jump;
+                this.jumping = true;
             }
         }
 
@@ -235,16 +237,16 @@ class Player extends GameDataLinker {
 
 
         if (this.side.bottom) {
-            this._jumping = false;
+            this.jumping = false;
         }
 
-        this._center._x = this.center.x;
-        this._center._y = this.center.y;
+        this.centerData.x = this.center.x;
+        this.centerData.y = this.center.y;
     }
 }
 
 TileCollider.createCollisionResponse("Player", "ONE_WAY", "Y", (entity, tile, deltaTime) => {
-    let collision = entity.pos.y + entity.height > tile.y && entity._old.y + entity.height <= tile.y;
+    let collision = entity.pos.y + entity.height > tile.y && entity.old.y + entity.height <= tile.y;
     if (entity.overlapTile(tile)) {
         if (!entity.input.keyHeldDown(83)) {
             if (collision) {

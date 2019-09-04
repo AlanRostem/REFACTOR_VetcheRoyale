@@ -19,36 +19,36 @@ Array.prototype.remove = function() {
 // The main web socket of the server. This is a singleton class
 class WebSocket {
     constructor(socket, matchMaker) {
-       this._socket = socket; // Object given by socket.io
-        if (!this._socket) {
+       this.socket = socket; // Object given by socket.io
+        if (!this.socket) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
-        this._clientList = new ClientList();
+        this.cl = new ClientList();
         this.defineSocketEvents(matchMaker);
     }
 
     defineSocketEvents(matchMaker) {
-        this._socket.on("connection", client => {
+        this.socket.on("connection", client => {
             console.log("\nEstablishing connection... Client ID: [ " + client.id + " ]");
 
-            if (this._clientList.hasIP(client.handshake.address)) {
+            if (this.cl.hasIP(client.handshake.address)) {
                 //client.disconnect("Duplicate user");
                 //console.log("Kicked duplicate client:", client.id);
                 //return;
             }
 
-            var _client = new Client(client, this._clientList);
-            this._clientList.addClient(client.id, _client);
+            var _client = new Client(client, this.cl);
+            this.cl.addClient(client.id, _client);
             matchMaker.queuePlayer(_client);
         });
     }
 
     get ioInstance() {
-        return this._socket;
+        return this.socket;
     }
 
     get clientList() {
-        return this._clientList.getContainer();
+        return this.cl.getContainer();
     }
 }
 

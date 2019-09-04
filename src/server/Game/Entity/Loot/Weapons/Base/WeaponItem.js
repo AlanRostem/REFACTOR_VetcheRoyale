@@ -5,19 +5,19 @@ const Loot = require("../../Loot.js");
 class WeaponItem extends Loot {
     constructor(x, y, displayName, weaponClass = "pistol") {
         super(x, y, false);
-        this._equippedToPlayer = false;
-        this._playerID = null;
-        this._displayName = displayName;
-        this._weaponClass = weaponClass;
+        this.equippedToPlayer = false;
+        this.playerID = null;
+        this.displayName = displayName;
+        this.weaponClass = weaponClass;
         // All possible weapon classes:
         // pistol, rifle
 
         this.addStaticSnapShotData([
-            "_displayName",
-            "_weaponClass"
+            "displayName",
+            "weaponClass"
         ]);
         this.addDynamicSnapShotData([
-            "_equippedToPlayer",
+            "equippedToPlayer",
         ]);
     }
 
@@ -28,18 +28,22 @@ class WeaponItem extends Loot {
     }
 
     update(entityManager, deltaTime) {
-        if (!this._equippedToPlayer) {
+        if (!this.equippedToPlayer) {
             // Update the world item behaviour when not equipped to player.
             super.update(entityManager, deltaTime);
         } else {
-            if (this._playerID) {
+            if (this.playerID) {
                 // If the player disconnects (or is removed from game world)
                 // the weapon is dropped. Otherwise we call methods for when
                 // it is equipped.
-                if (entityManager.getEntity(this._playerID)) {
-                    this.updateWhenEquipped(entityManager.getEntity(this._playerID), entityManager, deltaTime);
+                if (entityManager.getEntity(this.playerID)) {
+                    this.updateWhenEquipped(entityManager.getEntity(this.playerID), entityManager, deltaTime);
                 } else {
-                    this.t_drop();
+                    if (entityManager.getGameRule("dropLootOnDeath")) {
+                        this.dropOnPlayerRemoval();
+                    } else {
+                        this.remove();
+                    }
                 }
             }
         }
@@ -48,7 +52,7 @@ class WeaponItem extends Loot {
     // Bind weapon to the player and check if the player presses
     // the drop key.
     updateWhenEquipped(player, entityManager, deltaTime) {
-        this.resetLifeTime();
+        this.resetLifeTime(entityManager);
         if (player.input.singleKeyPress(WeaponItem.DROP_KEY))
             this.drop(player);
         this.pos.x = player.center.x - this.width / 2;
@@ -56,15 +60,15 @@ class WeaponItem extends Loot {
     }
 
     equip(player) {
-        this._equippedToPlayer = true;
-        this._playerID = player.id;
-        player.setMovementState("weapon", this._weaponClass);
+        this.equippedToPlayer = true;
+        this.playerID = player.id;
+        player.setMovementState("weapon", this.weaponClass);
     }
 
     // Drops the weapon when the player disconnects (removed from game world)
-    t_drop() {
-        this._equippedToPlayer = false;
-        this._playerID = null;
+    dropOnPlayerRemoval() {
+        this.equippedToPlayer = false;
+        this.playerID = null;
         this.onDrop();
     }
 
@@ -76,11 +80,11 @@ class WeaponItem extends Loot {
     // Unbinds the weapon from the player and is thrown in
     // the mouse direction.
     drop(player, entityManager, deltaTime) {
-        if (this._equippedToPlayer) {
+        if (this.equippedToPlayer) {
             player.inventory.dropWeapon();
             player.setMovementState("weapon", "none");
-            this._equippedToPlayer = false;
-            this._playerID = null;
+            this.equippedToPlayer = false;
+            this.playerID = null;
             this.vel.x = WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter;
             this.vel.y = WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter;
             this.onDrop(player, entityManager, deltaTime);
@@ -92,7 +96,7 @@ class WeaponItem extends Loot {
     }
 
     onPlayerInteraction(player, entityManager) {
-        if (!this._equippedToPlayer && !player.inventory.weapon) {
+        if (!this.equippedToPlayer && !player.inventory.weapon) {
             super.onPlayerInteraction(player, entityManager);
             this.equip(player);
         }

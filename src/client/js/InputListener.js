@@ -6,89 +6,90 @@ export default class InputListener {
     constructor(client) {
 
         // Holds the current state of the key (up or down).
-        this._keyStates = {};
-        this._localKeys = {};
+        this.keyStates = {};
+        this.localKeys = {};
 
         // Holds callback functions for each key code.
-        this._keyCallbacks = {};
+        this.keyCallbacks = {};
 
-        this._mouseCallbacks = {};
-        this._mouseStates = {};
+        this.mouseCallbacks = {};
+        this.mouseStates = {};
 
-        this._mouse = {
+        this.mouse = {
             x: 0,
             y: 0,
             cosCenter: 0,
             sinCenter: 0,
         };
 
-        this._buffer = [];
-        this._pendingInputs = [];
-        this._allocatedCodes = [];
-        this._sequence = 0;
+        this.buffer = [];
+        this.pendingInputs = [];
+        this.allocatedCodes = [];
+        this.sequence = 0;
 
         this.listenTo(client);
         let input = {
-            keyStates: this._keyStates,
-            mouseData: this._mouse,
-            mouseStates: this._mouseStates,
-            sequence: this._sequence,
+            keyStates: this.keyStates,
+            mouseData: this.mouse,
+            mouseStates: this.mouseStates,
+            sequence: this.sequence,
         };
         client.setOutboundPacketData("input", input);
     }
 
     update(client) {
-        var now_ts = +new Date();
-        var last_ts = this.last_ts || now_ts;
-        var dt_sec = (now_ts - last_ts) / 1000.0;
-        this.last_ts = now_ts;
+        var nowts = +new Date();
+        var lastts = this.lastts || nowts;
+        var dtsec = (nowts - lastts) / 1000.0;
+        this.lastts = nowts;
 
         let input = {
-            keyStates: this._keyStates,
-            mouseData: this._mouse,
-            mouseStates: this._mouseStates,
-            sequence: this._sequence++,
+            keyStates: this.keyStates,
+            mouseData: this.mouse,
+            mouseStates: this.mouseStates,
+            sequence: this.sequence++,
         };
 
         // TODO: Calculate press time for each of the
         // TODO: different input types (keys or mouse)
         if (this.getReconKey(68)) {
-            input.pressTime = dt_sec;
+            input.pressTime = dtsec;
         } else if (this.getReconKey(65)) {
-            input.pressTime = -dt_sec;
+            input.pressTime = -dtsec;
         } else {
             return;
         }
 
         client.setOutboundPacketData("input", input);
+        this.mouse.world = {
+            x: this.mouse.x - R.camera.boundPos.x,
+            y: this.mouse.y - R.camera.boundPos.y,
+        };
 
         // TODO: CLIENT SIDE PREDICTION
-        //client.player._output._pos._x += input.pressTime * 65;
-        //client.player._pendingKeys = input.keyStates;
-        //client.player._output._pos._x += client.player._localVel.x = Math.sign(input.pressTime);
+        //client.player.output.pos.x += input.pressTime * 65;
+        //client.player.pendingKeys = input.keyStates;
+        //client.player.output.pos.x += client.player.localVel.x = Math.sign(input.pressTime);
 
-        this._pendingInputs.push(input);
+        this.pendingInputs.push(input);
 
     }
 
     get pending() {
-        return this._pendingInputs;
+        return this.pendingInputs;
     }
 
-    get mouse() {
-        return this._mouse;
-    }
 
     getReconKey(keyCode) {
-        return this._keyStates[keyCode];
+        return this.keyStates[keyCode];
     }
 
     getLocalKey(keyCode) {
-        return this._localKeys[keyCode];
+        return this.localKeys[keyCode];
     }
 
     getMouse(buttonCode) {
-        return this._mouseStates[buttonCode];
+        return this.mouseStates[buttonCode];
     }
 
 
@@ -101,10 +102,10 @@ export default class InputListener {
     addKeyMapping(keyCode, callback) {
         typeCheck.primitive(0, keyCode);
         typeCheck.instance(Function, callback);
-        if (this._keyCallbacks[keyCode]) {
-            this._keyCallbacks[keyCode].push(callback);
+        if (this.keyCallbacks[keyCode]) {
+            this.keyCallbacks[keyCode].push(callback);
         } else {
-            this._keyCallbacks[keyCode] = [callback];
+            this.keyCallbacks[keyCode] = [callback];
         }
     }
 
@@ -113,15 +114,15 @@ export default class InputListener {
     // and calls the respective callback function.
     handleEvent(event) {
         const {keyCode} = event;
-        if (!this._keyCallbacks.hasOwnProperty(keyCode)) return;
+        if (!this.keyCallbacks.hasOwnProperty(keyCode)) return;
 
         event.preventDefault();
         const keyState = event.type === "keydown"; // Pressed = true, released = false
-        this._localKeys[keyCode] = keyState;
-        if (this._keyStates[keyCode] === keyState) return;
+        this.localKeys[keyCode] = keyState;
+        if (this.keyStates[keyCode] === keyState) return;
 
-        this._keyStates[keyCode] = keyState;
-        for (var callback of this._keyCallbacks[keyCode]) {
+        this.keyStates[keyCode] = keyState;
+        for (var callback of this.keyCallbacks[keyCode]) {
             callback(keyState);
         }
     }
@@ -129,23 +130,23 @@ export default class InputListener {
     addMouseMapping(mouseButton, callback) {
         typeCheck.primitive(0, mouseButton);
         typeCheck.instance(Function, callback);
-        if (this._mouseCallbacks[mouseButton]) {
-            this._mouseCallbacks[mouseButton].push(callback);
+        if (this.mouseCallbacks[mouseButton]) {
+            this.mouseCallbacks[mouseButton].push(callback);
         } else {
-            this._mouseCallbacks[mouseButton] = [callback];
+            this.mouseCallbacks[mouseButton] = [callback];
         }
     }
 
     handleMouse(event) {
         const {which} = event;
-        if (!this._mouseCallbacks.hasOwnProperty(which)) return;
+        if (!this.mouseCallbacks.hasOwnProperty(which)) return;
 
         event.preventDefault();
         const mouseState = event.type === "mousedown"; // Pressed = true, released = false
-        if (this._mouseStates[which] === mouseState) return;
+        if (this.mouseStates[which] === mouseState) return;
 
-        this._mouseStates[which] = mouseState;
-        for (var callback of this._mouseCallbacks[which]) {
+        this.mouseStates[which] = mouseState;
+        for (var callback of this.mouseCallbacks[which]) {
             callback(mouseState);
         }
     }
@@ -168,30 +169,30 @@ export default class InputListener {
         });
 
         window.addEventListener("mousemove", event => {
-            this._mouse.x = Math.round(event.clientX * (R.screenSize.x / window.innerWidth));
-            this._mouse.y = Math.round(event.clientY * (R.screenSize.y / window.innerHeight));
+            this.mouse.x = Math.round(event.clientX * (R.screenSize.x / window.innerWidth));
+            this.mouse.y = Math.round(event.clientY * (R.screenSize.y / window.innerHeight));
 
             var centerX = Math.round(R.screenSize.x / 2);
             var centerY = Math.round(R.screenSize.y / 2);
 
-            var xx = this._mouse.x - centerX;
-            var yy = this._mouse.y - centerY;
+            var xx = this.mouse.x - centerX;
+            var yy = this.mouse.y - centerY;
             var a = Math.atan2(yy, xx);
 
-            this._mouse.sinCenter = Math.sin(a);
-            this._mouse.cosCenter = Math.cos(a);
-            this._mouse.angleCenter = a;
+            this.mouse.sinCenter = Math.sin(a);
+            this.mouse.cosCenter = Math.cos(a);
+            this.mouse.angleCenter = a;
 
-            this._mouse.world = {
-                x: this._mouse.x - R.camera.boundPos.x,
-                y: this._mouse.y - R.camera.boundPos.y,
+            this.mouse.world = {
+                x: this.mouse.x - R.camera.boundPos.x,
+                y: this.mouse.y - R.camera.boundPos.y,
             };
 
 
             /*
             console.log(
-                Math.asin(this._mouse.sinCenter) * 180 / Math.PI,
-                Math.acos(this._mouse.cosCenter) * 180 / Math.PI,
+                Math.asin(this.mouse.sinCenter) * 180 / Math.PI,
+                Math.acos(this.mouse.cosCenter) * 180 / Math.PI,
             );
             */
 

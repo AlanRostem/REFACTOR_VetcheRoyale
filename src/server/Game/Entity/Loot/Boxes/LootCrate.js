@@ -4,14 +4,14 @@ const LootRNG = require("../LootRNG.js");
 class LootCrate extends Interactable {
     constructor(x, y, level = 1, capacity = 15, levelGuarantee = 1) {
         super(x, y, 16, 8);
-        this._level = level;
-        this._capacity = capacity;
-        this._levelGuarantee = levelGuarantee;
-        this._physicsConfig.gravity = false;
-        this._physicsConfig.tileCollision = false;
+        this.level = level;
+        this.capacity = capacity;
+        this.levelGuarantee = levelGuarantee;
+        this.physicsConfig.gravity = false;
+        this.physicsConfig.tileCollision = false;
         this.acc.y = 500;
         this.addStaticSnapShotData([
-            "_level"
+            "level"
         ]);
     }
 
@@ -20,7 +20,7 @@ class LootCrate extends Interactable {
     // respective to their array placement order to shoot out in all
     // of those directions.
     spawnItems(entityManager) {
-        var items = LootRNG.generateLootArray(this._level, this._capacity, this._levelGuarantee);
+        var items = LootRNG.generateLootArray(this.level, this.capacity, this.levelGuarantee);
         var startAngle = 0;
         var count = 0;
         for (var loot of items) {

@@ -39,19 +39,19 @@ export default class Announcement extends UIElement {
 
 
     updateQueue() {
-        if (this._queue.length !== 0 && this._elm === undefined)
-            this._elm = this._queue.shift();
+        if (this.queue.length !== 0 && this.elm === undefined)
+            this.elm = this.queue.shift();
     }
 
     updateElm() {
-        if (this._elm !== undefined) {
-            this.start = this._elm._x <= 0 ? -this._elm._x / 5 | 0 : 0;
-            this._elm._dString = this._elm._string.substring(
+        if (this.elm !== undefined) {
+            this.start = this.elm.x <= 0 ? -this.elm.x / 5 | 0 : 0;
+            this.elm.dString = this.elm.string.substring(
                 this.start,
-                (this.width - this._elm._x - 5) / 5 | 0);
+                (this.width - this.elm.x - 5) / 5 | 0);
 
-            if (this._elm._x + this._elm._string.length * 5 - 1 <= 0)
-                delete this._elm;
+            if (this.elm.x + this.elm.string.length * 5 - 1 <= 0)
+                delete this.elm;
         }
     }
 

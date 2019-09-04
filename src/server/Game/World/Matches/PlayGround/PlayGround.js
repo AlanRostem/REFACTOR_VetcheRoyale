@@ -7,7 +7,14 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
 module.exports = class PlayGround extends GameWorld {
     constructor(serverSocket, worldList) {
-        super(serverSocket, "playground", 64, false, TileMapConfigs.getMap("lobby"));
+        super(serverSocket, "playground", TileMapConfigs.getMap("lobby"));
+        this.setGameRules({
+            "lootLife": 2,
+            "pvp": true,
+            "maxPlayers": 64,
+            "maxTeamMembers": 1,
+            "dropLootOnDeath": false,
+        });
         this.spawnEntity(
             61 * Tile.SIZE,
             104 * Tile.SIZE,

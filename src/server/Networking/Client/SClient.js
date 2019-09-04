@@ -46,6 +46,10 @@ class Client {
         return this._disconnected;
     }
 
+    setPlayer(player) {
+        this._player = player;
+    }
+
     get removed() {
         return this._removed;
     }
@@ -90,6 +94,7 @@ class Client {
         this.setOutboundPacketData("entityData", this._player.entitiesInProximity.exportDataPack());
         this.setOutboundPacketData("now", Date.now());
         this.emit("serverUpdateTick", this._outboundPacket.object);
+        this._outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }
 
     get inputReceiver() {
@@ -106,10 +111,6 @@ class Client {
 
     get socket() {
         return this._socket;
-    }
-
-    getKeyState(keyCode) {
-        return this._keyStates[keyCode];
     }
 
     emit(eventType, data) {

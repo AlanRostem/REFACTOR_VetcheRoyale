@@ -1,4 +1,5 @@
 const ProximityEntityManager = require("../Management/ProximityEntityManager.js");
+const SpectatorManager = require("./SpectatorManager.js");
 
 // Entity manager that iterates over quad-tree-queried
 // entities in proximity and creates data packs sent to
@@ -6,32 +7,35 @@ const ProximityEntityManager = require("../Management/ProximityEntityManager.js"
 class ClientPEM extends ProximityEntityManager {
     constructor(player) {
         super(player);
-        this._dataBox = {};
+        this.dataBox = {};
+        this.spectators = new SpectatorManager(player);
     }
 
     addEntity(entity) {
         super.addEntity(entity);
-        this._entRef.client.emit("spawnEntity", entity.getDataPack());
+        this.entRef.client.emit("spawnEntity", entity.getDataPack());
+        this.spectators.onSpawnEntity(entity);
     }
 
     removeEntity(id) {
         super.removeEntity(id);
-        delete this._dataBox[id];
-        this._entRef.client.emit("removeEntity", id);
+        delete this.dataBox[id];
+        this.entRef.client.emit("removeEntity", id);
+        this.spectators.onRemoveEntity(id);
     }
 
     exportDataPack() {
         for (let id in this.container) {
-            this._dataBox[id] = this.container[id].getDataPack();
-            let e = this._container[id];
+            this.dataBox[id] = this.container[id].getDataPack();
+            let e = this.container[id];
             // Removes entities out of bounds. Suboptimal location to do this.
-            if (!this._qtBounds.myContains(e) || e.toRemove) {
+            if (!this.qtBounds.myContains(e) || e.toRemove) {
                 this.removeEntity(id);
 
             }
         }
-        this._dataBox[this._entRef.id] = this._entRef.getDataPack();
-        return this._dataBox;
+        this.dataBox[this.entRef.id] = this.entRef.getDataPack();
+        return this.dataBox;
     }
 }
 

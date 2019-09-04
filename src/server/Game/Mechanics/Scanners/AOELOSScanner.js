@@ -9,24 +9,24 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 class AOELOSScanner extends HitScanner {
     constructor(radius, exceptions = {}, tileCollision = true) {
         super(exceptions, false, tileCollision);
-        this._radius = radius;
+        this.radius = radius;
     }
 
     areaScan(originPos, entityManager) {
-        this._qtRange.x = originPos.x;
-        this._qtRange.y = originPos.y;
+        this.qtRange.x = originPos.x;
+        this.qtRange.y = originPos.y;
 
-        var entities = entityManager.quadTree.query(this._qtRange);
+        var entities = entityManager.quadTree.query(this.qtRange);
         for (var e of entities) {
             var angle = Math.atan2(
                 e.center.y - originPos.y,
                 e.center.x - originPos.x);
             var rangePos = new Vector2D(
-                originPos.x + this._radius * Math.cos(angle),
-                originPos.y + this._radius * Math.sin(angle));
+                originPos.x + this.radius * Math.cos(angle),
+                originPos.y + this.radius * Math.sin(angle));
             var a = originPos;
             var b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
-            if (this._entityExceptions.hasOwnProperty(e.id)) continue;
+            if (this.entityExceptions.hasOwnProperty(e.id)) continue;
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||

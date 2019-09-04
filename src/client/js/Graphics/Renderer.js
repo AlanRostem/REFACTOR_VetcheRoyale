@@ -4,36 +4,36 @@ import Vector2D from "../../../shared/code/Math/CVector2D.js";
 
 const R = {
 
-    _camera: new Camera(0, 0),
+    camera: new Camera(0, 0),
 
-    _resolution: 160,
-    _aspectRatio: {
+    resolution: 160,
+    aspectRatio: {
         x: 2,
         y: 1
     },
 
-    _screenDimensions: {
-        x: 2 * 160, //R._aspectRatio.x * R._resolution,
-        y: 160 //R._aspectRatio.y * R._resolution
+    screenDimensions: {
+        x: 2 * 160, //R.aspectRatio.x * R.resolution,
+        y: 160 //R.aspectRatio.y * R.resolution
     },
 
-    _canvas: null,
-    _ctx: null,
+    canvas: null,
+    ctx: null,
 
-    // Sets up an HTML _canvas element and initializes
+    // Sets up an HTML canvas element and initializes
     // rendering elements.
     setup() {
-        R._canvas = document.createElement('canvas');
-        R._ctx = R._canvas.getContext('2d');
+        R.canvas = document.createElement('canvas');
+        R.ctx = R.canvas.getContext('2d');
 
-        document.body.appendChild(R._canvas);
+        document.body.appendChild(R.canvas);
         document.body.style.margin = 0;
 
-        R._canvas.imageSmoothingEnabled = false;
+        R.canvas.imageSmoothingEnabled = false;
 
 
-        R._canvas.width = R._screenDimensions.x;
-        R._canvas.height = R._screenDimensions.y;
+        R.canvas.width = R.screenDimensions.x;
+        R.canvas.height = R.screenDimensions.y;
 
 
         this.calibrateScreen();
@@ -43,63 +43,53 @@ const R = {
     },
 
     calibrateScreen() {
-        R._aspectRatio.x = window.innerWidth / window.innerHeight;
-        R._aspectRatio.y = 1;
+        R.aspectRatio.x = window.innerWidth / window.innerHeight;
+        R.aspectRatio.y = 1;
 
-        R._screenDimensions.x = Math.round(R._aspectRatio.x * R._resolution);
-        R._screenDimensions.y = Math.round(R._aspectRatio.y * R._resolution);
+        R.screenDimensions.x = Math.round(R.aspectRatio.x * R.resolution);
+        R.screenDimensions.y = Math.round(R.aspectRatio.y * R.resolution);
 
-        if (R._screenDimensions.x > 360) {
-            R._screenDimensions.x = 320;
-            R._screenDimensions.y = 160;
+        if (R.screenDimensions.x > 360) {
+            R.screenDimensions.x = 320;
+            R.screenDimensions.y = 160;
         }
 
-        R._canvas.width = R._screenDimensions.x;
-        R._canvas.height = R._screenDimensions.y;
+        R.canvas.width = R.screenDimensions.x;
+        R.canvas.height = R.screenDimensions.y;
 
-        R._camera._originalOffset.x = R._screenDimensions.x / 2 | 0;
-        R._camera._originalOffset.y = R._screenDimensions.y / 2 | 0;
-    },
-
-    get camera() {
-        return R._camera;
+        R.camera.originalOffset.x = R.screenDimensions.x / 2 | 0;
+        R.camera.originalOffset.y = R.screenDimensions.y / 2 | 0;
     },
 
     get context() {
-        if (R._ctx === null) {
+        if (R.ctx === null) {
             throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
         }
-        return R._ctx;
+        return R.ctx;
     },
 
-    get ctx() {
-        if (R._ctx === null) {
-            throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
-        }
-        return R._ctx;
-    },
 
     get canvasElement() {
-        if (R._canvas === null) {
+        if (R.canvas === null) {
             throw new Error("Canvas element is not defined! Maybe you forgot to set up the renderer.");
         }
-        return R._canvas;
+        return R.canvas;
     },
 
     get WIDTH() {
-        return R._screenDimensions.x;
+        return R.screenDimensions.x;
     },
 
     get HEIGHT() {
-        return R._screenDimensions.y;
+        return R.screenDimensions.y;
     },
 
     get screenSize() {
-        return R._screenDimensions;
+        return R.screenDimensions;
     },
 
     clear() {
-        R.context.clearRect(0, 0, R._canvas.width, R._canvas.height);
+        R.context.clearRect(0, 0, R.canvas.width, R.canvas.height);
     },
 
     drawText(str, x, y, color = "White", useCamera = false, size = 5) {
@@ -115,8 +105,8 @@ const R = {
                 (asciiCode % 8 * 4),
                 ((asciiCode / 8) | 0) * 5,
                 4, 5,
-                Math.round(x + i * 5 + (useCamera ? R._camera.x : 0)),
-                Math.round(y + (useCamera ? R._camera.y : 0)),
+                Math.round(x + i * 5 + (useCamera ? R.camera.x : 0)),
+                Math.round(y + (useCamera ? R.camera.y : 0)),
                 4, 5);
         }
         R.context.restore();
@@ -130,8 +120,8 @@ const R = {
             var x = startPos.x + i * Math.cos(a);
             var y = startPos.y + i * Math.sin(a);
             R.context.fillRect(
-                Math.round(x + (useCamera ? R._camera._pos.x : 0)),
-                Math.round(y + (useCamera ? R._camera._pos.y : 0)),
+                Math.round(x + (useCamera ? R.camera.pos.x : 0)),
+                Math.round(y + (useCamera ? R.camera.pos.y : 0)),
                 thickness, thickness);
         }
     },
