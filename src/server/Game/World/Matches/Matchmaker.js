@@ -27,7 +27,7 @@ class Matchmaker {
         let playground = new PlayGround(mainSocket, this.gameWorlds);
         this.addWorld(playground, "playground");
 
-        let MatchWorld = new Match(mainSocket, this._gameWorlds, "MatchWorld", 64, TileMapConfigs.getMap("MegaMap"));
+        let MatchWorld = new Match(mainSocket, this.gameWorlds, "MatchWorld", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(MatchWorld, "match");
     }
 

@@ -5,8 +5,8 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 const EventManager = require("./SEventManager.js");
 
 class Match extends GameWorld{
-    constructor(socket, worldList, name, maxPlayers, gameMap) {
-        super(socket, name, maxPlayers, false, gameMap);
+    constructor(socket, worldList, name, gameMap) {
+        super(socket, name, gameMap);
         this.eventManager = new EventManager();
         this.spawnEntity(
             61 * Tile.SIZE,

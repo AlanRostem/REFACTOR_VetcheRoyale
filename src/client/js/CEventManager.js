@@ -6,8 +6,8 @@ export default class CEventManager {
     }
 
     SGetEvent(client) {
-        if (client.inboundPacket !== undefined
-            && client.inboundPacket["gameData"]["Event"] !== undefined) {
+        if (client.inboundPacket !== undefined)
+            if(client.inboundPacket["gameData"]["Event"] !== undefined){
             let e = client.inboundPacket["gameData"]["Event"];
             this._events[e._name] = e;
         }

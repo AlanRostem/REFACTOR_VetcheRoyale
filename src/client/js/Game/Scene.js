@@ -22,6 +22,7 @@ const Scene = {
     lastTime: 0,
     currentMap: "MegaMap",
     entityManager: null,
+    eventManager: null,
     clientRef: null,
 
 
@@ -65,7 +66,7 @@ const Scene = {
     run(entityManager, client) {
         Scene.clientRef = client;
         Scene.entityManager = entityManager;
-        Scene._eventManager = new CEventManager(); // TODO::Kor ska denne?
+        Scene.eventManager = new CEventManager(); // TODO::Kor ska denne?
 
 
         Scene.setup();
@@ -75,7 +76,7 @@ const Scene = {
     update() {
         if (AssetManager.done()) {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
-            Scene._eventManager.update(Scene._clientRef);
+            Scene.eventManager.update(Scene.clientRef);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
             let e = Scene.clientRef.player;
