@@ -15,7 +15,9 @@ class PlayerList extends ClientList {
     }
 
     removeClient(id) {
-        this.getClient(id).player.remove();
+        if (id === this.getClient(id).player.id) {
+            this.getClient(id).player.remove();
+        }
         super.removeClient(id);
     }
 }

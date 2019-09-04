@@ -27,9 +27,6 @@ class SnapShotGenerator {
             }
 
             this.snapShot[key] = composedEntity[key];
-            if (key === "pos") {
-                console.log(this.snapShot[key]);
-            }
         }
 
         for (let key of dynamicValues) {
