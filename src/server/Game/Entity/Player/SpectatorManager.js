@@ -22,6 +22,12 @@ class SpectatorManager {
         }
     }
 
+    onRemoveOutOfBoundsEntity(id) {
+        for (let spectator of this.players.array) {
+            spectator.emit("removeOutOfBoundsEntity", id);
+        }
+    }
+
     update() {
         for (let spectator of this.players.array) {
             spectator.setOutboundPacketData("spectatorSubject", this.subject.getDataPack());

@@ -47,6 +47,10 @@ export default class CEntityManager {
         this.container.delete(id);
     }
 
+    removeOutOfBoundsEntity(id) {
+        this.container.delete(id);
+    }
+
     defineSocketEvents(client) {
         // Receives an array of entities in the proximity of the
         // client player object, and spawns them here as the player
@@ -62,6 +66,16 @@ export default class CEntityManager {
             if (this.existsOnClient(id)) {
                 if (id !== client.id) {
                     this.removeEntity(id);
+                }
+            } else {
+                console.warn("Attempted to remove a non existent entity. Something's wrong here...")
+            }
+        });
+
+        client.on('removeOutOfBoundsEntity', id => {
+            if (this.existsOnClient(id)) {
+                if (id !== client.id) {
+                    this.removeOutOfBoundsEntity(id);
                 }
             } else {
                 console.warn("Attempted to remove a non existent entity. Something's wrong here...")
