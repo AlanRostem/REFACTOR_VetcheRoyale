@@ -74,10 +74,6 @@ const Scene = {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
-            let e = Scene.clientRef.player;
-            if (e) {
-                R.camera.update(e.output.centerData);
-            }
         }
     },
 

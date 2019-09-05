@@ -3,6 +3,7 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 class SpectatorManager {
     constructor(player) {
         this.players = new ONMap();
+        this.subject = player;
     }
 
     addSpectator(client) {
@@ -18,6 +19,12 @@ class SpectatorManager {
     onRemoveEntity(id) {
         for (let spectator of this.players.array) {
             spectator.emit("removeEntity", id);
+        }
+    }
+
+    update() {
+        for (let spectator of this.players.array) {
+            spectator.setOutboundPacketData("spectatorSubject", this.subject.getDataPack());
         }
     }
 }

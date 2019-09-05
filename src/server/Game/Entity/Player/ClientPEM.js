@@ -37,6 +37,11 @@ class ClientPEM extends ProximityEntityManager {
         this.dataBox[this.entRef.id] = this.entRef.getDataPack();
         return this.dataBox;
     }
+
+    update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
+        this.spectators.update();
+    }
 }
 
 module.exports = ClientPEM;
