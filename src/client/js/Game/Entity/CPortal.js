@@ -10,11 +10,11 @@ export default class CPortal extends CEntity {
 
     draw() {
         let pos = this.getRealtimeProperty("pos");
-        CEntity.defaultSprite.animate("portal", this.animation, 16, 16);
+        CEntity.defaultSprite.animate("portal", this.animation, 10, 16);
         CEntity.defaultSprite.drawAnimated(
-            pos.x + R.camera.x - 3,
-            pos.y + R.camera.y - 3, 16, 16, "p");
+            pos.x + R.camera.x,
+            pos.y + R.camera.y - 3, 10, 16);
     }
 };
 
-CEntity.defaultSprite.bind("portal", 0, 16, 16 * 4, 16);
+CEntity.defaultSprite.bind("portal", 0, 8, 10 * 4, 16);
