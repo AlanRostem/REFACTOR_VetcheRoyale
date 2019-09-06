@@ -68,7 +68,6 @@ const Scene = {
         Scene.entityManager = entityManager;
         Scene.eventManager = new CEventManager(); // TODO::Kor ska denne?
 
-
         Scene.setup();
         Scene.tick();
     },
