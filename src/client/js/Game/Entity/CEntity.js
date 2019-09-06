@@ -23,7 +23,7 @@ export default class CEntity {
     }
 
     update(deltaTime, client) {
-        this.dataBuffer.updateFromClientFrame(deltaTime, this, client);
+        //this.dataBuffer.updateFromClientFrame(deltaTime, this, client);
     }
 
     // Returns the property value of the entity based on correct
