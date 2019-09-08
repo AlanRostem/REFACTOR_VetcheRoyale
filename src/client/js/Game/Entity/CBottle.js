@@ -6,9 +6,10 @@ export default class CBottle extends CEntity {
         let pos = this.getRealtimeProperty("pos");
         CEntity.defaultSprite.drawStill(this.getRealtimeProperty("type"),
             pos.x + R.camera.x,
-            pos.y + R.camera.y - 2 , 8, 8);
+            pos.y + R.camera.y, 8, 8);
     }
 };
 
 CEntity.defaultSprite.bind("ammo", 0, 0, 8, 8);
 CEntity.defaultSprite.bind("charge", 8, 0, 8, 8);
+CEntity.defaultSprite.bind("health", 16, 0, 8, 8);
