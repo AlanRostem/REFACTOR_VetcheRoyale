@@ -1,6 +1,7 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
+import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 export default class KelvinBar extends UIElement {
     constructor() {
@@ -20,6 +21,10 @@ export default class KelvinBar extends UIElement {
 
         this.equippedGunID = -1;
         this.hasWeapon = false;
+
+        this.animation = new SpriteSheet.Animation(0, 4, 5, 0.15);
+
+        UIElement.defaultSpriteSheet.bind("liquidTop", 26, 128, 4, 8);
     }
 
     update(deltaTime, client, entityList) {
@@ -94,7 +99,13 @@ export default class KelvinBar extends UIElement {
             4,
             diff);
         // Liquid Top
-        R.ctx.drawImage(this.src, this.glassTube.x + this.liquidFill.x + this.liquidTopCut.x, this.liquidTopCut.y, this.liquidTop.x, this.liquidTop.y, R.WIDTH - this.glassTube.x / 2 - this.liquidTop.x / 2 - 4 | 0, R.HEIGHT - 9 - diff, this.liquidTop.x, this.liquidTop.y);
+            UIElement.defaultSpriteSheet.animate("liquidTop", this.animation, 4, 8);
+            UIElement.defaultSpriteSheet.drawAnimated(
+                R.WIDTH - this.glassTube.x / 2 - this.liquidTop.x / 2 - 4 | 0,
+                R.HEIGHT - 9 - diff,
+                this.liquidTop.x,
+                this.liquidTop.y);
+       // R.ctx.drawImage(this.src, this.glassTube.x + this.liquidFill.x + this.liquidTopCut.x, this.liquidTopCut.y, this.liquidTop.x, this.liquidTop.y, R.WIDTH - this.glassTube.x / 2 - this.liquidTop.x / 2 - 4 | 0, R.HEIGHT - 9 - diff, this.liquidTop.x, this.liquidTop.y);
         R.ctx.restore();
         }
     }
