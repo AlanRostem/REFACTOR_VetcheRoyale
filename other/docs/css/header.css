@@ -1,0 +1,21 @@
+.header_box {
+    background-color: rgba(0,0,0,0.4);
+    height: 280px;
+    color: white;
+    top: 54px;
+    left:0;
+    width: 100%;
+}
+
+.header {
+    top: 15px;
+    position: relative;
+    font-family: Consolas;
+    text-align: center;
+    font-size: 70px;
+}
+
+.intro {
+    font-family: Consolas;
+    text-align: center;
+}
