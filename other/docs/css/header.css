@@ -1,5 +1,5 @@
 .header_box {
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(70,0,0,0.4);
     height: 280px;
     color: white;
     top: 54px;
@@ -13,6 +13,13 @@
     font-family: Consolas;
     text-align: center;
     font-size: 70px;
+}
+
+.header_text {
+    font-family: Consolas;
+    color: white;
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 .intro {
