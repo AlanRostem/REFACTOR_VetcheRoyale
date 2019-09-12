@@ -1,4 +1,32 @@
-import RemotePlayer from "./RemotePlayer.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: UserPlayer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: UserPlayer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import RemotePlayer from "./RemotePlayer.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
@@ -42,9 +70,9 @@ export default class UserPlayer extends RemotePlayer {
 
     overlapTile(pos, e) {
         return pos.y + this.height > e.y
-            && pos.y < (e.y + TILE_SIZE)
-            && pos.x + this.width > e.x
-            && pos.x < (e.x + TILE_SIZE);
+            &amp;&amp; pos.y &lt; (e.y + TILE_SIZE)
+            &amp;&amp; pos.x + this.width > e.x
+            &amp;&amp; pos.x &lt; (e.x + TILE_SIZE);
     }
 
     t_drawGhost() {
@@ -81,7 +109,7 @@ export default class UserPlayer extends RemotePlayer {
         //console.log(Date.now() - client.latency, this.serverState.serverTimeStamp);
         /*
         let t = client.latency / 1000;
-        if (Date.now() - client.latency <= this.serverState.serverTimeStamp) {
+        if (Date.now() - client.latency &lt;= this.serverState.serverTimeStamp) {
             this.output.pos =
                 vectorLinearInterpolation(this.output.pos,
                     vectorLinearInterpolation(this.serverState.pos, this.localPos, 60 * t),
@@ -120,8 +148,8 @@ export default class UserPlayer extends RemotePlayer {
         var tileX = Math.floor(this.width / TILE_SIZE) + proxy;
         var tileY = Math.floor(this.height / TILE_SIZE) + proxy;
 
-        for (var y = -proxy; y < tileY; y++) {
-            for (var x = -proxy; x < tileX; x++) {
+        for (var y = -proxy; y &lt; tileY; y++) {
+            for (var x = -proxy; x &lt; tileX; x++) {
                 var xx = cx + x;
                 var yy = cy + y;
 
@@ -134,16 +162,16 @@ export default class UserPlayer extends RemotePlayer {
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
                         if (pos.x + this.width > tile.x
-                            //&& this.oldPos.x + this.width <= tile.x
-                            && this.localVel.x > 0
+                            //&amp;&amp; this.oldPos.x + this.width &lt;= tile.x
+                            &amp;&amp; this.localVel.x > 0
                         ) {
                             pos.x = tile.x - this.width;
                             this.localVel.x = 0;
                             this.localSides.right = true;
                         }
-                        if (pos.x < tile.x + TILE_SIZE
-                            //&& this.oldPos.x >= tile.x + TILE_SIZE
-                            && this.localVel.x < 0
+                        if (pos.x &lt; tile.x + TILE_SIZE
+                            //&amp;&amp; this.oldPos.x >= tile.x + TILE_SIZE
+                            &amp;&amp; this.localVel.x &lt; 0
                         ) {
                             pos.x = tile.x + TILE_SIZE;
                             this.localVel.x = 0;
@@ -165,8 +193,8 @@ export default class UserPlayer extends RemotePlayer {
         var tileX = Math.floor(this.width / TILE_SIZE) + proxy;
         var tileY = Math.floor(this.height / TILE_SIZE) + proxy;
 
-        for (var y = -proxy; y < tileY; y++) {
-            for (var x = -proxy; x < tileX; x++) {
+        for (var y = -proxy; y &lt; tileY; y++) {
+            for (var x = -proxy; x &lt; tileX; x++) {
                 var xx = cx + x;
                 var yy = cy + y;
 
@@ -178,18 +206,18 @@ export default class UserPlayer extends RemotePlayer {
                 let id = currentMap.getID(xx, yy);
                 if (currentMap.isSolid(id)) {
                     if (this.overlapTile(pos, tile)) {
-                        if (pos.y + this.height > tile.y && this.oldPos.y + this.height <= tile.y) {
+                        if (pos.y + this.height > tile.y &amp;&amp; this.oldPos.y + this.height &lt;= tile.y) {
                             pos.y = tile.y - this.height;
                             this.localSides.bottom = true;
                         }
-                        if (pos.y < tile.y + TILE_SIZE && this.oldPos.y >= tile.y + TILE_SIZE) {
+                        if (pos.y &lt; tile.y + TILE_SIZE &amp;&amp; this.oldPos.y >= tile.y + TILE_SIZE) {
                             pos.y = tile.y + TILE_SIZE;
                             this.localSides.top = true;
                         }
                         /*
                         if (this.localVel.y > 0) {
                         }
-                        if (this.localVel.y < 0) {
+                        if (this.localVel.y &lt; 0) {
                         }
                          */
                     }
@@ -201,9 +229,9 @@ export default class UserPlayer extends RemotePlayer {
     serverReconciliation(client) {
         let pending = client.input.pending;
         let j = 0;
-        while (j < pending.length) {
+        while (j &lt; pending.length) {
             let input = pending[j];
-            if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
+            if (input.sequence &lt;= client.inboundPacket.lastProcessedInputSequence) {
                 pending.splice(j, 1);
             } else {
                 // TODO: SCALABILITY
@@ -231,4 +259,26 @@ export default class UserPlayer extends RemotePlayer {
     }
 
 
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 12 2019 15:02:13 GMT+0200 (W. Europe Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
