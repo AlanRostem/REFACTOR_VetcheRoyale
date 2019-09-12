@@ -2,9 +2,10 @@ import SpriteSheet from "./SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
 import AssetManager from "../../AssetManager.js"
 
-// Takes a tile map and tile sheet then draws the entire
-// tile map.
-export default class TileSheet extends SpriteSheet {
+/**
+ * Takes a tile map and tile sheet then draws the entire tile map.
+ */
+class TileSheet extends SpriteSheet {
     constructor(src, tileSize, map) {
         super(src);
         this.tileSize = tileSize;
@@ -48,3 +49,4 @@ export default class TileSheet extends SpriteSheet {
         R.context.drawImage(this.image, R.camera.boundPos.x, R.camera.boundPos.y);
     }
 }
+export default TileSheet;
