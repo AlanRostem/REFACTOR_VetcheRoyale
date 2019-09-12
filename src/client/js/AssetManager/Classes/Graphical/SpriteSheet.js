@@ -8,6 +8,7 @@ import Scene from "../../../Game/Scene.js";
 class SpriteSheet {
     /**
      * @param src {string} - Relative file path of the sprite sheet retrieved by AssetManager
+     * @see AssetManager
      */
     constructor(src) {
         this.src = src;
