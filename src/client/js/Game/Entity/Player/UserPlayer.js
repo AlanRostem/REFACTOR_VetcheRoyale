@@ -9,11 +9,11 @@ const TILE_SIZE = 8;
 
 
 /**
- * The player the client controls. It contains the client prediction code.
+ * The player the client controls. It contains the client side prediction code.
  */
-export default class UserPlayer extends RemotePlayer {
-    /*
-     * @param {object} data - Initial packet data sent by the server
+class UserPlayer extends RemotePlayer {
+    /**
+     * @param data {object} - Initial packet data sent by the server
      */
     constructor(data) {
         super(data);
@@ -229,6 +229,6 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
     }
-
-
 }
+
+export default UserPlayer;
