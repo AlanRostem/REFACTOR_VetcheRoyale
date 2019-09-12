@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: AnimationManager</title>
+    <title>JSDoc: Class: AssetManager</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: AnimationManager</h1>
+    <h1 class="page-title">Class: AssetManager</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>AnimationManager<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>AssetManager<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Manages animations for an object by mapping certain Animation objects to strings.</p></div>
+            <div class="class-description"><p>Singleton class managing assets by their file extension</p></div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="AnimationManager"><span class="type-signature"></span>new AnimationManager<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="AssetManager"><span class="type-signature"></span>new AssetManager<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_AnimationManager.js.html">AssetManager/Classes/Graphical/AnimationManager.js</a>, <a href="AssetManager_Classes_Graphical_AnimationManager.js.html#line5">line 5</a>
+        <a href="AssetManager_AssetManager.js.html">AssetManager/AssetManager.js</a>, <a href="AssetManager_AssetManager.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -149,7 +149,7 @@
     
 
     
-    <h4 class="name" id="addAnimation"><span class="type-signature"></span>addAnimation<span class="signature">(name, animation)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addDownloadCallback"><span class="type-signature"></span>addDownloadCallback<span class="signature">(callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -157,7 +157,7 @@
 
 
 <div class="description">
-    <p>Creates a new animation mapped to a name.</p>
+    <p>Add a callback function to the queue when all assets are downloaded in the queue</p>
 </div>
 
 
@@ -193,13 +193,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>callback</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">function</span>
 
 
             
@@ -209,30 +209,7 @@
 
             
 
-            <td class="description last"><p>Name of the new animation.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>animation</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Animation</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Object with sprite animation configurations.</p></td>
+            <td class="description last"><p>Callback function</p></td>
         </tr>
 
     
@@ -273,7 +250,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_AnimationManager.js.html">AssetManager/Classes/Graphical/AnimationManager.js</a>, <a href="AssetManager_Classes_Graphical_AnimationManager.js.html#line22">line 22</a>
+        <a href="AssetManager_AssetManager.js.html">AssetManager/AssetManager.js</a>, <a href="AssetManager_AssetManager.js.html#line270">line 270</a>
     </li></ul></dd>
     
 
@@ -309,7 +286,7 @@
     
 
     
-    <h4 class="name" id="animate"><span class="type-signature"></span>animate<span class="signature">(spriteSheetObj, spriteLocationName, fw, fh)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(path)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -317,7 +294,7 @@
 
 
 <div class="description">
-    <p>Function run in a draw loop that updates the animation frames.</p>
+    <p>Retrieve an asset (DOM object) from the cache</p>
 </div>
 
 
@@ -353,30 +330,7 @@
 
         <tr>
             
-                <td class="name"><code>spriteSheetObj</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="SpriteSheet.html">SpriteSheet</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Respective sprite sheet object</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>spriteLocationName</code></td>
+                <td class="name"><code>path</code></td>
             
 
             <td class="type">
@@ -392,53 +346,7 @@
 
             
 
-            <td class="description last"><p>Mapped location name of the sprite</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>fw</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Frame width of the sprite region</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>fh</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Frame height of the sprite region</p></td>
+            <td class="description last"><p>Relative file path</p></td>
         </tr>
 
     
@@ -479,144 +387,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_AnimationManager.js.html">AssetManager/Classes/Graphical/AnimationManager.js</a>, <a href="AssetManager_Classes_Graphical_AnimationManager.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getAnimation"><span class="type-signature"></span>getAnimation<span class="signature">(name)</span><span class="type-signature"> &rarr; {Animation}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Retrieve an existing animation.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The mapped name of an existing animation.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_AnimationManager.js.html">AssetManager/Classes/Graphical/AnimationManager.js</a>, <a href="AssetManager_Classes_Graphical_AnimationManager.js.html#line32">line 32</a>
+        <a href="AssetManager_AssetManager.js.html">AssetManager/AssetManager.js</a>, <a href="AssetManager_AssetManager.js.html#line246">line 246</a>
     </li></ul></dd>
     
 
@@ -652,7 +423,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Animation</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -670,7 +441,7 @@
     
 
     
-    <h4 class="name" id="setCurrentAnimation"><span class="type-signature"></span>setCurrentAnimation<span class="signature">(name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loadJSON"><span class="type-signature"></span>loadJSON<span class="signature">(path, loadedCallback, failureCallback)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -678,7 +449,7 @@
 
 
 <div class="description">
-    <p>Sets the current animation key to be played.</p>
+    <p>Loads (using fetch API) a .json file and parses it. The method returns pair with the json string and parsed object</p>
 </div>
 
 
@@ -714,7 +485,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>path</code></td>
             
 
             <td class="type">
@@ -730,7 +501,53 @@
 
             
 
-            <td class="description last"><p>String that decides the current animation to be played.</p></td>
+            <td class="description last"><p>File path of the .json</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>loadedCallback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Callback executed when successfully loading</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>failureCallback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Callback executed when loading fails</p></td>
         </tr>
 
     
@@ -771,7 +588,322 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_AnimationManager.js.html">AssetManager/Classes/Graphical/AnimationManager.js</a>, <a href="AssetManager_Classes_Graphical_AnimationManager.js.html#line13">line 13</a>
+        <a href="AssetManager_AssetManager.js.html">AssetManager/AssetManager.js</a>, <a href="AssetManager_AssetManager.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mapFilePathCallback"><span class="type-signature"></span>mapFilePathCallback<span class="signature">(path, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Map a callback function to a file path. The callback is executed when the particular file successfully loads</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>File path to the mapped file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Callback when the particular file is loaded</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="AssetManager_AssetManager.js.html">AssetManager/AssetManager.js</a>, <a href="AssetManager_AssetManager.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="queue"><span class="type-signature"></span>queue<span class="signature">(path)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Queues assets from an asset configuration file to load and execute loading callbacks.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>File path to the configuration file containing all file names relative to the public/assets directory</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="AssetManager_AssetManager.js.html">AssetManager/AssetManager.js</a>, <a href="AssetManager_AssetManager.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
