@@ -2,6 +2,7 @@ import AssetManager from "../../AssetManager.js"
 import R from "../../../Graphics/Renderer.js";
 import Scene from "../../../Game/Scene.js";
 
+
 /**
  * Class representation of a sprite sheet. Has many features such as cropping and animating.
  */

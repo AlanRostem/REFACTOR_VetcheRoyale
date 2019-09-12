@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: AssetManager/Classes/Text/CJSONFile.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,50 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: AssetManager/Classes/Text/CJSONFile.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>REFACTOR_VetcheRoyale</h1>
-<p>Complete restart of the Vetche Royale project with organized code and performance in mind.
-Here you will find documentation of all the code written by going to the links on the right of the documentation page provided in docs/index.html.</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import AssetManager from "../../AssetManager.js"
+
+/**
+ * Object that get .json files loaded and parsed by the asset manager
+ * @see AssetManager
+ */
+class JSONFile {
+    /**
+     * @param src {string} - Relative file path made by the asset manager
+     * @param downloadCallback {function} - Callback when the source is loaded by the asset manager
+     */
+    constructor(src, downloadCallback) {
+        this.src = src;
+        this.fileContent = "";
+        this.objectContent = {};
+        var _this = this;
+        AssetManager.addDownloadCallback(() => {
+            _this.fileContent = AssetManager.get(src).string;
+            _this.objectContent = AssetManager.get(src).object;
+            downloadCallback(this.objectContent);
+        });
+    }
+
+    /**
+     * Retrieve the parsed object data
+     * @returns {object}
+     */
+    get() {
+        return this.objectContent;
+    }
+}
+
+export default JSONFile;</code></pre>
+        </article>
     </section>
-
-
 
 
 

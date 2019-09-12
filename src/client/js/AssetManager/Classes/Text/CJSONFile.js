@@ -1,7 +1,14 @@
 import AssetManager from "../../AssetManager.js"
 
-// Loads in a JSON file and creates a new object with its data
-export default class JSONFile {
+/**
+ * Object that get .json files loaded and parsed by the asset manager
+ * @see AssetManager
+ */
+class JSONFile {
+    /**
+     * @param src {string} - Relative file path made by the asset manager
+     * @param downloadCallback {function} - Callback when the source is loaded by the asset manager
+     */
     constructor(src, downloadCallback) {
         this.src = src;
         this.fileContent = "";
@@ -14,8 +21,13 @@ export default class JSONFile {
         });
     }
 
+    /**
+     * Retrieve the parsed object data
+     * @returns {object}
+     */
     get() {
         return this.objectContent;
     }
 }
 
+export default JSONFile;

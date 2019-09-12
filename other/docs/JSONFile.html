@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Animation</title>
+    <title>JSDoc: Class: JSONFile</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Animation</h1>
+    <h1 class="page-title">Class: JSONFile</h1>
 
     
 
@@ -28,10 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="SpriteSheet.html">SpriteSheet</a>.</span>Animation<span class="signature">(startCol, endCol, framesPerRow, frameSpeed)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>JSONFile<span class="signature">(src, downloadCallback)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Static interface for configuring different sprite animations</p></div>
+            <div class="class-description"><p>Object that get .json files loaded and parsed by the asset manager</p></div>
         
     
 </header>
@@ -46,7 +45,7 @@
     
 
     
-    <h4 class="name" id="Animation"><span class="type-signature"></span>new Animation<span class="signature">(startCol, endCol, framesPerRow, frameSpeed)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="JSONFile"><span class="type-signature"></span>new JSONFile<span class="signature">(src, downloadCallback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -86,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>startCol</code></td>
+                <td class="name"><code>src</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -102,20 +101,20 @@
 
             
 
-            <td class="description last"><p>Start column relative to the mapped sprite region position</p></td>
+            <td class="description last"><p>Relative file path made by the asset manager</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>endCol</code></td>
+                <td class="name"><code>downloadCallback</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">function</span>
 
 
             
@@ -125,53 +124,7 @@
 
             
 
-            <td class="description last"><p>End column relative to the mapped sprite region position</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>framesPerRow</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Number of frames per row if the animation has multiple rows relative to the mapped region</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>frameSpeed</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Frame speed in seconds</p></td>
+            <td class="description last"><p>Callback when the source is loaded by the asset manager</p></td>
         </tr>
 
     
@@ -212,12 +165,19 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_SpriteSheet.js.html">AssetManager/Classes/Graphical/SpriteSheet.js</a>, <a href="AssetManager_Classes_Graphical_SpriteSheet.js.html#line217">line 217</a>
+        <a href="AssetManager_Classes_Text_CJSONFile.js.html">AssetManager/Classes/Text/CJSONFile.js</a>, <a href="AssetManager_Classes_Text_CJSONFile.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>AssetManager</li>
+        </ul>
+    </dd>
     
 
     
@@ -259,6 +219,116 @@
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Retrieve the parsed object data</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="AssetManager_Classes_Text_CJSONFile.js.html">AssetManager/Classes/Text/CJSONFile.js</a>, <a href="AssetManager_Classes_Text_CJSONFile.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
