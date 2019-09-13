@@ -130,8 +130,8 @@ const R = {
         R.context.save();
         R.context.fillStyle = color;
         R.context.fillRect(
-            Math.round(x + (useCamera ? R.camera.boundPos.x : 0)),
-            Math.round(y + (useCamera ? R.camera.boundPos.y : 0)),
+            Math.round(x + (useCamera ? R.camera.displayPos.x : 0)),
+            Math.round(y + (useCamera ? R.camera.displayPos.y : 0)),
             width, height
         );
         R.context.restore();

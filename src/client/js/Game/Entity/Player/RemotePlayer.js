@@ -35,8 +35,8 @@ class RemotePlayer extends CEntity {
             RemotePlayer.sprite.flipX();
         }
         RemotePlayer.sprite.drawAnimated(
-            Math.round(this.output.pos.x) + R.camera.boundPos.x,
-            Math.round(this.output.pos.y) + R.camera.boundPos.y);
+            Math.round(this.output.pos.x) + R.camera.displayPos.x,
+            Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
     }
 }

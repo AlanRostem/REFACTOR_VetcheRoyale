@@ -61,8 +61,8 @@ export default class InputListener {
 
         client.setOutboundPacketData("input", input);
         this.mouse.world = {
-            x: this.mouse.x - R.camera.boundPos.x,
-            y: this.mouse.y - R.camera.boundPos.y,
+            x: this.mouse.x - R.camera.displayPos.x,
+            y: this.mouse.y - R.camera.displayPos.y,
         };
 
         //client.player.output.pos.x += input.pressTime * 65;
@@ -182,10 +182,12 @@ export default class InputListener {
             this.mouse.angleCenter = a;
 
             this.mouse.world = {
-                x: this.mouse.x - R.camera.boundPos.x,
-                y: this.mouse.y - R.camera.boundPos.y,
+                x: this.mouse.x - R.camera.displayPos.x,
+                y: this.mouse.y - R.camera.displayPos.y,
             };
-            
+
+
+
             /*
             console.log(
                 Math.asin(this.mouse.sinCenter) * 180 / Math.PI,

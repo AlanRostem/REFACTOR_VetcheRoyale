@@ -1,11 +1,13 @@
 import Vector2D from "../../../shared/code/Math/CVector2D.js"
 import {typeCheck} from "../../../shared/code/Debugging/CtypeCheck.js"
-export default class Camera {
-    constructor(offsetX, offsetY, boundVec2D = new Vector2D(0, 0)) {
-        this.boundPos = boundVec2D;
+import CObjectNotationMap from "../../../shared/code/DataStructures/CObjectNotationMap.js";
+
+class Camera {
+    constructor(offsetX, offsetY) {
+        this.displayPos = new Vector2D(0, 0);
         this.pos = {
-            x: -(this.boundPos.x - offsetX),
-            y: -(this.boundPos.y - offsetY)
+            x: -(this.displayPos.x - offsetX),
+            y: -(this.displayPos.y - offsetY)
         };
 
         this.offset = {
@@ -17,35 +19,59 @@ export default class Camera {
             x: offsetX,
             y: offsetY,
         };
-
+        this.shifting = {
+            x: 0,
+            y: 0,
+        };
+        this.follow = new Vector2D(0, 0);
+        this.camConfigs = new CObjectNotationMap();
+        this.camConfigs.set("followPlayer", true);
+        this.camConfigs.set("followEM", false);
+        this.isShifted = false;
     }
 
-    update(pos) {
-        this.boundPos.x = -Math.round(pos.x - this.offset.x);
-        this.boundPos.y = -Math.round(pos.y - this.offset.y);
+    config(string) {
+        return this.camConfigs.get(string);
+    }
+
+    setCurrentFollowPos(pos) {
+        this.follow = pos;
+    }
+
+    update() {
+        if (this.isShifted) {
+            this.offset.x = this.shifting.x;
+            this.offset.y = this.shifting.y;
+        }
+        this.displayPos.x = -Math.round(this.follow.x - this.offset.x);
+        this.displayPos.y = -Math.round(this.follow.y - this.offset.y);
         this.offset.x = this.originalOffset.x;
         this.offset.y = this.originalOffset.y;
+        this.isShifted = false;
     }
 
     shift(x, y) {
-        this.offset.x = this.originalOffset.x + x;
-        this.offset.y = this.originalOffset.y + y;
+        this.shifting.x = this.originalOffset.x + x;
+        this.shifting.y = this.originalOffset.y + y;
+        this.isShifted = true;
     }
 
     get x() {
-        return this.boundPos.x;
+        return this.displayPos.x;
     }
 
     get y() {
-        return this.boundPos.y;
+        return this.displayPos.y;
     }
 
-    set boundPos(vec2D) {
+    set displayPos(vec2D) {
         typeCheck.instance(Vector2D, vec2D);
-        this._boundPos = vec2D;
+        this._displayPos = vec2D;
     }
 
-    get boundPos() {
-        return this._boundPos;
+    get displayPos() {
+        return this._displayPos;
     }
 }
+
+export default Camera;

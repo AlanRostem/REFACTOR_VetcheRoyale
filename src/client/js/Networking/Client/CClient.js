@@ -118,6 +118,9 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);
+        if (this.input.getMouse(2)) {
+            R.camera.shift(-70 * this.input.mouse.cosCenter, -70 * this.input.mouse.sinCenter)
+        }
     }
 
     emit(eventType, data) {

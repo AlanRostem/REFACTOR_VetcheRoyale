@@ -103,8 +103,7 @@ const Scene = {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
-            if (Scene.clientRef.player)
-                R.camera.update(Scene.clientRef.player.getRealtimeProperty("centerData"))
+            R.camera.update()
         }
     },
 
@@ -132,6 +131,9 @@ const Scene = {
             UI.draw();
             R.drawText(Scene.clientRef.latency + "ms", 4, 4, "White");
             document.body.style.cursor = "none";
+            if (Scene.clientRef.input.getMouse(2)) {
+                R.drawRect("red", -1 + R.screenSize.x / 2, -1 + R.screenSize.y / 2, 2, 2)
+            }
         } else {
             document.body.style.cursor = "default";
             var str = "Loading " +

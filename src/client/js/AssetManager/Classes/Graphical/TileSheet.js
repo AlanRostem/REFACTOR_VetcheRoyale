@@ -62,7 +62,7 @@ class TileSheet extends SpriteSheet {
      * Draw the image to the main canvas
      */
     draw() {
-        R.context.drawImage(this.image, R.camera.boundPos.x, R.camera.boundPos.y);
+        R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
     }
 }
 export default TileSheet;

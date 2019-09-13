@@ -57,8 +57,8 @@ class UserPlayer extends RemotePlayer {
             RemotePlayer.sprite.flipX();
         }
         RemotePlayer.sprite.drawAnimated(
-            Math.round(this.serverState.pos.x) + R.camera.boundPos.x,
-            Math.round(this.serverState.pos.y) + R.camera.boundPos.y);
+            Math.round(this.serverState.pos.x) + R.camera.displayPos.x,
+            Math.round(this.serverState.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
         R.ctx.restore();
     }
@@ -79,6 +79,9 @@ class UserPlayer extends RemotePlayer {
         super.update(deltaTime, client);
         this.currentMap = currentMap;
         this.weapon = Scene.entities.getEntityByID(this.output.invWeaponID);
+        if (R.camera.config("followPlayer")) {
+            R.camera.setCurrentFollowPos(this.getRealtimeProperty("centerData"));
+        }
         //console.log(Date.now() - client.latency, this.serverState.serverTimeStamp);
         /*
         let t = client.latency / 1000;
