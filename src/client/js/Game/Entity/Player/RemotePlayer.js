@@ -8,6 +8,8 @@ import AssetManager from "../../../AssetManager/AssetManager.js"
  * Other players in the game. Overrides update and draw methods of CEntity and contains sprite
  * and animation data.
  * @see CEntity
+ * @memberOf ClientSide
+
  */
 class RemotePlayer extends CEntity {
     constructor(dataPack) {

@@ -11,6 +11,8 @@ const TILE_SIZE = 8;
 /**
  * The player the client controls. It contains the client side prediction code and the interface
  * for events happening only to the user end player entity.
+ * @memberOf ClientSide
+
  */
 class UserPlayer extends RemotePlayer {
     constructor(data) {

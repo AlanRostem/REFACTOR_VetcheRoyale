@@ -1,11 +1,15 @@
-// Client side entity instance. Used for rendering
-// and other potential entity management on the client.
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "../../Networking/Interpolation/EntitySnapshotBuffer.js";
 import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 
-export default class CEntity {
+
+
+/**
+ * The visual representation of entities present on the server.
+ * @memberOf ClientSide
+ */
+class CEntity {
     /**
      * @param initDataPack {object} - Initial packet data sent by the server. Constructor is called when the server emits
      * the 'initEntity' or 'spawnEntity' socket event.
@@ -94,3 +98,5 @@ export default class CEntity {
 }
 
 CEntity.defaultSprite = new SpriteSheet("entity/entities.png");
+
+export default CEntity;

@@ -5,6 +5,10 @@ import CEntityManager from "./Networking/Client/CEntityManager.js"
 import AssetManager from "./AssetManager/AssetManager.js";
 import ConsoleCommands from "./ConsoleCommands.js";
 
+/**
+ * @namespace ClientSide
+ */
+
 // This is the initialization entry point
 
 var client = new CClient(io());

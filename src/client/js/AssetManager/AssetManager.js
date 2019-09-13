@@ -2,6 +2,8 @@ import ONMap from "../../../shared/code/DataStructures/CObjectNotationMap.js";
 
 /**
  * Singleton class managing assets by their file extension
+ * @memberOf ClientSide
+
  */
 class AssetManager {
 

@@ -20,8 +20,7 @@ const EntityTypeSpawner = {
     functions: {},
 
     /**
-     * Map a class type (extends CEntity) to a constructor name of the respective server entity. The respective
-     * entity packet data spawns the mapped entity type on the client.
+     * Map a class type (extends CEntity) to a constructor name of the respective server entity
      * @param name {string} - Server entity constructor name
      * @param classType {Function} - Class constructor
      * @memberOf EntityTypeSpawner

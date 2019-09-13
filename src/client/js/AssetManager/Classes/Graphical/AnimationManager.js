@@ -1,6 +1,7 @@
 /**
 * Manages animations for an object by mapping certain Animation objects to strings.
-*/
+ * @memberOf ClientSide
+ */
 class AnimationManager {
     constructor() {
         this.animations = {};

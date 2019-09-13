@@ -5,6 +5,8 @@ import Scene from "../../../Game/Scene.js";
 
 /**
  * Class representation of a sprite sheet. Has many features such as cropping and animating.
+ * @memberOf ClientSide
+
  */
 class SpriteSheet {
     /**

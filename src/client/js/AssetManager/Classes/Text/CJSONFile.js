@@ -3,6 +3,8 @@ import AssetManager from "../../AssetManager.js"
 /**
  * Object that get .json files loaded and parsed by the asset manager
  * @see AssetManager
+ * @memberOf ClientSide
+
  */
 class JSONFile {
     /**

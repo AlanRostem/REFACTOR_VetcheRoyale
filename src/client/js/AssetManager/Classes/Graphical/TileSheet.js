@@ -4,6 +4,8 @@ import AssetManager from "../../AssetManager.js"
 
 /**
  * Takes a tile map and tile sheet then draws the entire tile map.
+ * @memberOf ClientSide
+
  */
 class TileSheet extends SpriteSheet {
     /**
