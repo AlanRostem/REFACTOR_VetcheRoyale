@@ -3,11 +3,12 @@ import R from "../../Graphics/Renderer.js";
 import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
+import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
 
 /**
-* Class representation of the client. Holds input callbacks and manages socket events.
+ * Class representation of the client. Holds input callbacks and manages socket events.
  */
- class CClient {
+class CClient {
     constructor(socket) {
         this.socket = socket;
         this.id = socket.id;
@@ -68,7 +69,6 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
     }
 
 
-
     get inboundPacket() {
         return this.lastReceivedData;
     }
@@ -118,8 +118,18 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);
+        // TODO: Do this elsewhere
         if (this.input.getMouse(2)) {
-            R.camera.shift(-70 * this.input.mouse.cosCenter, -70 * this.input.mouse.sinCenter)
+            let from = {x: 0, y: 0};
+            let to = {x: -500*this.input.mouse.cosCenter, y: -500*this.input.mouse.sinCenter};
+            this.toLerp = vectorLinearInterpolation(this.toLerp,
+                vectorLinearInterpolation(from, to, .2), .2);
+            R.camera.shift(this.toLerp.x, this.toLerp.y);
+        } else {
+            this.toLerp = {
+                x: 0,
+                y: 0,
+            };
         }
     }
 
@@ -149,7 +159,7 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
         });
 
         this.on('broadcast-newPlayer', data => {
-           console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
+            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
 
         this.on("gameEvent-changeMap", data => {
@@ -161,7 +171,7 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
         });
 
         this.on("manualDisconnect", message => {
-            this.discReasonMsg = "reason: " +message;
+            this.discReasonMsg = "reason: " + message;
             this.disconnected = true;
             this.socket.close();
             document.body.style.cursor = "default";
