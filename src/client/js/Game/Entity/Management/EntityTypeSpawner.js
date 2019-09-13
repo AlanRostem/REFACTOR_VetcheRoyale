@@ -12,9 +12,10 @@ import CSEW_9 from "../Weapons/CSEW-9.js";
 /**
  * Creates client versions of inbound entity data by mapping extended classes (CEntity) to the entity
  * constructor name from the server.
- * @namespace
  * @see CEntity
  * @type {object}
+ * @memberOf ClientSide
+ * @namespace
  */
 const EntityTypeSpawner = {
     functions: {},
