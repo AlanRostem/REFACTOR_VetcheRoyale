@@ -5,7 +5,9 @@ import AnimationManager from "../../../AssetManager/Classes/Graphical/AnimationM
 import AssetManager from "../../../AssetManager/AssetManager.js"
 
 /**
- * Other players in the game
+ * Other players in the game. Overrides update and draw methods of CEntity and contains sprite
+ * and animation data.
+ * @see CEntity
  */
 class RemotePlayer extends CEntity {
     constructor(dataPack) {
@@ -39,6 +41,7 @@ class RemotePlayer extends CEntity {
 
 RemotePlayer.sprite = new SpriteSheet("entity/player.png");
 
+// TODO: Remove test
 AssetManager.mapFilePathCallback("entity/player.png", cache => {
     console.log("GG we loaded in entity/player.png");
 });

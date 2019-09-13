@@ -9,12 +9,10 @@ const TILE_SIZE = 8;
 
 
 /**
- * The player the client controls. It contains the client side prediction code.
+ * The player the client controls. It contains the client side prediction code and the interface
+ * for events happening only to the user end player entity.
  */
 class UserPlayer extends RemotePlayer {
-    /**
-     * @param data {object} - Initial packet data sent by the server
-     */
     constructor(data) {
         super(data);
         this.serverState = data;
