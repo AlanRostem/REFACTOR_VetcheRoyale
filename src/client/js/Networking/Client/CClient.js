@@ -103,13 +103,9 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
         }
         this.localTime += deltaTime;
         this.startTime = Date.now();
-        var e = entityManager.getEntityByID(this.id);
         if (this.inboundPacket) {
             if (this.inboundPacket.entityData[this.id]) {
                 Scene.currentMapName = this.player.output.gameData.mapName;
-                if (e) {
-                    R.camera.update(e.output.centerData);
-                }
             } else {
                 //if (e) entityManager.removeEntity(e.id);
                 if (this.inboundPacket.spectatorSubject) {

@@ -40,12 +40,12 @@ export default class GunBox extends UIElement {
             R.ctx.drawImage(this.src,
                 0,
                 36,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
                 R.WIDTH - 92,
                 R.HEIGHT - 36,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
             );
             R.ctx.restore();
         }

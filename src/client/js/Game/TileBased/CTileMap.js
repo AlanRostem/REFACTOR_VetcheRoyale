@@ -2,8 +2,11 @@ import JSONFile from "../../AssetManager/Classes/Text/CJSONFile.js"
 import TileSheet from "../../AssetManager/Classes/Graphical/TileSheet.js";
 import AssetManager from "../../AssetManager/AssetManager.js"
 
-// Tile map class for the client.
-export default class CTileMap {
+/**
+ * Tile map class for the client. It reads the shared .json file for the tile map
+ * that the server also has access to.
+ */
+class CTileMap {
     constructor(jsonSrc, imgSrc, name) {
         var _this = this;
         this.name = name;
@@ -18,6 +21,9 @@ export default class CTileMap {
         this.dontDrawID = 0;
     }
 
+    /**
+     * Draws the entire tile map on the canvas in the game loop.
+     */
     draw() {
         if (this.tileSheet) {
             this.tileSheet.draw();
@@ -36,3 +42,5 @@ export default class CTileMap {
         return id < 17 && id !== 0;
     }
 }
+
+export default CTileMap;

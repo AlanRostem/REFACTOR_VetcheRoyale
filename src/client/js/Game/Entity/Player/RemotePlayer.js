@@ -43,10 +43,6 @@ class RemotePlayer extends CEntity {
 
 RemotePlayer.sprite = new SpriteSheet("entity/player.png");
 
-// TODO: Remove test
-AssetManager.mapFilePathCallback("entity/player.png", cache => {
-    console.log("GG we loaded in entity/player.png");
-});
 
 RemotePlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
 RemotePlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);

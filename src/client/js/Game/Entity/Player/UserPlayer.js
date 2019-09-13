@@ -3,6 +3,7 @@ import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
+import Scene from "../../Scene.js";
 
 
 const TILE_SIZE = 8;
@@ -206,7 +207,6 @@ class UserPlayer extends RemotePlayer {
             if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
                 pending.splice(j, 1);
             } else {
-                // TODO: SCALABILITY
                 this.oldPos = this.output.pos;
                 this.localVel.x = 0;
 

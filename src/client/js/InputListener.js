@@ -50,8 +50,7 @@ export default class InputListener {
             sequence: this.sequence++,
         };
 
-        // TODO: Calculate press time for each of the
-        // TODO: different input types (keys or mouse)
+
         if (this.getReconKey(68)) {
             input.pressTime = dtsec;
         } else if (this.getReconKey(65)) {
@@ -66,7 +65,6 @@ export default class InputListener {
             y: this.mouse.y - R.camera.boundPos.y,
         };
 
-        // TODO: CLIENT SIDE PREDICTION
         //client.player.output.pos.x += input.pressTime * 65;
         //client.player.pendingKeys = input.keyStates;
         //client.player.output.pos.x += client.player.localVel.x = Math.sign(input.pressTime);
@@ -187,8 +185,7 @@ export default class InputListener {
                 x: this.mouse.x - R.camera.boundPos.x,
                 y: this.mouse.y - R.camera.boundPos.y,
             };
-
-
+            
             /*
             console.log(
                 Math.asin(this.mouse.sinCenter) * 180 / Math.PI,

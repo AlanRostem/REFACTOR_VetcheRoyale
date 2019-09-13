@@ -31,12 +31,12 @@ export default class ModBox extends UIElement {
             R.ctx.drawImage(this.src,
                 0,
                 68,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
                 R.WIDTH - 110,
                 R.HEIGHT - 36 + this.frame.y,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
             );
             R.ctx.restore();
         }

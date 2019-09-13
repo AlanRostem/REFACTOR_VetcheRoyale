@@ -28,7 +28,6 @@ class CEntity {
          */
         this.dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
-        // TODO: Initialize constants in a better way
         this.color = this.output.color;
         this.width = this.output.width;
         this.height = this.output.height;

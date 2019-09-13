@@ -138,4 +138,5 @@ const R = {
     }
 };
 
+window.R = R;
 export default R;

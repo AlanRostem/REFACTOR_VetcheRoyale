@@ -2,6 +2,7 @@ import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import AssetManager from "../AssetManager/AssetManager.js";
 import CClient from "../Networking/Client/CClient.js";
+import Scene from "../Game/Scene.js";
 
 
 export default class MiniMap extends UIElement {
