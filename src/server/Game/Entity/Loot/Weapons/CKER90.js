@@ -35,6 +35,8 @@ class ATBullet extends Projectile {
                             this.findPlayers = true;
                             this.weapon = owner.inventory.weapon;
                             this.setQuadTreeRange(160, 160);
+                        } else {
+                            this.findPlayers = false;
                         }
                     }
                 }
@@ -48,7 +50,9 @@ class ATBullet extends Projectile {
         super.forEachNearbyEntity(entity, entityManager);
         if (this.findPlayers) {
             if (entity instanceof Player) {
-                this.weapon.found[entity.id] = entity.center;
+                if (!entity.isTeammate(this.getOwner(entityManager))) {
+                    this.weapon.found[entity.id] = entity.center;
+                }
             }
         }
     }
@@ -100,7 +104,7 @@ class CKER90 extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        //this.found = {};
+        this.found = {};
     }
 
     fire(player, entityManager, deltaTime, angle) {

@@ -34,8 +34,7 @@ class CCKER90 extends CWeapon {
         }
         R.camera.shift(this.toLerp.x, this.toLerp.y);
         let found = this.getRealtimeProperty("found");
-        if (found) console.log(found)
-
+        
     }
 
     draw() {
