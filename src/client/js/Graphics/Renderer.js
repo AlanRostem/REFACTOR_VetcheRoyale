@@ -97,7 +97,6 @@ const R = {
         var img = AssetManager.get("font/ascii" + color + ".png");
 
         if (!img)  return;
-
         str = str.toString();
         for (var i = 0; i < str.length; i++) {
             var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;

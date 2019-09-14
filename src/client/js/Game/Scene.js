@@ -15,6 +15,7 @@ import Stats from "../UI/Stats.js";
 
 import TileMapManager from "./TileBased/TileMapManager.js"
 import Announcement from "../UI/Announcement.js";
+import EnemyDetector from "../UI/EnemyDetector.js";
 
 /**
  * The main object on the client that renders the game world and UI.
@@ -64,6 +65,7 @@ const Scene = {
                 UI.append(new GunBox());
                 UI.append(new ModBox());
                 UI.append(new Stats());
+                UI.append(new EnemyDetector());
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();

@@ -1,6 +1,7 @@
 import CWeapon from "./CWeapon.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import R from "../../../Graphics/Renderer.js";
+import UI from "../../../UI/UI.js";
 
 class CCKER90 extends CWeapon {
     constructor(props) {
@@ -33,24 +34,8 @@ class CCKER90 extends CWeapon {
                 vectorLinearInterpolation(this.toLerp, to, .2), .2);
         }
         R.camera.shift(this.toLerp.x, this.toLerp.y);
-
+        UI.getElement("enemyDetector").queryPositions(this.getRealtimeProperty("found"));
     }
-
-    draw() {
-        // TODO: Show how many players detected
-        super.draw();
-        let found = this.getRealtimeProperty("found");
-        for (let id in found) {
-            let pos = found[id];
-            if (pos.x + R.camera.x < 0) pos.x = R.camera.x;
-            if (pos.x + R.camera.x > R.screenSize.x) pos.x = R.camera.x + R.screenSize.x;
-            if (pos.y + R.camera.y < 0) pos.y = R.camera.y;
-            if (pos.y + R.camera.y > R.screenSize.y) pos.y = R.camera.y + R.screenSize.y;
-            console.log(pos)
-            R.drawRect("red", pos.x, pos.y, 2, 6);
-        }
-    }
-
 }
 
 export default CCKER90;
