@@ -23,7 +23,7 @@ class CCKER90 extends CWeapon {
         if (isScoping) {
             if (client.input.getMouse(3)) {
                 let from = {x: 0, y: 0};
-                let to = {x: -500*client.input.mouse.cosCenter, y: -500*client.input.mouse.sinCenter};
+                let to = {x: -500 * client.input.mouse.cosCenter, y: -500 * client.input.mouse.sinCenter};
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);
             }
@@ -33,12 +33,22 @@ class CCKER90 extends CWeapon {
                 vectorLinearInterpolation(this.toLerp, to, .2), .2);
         }
         R.camera.shift(this.toLerp.x, this.toLerp.y);
-        let found = this.getRealtimeProperty("found");
-        
+
     }
 
     draw() {
+        // TODO: Show how many players detected
         super.draw();
+        let found = this.getRealtimeProperty("found");
+        for (let id in found) {
+            let pos = found[id];
+            if (pos.x + R.camera.x < 0) pos.x = R.camera.x;
+            if (pos.x + R.camera.x > R.screenSize.x) pos.x = R.camera.x + R.screenSize.x;
+            if (pos.y + R.camera.y < 0) pos.y = R.camera.y;
+            if (pos.y + R.camera.y > R.screenSize.y) pos.y = R.camera.y + R.screenSize.y;
+            console.log(pos)
+            R.drawRect("red", pos.x, pos.y, 2, 6);
+        }
     }
 
 }
