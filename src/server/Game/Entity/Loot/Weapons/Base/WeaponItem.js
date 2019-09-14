@@ -14,10 +14,11 @@ class WeaponItem extends Loot {
 
         this.addStaticSnapShotData([
             "displayName",
-            "weaponClass"
+            "weaponClass",
         ]);
         this.addDynamicSnapShotData([
             "equippedToPlayer",
+            "playerID",
         ]);
     }
 

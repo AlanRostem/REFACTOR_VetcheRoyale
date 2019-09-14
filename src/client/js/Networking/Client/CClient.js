@@ -118,19 +118,6 @@ class CClient {
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);
-        // TODO: Do this elsewhere
-        if (this.input.getMouse(2)) {
-            let from = {x: 0, y: 0};
-            let to = {x: -500*this.input.mouse.cosCenter, y: -500*this.input.mouse.sinCenter};
-            this.toLerp = vectorLinearInterpolation(this.toLerp,
-                vectorLinearInterpolation(from, to, .2), .2);
-            R.camera.shift(this.toLerp.x, this.toLerp.y);
-        } else {
-            this.toLerp = {
-                x: 0,
-                y: 0,
-            };
-        }
     }
 
     emit(eventType, data) {

@@ -131,10 +131,6 @@ const Scene = {
             UI.draw();
             R.drawText(Scene.clientRef.latency + "ms", 4, 4, "White");
             document.body.style.cursor = "none";
-            if (Scene.clientRef.input.getMouse(2)) {
-                // TODO: Do this elsewhere
-                R.drawRect("red", -1 + R.screenSize.x / 2, -1 + R.screenSize.y / 2, 2, 2)
-            }
         } else {
             document.body.style.cursor = "default";
             var str = "Loading " +
