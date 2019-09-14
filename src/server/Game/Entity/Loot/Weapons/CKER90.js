@@ -34,7 +34,7 @@ class ATBullet extends Projectile {
                         if (owner.inventory.weapon.dataIsScoping) {
                             this.findPlayers = true;
                             this.weapon = owner.inventory.weapon;
-                            this.setQuadTreeRange(160, 160);
+                            this.setQuadTreeRange(5 * 8, 5 * 8);
                         } else {
                             this.findPlayers = false;
                         }

@@ -18,8 +18,9 @@ class EnemyDetector extends UIElement {
     draw() {
         super.draw();
         let enemies = Object.keys(this.found).length;
+        let color = "Red";
         if (enemies > 0) {
-            let color = this.flashTime < this.maxFlashTime / 2 ? "Red" : "White";
+            color = this.flashTime < this.maxFlashTime / 2 ? "Red" : "White";
             this.flashTime -= Scene.deltaTime;
             if (this.flashTime <= 0) {
                 this.flashTime = this.maxFlashTime;
@@ -56,9 +57,10 @@ class EnemyDetector extends UIElement {
                 pushY = -push;
             }
             let distance = Vector2D.distance(Scene.clientRef.player.getRealtimeProperty("pos"), pos) / 8 | 0;
-            R.drawText(distance + "m", disp.x + pushX - 5, disp.y + pushY, "Red");
-            R.drawRect("red", disp.x, disp.y, dim, dim);
+            R.drawText(distance + "m", disp.x + pushX - 5, disp.y + pushY, color);
+            R.drawRect(color.toLowerCase(), disp.x, disp.y, dim, dim);
         }
+        this.found = {};
     }
 
 }
