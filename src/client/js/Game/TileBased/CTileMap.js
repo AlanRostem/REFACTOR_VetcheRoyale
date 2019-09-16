@@ -16,8 +16,6 @@ class CTileMap {
             _this.h = object.height;
             _this.tileSheet = new TileSheet(imgSrc, 8, _this);
         });
-        AssetManager.addDownloadCallback(() => {
-        });
         this.dontDrawID = 0;
     }
 
