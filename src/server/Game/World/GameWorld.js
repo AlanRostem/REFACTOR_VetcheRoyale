@@ -124,7 +124,8 @@ class GameWorld extends EntityManager {
             if (client.removed) {
                 this.clients.removeClient(client.id);
             } else {
-                client.update(this);
+                //client.update(this);
+                client.updateDataCycle();
             }
         }
     }

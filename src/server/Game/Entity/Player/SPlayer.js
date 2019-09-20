@@ -241,6 +241,7 @@ class Player extends GameDataLinker {
 
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
+        this.client.update(entityManager);
     }
 }
 

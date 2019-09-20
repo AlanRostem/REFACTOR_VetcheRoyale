@@ -47,6 +47,13 @@ class ClientList {
             callback(this.container[id]);
         }
     }
+
+
+    update(server) {
+        for (client of this.IPS.array) {
+            client.update();
+        }
+    }
 }
 
 module.exports = ClientList;

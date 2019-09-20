@@ -86,6 +86,9 @@ class Client {
         this.inputReceiver.update(this);
         this.setOutboundPacketData("entityData", this.player.entitiesInProximity.exportDataPack());
         this.setOutboundPacketData("now", Date.now());
+    }
+
+    updateDataCycle() {
         this.emit("serverUpdateTick", this.outboundPacket.object);
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }
