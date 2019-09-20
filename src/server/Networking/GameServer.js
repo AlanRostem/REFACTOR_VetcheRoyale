@@ -1,11 +1,12 @@
 const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("../Game/World/Matches/Matchmaker.js");
+const Thread = require("../Perfomance/Thread.js");
 
 // Class for the main server
 class GameServer {
-    constructor(socket) {
-        this.matchMaker = new MatchMaker(socket);
-        this.mainSocket = new WebSocket(socket, this.matchMaker);
+    constructor(sio) {
+        this.matchMaker = new MatchMaker();
+        this.mainSocket = new WebSocket(sio, this.matchMaker);
         this.deltaTime = 0;
         this.lastTime = 0;
         this.tickRate = 60; // Hz (TEMPORARY)
@@ -24,7 +25,7 @@ class GameServer {
             this.deltaTime = 0;
         }
 
-        this.matchMaker.update(this.mainSocket.ioInstance, this);
+        this.matchMaker.update(this);
         this.mainSocket.cl.update();
 
         if (Date.now() > 0)
@@ -38,6 +39,7 @@ class GameServer {
     }
 
     start() {
+        new Thread({}, "./src/test.js").run();
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 }

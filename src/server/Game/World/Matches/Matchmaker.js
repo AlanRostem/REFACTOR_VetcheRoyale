@@ -7,23 +7,23 @@ const PlayGround = require("./PlayGround/PlayGround.js");
 // Manages all the game worlds and match queueing.
 // TODO: Add match queueing.
 class Matchmaker {
-    constructor(mainSocket) {
+    constructor() {
         this.queuedPlayers = {};
         this.gameWorlds = new ONMap();
         this.lastCreatedWorldID = -1;
 
         // TODO: FIX THIS HACK
 
-        let megaMap = new GameWorld(mainSocket, "MegaMap", TileMapConfigs.getMap("MegaMap"));
+        let megaMap = new GameWorld("MegaMap", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(megaMap, "MegaMap");
 
-        let lobby = new HubWorld(mainSocket, this.gameWorlds, "lobby", TileMapConfigs.getMap("lobby"));
+        let lobby = new HubWorld(this.gameWorlds, "lobby", TileMapConfigs.getMap("lobby"));
         this.addWorld(lobby, "lobby");
 
-        let hub = new HubWorld(mainSocket, this.gameWorlds, "hub", TileMapConfigs.getMap("hub"));
+        let hub = new HubWorld(this.gameWorlds, "hub", TileMapConfigs.getMap("hub"));
         this.addWorld(hub, "hub");
 
-        let playground = new PlayGround(mainSocket, this.gameWorlds);
+        let playground = new PlayGround(this.gameWorlds);
         this.addWorld(playground, "playground");
     }
 
@@ -36,12 +36,12 @@ class Matchmaker {
         this.lastCreatedWorldID = id;
     }
 
-    createWorld(socket, tileMapName = "lobby", id) {
+    createWorld(tileMapName = "lobby", id) {
         if (!id) {
             id = String.random();
         }
         this.lastCreatedWorldID = id;
-        return this.gameWorlds.set(id, new GameWorld(socket, id, 24, TileMapConfigs.getMap(tileMapName)));
+        return this.gameWorlds.set(id, new GameWorld(id, 24, TileMapConfigs.getMap(tileMapName)));
     }
 
     putPlayerInGame(playerID, gameID) {
@@ -55,19 +55,19 @@ class Matchmaker {
         this.queuedPlayers[client.id] = client;
     }
 
-    checkQueuedPlayers(webSocket, server) {
+    checkQueuedPlayers(server) {
         for (let id in this.queuedPlayers) {
             // TEST: Creating a new game instantly after it exceeds the player max count
             if (!this.gameWorlds.get(this.lastCreatedWorldID).isFull) {
                 this.putPlayerInGame(id, this.lastCreatedWorldID);
             } else {
-                this.createWorld(webSocket);
+                this.createWorld();
             }
         }
     }
 
-    update(webSocket, server) {
-        this.checkQueuedPlayers(webSocket, server);
+    update(server) {
+        this.checkQueuedPlayers(server);
         for (let worldID in this.gameWorlds.object) {
             if (this.gameWorlds.has(worldID))
                 this.gameWorlds.get(worldID).update(server.deltaTime);

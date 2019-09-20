@@ -24,7 +24,7 @@ class PlayerList extends ClientList {
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
-    constructor(serverSocket, name, gameMap) {
+    constructor(name, gameMap) {
         super(true, gameMap);
         this.settings = new GameRules();
         this.teamManager = new TeamManager(this);
