@@ -64,7 +64,7 @@ class QuadTree {
 
     // TODO: Maybe store the ID in the QuadTree instead.
     // Places a reference to an entity in the container.
-    // We subdivides if we reach the max count.
+    // We subdivide if we reach the max count.
     insert(entity) {
         if (!this.boundary.myContains(entity)) {
             if (this.entities.indexOf(entity) !== -1) {
@@ -148,7 +148,7 @@ class QuadTree {
 
 }
 
-QuadTree.MAX_ENTITIES = 10; // TODO: Find a decent max value.
+QuadTree.MAX_ENTITIES = 10;
 QuadTree.MAX_LEVEL = 5;
 QuadTree.MAX_NODE_COUNT = 4;
 QuadTree.UNBOUND = -1;

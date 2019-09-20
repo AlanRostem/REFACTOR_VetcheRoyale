@@ -1,45 +1,87 @@
-// Client side entity instance. Used for rendering
-// and other potential entity management on the client.
 import R from "../../Graphics/Renderer.js"
 import Constants from "../../../../shared/code/Tools/Constants.js";
 import EntitySnapshotBuffer from "../../Networking/Interpolation/EntitySnapshotBuffer.js";
 import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 
-export default class CEntity {
+
+
+/**
+ * The visual representation of entities present on the server.
+ * @memberOf ClientSide
+ */
+class CEntity {
+    /**
+     * @param initDataPack {object} - Initial packet data sent by the server. Constructor is called when the server emits
+     * the 'initEntity' or 'spawnEntity' socket event.
+     */
     constructor(initDataPack) {
+        /**
+         * The output entity data to be used around the entire client side application. This data will be tuned
+         * from client prediction, server reconciliation and entity interpolation.
+         * @type {Object}
+         */
         this.output = initDataPack;
 
+        /**
+         * Packet buffer tuning the entity data
+         * @type {EntitySnapshotBuffer}
+         */
         this.dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
-        // TODO: Initialize constants in a better way
         this.color = this.output.color;
         this.width = this.output.width;
         this.height = this.output.height;
     }
 
-    // This function is run from the client emit callback.
+    /**
+     * Method called every server tick (with latency)
+     * @param dataPack {object} - Packet data sent every server tick
+     * @param client {CClient} - Reference to the end user object
+     * @see CClient
+     */
     updateFromDataPack(dataPack, client) {
         this.dataBuffer.updateFromServerFrame(dataPack, this, client);
     }
 
+    /**
+     * Method called every client tick in the game loop on the Scene object
+     * @param deltaTime {number} - Time between every frame on the client
+     * @param client {CClient} - Reference to the end user object
+     * @see Scene
+     */
     update(deltaTime, client) {
-        this.dataBuffer.updateFromClientFrame(deltaTime, this, client);
+        //this.dataBuffer.updateFromClientFrame(deltaTime, this, client);
     }
 
-    // Returns the property value of the entity based on correct
-    // interpolations in sync with the server.
+    /**
+     * Returns the property value of the entity based on correct interpolations in sync with the server (output property).
+     * @param string {string} - Property name
+     * @returns {object}
+     */
     getRealtimeProperty(string) {
         return this.output[string];
     }
 
+    /**
+     * Overridable event called when the entity shows up on the client
+     * @param dataPack {object} - Initial data pack (shows up in constructor too)
+     * @param client {CClient} - Reference to the end user object
+     */
     onClientSpawn(dataPack, client) {
 
     }
 
+    /**
+     * Overridable event called when the entity is removed on the server.
+     * @param client {CClient} - Reference to the end user object
+     */
     onClientDelete(client) {
 
     }
 
+    /**
+     * Overridable event called every frame in the game loop. Do custom drawing here.
+     */
     draw() {
         R.drawRect(this.color,
             this.output.pos.x /*+ (this.output.vel.x * Scene.deltaTime | 0) */,
@@ -55,3 +97,5 @@ export default class CEntity {
 }
 
 CEntity.defaultSprite = new SpriteSheet("entity/entities.png");
+
+export default CEntity;

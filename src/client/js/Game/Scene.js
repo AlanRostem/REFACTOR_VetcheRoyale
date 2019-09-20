@@ -16,7 +16,13 @@ import Stats from "../UI/Stats.js";
 
 import TileMapManager from "./TileBased/TileMapManager.js"
 import Announcement from "../UI/Announcement.js";
+import EnemyDetector from "../UI/EnemyDetector.js";
 
+/**
+ * The main object on the client that renders the game world and UI.
+ * @namespace Scene
+ * @memberOf ClientSide
+ */
 const Scene = {
     deltaTime: 0,
     lastTime: 0,
@@ -26,6 +32,11 @@ const Scene = {
     clientRef: null,
 
 
+    /**
+     * Get the current tile map name that is displayed
+     * @memberOf Scene
+     * @returns {string}
+     */
     get currentMapName() {
         return Scene.currentMap;
     },
@@ -38,6 +49,10 @@ const Scene = {
         return Scene.entityManager;
     },
 
+    /**
+     * Initialization entry point for setting up certain things such as UI and game world variables on the client
+     * @memberOf Scene
+     */
     setup() {
         Scene.tileMaps = new TileMapManager();
         Scene.tileMaps.createMap("MegaMap", "tilemaps/MegaMap.json");
@@ -52,6 +67,7 @@ const Scene = {
                 UI.append(new GunBox());
                 UI.append(new ModBox());
                 UI.append(new Stats());
+                UI.append(new EnemyDetector());
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });
             UI.init();
@@ -59,10 +75,21 @@ const Scene = {
 
     },
 
+    /**
+     * Retrieves the current displayed tile map
+     * @memberOf Scene
+     * @returns {CTileMap}
+     */
     getCurrentTileMap() {
         return Scene.tileMaps.getMap(Scene.currentMapName);
     },
 
+    /**
+     * Start the client side application
+     * @memberOf Scene
+     * @param entityManager {CEntityManager} - Main client entity manager
+     * @param client {CClient} - Reference to the end user object
+     */
     run(entityManager, client) {
         Scene.clientRef = client;
         Scene.entityManager = entityManager;
@@ -72,19 +99,24 @@ const Scene = {
         Scene.tick();
     },
 
+    /**
+     * Game loop that runs after the asset manager successfully loads all assets
+     * @memberOf Scene
+     */
     update() {
         if (AssetManager.done()) {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
             Scene.eventManager.update(Scene.clientRef);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
-            let e = Scene.clientRef.player;
-            if (e) {
-                R.camera.update(e.output.centerData);
-            }
+            R.camera.update()
         }
     },
 
+    /**
+     * Draw loop that runs after the asset manager successfully loads all assets
+     * @memberOf Scene
+     */
     draw() {
         R.clear();
         if (Scene.clientRef.disconnected) {
@@ -123,10 +155,6 @@ const Scene = {
         }
     },
 
-    stop() {
-        window.cancelAnimationFrame(Scene.tick);
-    },
-
     tick(time) {
         if (time > 0)
             Scene.deltaTime = (time - Scene.lastTime) / 1000;
@@ -140,7 +168,5 @@ const Scene = {
         requestAnimationFrame(Scene.tick);
     }
 };
-
-window.Scene = Scene; // TODO: Remove debug
 
 export default Scene;

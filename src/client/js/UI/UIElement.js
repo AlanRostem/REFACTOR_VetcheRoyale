@@ -1,4 +1,5 @@
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
+import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 export default class UIElement {
     constructor(name, x, y, w, h) {
@@ -16,3 +17,5 @@ export default class UIElement {
 
     }
 }
+
+UIElement.defaultSpriteSheet = new SpriteSheet("ui/ui.png");

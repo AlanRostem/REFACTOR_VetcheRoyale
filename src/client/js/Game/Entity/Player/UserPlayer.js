@@ -3,12 +3,19 @@ import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
+import Scene from "../../Scene.js";
 
 
 const TILE_SIZE = 8;
 
-// The player the client controls. It contains the client prediction code.
-export default class UserPlayer extends RemotePlayer {
+
+/**
+ * The player the client controls. It contains the client side prediction code and the interface
+ * for events happening only to the user end player entity.
+ * @memberOf ClientSide
+
+ */
+class UserPlayer extends RemotePlayer {
     constructor(data) {
         super(data);
         this.serverState = data;
@@ -50,8 +57,8 @@ export default class UserPlayer extends RemotePlayer {
             RemotePlayer.sprite.flipX();
         }
         RemotePlayer.sprite.drawAnimated(
-            Math.round(this.serverState.pos.x) + R.camera.boundPos.x,
-            Math.round(this.serverState.pos.y) + R.camera.boundPos.y);
+            Math.round(this.serverState.pos.x) + R.camera.displayPos.x,
+            Math.round(this.serverState.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
         R.ctx.restore();
     }
@@ -72,6 +79,9 @@ export default class UserPlayer extends RemotePlayer {
         super.update(deltaTime, client);
         this.currentMap = currentMap;
         this.weapon = Scene.entities.getEntityByID(this.output.invWeaponID);
+        if (R.camera.config("followPlayer")) {
+            R.camera.setCurrentFollowPos(this.getRealtimeProperty("centerData"));
+        }
         //console.log(Date.now() - client.latency, this.serverState.serverTimeStamp);
         /*
         let t = client.latency / 1000;
@@ -200,7 +210,6 @@ export default class UserPlayer extends RemotePlayer {
             if (input.sequence <= client.inboundPacket.lastProcessedInputSequence) {
                 pending.splice(j, 1);
             } else {
-                // TODO: SCALABILITY
                 this.oldPos = this.output.pos;
                 this.localVel.x = 0;
 
@@ -223,6 +232,6 @@ export default class UserPlayer extends RemotePlayer {
             }
         }
     }
-
-
 }
+
+export default UserPlayer;

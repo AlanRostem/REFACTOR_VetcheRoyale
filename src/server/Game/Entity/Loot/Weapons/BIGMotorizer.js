@@ -15,8 +15,8 @@ class MicroMissile extends Projectile {
         this.theta = 0;
         this.time = 0;
 
-        this.freq = .4;
-        this.amp = .4 + .5 * Math.random();
+        this.freq = .1;
+        this.amp = .2 + .01 * Math.random();
 
         this.harmonic = harmonic;
         this.facingLeft = left;
@@ -39,7 +39,7 @@ class MicroMissile extends Projectile {
 
     harmonicMovement(deltaTime) {
         let theta = 0;
-        this.amp = .4 + .7 * Math.random();
+        this.amp =  vm.randMinMax(-1, 1);
         if (this.harmonic) {
             theta = this.calcTheta(deltaTime);
         }

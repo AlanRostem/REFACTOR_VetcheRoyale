@@ -34,7 +34,6 @@ class Player extends GameDataLinker {
             y: y + this.height / 2,
         };
 
-
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
         this.addMovementListener("tile", "slope", () => 0);

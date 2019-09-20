@@ -54,8 +54,8 @@ export default class EntitySnapshotBuffer {
 
     // Run this in an entity's updateFromDataPack method
     updateFromServerFrame(data, entity, client) {
-        //this.tdirectServerUpdate(data, entity, client);
-        this.onServerUpdateReceived(data, entity, client)
+        this.t_directServerUpdate(data, entity, client);
+        //this.onServerUpdateReceived(data, entity, client)
     }
 
     // Use client parameter to detect input

@@ -21,19 +21,19 @@ export default class HPBar extends UIElement {
         R.ctx.save();
 
         if (this.HPlength === 0) {
-            return; // TODO: Remove this. I added this so the FireFox bug doesn't happen.
+            return;
         }
 
         // Liquid Inside
         R.ctx.drawImage(this.src,
             0,
             this.glassTube.y,
-            this.HPlength, // TODO: Cannot be 0 cus of FireFox
-            this.HPjuice.y,  // TODO: Cannot be 0 cus of FireFox
+            this.HPlength,
+            this.HPjuice.y,
             6,
             R.HEIGHT - this.glassTube.y - 2 ,
-            this.HPlength, // TODO: Cannot be 0 cus of FireFox
-            this.HPjuice.y,  // TODO: Cannot be 0 cus of FireFox
+            this.HPlength,
+            this.HPjuice.y,
         );
 
         // Draw Glass Tube

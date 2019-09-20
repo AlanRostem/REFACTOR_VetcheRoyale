@@ -7,11 +7,26 @@ import CPortal from "../CPortal.js";
 import CKE_6H from "../Weapons/CKE_6H.js";
 import CBIGMotorizer from "../Weapons/CBIGMotorizer.js";
 import CSEW_9 from "../Weapons/CSEW-9.js";
+import CCKER90 from "../Weapons/CCKER90.js";
 
 
-// Creates client versions of inbound entity data
+/**
+ * Creates client versions of inbound entity data by mapping extended classes (CEntity) to the entity
+ * constructor name from the server.
+ * @see CEntity
+ * @type {object}
+ * @memberOf ClientSide
+ * @namespace
+ */
 const EntityTypeSpawner = {
     functions: {},
+
+    /**
+     * Map a class type (extends CEntity) to a constructor name of the respective server entity
+     * @param name {string} - Server entity constructor name
+     * @param classType {Function} - Class constructor
+     * @memberOf EntityTypeSpawner
+     */
     createSpawner(name, classType) {
         EntityTypeSpawner.functions[name] = data => {
             return new classType(data);
@@ -38,6 +53,7 @@ EntityTypeSpawner.createSpawner("Portal", CPortal);
 
 EntityTypeSpawner.createSpawner("AttackWeapon", CWeapon);
 EntityTypeSpawner.createSpawner("BIGMotorizer", CBIGMotorizer);
+EntityTypeSpawner.createSpawner("CKER90", CCKER90);
 EntityTypeSpawner.createSpawner("KE_6H", CKE_6H);
 EntityTypeSpawner.createSpawner("SEW-9", CSEW_9);
 

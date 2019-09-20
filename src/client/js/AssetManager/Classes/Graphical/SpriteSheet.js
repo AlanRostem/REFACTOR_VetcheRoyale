@@ -2,14 +2,26 @@ import AssetManager from "../../AssetManager.js"
 import R from "../../../Graphics/Renderer.js";
 import Scene from "../../../Game/Scene.js";
 
-// Class representation of a sprite sheet. Has many functions
-// such as cropping and animating.
-export default class SpriteSheet {
+
+/**
+ * Class representation of a sprite sheet. Has many features such as cropping and animating.
+ * @memberOf ClientSide
+
+ */
+class SpriteSheet {
+    /**
+     * @param src {string} - Relative file path of the sprite sheet retrieved by AssetManager
+     * @see AssetManager
+     */
     constructor(src) {
         this.src = src;
         AssetManager.addDownloadCallback(() => {
             this.img = AssetManager.get(this.src);
         });
+        /**
+         * Map of rectangles representing sprite regions
+         * @type {Map<string, SpriteSheet.Rect>}
+         */
         this.offsetRects = new Map();
         this.posRect = new SpriteSheet.Rect(0, 0, 0, 0);
         this.animRect = new SpriteSheet.Rect(0, 0, 1, 1);
@@ -17,14 +29,28 @@ export default class SpriteSheet {
         this.centralOffset = 0;
     }
 
-    // Map a name to a bounding rect on the sprite
+    /**
+     * Map a name to a bounding rect on the sprite.
+     * @param name {string} - Mapping name
+     * @param ox {number} - Horizontal offset starting from top-left corner of the sprite
+     * @param oy {number} - Vertical offset starting from top-left corner of the sprite
+     * @param fw {number} - Frame width of the given sprite region
+     * @param fh {number} - Frame height of the given sprite region
+     */
     bind(name, ox, oy, fw, fh) {
         AssetManager.addDownloadCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
         });
     }
 
-    // Manually crop the image and draw it.
+    /**
+     * Manually crop the image and draw it. Called in a draw loop.
+     * @param cropX {number} - Cropping value on the sprite
+     * @param cropY {number} - Cropping value on the sprite
+     * @param cropW {number} - Cropping value on the sprite
+     * @param cropH {number} - Cropping value on the sprite
+     * @param ctx {CanvasRenderingContext2D} - Default parameter to R.context. Can be overridden to draw on different canvases
+     */
     drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
         if (this.img)
             ctx.drawImage(this.img, cropX, cropY, cropW, cropH,
@@ -34,7 +60,13 @@ export default class SpriteSheet {
                 Math.round(h));
     }
 
-    // Draw a mapped part of the sprite
+    /**
+     * Draw a mapped part of the sprite that was bound by the bind() method
+     * @param name {string} - Mapped bounding rect name
+     * @param w {number} - Default parameter of frame width of the mapped portion
+     * @param h {number} - Default parameter of frame height of the mapped portion
+     * @param ctx {CanvasRenderingContext2D} - Default parameter to R.context. Can be overridden to draw on different canvases
+     */
     drawStill(name, x, y, w = this.offsetRects.get(name).w, h = this.offsetRects.get(name).h, ctx = R.context) {
         if (this.img) {
             var rect = this.offsetRects.get(name);
@@ -42,15 +74,34 @@ export default class SpriteSheet {
         }
     }
 
+    /**
+     * Retrieve the frame width in pixels of a bound sprite region
+     * @param name {string} - Sprite region name
+     * @returns {number}
+     */
     getWidth(name) {
         return this.offsetRects.get(name).w;
     }
 
+    /**
+     * Retrieve the frame height in pixels of a bound sprite region
+     * @param name {string} - Sprite region name
+     * @returns {number}
+     */
     getHeight(name) {
         return this.offsetRects.get(name).h;
     }
 
-    // Call in a loop and it will cycle through all the animation frames
+    /**
+     * Call in a loop and it will cycle through all the respective animation frames.
+     * In order for the animation to work properly it MUST call on an individual Animation
+     * instance that belongs to an individual entity. This method must also be called BEFORE
+     * the drawAnimated() method of the static SpriteSheet object.
+     * @param name {string} - Respective sprite region mapping name
+     * @param anim {Animation} - Instance of animation belonging to an instance of CEntity
+     * @param fw {number} - Frame width of the sprite region
+     * @param fh {number} - Frame height of the sprite region
+     */
     animate(name, anim, fw, fh) {
         if (!this.offsetRects.get(name)) return;
 
@@ -77,24 +128,42 @@ export default class SpriteSheet {
         this.animRect.y = this.offsetRects.get(name).y + height * (anim.currentCol / anim.framesPerRow | 0);
     }
 
+    /**
+     * Calls upon R.context.save()
+     */
     static beginChanges() {
         R.context.save();
     }
 
+    /**
+     * Calls upon R.context.restore()
+     */
     static end() {
         R.context.restore();
     }
 
+    /**
+     * Sets the default central draw offset on the x-axis
+     * @param value {number} - Pixel amount
+     */
     setCentralOffset(value) {
         this.centralOffset = value;
     }
 
+    /**
+     * Flips the currently drawn sprite in a draw loop
+     */
     flipX() {
         this.flipped = true;
     }
 
-    // Call in a loop after calling this.animate to draw the
-    // cycling frames of the animation.
+    /**
+     * Call in a loop after calling this.animate to draw the cycling frames of the animation.
+     * @param x {number} - Horizontal screen position
+     * @param y {number} - Vertical screen position
+     * @param w {number} - Output width of the sprite (defaults to the animation width)
+     * @param h {number} - Output height of the sprite (defaults to the animation height)
+     */
     drawAnimated(x, y, w = this.animRect.w, h = this.animRect.h) {
         if (!this.img) return;
 
@@ -135,7 +204,18 @@ SpriteSheet.Rect = class {
     }
 };
 
+/**
+ * Static interface for configuring different sprite animations
+ * @type {SpriteSheet.Animation}
+ */
 SpriteSheet.Animation = class Animation {
+    /**
+     *
+     * @param startCol {number} - Start column relative to the mapped sprite region position
+     * @param endCol {number} - End column relative to the mapped sprite region position
+     * @param framesPerRow {number} - Number of frames per row if the animation has multiple rows relative to the mapped region
+     * @param frameSpeed {number} - Frame speed in seconds
+     */
     constructor(startCol, endCol, framesPerRow, frameSpeed) {
         this.startCol = startCol;
         this.endCol = endCol;
@@ -149,3 +229,5 @@ SpriteSheet.Animation = class Animation {
         this.centralOffset = 0;
     }
 };
+
+export default SpriteSheet;

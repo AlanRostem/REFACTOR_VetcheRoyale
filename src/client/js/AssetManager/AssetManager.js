@@ -1,5 +1,10 @@
 import ONMap from "../../../shared/code/DataStructures/CObjectNotationMap.js";
 
+/**
+ * Singleton class managing assets by their file extension
+ * @memberOf ClientSide
+
+ */
 class AssetManager {
 
     constructor() {
@@ -15,10 +20,22 @@ class AssetManager {
         this.audioCtx = new AudioContext();
     }
 
+    /**
+     * Map a callback function to a file path. The callback is executed when the particular file successfully loads
+     * @param path {string} - File path to the mapped file
+     * @param callback {function} - Callback when the particular file is loaded
+     */
     mapFilePathCallback(path, callback) {
         this.onFileDownloadedCallbacks.set(path, callback);
     }
 
+    /**
+     * Loads (using fetch API) a .json file and parses it. The method returns pair with the json string and parsed object
+     * @param path {string} - File path of the .json
+     * @param loadedCallback {function} - Callback executed when successfully loading
+     * @param failureCallback {function} - Callback executed when loading fails
+     * @returns {{string: string, object: {}}}
+     */
     loadJSON(path, loadedCallback, failureCallback) {
         var text = {string: "", object: {}};
         fetch(path)
@@ -34,6 +51,10 @@ class AssetManager {
         return text;
     }
 
+    /**
+     * Queues assets from an asset configuration file to load and execute loading callbacks.
+     * @param path {string} - File path to the configuration file containing all file names relative to the public/assets directory
+     */
     queue(path) {
         let rawFile = new XMLHttpRequest();
         var allText = "";
@@ -219,6 +240,11 @@ class AssetManager {
         return (this.downloadQueue.length === this.successCount + this.errorCount);
     }
 
+    /**
+     * Retrieve an asset (DOM object) from the cache
+     * @param path {string} - Relative file path
+     * @returns {object}
+     */
     get(path) {
         if (this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
         else if (path.substring(path.lastIndexOf(('.')) + 1 === "oggp")) {
@@ -239,6 +265,10 @@ class AssetManager {
         this.cache[key] = img;
     }
 
+    /**
+     * Add a callback function to the queue when all assets are downloaded in the queue
+     * @param callback {function} - Callback function
+     */
     addDownloadCallback(callback) {
         this.downloadCallbacks.push(callback);
     }

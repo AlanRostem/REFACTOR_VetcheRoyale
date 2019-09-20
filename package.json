@@ -4,12 +4,14 @@
   "description": "2D platformer battle royale",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "doc": "jsdoc -c jsdoc.conf.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "jsdoc": "^3.6.3",
     "socket.io": "^2.2.0"
   }
 }

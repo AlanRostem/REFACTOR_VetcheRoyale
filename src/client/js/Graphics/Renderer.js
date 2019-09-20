@@ -2,8 +2,16 @@ import Camera from "./Camera.js"
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
 
 
+/**
+ * Main rendering object of the client side application
+ * @namespace R
+ * @memberOf ClientSide
+ */
 const R = {
 
+    /**
+     * The main viewport of the renderer.
+     */
     camera: new Camera(0, 0),
 
     resolution: 160,
@@ -12,16 +20,21 @@ const R = {
         y: 1
     },
 
+    /**
+     * Current screen size of the canvas
+     */
     screenDimensions: {
         x: 2 * 160, //R.aspectRatio.x * R.resolution,
         y: 160 //R.aspectRatio.y * R.resolution
     },
 
+
     canvas: null,
     ctx: null,
 
-    // Sets up an HTML canvas element and initializes
-    // rendering elements.
+    /**
+     * Sets up an HTML canvas element and initializes rendering elements.
+     */
     setup() {
         R.canvas = document.createElement('canvas');
         R.ctx = R.canvas.getContext('2d');
@@ -61,6 +74,10 @@ const R = {
         R.camera.originalOffset.y = R.screenDimensions.y / 2 | 0;
     },
 
+    /**
+     * Get the canvas rendering context.
+     * @returns {CanvasRenderingContext2D}
+     */
     get context() {
         if (R.ctx === null) {
             throw new Error("Rendering context is not defined! Maybe you forgot to set up the renderer.");
@@ -88,16 +105,27 @@ const R = {
         return R.screenDimensions;
     },
 
+    /**
+     * Clears the screen every frame
+     */
     clear() {
         R.context.clearRect(0, 0, R.canvas.width, R.canvas.height);
     },
 
-    drawText(str, x, y, color = "White", useCamera = false, size = 5) {
+
+    /**
+     * Draws text using our very own pixel font
+     * @param str {string} - Text to be drawn
+     * @param x {number} - X position
+     * @param y {number} - Y position
+     * @param color {string} - White, Red, Green, Blue and Yellow are supported
+     * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
+     */
+    drawText(str, x, y, color = "White", useCamera = false) {
         R.context.save();
         var img = AssetManager.get("font/ascii" + color + ".png");
 
         if (!img)  return;
-
         str = str.toString();
         for (var i = 0; i < str.length; i++) {
             var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;
@@ -112,6 +140,15 @@ const R = {
         R.context.restore();
     },
 
+    /**
+     * Draws a line on the screen
+     * @param startPos {Vector2D} - Start position
+     * @param endPos {Vector2D} - End position
+     * @param thickness {number} - Stroke width of the line
+     * @param color {string} - CSS Color value
+     * @param dotSpace {number} - Number of pixels between each dot for a dotted line
+     * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
+     */
     drawLine(startPos, endPos, thickness = 1, color = "white", dotSpace = 1, useCamera = false) {
         var a = Vector2D.angle(startPos, endPos) | 0;
         var d = Vector2D.distance(startPos, endPos) | 0;
@@ -126,16 +163,25 @@ const R = {
         }
     },
 
+    /**
+     * Draws a rectangle on the screen
+     * @param color {string} - CSS color value
+     * @param x {number} - X position
+     * @param y {number} - Y position
+     * @param width {number} - Width of the rectangle
+     * @param height {number} - Height of the rectangle
+     * @param useCamera {boolean} - Determines if the rect should be a part of the camera viewport
+     */
     drawRect(color, x, y, width, height, useCamera = false) {
         R.context.save();
         R.context.fillStyle = color;
         R.context.fillRect(
-            Math.round(x + (useCamera ? R.camera.boundPos.x : 0)),
-            Math.round(y + (useCamera ? R.camera.boundPos.y : 0)),
-            width, height
-        );
+            Math.round(x + (useCamera ? R.camera.displayPos.x : 0)),
+            Math.round(y + (useCamera ? R.camera.displayPos.y : 0)),
+            width, height);
         R.context.restore();
     }
 };
 
+window.R = R;
 export default R;

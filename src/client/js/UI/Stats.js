@@ -26,23 +26,23 @@ export default class Stats extends UIElement {
             R.ctx.drawImage(this.src,
                 40,
                 68,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
                 R.WIDTH - 36,
                 R.HEIGHT - 122,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
             );
             R.drawText(this.playersAlive,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120, "White", false, 5);
             R.ctx.drawImage(this.src,
                 this.frame.x + 40,
                 68,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
                 R.WIDTH - 36,
                 R.HEIGHT - 122 + this.frame.y + 2,
-                this.frame.x, // TODO: Cannot be 0 cus of FireFox
-                this.frame.y,  // TODO: Cannot be 0 cus of FireFox
+                this.frame.x,
+                this.frame.y,
             );
             R.drawText(this.killCount,R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120 + this.frame.y + 2, "Red");
 

@@ -2,9 +2,19 @@ import SpriteSheet from "./SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
 import AssetManager from "../../AssetManager.js"
 
-// Takes a tile map and tile sheet then draws the entire
-// tile map.
-export default class TileSheet extends SpriteSheet {
+/**
+ * Takes a tile map and tile sheet then draws the entire tile map.
+ * @memberOf ClientSide
+
+ */
+class TileSheet extends SpriteSheet {
+    /**
+     * @param src {string} - Tile sheet image source from AssetManager
+     * @param tileSize {number} - Tile size
+     * @param map {CTileMap} - Tile map object
+     * @see AssetManager
+     * @see CTileMap
+     */
     constructor(src, tileSize, map) {
         super(src);
         this.tileSize = tileSize;
@@ -14,7 +24,11 @@ export default class TileSheet extends SpriteSheet {
         });
     }
 
-    // Generate a new image out of the tile map array and tile set image
+    /**
+     * Generate a new image out of the tile map array using the tile set image
+     * @param map {CTileMap} - Tile map object
+     * @returns {HTMLCanvasElement}
+     */
     paintImage(map) {
         var canvas = document.createElement('canvas');
         canvas.width = map.w * this.tileSize;
@@ -44,7 +58,11 @@ export default class TileSheet extends SpriteSheet {
         return canvas;
     }
 
+    /**
+     * Draw the image to the main canvas
+     */
     draw() {
-        R.context.drawImage(this.image, R.camera.boundPos.x, R.camera.boundPos.y);
+        R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
     }
 }
+export default TileSheet;

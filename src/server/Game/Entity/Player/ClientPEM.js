@@ -24,18 +24,33 @@ class ClientPEM extends ProximityEntityManager {
         this.spectators.onRemoveEntity(id);
     }
 
+    throwOutOfBounds(id) {
+        super.removeEntity(id);
+        delete this.dataBox[id];
+        this.entRef.client.emit("removeOutOfBoundsEntity", id);
+        this.spectators.onRemoveOutOfBoundsEntity(id);
+    }
+
     exportDataPack() {
         for (let id in this.container) {
             this.dataBox[id] = this.container[id].getDataPack();
             let e = this.container[id];
             // Removes entities out of bounds. Suboptimal location to do this.
-            if (!this.qtBounds.myContains(e) || e.toRemove) {
+            if (e.toRemove) {
                 this.removeEntity(id);
+            }
 
+            if (!this.qtBounds.myContains(e)) {
+                this.throwOutOfBounds(e.id);
             }
         }
         this.dataBox[this.entRef.id] = this.entRef.getDataPack();
         return this.dataBox;
+    }
+
+    update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
+        this.spectators.update();
     }
 }
 

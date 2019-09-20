@@ -14,8 +14,7 @@
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-      "id": 113,
-      "frameColor": "blue"
+      "id": 113
     }
   },
   "114": {
@@ -23,8 +22,7 @@
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-      "id": 114,
-      "frameColor": "blue"
+      "id": 114
     }
   },
   "115": {
@@ -32,8 +30,15 @@
     "classType": "GunSpawner",
     "isPositionalData": false,
     "parameters": {
-      "id": 115,
-      "frameColor": "blue"
+      "id": 115
+    }
+  },
+  "116": {
+    "name": "GunSpawner",
+    "classType": "GunSpawner",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 116
     }
   },
   "97": {
@@ -99,7 +104,6 @@
       "frameColor": "blue"
     }
   },
-
   "104": {
     "name": "Portal",
     "classType": "Portal",

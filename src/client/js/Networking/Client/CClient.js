@@ -3,11 +3,12 @@ import R from "../../Graphics/Renderer.js";
 import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
+import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
 
-
-// Class representation of the client. Holds input callbacks
-// and manages socket events.
-export default class CClient {
+/**
+ * Class representation of the client. Holds input callbacks and manages socket events.
+ */
+class CClient {
     constructor(socket) {
         this.socket = socket;
         this.id = socket.id;
@@ -68,7 +69,6 @@ export default class CClient {
     }
 
 
-
     get inboundPacket() {
         return this.lastReceivedData;
     }
@@ -103,9 +103,18 @@ export default class CClient {
         }
         this.localTime += deltaTime;
         this.startTime = Date.now();
-        var e = entityManager.getEntityByID(this.id);
-        if (e) {
-            Scene.currentMapName = this.player.output.gameData.mapName;
+        if (this.inboundPacket) {
+            if (this.inboundPacket.entityData[this.id]) {
+                Scene.currentMapName = this.player.output.gameData.mapName;
+            } else {
+                //if (e) entityManager.removeEntity(e.id);
+                if (this.inboundPacket.spectatorSubject) {
+                    let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
+                    if (s) {
+                        R.camera.update(s.output.pos);
+                    }
+                }
+            }
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);
@@ -137,7 +146,7 @@ export default class CClient {
         });
 
         this.on('broadcast-newPlayer', data => {
-           console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
+            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
 
         this.on("gameEvent-changeMap", data => {
@@ -149,7 +158,7 @@ export default class CClient {
         });
 
         this.on("manualDisconnect", message => {
-            this.discReasonMsg = "reason: " +message;
+            this.discReasonMsg = "reason: " + message;
             this.disconnected = true;
             this.socket.close();
             document.body.style.cursor = "default";
@@ -163,3 +172,5 @@ export default class CClient {
         })
     }
 }
+
+export default CClient;

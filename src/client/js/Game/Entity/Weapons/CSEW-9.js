@@ -10,8 +10,8 @@ export default class CSEW_9 extends CWeapon {
         super.update(deltaTime, client);
         if (this.output.modActive) {
             //R.camera.shift(this.output.misPos.x, this.output.misPos.y)
-            R.camera.boundPos.x = this.output.misPos.x;
-            R.camera.boundPos.y = this.output.misPos.y;
+            R.camera.displayPos.x = this.output.misPos.x;
+            R.camera.displayPos.y = this.output.misPos.y;
         }
     }
 }

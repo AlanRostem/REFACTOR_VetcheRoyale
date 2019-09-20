@@ -6,8 +6,6 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 class Portal extends Interactable {
     constructor(x, y, args) {
         super(x, y, 10, 16);
-
-
         this.portalTileID = args.id;
         this.frameColor = args.frameColor;
         this.pairData = null;
@@ -39,8 +37,10 @@ class Portal extends Interactable {
         if (!this.pair) {
             return;
         }
-        entity.pos.x = this.destination.x - entity.width / 2;
-        entity.pos.y = this.destination.y - entity.height / 2;
+        entity.pos.x = this.destination.x
+            + this.width / 2 - entity.width / 2;
+        entity.pos.y = this.destination.y
+            + this.height / 2 - entity.height / 2;
     }
 
     onPlayerInteraction(player, entityManager) {

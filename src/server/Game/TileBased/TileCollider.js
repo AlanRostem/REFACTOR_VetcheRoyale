@@ -3,7 +3,6 @@ const Tile = require("./Tile.js");
 
 // Composite object that handles tile tileCollision
 // based on entity type.
-// TODO: Create the entity type mapping functionality
 const TileCollider = {
     TYPE_RANGE: {
         PASS: 95, // TODO: Remove test values

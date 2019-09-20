@@ -37,6 +37,10 @@ const UI = {
             UI.elements[key].draw();
         }
     },
+
+    getElement(name) {
+        return UI.elements[name];
+    }
 };
 
 export default UI;
