@@ -115,19 +115,6 @@ class GameWorld extends EntityManager {
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
-        for (var id in this.clients.getContainer()) {
-            var client = this.clients.getClient(id);
-            // After the entities have been updated and
-            // the data packs have been supplied, they
-            // are queried to the client socket and then
-            // emitted to the client.
-            if (client.removed) {
-                this.clients.removeClient(client.id);
-            } else {
-                //client.update(this);
-                client.updateDataCycle();
-            }
-        }
     }
 }
 

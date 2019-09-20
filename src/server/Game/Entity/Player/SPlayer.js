@@ -172,17 +172,6 @@ class Player extends GameDataLinker {
     }
 
     update(entityManager, deltaTime) {
-        if (this.dead) {
-            // TODO: Temporary solution
-            if (this.myKiller) {
-                this.myKiller.spectators.addSpectator(this.client);
-                this.client.setPlayer(this.myKiller);
-            }
-            this.remove();
-            //this.client.setOutboundPacketData("entityData", this.myKiller.entitiesInProximity.exportDataPack());
-            return;
-        }
-
         this.setMovementState("tile", "none");
 
         this.invAmmo = this.inventory.ammo;
@@ -242,6 +231,9 @@ class Player extends GameDataLinker {
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
         this.client.update(entityManager);
+        if (this.client.removed) {
+            entityManager.clients.removeClient(this.client.id)
+        }
     }
 }
 

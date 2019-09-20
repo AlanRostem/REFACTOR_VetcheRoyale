@@ -88,6 +88,10 @@ class Client {
         this.setOutboundPacketData("now", Date.now());
     }
 
+    networkedUpdate(server) {
+        this.updateDataCycle();
+    }
+
     updateDataCycle() {
         this.emit("serverUpdateTick", this.outboundPacket.object);
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data

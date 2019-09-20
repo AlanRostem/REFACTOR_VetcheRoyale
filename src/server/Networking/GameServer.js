@@ -25,6 +25,7 @@ class GameServer {
         }
 
         this.matchMaker.update(this.mainSocket.ioInstance, this);
+        this.mainSocket.cl.update();
 
         if (Date.now() > 0)
             this.lastTime = Date.now();

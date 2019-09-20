@@ -50,8 +50,8 @@ class ClientList {
 
 
     update(server) {
-        for (client of this.IPS.array) {
-            client.update();
+        for (var id in this.container) {
+            this.container[id].networkedUpdate();
         }
     }
 }
