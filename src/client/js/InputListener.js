@@ -2,7 +2,7 @@ import {typeCheck} from "../../shared/code/Debugging/CtypeCheck.js"
 import R from "./Graphics/Renderer.js"
 import {sqrt} from "../../shared/code/Math/CCustomMath.js";
 
-export default class InputListener {
+ class InputListener {
     constructor(client) {
 
         // Holds the current state of the key (up or down).
@@ -24,7 +24,6 @@ export default class InputListener {
 
         this.buffer = [];
         this.pendingInputs = [];
-        this.allocatedCodes = [];
         this.sequence = 0;
 
         this.listenTo(client);
@@ -203,3 +202,5 @@ export default class InputListener {
         }
     }
 }
+
+export default InputListener;
