@@ -7,7 +7,7 @@ const EventManager = require("./SEventManager.js");
 class Match extends GameWorld{
     constructor(socket, worldList, name, gameMap) {
         super(socket, name, gameMap);
-        this.eventManager = new EventManager();
+        this.eventManager = new EventManager(gameMap);
         this.spawnEntity(
             61 * Tile.SIZE,
             104 * Tile.SIZE,

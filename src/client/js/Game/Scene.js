@@ -106,7 +106,7 @@ const Scene = {
     update() {
         if (AssetManager.done()) {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
-            Scene.eventManager.update(Scene.clientRef);
+            Scene.eventManager.update(Scene.clientRef, Scene.deltaTime);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
             R.camera.update()

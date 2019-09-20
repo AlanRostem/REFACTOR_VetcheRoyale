@@ -1,7 +1,6 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import AssetManager from "../AssetManager/AssetManager.js";
-import CClient from "../Networking/Client/CClient.js";
 import Scene from "../Game/Scene.js";
 
 
@@ -64,6 +63,13 @@ export default class MiniMap extends UIElement {
         return {canvas: canvas, mapInfo: map};
     }
 
+
+    addEvent(e){
+        if (this.events.indexOf(e) === -1)
+            this.events.push(e);
+    }
+
+
     posOnMap(pos) {
 
         var x = pos.x / 8 / this.image.mapInfo.tileSizeW | 0;
@@ -101,11 +107,12 @@ export default class MiniMap extends UIElement {
             1
         );
 
+
         for (var e of this.events) {
             R.drawRect(
-                e.color,
-                this.pos.x + e.x | 0,
-                this.pos.y + e.y | 0,
+                e.arg.color,
+                this.pos.x + this.posOnMap(e.arg.pos).x | 0,
+                this.pos.y + this.posOnMap(e.arg.pos).y | 0,
                 1,
                 1
             );

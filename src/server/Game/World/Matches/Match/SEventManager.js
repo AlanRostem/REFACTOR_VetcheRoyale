@@ -1,11 +1,20 @@
+
 const GameEvent = require("./GameEvent.js");
 const STimer = require("../../../../../shared/code/Tools/STimer");
 
 class SEventManager {
-    constructor() {
+    constructor(gameMap) {
         this.queue = [];
         this.timer = new STimer(4, () => {
-            this.add("test" + Math.floor(Math.random() * 100 + 1), "test", {test: "test"});
+            this.add("test" + Math.floor(Math.random() * 100 + 1), "test",
+                {
+                    color: 'Blue',
+                    string: "test"+ Math.floor(Math.random() * 100 + 1),
+                    pos: {
+                        x:Math.floor(Math.random() * gameMap.w) * gameMap.tileSize,
+                        y:Math.floor(Math.random() * gameMap.h) * gameMap.tileSize
+                    }
+                });
         });
     }
 
@@ -26,6 +35,7 @@ class SEventManager {
     update(gameWorld, deltaTime) {
         this.timer.tick(deltaTime);
         this.sendEvent(gameWorld);
+
     }
 }
 
