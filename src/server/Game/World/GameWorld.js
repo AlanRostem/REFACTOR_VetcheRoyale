@@ -90,10 +90,10 @@ class GameWorld extends EntityManager {
         return this.playerCount === this.getGameRule("maxPlayers");
     }
 
-    spawnPlayer(client) {
-        this.clients.addClient(client.id, client);
-        this.teamManager.addPlayer(client.player, this);
-        this.spawner.spawnSpecificAtPos(105, client.player, this);
+    spawnPlayer(player) {
+        this.clients.addClient(player.id, player);
+        this.teamManager.addPlayer(player, this);
+        this.spawner.spawnSpecificAtPos(105, player, this);
         /*this.spawnEntity(
             61 * Tile.SIZE,
             105 * Tile.SIZE,
@@ -103,7 +103,6 @@ class GameWorld extends EntityManager {
 
     removePlayer(id) {
         this.removeEntity(id);
-        this.clients.removeClient(id);
     }
 
     setGameData(key, value) {

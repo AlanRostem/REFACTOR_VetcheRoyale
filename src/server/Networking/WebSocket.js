@@ -39,7 +39,7 @@ class WebSocket {
 
             var _client = new Client(client, this.cl);
             this.cl.addClient(client.id, _client);
-            matchMaker.queuePlayer(_client);
+            matchMaker.queueClientToGame(_client);
         });
     }
 

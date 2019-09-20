@@ -21,7 +21,6 @@ class Client {
         this.removed = false;
         this.disconnected = false;
 
-        this.player = new Player(0, 0, this);
         // Used to store packets over time and check their frequency
         this.frequencyBuffer = [];
         this.defineSocketEvents(socket, clientList);
