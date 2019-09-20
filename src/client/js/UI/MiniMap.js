@@ -18,7 +18,6 @@ export default class MiniMap extends UIElement {
         });
     }
 
-
     paintImage(tileMap) {
         var map = {
             name: tileMap.name,
@@ -65,8 +64,7 @@ export default class MiniMap extends UIElement {
 
 
     addEvent(e){
-        if (this.events.indexOf(e) === -1)
-            this.events.push(e);
+        this.events = e;
     }
 
 
@@ -87,7 +85,6 @@ export default class MiniMap extends UIElement {
 
         if (client.player)
             this.pPos = this.posOnMap(client.player.output.pos);
-
     }
 
     draw() {
@@ -110,7 +107,7 @@ export default class MiniMap extends UIElement {
 
         for (var e of this.events) {
             R.drawRect(
-                e.arg.color,
+                e.color,
                 this.pos.x + this.posOnMap(e.arg.pos).x | 0,
                 this.pos.y + this.posOnMap(e.arg.pos).y | 0,
                 1,

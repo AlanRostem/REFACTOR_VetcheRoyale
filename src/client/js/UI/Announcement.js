@@ -7,54 +7,53 @@ export default class Announcement extends UIElement {
     constructor() {
         super("announcement", R.WIDTH / 2 - 64 | 0, 0, 128, 18);
         this.image = AssetManager.get("ui/ui.png");
-        this.elm = undefined;
+        this.event = undefined;
 
         this.timer = new CTimer(0.01, () => {
-            if (this.elm !== undefined)
-                this.elm.x--;
+            if (this.event !== undefined)
+                this.event.x--;
         }, true);
-
     }
 
     addEvent(e) {
-        this.elm = {
-            event: e,
-            dString: "",
-            x: this.width - 10
-        };
+        if (e !== undefined) {
+            this.event = {
+                event: e,
+                dString: "",
+                x: this.width - 10
+            };
+            e.shown = true;
+        }
     }
 
 
-    updateElm() {
-        if (this.elm !== undefined) {
-            this.start = this.elm.x <= 0 ? -this.elm.x / 5 | 0 : 0;
-            this.elm.dString = this.elm.event.arg.string.substring(
+    updateEvent() {
+        if (this.event !== undefined) {
+            this.start = this.event.x <= 0 ? -this.event.x / 5 | 0 : 0;
+            this.event.dString = this.event.event.arg.string.substring(
                 this.start,
-                (this.width - this.elm.x - 5) / 5 | 0);
-            if (this.elm.x + this.elm.event.arg.string.length * 5 - 1 <= 0)
-                delete this.elm;
+                (this.width - this.event.x - 5) / 5 | 0);
+            if (this.event.x + this.event.event.arg.string.length * 5 - 1 <= 0)
+                delete this.event;
         }
     }
 
-    /*
-        showAnnouncement() {
-            if (this.pos.y < 0) {
+    animation() {
+        if (this.event !== undefined){
+            if (this.pos.y < 0)
                 this.pos.y++;
-            }
-        }
-
-        hideAnnouncement() {
+        }else {
             if (this.pos.y >= -this.height - 4) {
                 this.pos.y--;
             }
         }
-     */
+    }
 
     update(deltaTime, client, entityList) {
         this.pos.x = R.WIDTH / 2 - 64 | 0;
-        this.updateElm();
+        this.animation();
+        this.updateEvent();
         this.timer.tick(deltaTime);
-
     }
 
     draw() {
@@ -69,11 +68,11 @@ export default class Announcement extends UIElement {
                 this.height - 4
             );
 
-            if (this.elm !== undefined) {
+            if (this.event !== undefined) {
                 R.drawText(
-                    this.elm.dString,
-                    this.pos.x + this.elm.x + this.start * 5 + 1,
-                    this.pos.y + 11, this.elm.event.arg.color
+                    this.event.dString,
+                    this.pos.x + this.event.x + this.start * 5 + 1,
+                    this.pos.y + 11, this.event.event.color
                 );
             }
 
@@ -86,7 +85,6 @@ export default class Announcement extends UIElement {
                 this.width,
                 this.height + 4
             );
-
         }
     }
 }

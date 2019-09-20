@@ -1,9 +1,10 @@
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
-class GameEvent {
-    constructor(name, type, arg , life = 30) {
+class SGameEvent {
+    constructor(name, type, arg , color, life) {
         this.name = name;
         this.type = type;
+        this.color = color;
         this.life = life;
         this.arg = arg;
     }
@@ -13,4 +14,4 @@ class GameEvent {
     }
 }
 
-module.exports = GameEvent;
+module.exports = SGameEvent;
