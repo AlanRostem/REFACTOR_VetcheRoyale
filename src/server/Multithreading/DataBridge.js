@@ -22,8 +22,6 @@ class DataBridge {
     onDataReceived(data) {
 
     }
-
-
 }
 
 module.exports = DataBridge;

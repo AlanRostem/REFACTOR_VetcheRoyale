@@ -29,8 +29,10 @@ class GameServer {
         }
 
         this.matchMaker.update(this);
+        this.mainSocket.cl.update(this);
+
+        // In a new world!
         this.worldManager.update();
-        this.mainSocket.cl.update();
 
         if (Date.now() > 0)
             this.lastTime = Date.now();
