@@ -83,7 +83,7 @@ class Client {
 
     update() {
         this.inputReceiver.update(this);
-        this.setOutboundPacketData("entityData", this.player.entitiesInProximity.exportDataPack());
+        //this.setOutboundPacketData("entityData", this.player.entitiesInProximity.exportDataPack());
         this.setOutboundPacketData("now", Date.now());
     }
 

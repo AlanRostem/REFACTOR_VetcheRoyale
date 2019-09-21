@@ -210,7 +210,7 @@ class Player extends GameDataLinker {
 
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
-
+        entityManager.queueClientData(this.id, this.entitiesInProximity.exportDataPack());
     }
 }
 

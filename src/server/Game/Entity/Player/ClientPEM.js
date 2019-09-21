@@ -13,7 +13,8 @@ class ClientPEM extends ProximityEntityManager {
 
     addEntity(entity) {
         super.addEntity(entity);
-        this.entRef.client.emit("spawnEntity", entity.getDataPack());
+        // TODO: Add on  the IO thread
+        //this.entRef.client.emit("spawnEntity", entity.getDataPack());
         this.spectators.onSpawnEntity(entity);
     }
 

@@ -9,8 +9,11 @@ const Player = require("../Entity/Player/SPlayer.js");
 
 class WorldManager {
     constructor() {
-        this.dataBridge = new DataBridge();
-        this.queuedPlayers = {};
+        this.dataBridge = new class extends DataBridge {
+            onDataReceived(data) {
+                // TODO: Do shit
+            }
+        }();
 
         this.lastCreatedWorldID = -1;
         this.deltaTime = 0;
@@ -30,7 +33,10 @@ class WorldManager {
         this.addWorld(hub, "hub");
 
         let playground = new PlayGround(this.gameWorlds);
+        this.playground = playground;
+
         this.addWorld(playground, "playground");
+        playground.spawnPlayer(new Player(0, 0));
     }
 
     checkQueuedPlayers() {
@@ -42,6 +48,10 @@ class WorldManager {
                 this.createWorld();
             }
         }
+    }
+
+    setBridgedData(key, value) {
+        this.dataBridge.queueOutboundData(key, value);
     }
 
     addWorld(world, id) {
@@ -62,10 +72,19 @@ class WorldManager {
     }
 
     putPlayerInGame(playerID, gameID) {
-        const player = this.queuedPlayers[playerID];
+        const player = new Player(0,0);
+        player.id = playerID;
         const world = this.gameWorlds.get(gameID);
         world.spawnPlayer(player);
-        delete this.queuedPlayers[playerID];
+    }
+
+
+    importDataBridge(data) {
+        this.dataBridge.receivedData = data;
+    }
+
+    exportDataBridge() {
+        return this.dataBridge.outboundData;
     }
 
     update() {
@@ -83,7 +102,7 @@ class WorldManager {
         this.checkQueuedPlayers();
         for (let worldID in this.gameWorlds.object) {
             if (this.gameWorlds.has(worldID))
-                this.gameWorlds.get(worldID).update(this.deltaTime);
+                this.gameWorlds.get(worldID).update(this.deltaTime, this);
         }
 
         if (Date.now() > 0)
