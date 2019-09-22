@@ -15,6 +15,11 @@ class WorldManager {
             }
         }();
 
+        this.dataBridge.on("test", data => {
+            console.log(data)
+        });
+
+
         this.lastCreatedWorldID = -1;
         this.deltaTime = 0;
         this.lastTime = 0;

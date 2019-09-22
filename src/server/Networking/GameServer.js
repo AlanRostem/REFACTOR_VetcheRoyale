@@ -39,11 +39,13 @@ class GameServer {
 
         // TODO: Parameter should be workerData on the thread code
         this.importDataBridge(this.worldManager.exportDataBridge());
+        this.dataBridge.update();
 
 
         // /--- On a different thread ---\
 
         this.worldManager.update();
+        this.worldManager.importDataBridge(this.exportDataBridge());
 
         // \--- On a different thread ---/
 
