@@ -81,13 +81,10 @@ class Client {
         }
     }
 
-    update() {
-        this.inputReceiver.update(this);
-        //this.setOutboundPacketData("entityData", this.player.entitiesInProximity.exportDataPack());
-        this.setOutboundPacketData("now", Date.now());
-    }
-
     networkedUpdate(server) {
+        this.inputReceiver.update(this);
+        this.setOutboundPacketData("entityData", server.dataBridge.inboundData);
+        this.setOutboundPacketData("now", Date.now());
         this.updateDataCycle();
     }
 

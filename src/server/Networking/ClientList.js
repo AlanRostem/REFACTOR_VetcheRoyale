@@ -51,7 +51,7 @@ class ClientList {
 
     update(server) {
         for (var id in this.container) {
-            this.container[id].networkedUpdate();
+            this.container[id].networkedUpdate(server);
         }
     }
 }

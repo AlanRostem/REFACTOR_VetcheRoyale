@@ -7,6 +7,7 @@ class DataBridge {
             "events": {}
         };
         this.events = new ONMap();
+        this.constProps = new ONMap();
     }
 
     set receivedData(data) {
@@ -42,6 +43,14 @@ class DataBridge {
         this.outboundData = {
             "events": {}
         };
+    }
+
+    setConst(key) {
+        this.constProps.set(key, true);
+    }
+
+    getInboundData(key) {
+        return this.inboundData[key];
     }
 
 }
