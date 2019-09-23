@@ -18,16 +18,16 @@ Array.prototype.remove = function() {
 
 // The main web socket of the server. This is a singleton class
 class WebSocket {
-    constructor(socket, matchMaker) {
+    constructor(socket, matchMaker, server) {
        this.socket = socket; // Object given by socket.io
         if (!this.socket) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }
         this.cl = new ClientList();
-        this.defineSocketEvents(matchMaker);
+        this.defineSocketEvents(matchMaker, server);
     }
 
-    defineSocketEvents(matchMaker) {
+    defineSocketEvents(matchMaker, server) {
         this.socket.on("connection", client => {
             console.log("\nEstablishing connection... Client ID: [ " + client.id + " ]");
 
@@ -37,14 +37,10 @@ class WebSocket {
                 //return;
             }
 
-            var _client = new Client(client, this.cl);
+            var _client = new Client(client, this.cl, server);
             this.cl.addClient(client.id, _client);
             matchMaker.queueClientToGame(_client);
         });
-    }
-
-    get ioInstance() {
-        return this.socket;
     }
 
     get clientList() {

@@ -4,19 +4,29 @@ class DataBridge {
     constructor() {
         this.inboundData = {};
         this.outboundData = {
-            "events": {}
+            "events": {},
+            "asyncs": {}
         };
         this.events = new ONMap();
-        this.constProps = new ONMap();
+        this.asyncs = new ONMap();
     }
 
     set receivedData(data) {
+        this.inboundData = data;
         for (let event in data["events"]) {
             let callback = this.events.get(event);
-            callback(data["events"][event]);
+            if (callback)
+                callback(data["events"][event]);
         }
         this.onDataReceived(data);
-        this.inboundData = data;
+    }
+
+    asyncEmit(event, data) {
+        this.outboundData["asyncs"][event] = data;
+    }
+
+    onAsync(event, callback) {
+        this.asyncs.set(event, callback)
     }
 
     transfer(event, data) {
@@ -40,17 +50,17 @@ class DataBridge {
     }
 
     update() {
+        for (let event in this.outboundData["asyncs"]) {
+            let callback = this.asyncs.get(event);
+            if (callback) {
+                callback(this.outboundData["asyncs"][event]);
+                delete this.outboundData.asyncs[event];
+            }
+        }
         this.outboundData = {
-            "events": {}
+            "events": {},
+            "asyncs": this.outboundData.asyncs
         };
-    }
-
-    setConst(key) {
-        this.constProps.set(key, true);
-    }
-
-    getInboundData(key) {
-        return this.inboundData[key];
     }
 
 }

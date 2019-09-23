@@ -7,7 +7,7 @@ const PacketValidator = require("./PacketValidator.js");
 
 // Object that represents a client connected to the server
 class Client {
-    constructor(socket, clientList) {
+    constructor(socket, clientList, server) {
         this.inboundDataCallbacks = new ONMap();
         this.outboundPacket = new ONMap();
 
@@ -21,9 +21,11 @@ class Client {
         this.removed = false;
         this.disconnected = false;
 
+        this.playerObjData = {};
+
         // Used to store packets over time and check their frequency
         this.frequencyBuffer = [];
-        this.defineSocketEvents(socket, clientList);
+        this.defineSocketEvents(socket, clientList, server);
     }
 
     addClientUpdateListener(eventName, callback) {
@@ -45,18 +47,18 @@ class Client {
         return this.disconnected;
     }
 
-    setPlayer(player) {
-        this.player = player;
-    }
 
-
-    defineSocketEvents(socket, clientList) {
+    defineSocketEvents(socket, clientList, server) {
         this.socket.on("connectClientCallback", data => {
             if (PacketValidator.validatePacket(this, data)) {
                 console.log("Client [ " + data.id + " ] successfully connected!");
                 this.socket.broadcast.emit("broadcast-newPlayer", {
                     id: this.id,
                     playerCount: clientList.length
+                });
+                server.dataBridge.asyncEmit("client", {
+                    id: this.id,
+
                 });
             }
         });
@@ -81,9 +83,15 @@ class Client {
         }
     }
 
+    setPlayerWorldData(server) {
+        this.worldName = server.lastWorldName;
+        this.playerObjData = server.dataBridge.inboundData[this.worldName];
+    }
+
     networkedUpdate(server) {
         this.inputReceiver.update(this);
-        this.setOutboundPacketData("entityData", server.dataBridge.inboundData);
+        this.playerObjData = server.dataBridge.inboundData[this.worldName];
+        this.setOutboundPacketData("entityData", this.playerObjData);
         this.setOutboundPacketData("now", Date.now());
         this.updateDataCycle();
     }

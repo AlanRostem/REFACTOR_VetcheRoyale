@@ -15,7 +15,7 @@ class WorldManager {
             }
         }();
 
-        this.dataBridge.on("test", data => {
+        this.dataBridge.on("client", data => {
             console.log(data)
         });
 

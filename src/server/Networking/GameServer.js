@@ -9,12 +9,16 @@ class GameServer {
     constructor(sio) {
         this.worldManager = new WorldManager();
         this.matchMaker = new MatchMaker();
-        this.mainSocket = new WebSocket(sio, this.matchMaker);
+        this.mainSocket = new WebSocket(sio, this.matchMaker, this);
+        this.lastWorldName = "playground"; // TODO: Automate
         this.dataBridge = new class extends DataBridge {
             onDataReceived(data) {
 
             }
         };
+        this.dataBridge.onAsync("client", data => {
+            console.log(data)
+        });
 
         this.deltaTime = 0;
         this.lastTime = 0;
@@ -38,13 +42,16 @@ class GameServer {
         this.mainSocket.cl.update(this);
 
         // TODO: Parameter should be workerData on the thread code
-        this.importDataBridge(this.worldManager.exportDataBridge());
+
         this.dataBridge.update();
+        ///////////////////////////
+        this.importDataBridge(this.worldManager.exportDataBridge());
 
 
         // /--- On a different thread ---\
 
         this.worldManager.update();
+        ///////////////////////////
         this.worldManager.importDataBridge(this.exportDataBridge());
 
         // \--- On a different thread ---/
@@ -65,6 +72,10 @@ class GameServer {
 
     exportDataBridge() {
         return this.dataBridge.outboundData;
+    }
+
+    transferBridgeEvent(event, data) {
+        this.dataBridge.transfer(event, data);
     }
 
     start() {
