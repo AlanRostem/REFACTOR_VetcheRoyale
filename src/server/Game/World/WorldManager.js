@@ -15,10 +15,12 @@ class WorldManager {
             }
         }();
 
-        this.dataBridge.on("client", data => {
-            console.log(data)
+        this.dataBridge.onAsync("client", data => {
+            let player = new Player();
+            player.id = data.id;
+            this.getLastWorld().spawnPlayer(player);
+            console.log("Satan", data)
         });
-
 
         this.lastCreatedWorldID = -1;
         this.deltaTime = 0;
@@ -66,6 +68,10 @@ class WorldManager {
         this.gameWorlds.set(id, world);
         world.id = id;
         this.lastCreatedWorldID = id;
+    }
+
+    getLastWorld() {
+        return this.gameWorlds.get(this.lastCreatedWorldID);
     }
 
     createWorld(tileMapName = "lobby", id) {

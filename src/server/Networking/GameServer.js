@@ -17,7 +17,7 @@ class GameServer {
             }
         };
         this.dataBridge.onAsync("client", data => {
-            console.log(data)
+
         });
 
         this.deltaTime = 0;
@@ -43,11 +43,6 @@ class GameServer {
 
         // TODO: Parameter should be workerData on the thread code
 
-        this.dataBridge.update();
-        ///////////////////////////
-        this.importDataBridge(this.worldManager.exportDataBridge());
-
-
         // /--- On a different thread ---\
 
         this.worldManager.update();
@@ -55,6 +50,13 @@ class GameServer {
         this.worldManager.importDataBridge(this.exportDataBridge());
 
         // \--- On a different thread ---/
+
+        this.dataBridge.update();
+        ///////////////////////////
+        this.importDataBridge(this.worldManager.exportDataBridge());
+
+
+
 
         if (Date.now() > 0)
             this.lastTime = Date.now();

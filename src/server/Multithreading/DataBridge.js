@@ -41,20 +41,16 @@ class DataBridge {
         this.outboundData[key] = value;
     }
 
-    sendData() {
-        return this.outboundData;
-    }
-
     onDataReceived(data) {
 
     }
 
     update() {
-        for (let event in this.outboundData["asyncs"]) {
+        for (let event in this.inboundData["asyncs"]) {
             let callback = this.asyncs.get(event);
             if (callback) {
-                callback(this.outboundData["asyncs"][event]);
-                delete this.outboundData.asyncs[event];
+                callback(this.inboundData["asyncs"][event]);
+                delete this.inboundData.asyncs[event];
             }
         }
         this.outboundData = {
