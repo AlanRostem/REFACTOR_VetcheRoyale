@@ -11,19 +11,27 @@ class Thread {
     }
 
     runService(workerData, source) {
+        const _this = this;
         return new Promise((resolve, reject) => {
             const worker = new Worker(source, { workerData });
+            this.worker = worker;
 
             worker.on('message', value => {
                 resolve(value);
-                this.onGetMessage(value);
+                _this.onGetMessage(value);
             });
             worker.on('error', reject);
             worker.on('exit', (code) => {
                 if (code !== 0)
                     reject(new Error(`Worker stopped with exit code ${code}`));
-            })
+            });
         })
+    }
+
+    sendDataToParent(data) {
+        if (this.worker) {
+            this.worker.postMessage(data);
+        }
     }
 
     run() {

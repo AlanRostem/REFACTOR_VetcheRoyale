@@ -12,6 +12,7 @@ class DataBridge {
     }
 
     set receivedData(data) {
+        if (!data) return;
         this.inboundData = data;
         for (let event in data["events"]) {
             let callback = this.events.get(event);

@@ -7,6 +7,21 @@ const SPlayer = require("../Entity/Player/SPlayer.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
 
+String.random = () => {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
 class WorldManager {
     constructor() {
         this.dataBridge = new class extends DataBridge {
@@ -98,7 +113,7 @@ class WorldManager {
         return this.dataBridge.outboundData;
     }
 
-    update() {
+    update(data) {
         if (Date.now() > 0)
             this.deltaTime = (Date.now() - this.lastTime) / 1000;
 
@@ -109,6 +124,8 @@ class WorldManager {
                 this.started = true;
             this.deltaTime = 0;
         }
+
+        this.importDataBridge(data);
 
         this.checkQueuedPlayers();
         for (let worldID in this.gameWorlds.object) {

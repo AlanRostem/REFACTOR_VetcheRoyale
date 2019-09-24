@@ -7,18 +7,17 @@ const DataBridge = require("../Multithreading/DataBridge.js");
 // Class for the main server
 class GameServer {
     constructor(sio) {
-        this.worldManager = new WorldManager();
         this.matchMaker = new MatchMaker();
         this.mainSocket = new WebSocket(sio, this.matchMaker, this);
         this.lastWorldName = "playground"; // TODO: Automate
-        this.dataBridge = new class extends DataBridge {
-            onDataReceived(data) {
+        const _this = this;
+        this.dataBridge = new DataBridge();
 
+        this.thread = new class extends Thread {
+            onGetMessage(message) {
+                _this.importDataBridge(message);
             }
-        };
-        this.dataBridge.onAsync("client", data => {
-
-        });
+        } ({}, "./src/server/Game/SimulationSide.js");
 
         this.deltaTime = 0;
         this.lastTime = 0;
@@ -41,22 +40,7 @@ class GameServer {
         this.matchMaker.update(this);
         this.mainSocket.cl.update(this);
 
-        // TODO: Parameter should be workerData on the thread code
-
-        // /--- On a different thread ---\
-
-        this.worldManager.update();
-        ///////////////////////////
-        this.worldManager.importDataBridge(this.exportDataBridge());
-
-        // \--- On a different thread ---/
-
         this.dataBridge.update();
-        ///////////////////////////
-        this.importDataBridge(this.worldManager.exportDataBridge());
-
-
-
 
         if (Date.now() > 0)
             this.lastTime = Date.now();
@@ -81,7 +65,7 @@ class GameServer {
     }
 
     start() {
-        new Thread({}, "./src/test.js").run();
+        this.thread.run();
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 }
