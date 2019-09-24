@@ -13,6 +13,7 @@ class Thread {
     runService(workerData, source) {
         return new Promise((resolve, reject) => {
             const worker = new Worker(source, { workerData });
+
             worker.on('message', value => {
                 resolve(value);
                 this.onGetMessage(value);
@@ -28,7 +29,8 @@ class Thread {
     run() {
         let _this = this;
         (async function () {
-            await _this.runService(_this.workerData, _this.source);
+            let test = await _this.runService(_this.workerData, _this.source);
+            //console.log(test)
         })().catch(err => console.error(err));
     }
 }
