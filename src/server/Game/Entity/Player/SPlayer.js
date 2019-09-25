@@ -37,6 +37,7 @@ class Player extends GameDataLinker {
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
         this.addMovementListener("tile", "slope", () => 0);
+        this.addMovementListener("canMove", true);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -187,7 +188,7 @@ class Player extends GameDataLinker {
             this.jumping = true;
         }
 
-        if (this.input.keyHeldDown(32)) {
+        if (this.input.keyHeldDown(32) && this.checkMovementState("canMove", true)) {
             if (!this.jumping) {
                 this.vel.y = this.speed.jump;
                 this.jumping = true;
@@ -200,13 +201,13 @@ class Player extends GameDataLinker {
 
         this.vel.x *= this.fric.x;
 
-        if (this.input.keyHeldDown(68)) {
+        if (this.input.keyHeldDown(68) && this.checkMovementState("canMove", true)) {
             this.accelerateX(this.acc.x, deltaTime);
             this.setMovementState("direction", "right");
 
         }
 
-        if (this.input.keyHeldDown(65)) {
+        if (this.input.keyHeldDown(65) && this.checkMovementState("canMove", true)) {
             this.accelerateX(-this.acc.x, deltaTime);
             this.setMovementState("direction", "left");
         }
