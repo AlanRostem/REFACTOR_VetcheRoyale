@@ -5,7 +5,7 @@ const Player = require("../../../Entity/Player/SPlayer.js");
 
 class ATBullet extends Projectile {
     constructor(oID, wID, x, y, angle) {
-        super(oID, x, y, 2, 2, angle, 350, 350, false);
+        super(oID, x, y, 2, 2, angle, 350, 120, false);
         this.damage = new Damage(50, oID);
         this.seek = false;
         this.lifeTime = 10;
