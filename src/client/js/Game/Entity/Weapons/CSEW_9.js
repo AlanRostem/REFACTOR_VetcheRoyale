@@ -11,7 +11,6 @@ export default class CSEW_9 extends CWeapon {
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
-        console.log(true);
         if (this.getRealtimeProperty("playerID") !== client.id) return;
         let secondary = this.getRealtimeProperty("secondaryFire");
         if (secondary) {

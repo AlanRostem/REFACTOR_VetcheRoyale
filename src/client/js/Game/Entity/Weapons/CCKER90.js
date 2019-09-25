@@ -27,6 +27,7 @@ class CCKER90 extends CWeapon {
                 let to = {x: -500 * client.input.mouse.cosCenter, y: -500 * client.input.mouse.sinCenter};
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);
+                UI.getElement("enemyDetector").showCentralPoint();
             }
         } else {
             let to = {x: 0, y: 0};
