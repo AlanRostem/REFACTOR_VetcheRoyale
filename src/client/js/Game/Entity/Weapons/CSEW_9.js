@@ -14,14 +14,16 @@ export default class CSEW_9 extends CWeapon {
         if (this.getRealtimeProperty("playerID") !== client.id) return;
         let secondary = this.getRealtimeProperty("secondaryFire");
         if (secondary) {
-            if (client.input.getMouse(3)) {
                /* let from = {x: 0, y: 0};
                 let to = {x: -500 * client.input.mouse.cosCenter, y: -500 * client.input.mouse.sinCenter};
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);*/
                 console.log(this.output.misPos.x);
+                R.camera.setConfig("followPlayer", false);
                 R.camera.setCurrentFollowPos(this.output.misPos);
-            }
+        }
+        else {
+            R.camera.setConfig("followPlayer", true)
         }
     }
 }
