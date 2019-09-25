@@ -37,6 +37,7 @@ class Player extends GameDataLinker {
         this.addMovementListener("main", "stand", () => 0);
         this.addMovementListener("direction", "right", () => 0);
         this.addMovementListener("tile", "slope", () => 0);
+        this.addMovementListener("canMove", true);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -172,17 +173,6 @@ class Player extends GameDataLinker {
     }
 
     update(entityManager, deltaTime) {
-        if (this.dead) {
-            // TODO: Temporary solution
-            if (this.myKiller) {
-                this.myKiller.spectators.addSpectator(this.client);
-                this.client.setPlayer(this.myKiller);
-            }
-            this.remove();
-            //this.client.setOutboundPacketData("entityData", this.myKiller.entitiesInProximity.exportDataPack());
-            return;
-        }
-
         this.setMovementState("tile", "none");
 
         this.invAmmo = this.inventory.ammo;
@@ -198,7 +188,7 @@ class Player extends GameDataLinker {
             this.jumping = true;
         }
 
-        if (this.input.keyHeldDown(32)) {
+        if (this.input.keyHeldDown(32) && this.checkMovementState("canMove", true)) {
             if (!this.jumping) {
                 this.vel.y = this.speed.jump;
                 this.jumping = true;
@@ -211,13 +201,13 @@ class Player extends GameDataLinker {
 
         this.vel.x *= this.fric.x;
 
-        if (this.input.keyHeldDown(68)) {
+        if (this.input.keyHeldDown(68) && this.checkMovementState("canMove", true)) {
             this.accelerateX(this.acc.x, deltaTime);
             this.setMovementState("direction", "right");
 
         }
 
-        if (this.input.keyHeldDown(65)) {
+        if (this.input.keyHeldDown(65) && this.checkMovementState("canMove", true)) {
             this.accelerateX(-this.acc.x, deltaTime);
             this.setMovementState("direction", "left");
         }
@@ -241,6 +231,10 @@ class Player extends GameDataLinker {
 
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
+        this.client.update(entityManager);
+        if (this.client.removed) {
+            entityManager.clients.removeClient(this.client.id)
+        }
     }
 }
 

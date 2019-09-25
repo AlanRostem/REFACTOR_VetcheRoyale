@@ -3,10 +3,12 @@ import R from "../../Graphics/Renderer.js";
 import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
-import {vectorLinearInterpolation} from "../../../../shared/code/Math/CCustomMath.js";
 
 /**
  * Class representation of the client. Holds input callbacks and manages socket events.
+ * An instance of this class can be found in the update methods as parameters in the
+ * UIElement, CEntity, CEntityManager, InputListener and EntitySnapshotBuffer instances
+ * and as the clientRef member in Scene.
  */
 class CClient {
     constructor(socket) {
@@ -32,6 +34,7 @@ class CClient {
 
     }
 
+
     onServerUpdateReceived(packet) {
         this.timeSyncer.onServerUpdate(this.latency);
         this.lastReceivedData = packet;
@@ -40,14 +43,22 @@ class CClient {
         }
     }
 
+    /**
+     * Get the input listener instance from the client
+     * @returns {InputListener}
+     */
     get input() {
         return this.inputListener;
     }
 
-    // Map a key code to the input listener with a
-    // callback. This mapping function's difference
-    // is that upon the key state the key state data
-    // is sent to the server.
+    /**
+     * Map a key code to the input listener with a
+     * callback. This mapping function's difference
+     * is that upon the key state the key state data
+     * is sent to the server.
+     * @param keyCode {number} - JS key code
+     * @param callback {function} - Callback when pressing and releasing the key
+     */
     addKeyEmitter(keyCode, callback) {
         this.inputListener.addKeyMapping(keyCode, keyState => {
             if (callback) {
@@ -56,27 +67,51 @@ class CClient {
         });
     }
 
-    get inputBufferArray() {
-        return this.inputListener.inputBuffer.buffer;
-    }
-
+    /**
+     * Map (in an update loop) a piece of data to be sent to the server.
+     * The data is present on the server as an object property with the
+     * respective mapping name. It can be found in SClient.
+     * @see SClient
+     * @param key {string} - Mapping name
+     * @param value {object} - Data values
+     */
     setOutboundPacketData(key, value) {
         this.clientEmitPacket.set(key, value);
     }
 
+    /**
+     * Map a callback event for every tick the server sends packet data.
+     * The callback takes the global packet data as a parameter.
+     * @param eventName {string} - Mapping name
+     * @param callback {function} - Callback executed every server frame (with latency)
+     */
     addServerUpdateListener(eventName, callback) {
         this.serverUpdateCallbacks.set(eventName, callback);
     }
 
-
+    /**
+     * Reference to all the packet data gathered from the server
+     * @returns {object}
+     */
     get inboundPacket() {
         return this.lastReceivedData;
     }
 
+    /**
+     * Reference to all the packet data sent to the server
+     */
     get outboundPacket() {
         return this.clientEmitPacket.object;
     }
 
+    /**
+     * Map a mouse code to the input listener with a
+     * callback. This mapping function's difference
+     * is that upon the key state the mouse button state data
+     * is sent to the server.
+     * @param mouseButton {number} - JS mouse code
+     * @param callback {function} - Callback when pressing and releasing the mouse button
+     */
     addMouseEmitter(mouseButton, callback) {
         this.inputListener.addMouseMapping(mouseButton, mouseState => {
             if (callback) {
@@ -85,14 +120,11 @@ class CClient {
         });
     }
 
-    static getPing() {
-        return CClient.ping;
-    }
 
-    static get ping() {
-        return this.latency;
-    }
-
+    /**
+     * Get the reference to the client player object
+     * @returns {UserPlayer}
+     */
     get player() {
         return this.eMgr.getEntityByID(this.id);
     }

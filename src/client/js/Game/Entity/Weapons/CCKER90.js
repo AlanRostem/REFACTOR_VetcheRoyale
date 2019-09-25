@@ -2,6 +2,7 @@ import CWeapon from "./CWeapon.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import R from "../../../Graphics/Renderer.js";
 import UI from "../../../UI/UI.js";
+import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 
 class CCKER90 extends CWeapon {
     constructor(props) {
@@ -24,9 +25,13 @@ class CCKER90 extends CWeapon {
         if (isScoping) {
             if (client.input.getMouse(3)) {
                 let from = {x: 0, y: 0};
-                let to = {x: -500 * client.input.mouse.cosCenter, y: -500 * client.input.mouse.sinCenter};
+                let center = {x: R.screenSize.x / 2, y: R.screenSize.y / 2};
+                let d = Vector2D.distance(client.input.mouse, center);
+                d *= 6;
+                let to = {x: -d * client.input.mouse.cosCenter, y: -d * client.input.mouse.sinCenter};
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);
+                UI.getElement("enemyDetector").showCentralPoint();
             }
         } else {
             let to = {x: 0, y: 0};

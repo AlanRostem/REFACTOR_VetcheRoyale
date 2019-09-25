@@ -1,8 +1,8 @@
 // Manages inbound entity data packs from the server.
 // This singleton class also renders those entities.
-import CEntity from "../../Game/Entity/CEntity.js"
 import EntityTypeSpawner from "../../Game/Entity/Management/EntityTypeSpawner.js";
 
+// TODO: Add docs if needed
 export default class CEntityManager {
     constructor(client) {
         this.clientRef = client;

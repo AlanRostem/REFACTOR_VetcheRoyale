@@ -47,6 +47,13 @@ class ClientList {
             callback(this.container[id]);
         }
     }
+
+
+    update(server) {
+        for (var id in this.container) {
+            this.container[id].networkedUpdate();
+        }
+    }
 }
 
 module.exports = ClientList;

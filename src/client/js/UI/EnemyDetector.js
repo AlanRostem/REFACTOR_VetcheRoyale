@@ -9,6 +9,11 @@ class EnemyDetector extends UIElement {
         this.found = {};
         this.maxFlashTime = .5;
         this.flashTime = 0;
+        this.showScope = false;
+    }
+
+    showCentralPoint() {
+        this.showScope = true;
     }
 
     queryPositions(positions) {
@@ -61,6 +66,16 @@ class EnemyDetector extends UIElement {
             R.drawRect(color.toLowerCase(), disp.x, disp.y, dim, dim);
         }
         this.found = {};
+
+        if (this.showScope) {
+            R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 - 1, 1,1);
+            R.drawRect("red", R.screenSize.x / 2 - 1, R.screenSize.y / 2, 1,1);
+            R.drawRect("red", R.screenSize.x / 2 + 1, R.screenSize.y / 2, 1,1);
+            R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 + 1, 1,1);
+        }
+
+        this.showScope = false;
+
     }
 
 }
