@@ -33,7 +33,6 @@ class SEventManager {
     update(gameWorld, deltaTime) {
         this.timer.tick(deltaTime);
         this.sendEvent(gameWorld);
-
     }
 }
 

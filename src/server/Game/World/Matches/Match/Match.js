@@ -6,6 +6,13 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 class Match extends GameWorld{
     constructor(socket, worldList, name, gameMap) {
         super(socket, name, gameMap);
+        this.setGameRules({
+            "lootLife": 2,
+            "pvp": true,
+            "maxPlayers": 24,
+            "maxTeamMembers": 3,
+            "dropLootOnDeath": true,
+        });
         this.spawnEntity(
             61 * Tile.SIZE,
             104 * Tile.SIZE,
