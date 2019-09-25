@@ -19,13 +19,16 @@ export default class CEventManager {
     distributeEvent() {
         try {
             let e = this.events.filter((ev) => {
-                return (ev.type === "all" || ev.type.includes("minimap"));
+                return (ev.arg.hasOwnProperty('pos') &&
+                    (ev.type === "all" || ev.type.includes("minimap")));
             });
             if (e) UI.elements["minimap"].addEvent(e);
 
             if (UI.elements["announcement"].event === undefined) {
                 let e = this.events.find((ev) => {
-                    return (!ev.arg.hasOwnProperty('shown') && (ev.type === "all" || ev.type.includes("announcement")));
+                    return (!ev.arg.hasOwnProperty('shown') &&
+                        ev.arg.hasOwnProperty('string') &&
+                        (ev.type === "all" || ev.type.includes("announcement")));
                 });
                 if (e) UI.elements["announcement"].addEvent(e);
             }
