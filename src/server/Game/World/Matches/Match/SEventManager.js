@@ -5,8 +5,8 @@ const STimer = require("../../../../../shared/code/Tools/STimer");
 class SEventManager {
     constructor(gameMap) {
         this.queue = [];
-        this.timer = new STimer(4, () => {
-            this.add("test" + Math.floor(Math.random() * 100), "all", "Green", 20,
+        this.timer = new STimer(5, () => {
+            this.add("test" + Math.floor(Math.random() * 100), "all", "Green", 1,
                 {
                     pos: {
                         x:Math.floor(Math.random() * gameMap.w) * gameMap.tileSize,

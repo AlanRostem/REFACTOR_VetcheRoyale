@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TileMapManager</title>
+    <title>JSDoc: Class: Announcement</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TileMapManager</h1>
+    <h1 class="page-title">Class: Announcement</h1>
 
     
 
@@ -28,9 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>TileMapManager<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description"><p>Holds data of tile maps loaded from JSON</p></div>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Announcement<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,16 +39,18 @@
         
 
     
-    <h2>Constructor</h2>
-    
 
     
-    <h4 class="name" id="TileMapManager"><span class="type-signature"></span>new TileMapManager<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Announcement"><span class="type-signature"></span>new Announcement<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    <p>Sets UI image and timer for event position</p>
+</div>
 
 
 
@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Game_TileBased_TileMapManager.js.html">Game/TileBased/TileMapManager.js</a>, <a href="Game_TileBased_TileMapManager.js.html#line7">line 7</a>
+        <a href="UI_Announcement.js.html">UI/Announcement.js</a>, <a href="UI_Announcement.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -149,7 +149,7 @@
     
 
     
-    <h4 class="name" id="createMap"><span class="type-signature"></span>createMap<span class="signature">(name, src)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addEvent"><span class="type-signature"></span>addEvent<span class="signature">(e)</span><span class="type-signature"></span></h4>
     
 
     
@@ -157,7 +157,7 @@
 
 
 <div class="description">
-    <p>Makes a new tile map object from a .json tile map source</p>
+    <p>Adds an event to be displayed and adds properties to the event</p>
 </div>
 
 
@@ -193,13 +193,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>e</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">CGameEvent</span>
 
 
             
@@ -209,30 +209,7 @@
 
             
 
-            <td class="description last"><p>Name of the tile map</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>src</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Relative file path of the tile map source file</p></td>
+            <td class="description last"><p>Event to be displayed</p></td>
         </tr>
 
     
@@ -273,7 +250,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Game_TileBased_TileMapManager.js.html">Game/TileBased/TileMapManager.js</a>, <a href="Game_TileBased_TileMapManager.js.html#line16">line 16</a>
+        <a href="UI_Announcement.js.html">UI/Announcement.js</a>, <a href="UI_Announcement.js.html#line28">line 28</a>
     </li></ul></dd>
     
 
@@ -309,7 +286,7 @@
     
 
     
-    <h4 class="name" id="getAllMaps"><span class="type-signature"></span>getAllMaps<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="animation"><span class="type-signature"></span>animation<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -317,7 +294,7 @@
 
 
 <div class="description">
-    <p>Retrieves all the generated tile maps</p>
+    <p>Removes the announcementbox if there is no event to display</p>
 </div>
 
 
@@ -361,7 +338,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Game_TileBased_TileMapManager.js.html">Game/TileBased/TileMapManager.js</a>, <a href="Game_TileBased_TileMapManager.js.html#line24">line 24</a>
+        <a href="UI_Announcement.js.html">UI/Announcement.js</a>, <a href="UI_Announcement.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -386,24 +363,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -415,16 +374,96 @@
     
 
     
-    <h4 class="name" id="getMap"><span class="type-signature"></span>getMap<span class="signature">(name)</span><span class="type-signature"> &rarr; {<a href="CTileMap.html">CTileMap</a>}</span></h4>
+    <h4 class="name" id="draw"><span class="type-signature"></span>draw<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
 
-<div class="description">
-    <p>Retrieve a tile map by name</p>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="UI_Announcement.js.html">UI/Announcement.js</a>, <a href="UI_Announcement.js.html#line79">line 79</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(deltaTime, client, entityList)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
 
 
 
@@ -459,13 +498,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>deltaTime</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">int</span>
 
 
             
@@ -475,7 +514,53 @@
 
             
 
-            <td class="description last"><p>Name of the tile map that was made</p></td>
+            <td class="description last"><p>Deltatime between game ticks</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Client</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The client</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>entityList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">EntityManager</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>List of entities</p></td>
         </tr>
 
     
@@ -516,7 +601,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Game_TileBased_TileMapManager.js.html">Game/TileBased/TileMapManager.js</a>, <a href="Game_TileBased_TileMapManager.js.html#line33">line 33</a>
+        <a href="UI_Announcement.js.html">UI/Announcement.js</a>, <a href="UI_Announcement.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -541,24 +626,94 @@
 
 
 
-<h5>Returns:</h5>
+
+
+
+
 
         
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="CTileMap.html">CTileMap</a></span>
-
-
-    </dd>
-</dl>
+            
 
     
+
+    
+    <h4 class="name" id="updateEvent"><span class="type-signature"></span>updateEvent<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Finds the substring to display</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="UI_Announcement.js.html">UI/Announcement.js</a>, <a href="UI_Announcement.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

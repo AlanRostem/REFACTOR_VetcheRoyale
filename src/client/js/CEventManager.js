@@ -1,6 +1,8 @@
 import UI from "./UI/UI.js";
 import CGameEvent from "./CGameEvent.js";
 
+
+//TODO:: Make it easier to add Objects that need events
 export default class CEventManager {
     constructor() {
         this.events = [];
@@ -15,17 +17,19 @@ export default class CEventManager {
     }
 
     distributeEvent() {
-        if (this.events.length > 0) {
-
-            UI.elements["minimap"].addEvent(this.events.filter((ev) => {
+        try {
+            let e = this.events.filter((ev) => {
                 return (ev.type === "all" || ev.type.includes("minimap"));
-            }));
+            });
+            if (e) UI.elements["minimap"].addEvent(e);
 
             if (UI.elements["announcement"].event === undefined) {
-                UI.elements["announcement"].addEvent(this.events.find((ev) => {
-                    return (!ev.hasOwnProperty('shown') && (ev.type === "all" || ev.type.includes("announcement")));
-                }));
+                let e = this.events.find((ev) => {
+                    return (!ev.arg.hasOwnProperty('shown') && (ev.type === "all" || ev.type.includes("announcement")));
+                });
+                if (e) UI.elements["announcement"].addEvent(e);
             }
+        }catch (e) {
 
         }
     }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: VetcheRoyale.js</title>
+    <title>JSDoc: Source: UI/UIElement.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: VetcheRoyale.js</h1>
+    <h1 class="page-title">Source: UI/UIElement.js</h1>
 
     
 
@@ -26,28 +26,51 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import R from "./Graphics/Renderer.js"
-import CClient from "./Networking/Client/CClient.js"
-import Scene from "./Game/Scene.js"
-import CEntityManager from "./Networking/Client/CEntityManager.js"
-import AssetManager from "./AssetManager/AssetManager.js";
-import ConsoleCommands from "./ConsoleCommands.js";
+            <pre class="prettyprint source linenums"><code>import Vector2D from "../../../shared/code/Math/CVector2D.js";
+import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
+
 
 /**
- * @namespace ClientSide
+ * An abstract class for UI elements
  */
+class UIElement {
+    /**
+     *
+     * @param name {string} - A string for the name of the UI element
+     * @param x {int} - x position of the UI element
+     * @param y {int} - y position of the UI element
+     * @param w {int} - width of the UI element
+     * @param h {int} - height of the UI element
+     */
+    constructor(name, x, y, w, h) {
+        this.pos = new Vector2D(x, y);
+        this.width = w;
+        this.height = h;
+        this.id = name;
+    }
 
-// This is the initialization entry point
+    /**
+     *
+     * @param deltaTime {int} - Deltatime between ticks
+     * @param client {Client} - The client
+     * @param entityList {EntityManager} - List of entities
+     */
+    update(deltaTime, client, entityList) {
 
-var client = new CClient(io());
-io = undefined; // Restricting console from using this function.
-var entityDataReceiver = new CEntityManager(client);
+    }
 
-window.AssetManager = AssetManager;
-AssetManager.queue("client/config/assets.cfg");
+    /**
+     *
+     */
+    draw() {
 
-R.setup();
-Scene.run(entityDataReceiver, client);</code></pre>
+    }
+}
+
+UIElement.defaultSpriteSheet = new SpriteSheet("ui/ui.png");
+
+
+export default UIElement;</code></pre>
         </article>
     </section>
 

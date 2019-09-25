@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TileSheet</title>
+    <title>JSDoc: Class: UIElement</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TileSheet</h1>
+    <h1 class="page-title">Class: UIElement</h1>
 
     
 
@@ -28,10 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="ClientSide.html">ClientSide</a>~</span>TileSheet<span class="signature">(src, tileSize, map)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>UIElement<span class="signature">(name, x, y, w, h)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Takes a tile map and tile sheet then draws the entire tile map.</p></div>
+            <div class="class-description"><p>An abstract class for UI elements</p></div>
         
     
 </header>
@@ -46,7 +45,7 @@
     
 
     
-    <h4 class="name" id="TileSheet"><span class="type-signature"></span>new TileSheet<span class="signature">(src, tileSize, map)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="UIElement"><span class="type-signature"></span>new UIElement<span class="signature">(name, x, y, w, h)</span><span class="type-signature"></span></h4>
     
 
     
@@ -86,7 +85,7 @@
 
         <tr>
             
-                <td class="name"><code>src</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -102,20 +101,20 @@
 
             
 
-            <td class="description last"><p>Tile sheet image source from AssetManager</p></td>
+            <td class="description last"><p>A string for the name of the UI element</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>tileSize</code></td>
+                <td class="name"><code>x</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">int</span>
 
 
             
@@ -125,20 +124,20 @@
 
             
 
-            <td class="description last"><p>Tile size</p></td>
+            <td class="description last"><p>x position of the UI element</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>map</code></td>
+                <td class="name"><code>y</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="CTileMap.html">CTileMap</a></span>
+<span class="param-type">int</span>
 
 
             
@@ -148,7 +147,53 @@
 
             
 
-            <td class="description last"><p>Tile map object</p></td>
+            <td class="description last"><p>y position of the UI element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>w</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>width of the UI element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>h</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>height of the UI element</p></td>
         </tr>
 
     
@@ -189,21 +234,12 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_TileSheet.js.html">AssetManager/Classes/Graphical/TileSheet.js</a>, <a href="AssetManager_Classes_Graphical_TileSheet.js.html#line18">line 18</a>
+        <a href="UI_UIElement.js.html">UI/UIElement.js</a>, <a href="UI_UIElement.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
     
 
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>AssetManager</li>
-        
-            <li><a href="CTileMap.html">CTileMap</a></li>
-        </ul>
-    </dd>
     
 
     
@@ -261,10 +297,6 @@
 
 
 
-<div class="description">
-    <p>Draw the image to the main canvas</p>
-</div>
-
 
 
 
@@ -306,7 +338,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_TileSheet.js.html">AssetManager/Classes/Graphical/TileSheet.js</a>, <a href="AssetManager_Classes_Graphical_TileSheet.js.html#line64">line 64</a>
+        <a href="UI_UIElement.js.html">UI/UIElement.js</a>, <a href="UI_UIElement.js.html#line37">line 37</a>
     </li></ul></dd>
     
 
@@ -342,16 +374,12 @@
     
 
     
-    <h4 class="name" id="paintImage"><span class="type-signature"></span>paintImage<span class="signature">(map)</span><span class="type-signature"> &rarr; {HTMLCanvasElement}</span></h4>
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(deltaTime, client, entityList)</span><span class="type-signature"></span></h4>
     
 
     
 
 
-
-<div class="description">
-    <p>Generate a new image out of the tile map array using the tile set image</p>
-</div>
 
 
 
@@ -386,13 +414,13 @@
 
         <tr>
             
-                <td class="name"><code>map</code></td>
+                <td class="name"><code>deltaTime</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="CTileMap.html">CTileMap</a></span>
+<span class="param-type">int</span>
 
 
             
@@ -402,7 +430,53 @@
 
             
 
-            <td class="description last"><p>Tile map object</p></td>
+            <td class="description last"><p>Deltatime between ticks</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Client</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The client</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>entityList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">EntityManager</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>List of entities</p></td>
         </tr>
 
     
@@ -443,7 +517,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="AssetManager_Classes_Graphical_TileSheet.js.html">AssetManager/Classes/Graphical/TileSheet.js</a>, <a href="AssetManager_Classes_Graphical_TileSheet.js.html#line32">line 32</a>
+        <a href="UI_UIElement.js.html">UI/UIElement.js</a>, <a href="UI_UIElement.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -468,24 +542,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">HTMLCanvasElement</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
