@@ -6,18 +6,12 @@ class SEventManager {
     constructor(gameMap) {
         this.queue = [];
         this.timer = new STimer(4, () => {
-            this.add("test" + Math.floor(Math.random() * 100), "minimap", "Green", 20,
+            this.add("test" + Math.floor(Math.random() * 100), "all", "Green", 20,
                 {
                     pos: {
                         x:Math.floor(Math.random() * gameMap.w) * gameMap.tileSize,
                         y:Math.floor(Math.random() * gameMap.h) * gameMap.tileSize
-                    }
-                });
-        });
-
-        this.timer2 = new STimer(12, () => {
-            this.add("announcement" + Math.floor(Math.random() * 100), "announcement", "Red", 20,
-                {
+                    },
                     string: "announcement"+ Math.floor(Math.random() * 100 ),
                 });
         });
@@ -38,7 +32,6 @@ class SEventManager {
 
     update(gameWorld, deltaTime) {
         this.timer.tick(deltaTime);
-        this.timer2.tick(deltaTime);
         this.sendEvent(gameWorld);
 
     }
