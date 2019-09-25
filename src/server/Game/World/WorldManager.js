@@ -30,7 +30,7 @@ class WorldManager {
             }
         }();
 
-        this.dataBridge.onAsync("client", data => {
+        this.dataBridge.onQueuedEvent("client", data => {
             let player = new Player();
             player.id = data.id;
             this.getLastWorld().spawnPlayer(player);

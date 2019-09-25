@@ -5,10 +5,15 @@ class DataBridge {
         this.inboundData = {};
         this.outboundData = {
             "events": {},
-            "asyncs": {}
+            /*
+            TODO: Make a promise type object that the other data bridge takes data from
+             and performs the event callbacks after the promise has resolved it. Do it
+             by responding to the other data bridge as soon as it received the data.
+             */
+            "evtQueue": {}
         };
         this.events = new ONMap();
-        this.asyncs = new ONMap();
+        this.queuedEvents = new ONMap();
     }
 
     set receivedData(data) {
@@ -22,12 +27,16 @@ class DataBridge {
         this.onDataReceived(data);
     }
 
-    asyncEmit(event, data) {
-        this.outboundData["asyncs"][event] = data;
+    queueEventData(event, data) {
+        if (this.outboundData.evtQueue.hasOwnProperty(event)) {
+            this.outboundData.evtQueue[event].push(data);
+            return;
+        }
+        this.outboundData.evtQueue[event] = [data];
     }
 
-    onAsync(event, callback) {
-        this.asyncs.set(event, callback)
+    onQueuedEvent(event, callback) {
+        this.queuedEvents.set(event, callback);
     }
 
     transfer(event, data) {
@@ -47,19 +56,20 @@ class DataBridge {
     }
 
     update() {
-        for (let event in this.inboundData["asyncs"]) {
-            let callback = this.asyncs.get(event);
-            if (callback) {
-                callback(this.inboundData["asyncs"][event]);
-                delete this.inboundData.asyncs[event];
+        for (let eventQueueID in this.inboundData.evtQueue) {
+            let eventQueue = this.inboundData.evtQueue[eventQueueID];
+            for (let eventData of eventQueue) {
+                if (this.queuedEvents.has(eventQueueID)) {
+                    this.queuedEvents.get(eventQueueID)(eventData);
+                }
             }
         }
+
         this.outboundData = {
             "events": {},
-            "asyncs": this.outboundData.asyncs
+            "evtQueue": {}
         };
     }
-
 }
 
 module.exports = DataBridge;

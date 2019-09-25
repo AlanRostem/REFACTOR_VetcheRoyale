@@ -56,9 +56,8 @@ class Client {
                     id: this.id,
                     playerCount: clientList.length
                 });
-                server.dataBridge.asyncEmit("client", {
+                server.dataBridge.queueEventData("client", {
                     id: this.id,
-
                 });
             }
         });
