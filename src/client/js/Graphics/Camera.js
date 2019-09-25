@@ -38,6 +38,10 @@ class Camera {
         this.isShifted = false;
     }
 
+    setConfig(name, boolean) {
+        this.camConfigs.set(name, boolean);
+    }
+
     /**
      * Retrieve a mapped configuration of the camera (e.g. follow player or other objects)
      * @param string {string} - Mapping name
