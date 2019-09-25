@@ -2,12 +2,10 @@ const GameWorld = require("../../GameWorld.js");
 const Tile = require("../../../TileBased/Tile.js");
 const HubPortal = require("../../../Entity/Portal/HubPortal.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
-const EventManager = require("./SEventManager.js");
 
 class Match extends GameWorld{
     constructor(socket, worldList, name, gameMap) {
         super(socket, name, gameMap);
-        this.eventManager = new EventManager(gameMap);
         this.spawnEntity(
             61 * Tile.SIZE,
             104 * Tile.SIZE,
@@ -19,7 +17,6 @@ class Match extends GameWorld{
 
     update(deltaTime) {
         super.update(deltaTime);
-        this.eventManager.update(this, deltaTime);
     }
 }
 

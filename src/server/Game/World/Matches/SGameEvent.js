@@ -1,4 +1,4 @@
-const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 class SGameEvent {
     constructor(name, type, arg , color, life) {

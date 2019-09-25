@@ -8,6 +8,7 @@ const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
 const GameRules = require("./GameRules.js");
+const EventManager = require("./Matches/SEventManager.js");
 
 class PlayerList extends ClientList {
     constructor() {
@@ -29,6 +30,7 @@ class GameWorld extends EntityManager {
         this.settings = new GameRules();
         this.teamManager = new TeamManager(this);
         this.dataPacket = {};
+        this.eventManager = new EventManager(gameMap);
 
         this.clients = new PlayerList();
         this.id = name;
@@ -115,6 +117,7 @@ class GameWorld extends EntityManager {
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
+        this.eventManager.update(this, deltaTime);
     }
 }
 
