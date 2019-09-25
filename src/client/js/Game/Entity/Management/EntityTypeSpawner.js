@@ -55,6 +55,6 @@ EntityTypeSpawner.createSpawner("AttackWeapon", CWeapon);
 EntityTypeSpawner.createSpawner("BIGMotorizer", CBIGMotorizer);
 EntityTypeSpawner.createSpawner("CKER90", CCKER90);
 EntityTypeSpawner.createSpawner("KE_6H", CKE_6H);
-EntityTypeSpawner.createSpawner("SEW-9", CSEW_9);
+EntityTypeSpawner.createSpawner("SEW_9", CSEW_9);
 
 export default EntityTypeSpawner;
