@@ -2,7 +2,6 @@ const AttackWeapon = require("./Base/AttackWeapon.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
-const Player = require("../../Player/SPlayer.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 
 
@@ -44,20 +43,33 @@ class SEW_9 extends AttackWeapon {
         super(x, y, "SEW-9", 0, 0, 0);
         this.misRef = null;
         this.misPos = null;
-        this.addDynamicSnapShotData(["misPos"]);
+
+        this.secondaryFire = false;
+
         this.configureAttackStats(1.5, 1, 1, 100);
+
+        this.addDynamicSnapShotData(["misPos", "secondaryFire"]);
         this.modAbility.onActivation = (weapon, entityManager) => {
             entityManager.spawnEntity(this.center.x, this.center.y,
                 this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
                     0, entityManager));
         };
+
         this.modAbility.configureStats(5, 4);
         this.modAbility.onDeactivation = (weapon, entityManager) => {
             if (this.misRef) {
                 this.misRef.detonate(entityManager);
                 this.misRef = null;
+                this.secondaryFire = false;
             }
-        }
+        };
+
+        this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
+            let player = entityManager.getEntity(this.playerID);
+            if (player) {
+                this.secondaryFire = player.input.mouseHeldDown(3);
+            }
+        };
     }
 
     update(entityManager, deltaTime) {
@@ -72,6 +84,11 @@ class SEW_9 extends AttackWeapon {
             new ElectricSphere(player.id, this.id, 0, 0,
                 angle, entityManager));
 
+    }
+
+    onDrop(player, entityManager, deltaTime) {
+        super.onDrop(player, entityManager, deltaTime);
+        this.secondaryFire = false;
     }
 
 }
