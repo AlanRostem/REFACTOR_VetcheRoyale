@@ -38,6 +38,11 @@ class Camera {
         this.isShifted = false;
     }
 
+    /**
+     * Map a camera boolean configuration to your custom liking
+     * @param name {string} - Mapping name
+     * @param boolean {boolean} - True of false
+     */
     setConfig(name, boolean) {
         this.camConfigs.set(name, boolean);
     }
