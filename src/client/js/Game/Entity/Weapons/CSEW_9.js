@@ -19,13 +19,9 @@ export default class CSEW_9 extends CWeapon {
                 let to = {x: -500 * client.input.mouse.cosCenter, y: -500 * client.input.mouse.sinCenter};
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);*/
-                R.camera.shift(this.output.misPos.x, this.output.misPos.y);
+                console.log(this.output.misPos.x);
+                R.camera.setCurrentFollowPos(this.output.misPos);
             }
-        } else {
-            let to = {x: 0, y: 0};
-            this.toLerp = vectorLinearInterpolation(this.toLerp,
-                vectorLinearInterpolation(this.toLerp, to, .2), .2);
-            R.camera.shift(this.toLerp.x, this.toLerp.y);
         }
     }
 }
