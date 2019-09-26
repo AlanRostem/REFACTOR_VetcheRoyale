@@ -12,6 +12,7 @@ class Announcement extends UIElement {
      */
     constructor() {
         super("announcement", R.WIDTH / 2 - 64 | 0, 0, 128, 18);
+        this.pos.y = -this.height - 4;
         this.image = AssetManager.get("ui/ui.png");
         this.event = undefined;
 
