@@ -55,7 +55,8 @@ import {sqrt} from "../../shared/code/Math/CCustomMath.js";
         } else if (this.getReconKey(65)) {
             input.pressTime = -dtsec;
         } else {
-            return;
+            input.pressTime = -dtsec;
+            // TODO: Recon shit
         }
 
         client.setOutboundPacketData("input", input);
