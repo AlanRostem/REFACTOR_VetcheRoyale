@@ -95,6 +95,7 @@ class UserPlayer extends RemotePlayer {
         }
 
          */
+        R.camera.setConfig("followPlayer", true);
     }
 
     updateRemainingServerData(client) {
