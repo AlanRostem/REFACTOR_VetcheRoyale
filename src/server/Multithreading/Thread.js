@@ -37,8 +37,7 @@ class Thread {
     run() {
         let _this = this;
         (async function () {
-            let test = await _this.runService(_this.workerData, _this.source);
-            //console.log(test)
+            await _this.runService(_this.workerData, _this.source);
         })().catch(err => console.error(err));
     }
 }

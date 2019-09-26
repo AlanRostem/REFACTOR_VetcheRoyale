@@ -1,3 +1,5 @@
+const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap");
+
 const Alive = require("../Traits/Alive.js");
 const ClientPEM = require("./ClientPEM.js");
 const InputBridge = require("./InputBridge.js");
@@ -14,6 +16,8 @@ class GameDataLinker extends Alive {
         ]);
         this.entitiesInProximity = new ClientPEM(this);
         this.input = new InputBridge();
+        this.outboundData = new ONMap();
+        this.clientEventQueue = new ONMap();
         //this.defineSocketEvents(client);
     }
 
@@ -22,17 +26,23 @@ class GameDataLinker extends Alive {
 
     }
 
+    emit(event, data) {
+        this.clientEventQueue.set(event, data);
+    }
+
+    setOutboundPacketData(name, packet) {
+        this.outboundData.set(name, packet);
+    }
+
     retrieveGameData(game) {
-        // TODO: send out data to client elsewise
-        //this.client.setOutboundPacketData("gameData", game.dataPacket);
+        this.setOutboundPacketData("gameData", game.dataPacket);
     }
 
     // Sends the initial data pack to the client.
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
         this.entitiesInProximity.initProximityEntityData(entityManager);
-        // TODO: send out data to client elsewise
-        //this.clientRef.emit("initEntity", this.entitiesInProximity.exportDataPack())
+        this.emit("initEntity", this.entitiesInProximity.exportDataPack())
     }
 
     update(entityManager, deltaTime) {

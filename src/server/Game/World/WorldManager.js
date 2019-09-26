@@ -27,21 +27,19 @@ class WorldManager {
         this.dataBridge = new class extends DataBridge {
             onDataReceived(data) {
                 // TODO: Do shit
+                if (data["events"]["client"])
+                    console.log(data["events"]["client"])
             }
         }();
 
-        this.dataBridge.onQueuedEvent("client", data => {
-            let player = new Player();
-            player.id = data.id;
-            this.getLastWorld().spawnPlayer(player);
-            console.log("Satan", data)
-        });
+        this.defineClientResponseEvents();
 
         this.lastCreatedWorldID = -1;
         this.deltaTime = 0;
         this.lastTime = 0;
 
         this.gameWorlds = new ONMap();
+        this.playerList = new ONMap();
 
         // TODO: FIX THIS HACK
 
@@ -113,7 +111,7 @@ class WorldManager {
         return this.dataBridge.outboundData;
     }
 
-    update(data) {
+    update() {
         if (Date.now() > 0)
             this.deltaTime = (Date.now() - this.lastTime) / 1000;
 
@@ -125,8 +123,6 @@ class WorldManager {
             this.deltaTime = 0;
         }
 
-        this.importDataBridge(data);
-
         this.checkQueuedPlayers();
         for (let worldID in this.gameWorlds.object) {
             if (this.gameWorlds.has(worldID))
@@ -135,6 +131,23 @@ class WorldManager {
 
         if (Date.now() > 0)
             this.lastTime = Date.now();
+    }
+
+    defineClientResponseEvents() {
+        this.dataBridge.on("clientConnectCallback", data => {
+            let player = new Player();
+            player.id = data.id;
+            this.getLastWorld().spawnPlayer(player);
+
+            this.playerList.set(data.id, player);
+            player.homeWorldID = this.getLastWorld().id;
+        });
+
+        this.dataBridge.on("disconnect", data => {
+            let player = this.playerList.get(data.id);
+            this.gameWorlds.get(player.homeWorldID).removeEntity(player.id);
+            this.playerList.remove(player.id);
+        });
     }
 }
 

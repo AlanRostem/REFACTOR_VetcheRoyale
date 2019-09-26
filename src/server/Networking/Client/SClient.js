@@ -47,7 +47,6 @@ class Client {
         return this.disconnected;
     }
 
-
     defineSocketEvents(socket, clientList, server) {
         this.socket.on("connectClientCallback", data => {
             if (PacketValidator.validatePacket(this, data)) {
@@ -56,7 +55,7 @@ class Client {
                     id: this.id,
                     playerCount: clientList.length
                 });
-                server.dataBridge.queueEventData("client", {
+                server.dataBridge.transfer("clientConnectCallback", {
                     id: this.id,
                 });
             }
@@ -65,6 +64,9 @@ class Client {
         this.socket.on("disconnect", data => {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
+            server.dataBridge.transfer("disconnect", {
+                id: this.id,
+            });
         });
 
         this.socket.on("clientPacketToServer", packet => {
@@ -88,6 +90,9 @@ class Client {
     }
 
     networkedUpdate(server) {
+        let data = server.dataBridge.inboundData;
+        this.playerObjData = data;
+        console.log(this.playerObjData)
         this.inputReceiver.update(this);
         this.playerObjData = server.dataBridge.inboundData[this.worldName];
         this.setOutboundPacketData("entityData", this.playerObjData);

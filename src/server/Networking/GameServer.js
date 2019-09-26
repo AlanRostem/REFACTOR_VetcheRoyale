@@ -40,6 +40,8 @@ class GameServer {
         this.matchMaker.update(this);
         this.mainSocket.cl.update(this);
 
+        this.thread.sendDataToParent(this.exportDataBridge());
+
         this.dataBridge.update();
 
         if (Date.now() > 0)

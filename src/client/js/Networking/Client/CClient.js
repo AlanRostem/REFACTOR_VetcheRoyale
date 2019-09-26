@@ -31,9 +31,7 @@ class CClient {
         this.defineSocketEvents();
         this.latency = 0;
         this.discReasonMsg = "reason: server error";
-
     }
-
 
     onServerUpdateReceived(packet) {
         this.timeSyncer.onServerUpdate(this.latency);

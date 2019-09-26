@@ -5,19 +5,15 @@ class DataBridge {
         this.inboundData = {};
         this.outboundData = {
             "events": {},
-            /*
-            TODO: Make a promise type object that the other data bridge takes data from
-             and performs the event callbacks after the promise has resolved it. Do it
-             by responding to the other data bridge as soon as it received the data.
-             */
-            "evtQueue": {}
         };
         this.events = new ONMap();
         this.queuedEvents = new ONMap();
     }
 
     set receivedData(data) {
-        if (!data) return;
+        if (!data) {
+            return;
+        }
         this.inboundData = data;
         for (let event in data["events"]) {
             let callback = this.events.get(event);
@@ -56,18 +52,8 @@ class DataBridge {
     }
 
     update() {
-        for (let eventQueueID in this.inboundData.evtQueue) {
-            let eventQueue = this.inboundData.evtQueue[eventQueueID];
-            for (let eventData of eventQueue) {
-                if (this.queuedEvents.has(eventQueueID)) {
-                    this.queuedEvents.get(eventQueueID)(eventData);
-                }
-            }
-        }
-
         this.outboundData = {
-            "events": {},
-            "evtQueue": {}
+            "events": {}
         };
     }
 }

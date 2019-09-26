@@ -1,10 +1,17 @@
-const {workerData, parentPort, MessageChannel, receiveMessageOnPort} = require('worker_threads');
+const worker = require('worker_threads');
+const {workerData, parentPort, MessageChannel, receiveMessageOnPort} = worker;
 const WorldManager = require("./World/WorldManager.js");
 
+
+
 const worldManager = new WorldManager();
+parentPort.on("message", data => {
+    worldManager.importDataBridge(data);
+});
+
 setInterval(() => {
-    worldManager.update(receiveMessageOnPort(parentPort));
-    sendMessage(worldManager.dataBridge.outboundData);
+    worldManager.update();
+    sendMessage(worldManager.exportDataBridge());
 }, 0.0167);
 
 
