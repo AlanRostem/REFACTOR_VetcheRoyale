@@ -1,20 +1,8 @@
-
 const SGameEvent = require("./SGameEvent.js");
-const STimer = require("../../../../shared/code/Tools/STimer");
 
 class SEventManager {
-    constructor(gameMap) {
+    constructor() {
         this.queue = [];
-        this.timer = new STimer(5, () => {
-            this.add("test" + Math.floor(Math.random() * 100), "all", "Green", 20,
-                {
-                    pos: {
-                        x:Math.floor(Math.random() * gameMap.w) * gameMap.tileSize,
-                        y:Math.floor(Math.random() * gameMap.h) * gameMap.tileSize
-                    },
-                    string: "announcement"+ Math.floor(Math.random() * 100 ),
-                });
-        });
     }
 
     add(name, type, color, life, arg, priority = false) {
@@ -31,7 +19,6 @@ class SEventManager {
     }
 
     update(gameWorld, deltaTime) {
-        this.timer.tick(deltaTime);
         this.sendEvent(gameWorld);
 
     }
