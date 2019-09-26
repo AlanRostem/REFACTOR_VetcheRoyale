@@ -27,28 +27,30 @@ export default class CSEW_9 extends CWeapon {
 
         let superAbility = this.getRealtimeProperty("superAbilitySnap");
         let client = this.client;
+        let right = (client.player.output.movementState.direction === "right") ? 1 : -1;
         if (superAbility) {
-            lightning(client.player.output.pos.x + client.player.output.width / 2, client.player.output.pos.y + client.player.output.height / 2, 200, 0, 0);
+            lightning(client.player.output.pos.x + client.player.output.width / 2, client.player.output.pos.y + client.player.output.height / 2, 200, 0, 0, right);
             // lightning(client.player.output.pos.x + client.player.output.width/2, client.player.output.pos.y + client.player.output.height / 2, 200);
         }
     }
 }
 
-function lightning(x, y, length, yVal, life) {
+function lightning(x, y, length, yVal, life, right) {
+
     if (length-- > 0) {
 
         R.drawRect("Cyan", x, y + 1, 1, 1, true);
-        R.drawRect("Cyan", x + 1, y - 1, 1, 1, true);
-        R.drawRect("Cyan", x + 1, y + 1, 1, 1, true);
-        R.drawRect("Cyan", x, y - 1, 1, 1, true);
+        R.drawRect("Cyan", x + right, y - 1, 1, 1, true);
+        R.drawRect("Cyan", x + right, y + 1, 1, 1, true);
+        R.drawRect("Cyan", x * right, y - 1, 1, 1, true);
 
         R.drawRect("White", x, y, 1, 1, true);
 
-        let nx = x + (Math.random() * 2 | 0);
+        let nx = x + (Math.random() * 2 | 0) * right;
         let ny = y + (yVal ? 0 : ((Math.random() * 2 | 0)) * ((Math.random() * 2 | 0) ? 1 : -1));
-        lightning(nx, ny, length, life ? 0 : ny - y, life ? --life : 2);
+        lightning(nx, ny, length, life ? 0 : ny - y, life ? --life : 2, right);
     }
-    R.drawRect("Cyan", x + 1, y, 1, 1, true);
+    R.drawRect("Cyan", x * right + right, y, 1, 1, true);
 }
 
 /*
