@@ -9,11 +9,24 @@ export default class CEventManager {
     }
 
     SGetEvent(client) {
-        if (client.inboundPacket !== undefined)
-            if(client.inboundPacket["gameData"]["Event"] !== undefined) {
+
+        if (client.inboundPacket !== undefined) {
+            //console.log(client.inboundPacket);
+
+            if (client.inboundPacket["gameData"]["Event"] !== undefined) {
                 let e = client.inboundPacket["gameData"]["Event"];
                 this.events.push(new CGameEvent(e.name, e.type, e.arg, e.color, e.life));
             }
+            console.log(client.player.output._gameData);
+            /*if (client.inboundPacket.entityData[client.id].gameData["Event"]) {
+                let e = client.inboundPacket.entityData[client.id].gameData["Event"];
+                let ev = new CGameEvent(e.name, e.type, e.arg, e.color, e.life);
+                if (ev && !this.events.includes(ev))
+                {
+                    this.events.push(new CGameEvent(e.name, e.type, e.arg, e.color, e.life));
+                }
+            }*/
+        }
     }
 
     distributeEvent() {
@@ -32,17 +45,17 @@ export default class CEventManager {
                 });
                 if (e) UI.elements["announcement"].addEvent(e);
             }
-        }catch (e) {
+        } catch (e) {
 
         }
     }
 
     update(client, delaTime) {
         this.SGetEvent(client);
-        for (var e = 0; e < this.events.length; e++){
+        this.distributeEvent();
+        for (var e = 0; e < this.events.length; e++) {
             this.events[e].update(delaTime);
             if (this.events[e].dead) this.events.splice(e, 1);
         }
-        this.distributeEvent();
     }
 }

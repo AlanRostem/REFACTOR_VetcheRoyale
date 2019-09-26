@@ -11,17 +11,19 @@ class SEventManager {
     }
 
     sendEvent(gameWorld) {
-        gameWorld.setGameData("Event", undefined);
         if (this.queue.length > 0) {
             let e = this.queue.pop();
-            gameWorld.setGameData("Event", e.getEvent());
+            if (e.arg.hasOwnProperty("player")) {
+                gameWorld.clients.getClient(e.arg.player).player._gameData.Event = e.getEvent();
+            } else
+                gameWorld.setGameData("Event", e.getEvent());
         }
     }
 
     update(gameWorld, deltaTime) {
         this.sendEvent(gameWorld);
-
     }
 }
+
 
 module.exports = SEventManager;

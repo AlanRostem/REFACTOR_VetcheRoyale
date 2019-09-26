@@ -34,7 +34,7 @@ class MiniMap extends UIElement {
             big: {}
         };
 
-        for (var key in obj){
+        for (var key in obj) {
             obj[key].canvas = document.createElement('canvas');
             var ctx = obj[key].canvas.getContext('2d');
 
@@ -64,19 +64,16 @@ class MiniMap extends UIElement {
 
             for (var y = 0; y < this.tiles[key]; y++) {
                 for (var x = 0; x < this.tiles[key]; x++) {
-                    ctx.save();
-                    ctx.fillStyle = "#ffffff";
+                    let color = "#ffffff";
                     if (obj[key].mapInfo.array[y][x] >=
                         Math.floor(obj[key].mapInfo.tileSizeW) *
                         Math.floor(obj[key].mapInfo.tileSizeH))
-                        ctx.fillStyle = "#222034";
-                    ctx.fillRect(
-                        (this.width * x) | 0,
-                        (this.height * y) | 0,
-                        this.width,
-                        this.height
-                    );
-                    ctx.restore();
+                        color = "#222034";
+                    R.drawRect(color,
+                        this.width * x,
+                        this.height * y,
+                        1, 1,
+                        false, ctx)
                 }
             }
         }
@@ -85,14 +82,14 @@ class MiniMap extends UIElement {
     }
 
 
-    addEvent(e){
+    addEvent(e) {
         this.events = e;
     }
 
 
     posOnMap(pos) {
 
-        var x = pos.x / 8 / this.image[this.currentTiles].mapInfo.tileSizeW * this.width  | 0;
+        var x = pos.x / 8 / this.image[this.currentTiles].mapInfo.tileSizeW * this.width | 0;
         var y = pos.y / 8 / this.image[this.currentTiles].mapInfo.tileSizeH * this.height | 0;
 
         return {x: x, y: y};
@@ -102,12 +99,10 @@ class MiniMap extends UIElement {
     update(deltaTime, client, entityList) {
         this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.currentTiles] - 4, 4));
 
-        if(client.input.getReconKey(69))
-        {
+        if (client.input.getReconKey(69)) {
             this.currentTiles = "big";
-            this.pos.set(new Vector2D((R.WIDTH - this.tiles[this.currentTiles])/2, (R.HEIGHT - this.tiles[this.currentTiles])/2));
-        }
-        else {
+            this.pos.set(new Vector2D((R.WIDTH - this.tiles[this.currentTiles]) / 2, (R.HEIGHT - this.tiles[this.currentTiles]) / 2));
+        } else {
             this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.currentTiles] - 4, 4));
             this.currentTiles = "small";
         }
@@ -125,18 +120,9 @@ class MiniMap extends UIElement {
             this.image[this.currentTiles].canvas,
             this.pos.x,
             this.pos.y,
-            this.tiles[this.currentTiles]* 8,
-            this.tiles[this.currentTiles]* 8
+            this.tiles[this.currentTiles] * 8,
+            this.tiles[this.currentTiles] * 8
         );
-
-        R.drawRect(
-            "Red",
-            this.pos.x + this.pPos.x,
-            this.pos.y + this.pPos.y,
-            1,
-            1
-        );
-
 
         for (var e of this.events) {
             R.drawRect(
@@ -147,6 +133,14 @@ class MiniMap extends UIElement {
                 1
             );
         }
+
+        R.drawRect(
+            "Red",
+            this.pos.x + this.pPos.x,
+            this.pos.y + this.pPos.y,
+            1,
+            1
+        );
     }
 }
 

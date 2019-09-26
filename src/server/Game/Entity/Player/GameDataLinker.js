@@ -6,9 +6,9 @@ const Alive = require("../Traits/Alive.js");
 class GameDataLinker extends Alive {
     constructor(client, x, y, w, h, HP, regenCoolDown) {
         super(x, y, w, h, HP, regenCoolDown);
-        this.gameData = {};
+        this._gameData = {};
         this.addStaticSnapShotData([
-            "gameData"
+            "_gameData"
         ]);
         this.defineSocketEvents(client);
     }
@@ -19,6 +19,14 @@ class GameDataLinker extends Alive {
 
     retrieveGameData(game) {
         this.client.setOutboundPacketData("gameData", game.dataPacket);
+    }
+
+    set gameData(value){
+        this._gameData = value;
+    }
+
+    get gameData(){
+        return this._gameData;
     }
 
     update(entityManager, deltaTime) {

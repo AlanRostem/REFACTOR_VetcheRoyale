@@ -137,7 +137,7 @@ class CClient {
         this.startTime = Date.now();
         if (this.inboundPacket) {
             if (this.inboundPacket.entityData[this.id]) {
-                Scene.currentMapName = this.player.output.gameData.mapName;
+                Scene.currentMapName = this.inboundPacket.gameData.mapName;
             } else {
                 //if (e) entityManager.removeEntity(e.id);
                 if (this.inboundPacket.spectatorSubject) {
