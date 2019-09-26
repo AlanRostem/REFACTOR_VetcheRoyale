@@ -55,7 +55,7 @@ class WeaponItem extends Loot {
     updateWhenEquipped(player, entityManager, deltaTime) {
         this.resetLifeTime(entityManager);
         if (player.input.singleKeyPress(WeaponItem.DROP_KEY))
-            this.drop(player);
+            this.drop(player, entityManager);
         this.pos.x = player.center.x - this.width / 2;
         this.pos.y = player.center.y - this.height / 2;
     }
