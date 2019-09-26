@@ -71,6 +71,7 @@ class KineticBomb extends Bouncy {
         if (entityManager.getEntity(this.weaponID).kineticImplosion) {
             this.followPoint = true;
             this.point = entityManager.getEntity(this.weaponID).followPoint;
+            this.hits = 1;
         }
 
         if (this.followPoint) {
