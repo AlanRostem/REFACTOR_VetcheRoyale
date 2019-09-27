@@ -86,10 +86,7 @@ class KineticBomb extends Bouncy {
                 this.detonate(entityManager);
             }
         }
-
-
     }
-
 }
 
 class KE_6H extends AttackWeapon {
@@ -119,16 +116,14 @@ class KE_6H extends AttackWeapon {
     }
 
     update(entityManager, deltaTime) {
-        this.detonate = false;
         super.update(entityManager, deltaTime);
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (this.currentAmmo === this.maxAmmo && this.roamingBombs.length === 0) {
+        if (this.roamingBombs.length === 0) {
             this.canUseMod = false;
         }
-
     }
 
     fire(player, entityManager, deltaTime, angle) {
