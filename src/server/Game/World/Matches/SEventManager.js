@@ -7,7 +7,7 @@ class SEventManager {
     }
 
     addPrivate(player, name, type, color, life, arg, priority = false) {
-        let e = new SGameEvent(name, type, arg, color, life);
+        let e = new SGameEvent(name, type, arg, color, life, priority);
         if (this.privateEvents[player] === undefined)
             this.privateEvents[player] = [];
         priority ? this.privateEvents[player].push(e)
@@ -15,16 +15,15 @@ class SEventManager {
     }
 
     addGlobal(name, type, color, life, arg, priority = false) {
-        let e = new SGameEvent(name, type, arg, color, life);
+        let e = new SGameEvent(name, type, arg, color, life, priority);
         priority ? this.globalEvents.push(e)
             : this.globalEvents.unshift(e);
     }
 
 
     sendEvent(gameWorld) {
-        if (this.globalEvents.length > 0) {
+        if (this.globalEvents.length > 0)
             gameWorld.setGameData("Event", this.globalEvents);
-        }
 
         for (let player in this.privateEvents)
             if (gameWorld.clients.getClient(player))
@@ -35,7 +34,6 @@ class SEventManager {
     }
 
     update(gameWorld, deltaTime) {
-
         this.sendEvent(gameWorld);
     }
 }

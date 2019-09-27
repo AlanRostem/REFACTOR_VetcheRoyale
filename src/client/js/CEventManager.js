@@ -9,20 +9,23 @@ export default class CEventManager {
     }
 
     SGetEvent(client) {
-
         if (client.inboundPacket !== undefined) {
-            let e = {};
-            if (client.inboundPacket["gameData"]["Event"] !== undefined) {
-                e = client.inboundPacket["gameData"]["Event"];
-                this.events.push(new CGameEvent(e));
+            let evs = [];
+            if (client.player.output._gameData["Event"] !== undefined) {
+                evs = client.player.output._gameData["Event"];
+                for (let e of evs)
+                    if (e && !this.events.includes(e))
+                        e.priority ? this.events.unshift(new CGameEvent(e)) :
+                            this.events.push(new CGameEvent(e));
+
             }
 
-            if (client.player.output._gameData["Event"] !== undefined) {
-                e = client.player.output._gameData["Event"];
-                let ev = new CGameEvent(e);
-                if (ev && !this.events.includes(ev)) {
-                    this.events.push(new CGameEvent(e));
-                }
+            if (client.inboundPacket["gameData"]["Event"] !== undefined) {
+                evs = client.inboundPacket["gameData"]["Event"];
+                for (let e of evs)
+                    if (e && !this.events.includes(e))
+                        e.priority ? this.events.unshift(new CGameEvent(e)) :
+                            this.events.push(new CGameEvent(e));
             }
         }
     }

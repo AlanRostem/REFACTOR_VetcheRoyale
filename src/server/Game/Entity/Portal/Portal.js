@@ -52,13 +52,20 @@ class Portal extends Interactable {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (this.portalTileID)
-            if (entity instanceof Player)
+            if (entity instanceof Player) {
                 if (entityManager.exists(entity.id))
-                    entityManager.eventManager.addPrivate(
-                        entity.id, "Portal: " + this.portalTileID, "minimap", "Green", 0, {
+                    /*entityManager.eventManager.addPrivate(
+                         entity.id,"Portal: " + this.portalTileID, "announcement", "Green", 0, {
                             pos: this.destination,
-                        }
+                            string: "Portal: "
+                        }, true
+                    );*/
+                    entityManager.eventManager.addGlobal(
+                        "Portal: " + this.portalTileID, "minimap", "Blue", 0, {
+                            pos: this.destination,
+                        }, true
                     );
+            }
     }
 }
 

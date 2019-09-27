@@ -1,7 +1,6 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import CTimer from "../../../shared/code/Tools/CTimer.js";
-import AssetManager from "../AssetManager/AssetManager.js";
 
 /**
  *
@@ -13,7 +12,6 @@ class Announcement extends UIElement {
     constructor() {
         super("announcement", R.WIDTH / 2 - 64 | 0, 0, 128, 18);
         this.pos.y = -this.height - 4;
-        this.image = AssetManager.get("ui/ui.png");
         this.event = undefined;
 
         this.timer = new CTimer(0.01, () => {
@@ -42,8 +40,9 @@ class Announcement extends UIElement {
             this.event.arg.dString = this.event.arg.string.substring(
                 this.start,
                 (this.width - this.event.arg.x - 5) / 5 | 0);
-            if (this.event.arg.x + this.event.arg.string.length * 5 - 1 <= 0)
+            if (this.event.arg.x + this.event.arg.string.length * 5 - 1 <= 0 )
                 this.event = undefined;
+
         }
     }
 
@@ -79,14 +78,14 @@ class Announcement extends UIElement {
      */
     draw() {
         if (this.pos.y > -this.height - 4) {
-            R.ctx.drawImage(
-                this.image,
-                0, 110,
-                118, 14,
+
+            UIElement.defaultSpriteSheet.drawCropped(
                 this.pos.x,
                 this.pos.y + 6,
                 this.width - 10,
-                this.height - 4
+                this.height - 4,
+                0, 110,
+                118, 14,
             );
 
             if (this.event !== undefined) {
@@ -97,14 +96,14 @@ class Announcement extends UIElement {
                 );
             }
 
-            R.ctx.drawImage(
-                this.image,
-                0, 88,
-                128, 22,
+
+            UIElement.defaultSpriteSheet.drawCropped(
                 this.pos.x - 5,
                 this.pos.y,
                 this.width,
-                this.height + 4
+                this.height + 4,
+                0, 88,
+                128, 22,
             );
         }
     }
