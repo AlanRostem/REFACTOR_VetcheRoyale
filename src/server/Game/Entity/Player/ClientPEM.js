@@ -14,14 +14,14 @@ class ClientPEM extends ProximityEntityManager {
     addEntity(entity) {
         super.addEntity(entity);
         // TODO: Add on  the IO thread
-        //this.entRef.client.emit("spawnEntity", entity.getDataPack());
+        this.entRef.emit("spawnEntity", entity.getDataPack());
         this.spectators.onSpawnEntity(entity);
     }
 
     removeEntity(id) {
         super.removeEntity(id);
         delete this.dataBox[id];
-        this.entRef.client.emit("removeEntity", id);
+        this.entRef.emit("removeEntity", id);
         this.spectators.onRemoveEntity(id);
     }
 
@@ -52,7 +52,7 @@ class ClientPEM extends ProximityEntityManager {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
         this.spectators.update();
-        this.entRef.setOutboundPacketData("entities", this.exportDataPack())
+        this.entRef.setOutboundPacketData("entities", this.exportDataPack());
     }
 }
 
