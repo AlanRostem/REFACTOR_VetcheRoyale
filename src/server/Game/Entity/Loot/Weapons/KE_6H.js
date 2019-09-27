@@ -1,4 +1,5 @@
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+const ONMap = require("../../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
@@ -58,6 +59,7 @@ class KineticBomb extends Bouncy {
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);
+        this.weapon.roamingBombs.remove(this.id);
         this.remove();
     }
 
@@ -82,7 +84,6 @@ class KineticBomb extends Bouncy {
             this.vel.y = Math.sin(angle) * d * 10;
             if (Vector2D.distance(this.center, this.point) < this.point.radius) {
                 this.detonate(entityManager);
-                this.weapon.roamingBombs--;
             }
         }
 
@@ -96,7 +97,7 @@ class KE_6H extends AttackWeapon {
         super(x, y, "KE-6H", 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
-        this.roamingBombs = 0;
+        this.roamingBombs = new ONMap();
         this.configureAttackStats(2.5, 8, 1, 100);
         this.modAbility.configureStats(2, 4);
         this.modAbility.onActivation = (composedWeapon, entityManager) => {
@@ -111,7 +112,7 @@ class KE_6H extends AttackWeapon {
             composedWeapon.canFire = true;
         };
         this.modAbility.buffs = (weapon, game, deltaTime) => {
-            if (weapon.roamingBombs <= 0) {
+            if (weapon.roamingBombs.length <= 0) {
                 weapon.modAbility.deActivate(weapon, game, deltaTime);
             }
         }
@@ -128,10 +129,10 @@ class KE_6H extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        entityManager.spawnEntity(this.center.x, this.center.y,
+        let bomb = entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(this, player.id, this.id, 0, 0,
                 angle, entityManager));
-        this.roamingBombs++;
+        this.roamingBombs.set(bomb.id, 1);
     }
 
 }
