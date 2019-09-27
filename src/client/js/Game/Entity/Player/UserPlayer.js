@@ -65,13 +65,6 @@ class UserPlayer extends RemotePlayer {
 
     draw() {
         super.draw();
-        if (this.weapon) {
-            if (this.weapon.getRealtimeProperty("modCoolDownData") > 0) {
-                R.drawText(Math.round(this.weapon.getRealtimeProperty("modCoolDownData")),
-                    this.output.pos.x,
-                    this.output.pos.y - 9, "White", true);
-            }
-        }
         //this.t_drawGhost();
     }
 
