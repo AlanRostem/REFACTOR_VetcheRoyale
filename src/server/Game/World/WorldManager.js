@@ -27,8 +27,9 @@ class WorldManager {
         this.dataBridge = new class extends DataBridge {
             onDataReceived(data) {
                 // TODO: Do shit
-                if (data["events"]["client"])
-                    console.log(data["events"]["client"])
+                if (data["events"]["client"]) {
+                    console.log(data["events"]["client"]);
+                }
             }
         }();
 
@@ -56,7 +57,6 @@ class WorldManager {
         this.playground = playground;
 
         this.addWorld(playground, "playground");
-        playground.spawnPlayer(new Player(0, 0));
     }
 
     checkQueuedPlayers() {

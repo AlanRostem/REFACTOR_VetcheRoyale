@@ -92,7 +92,6 @@ class Client {
     networkedUpdate(server) {
         let data = server.dataBridge.inboundData;
         this.playerObjData = data;
-        console.log(this.playerObjData)
         this.inputReceiver.update(this);
         this.playerObjData = server.dataBridge.inboundData[this.worldName];
         this.setOutboundPacketData("entityData", this.playerObjData);

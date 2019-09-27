@@ -11,7 +11,6 @@ class EntityManager {
         // If true it will be used as a global entity manager
         // for a game world. Otherwise it might have other use cases.
         if (globalManager) {
-            this.entitiesQueuedToDelete = [];
             this.tileMap = gameMap;
             this.gameClock = new GameClock(0);
 
@@ -40,11 +39,7 @@ class EntityManager {
         this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime);
-        for (var i = 0; i < this.entitiesQueuedToDelete.length; i++) {
-            this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
-            delete this.container[this.entitiesQueuedToDelete[i]];
-            this.entitiesQueuedToDelete.splice(i);
-        }
+
     }
 
     // Regenerates data packs every frame for every entity
@@ -95,7 +90,9 @@ class EntityManager {
     // it to deletion.
     removeEntity(id) {
         this.getEntity(id).remove();
-        this.entitiesQueuedToDelete.push(id);
+        delete this.container[id];
+
+        //this.entitiesQueuedToDelete.push(id);
     }
 }
 
