@@ -2,8 +2,6 @@ const worker = require('worker_threads');
 const {workerData, parentPort, MessageChannel, receiveMessageOnPort} = worker;
 const WorldManager = require("./World/WorldManager.js");
 
-
-
 const worldManager = new WorldManager();
 parentPort.on("message", data => {
     worldManager.importDataBridge(data);
@@ -12,7 +10,7 @@ parentPort.on("message", data => {
 setInterval(() => {
     worldManager.update();
     sendMessage(worldManager.exportDataBridge());
-}, 0.0167);
+}, 1000/60);
 
 
 function sendMessage(message) {

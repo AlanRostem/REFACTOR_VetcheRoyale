@@ -11,8 +11,8 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
-    constructor(x, y) {
-        super(x, y, 6, 12, 100, true);
+    constructor(x, y, worldMgr) {
+        super(x, y, 6, 12, 100, true, worldMgr);
 
         // MISC VAR INITS
 

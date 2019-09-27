@@ -8,26 +8,20 @@ const InputBridge = require("./InputBridge.js");
 // server based data given to the player by
 // certain events.
 class GameDataLinker extends Alive {
-    constructor(x, y, w, h, HP, regenCoolDown) {
+    constructor(x, y, w, h, HP, regenCoolDown, worldMgr) {
         super(x, y, w, h, HP, regenCoolDown);
         this.gameData = {};
         this.addStaticSnapShotData([
             "gameData"
         ]);
         this.entitiesInProximity = new ClientPEM(this);
+        this.worldMgrRef = worldMgr;
         this.input = new InputBridge();
         this.outboundData = new ONMap();
-        this.clientEventQueue = new ONMap();
-        //this.defineSocketEvents(client);
-    }
-
-
-    defineSocketEvents(client) {
-
     }
 
     emit(event, data) {
-        this.clientEventQueue.set(event, data);
+        this.worldMgrRef.dataBridge.transferClientEvent(event, this.id, data);
     }
 
     setOutboundPacketData(name, packet) {

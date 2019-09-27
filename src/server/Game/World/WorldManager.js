@@ -96,7 +96,7 @@ class WorldManager {
     }
 
     putPlayerInGame(playerID, gameID) {
-        const player = new Player(0, 0);
+        const player = new Player(0, 0, this);
         player.id = playerID;
         const world = this.gameWorlds.get(gameID);
         world.spawnPlayer(player);
@@ -134,12 +134,15 @@ class WorldManager {
 
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientConnectCallback", data => {
-            let player = new Player();
+            let player = new Player(0, 0, this);
+            console.log(player.id);
             player.id = data.id;
+            console.log(player.id);
             this.getLastWorld().spawnPlayer(player);
 
             this.playerList.set(data.id, player);
             player.homeWorldID = this.getLastWorld().id;
+
             this.dataBridge.transferClientEvent("clientInWorld", data.id, {
                 id: data.id,
                 worldID: player.homeWorldID
@@ -154,8 +157,6 @@ class WorldManager {
             this.playerList.remove(player.id);
             console.log("Removed player", data.id, "from", player.homeWorldID);
         });
-
-
 
 
         //console.log(this.dataBridge.events.object["clientEvent"].toString())
