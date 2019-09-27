@@ -84,15 +84,14 @@ class Client {
         }
     }
 
-    setPlayerWorldData(server) {
-        this.worldName = server.lastWorldName;
-        this.playerObjData = server.dataBridge.inboundData[this.worldName];
-    }
-
     networkedUpdate(server) {
         this.inputReceiver.update(this);
-        this.playerObjData = server.dataBridge.inboundData;
-        this.setOutboundPacketData("entityData", {});
+        if (server.dataBridge.inboundData[this.worldID]) {
+            if (server.dataBridge.inboundData[this.worldID].clients[this.id]) {
+                this.playerObjData = server.dataBridge.inboundData[this.worldID].clients[this.id];
+                this.setOutboundPacketData("entityData", this.playerObjData.entities);
+            }
+        }
         this.setOutboundPacketData("now", Date.now());
         this.updateDataCycle();
     }

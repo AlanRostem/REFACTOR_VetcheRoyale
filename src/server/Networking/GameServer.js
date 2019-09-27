@@ -19,6 +19,8 @@ class GameServer {
             }
         } ({}, "./src/server/Game/SimulationSide.js");
 
+        this.defineClientResponseEvents();
+
         this.deltaTime = 0;
         this.lastTime = 0;
         this.tickRate = 60; // Hz (TEMPORARY)
@@ -69,6 +71,12 @@ class GameServer {
     start() {
         this.thread.run();
         setInterval(() => this.update(), 1000 / this.tickRate);
+    }
+
+    defineClientResponseEvents() {
+        this.dataBridge.on("clientInWorldResp", data => {
+            this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
+        });
     }
 }
 
