@@ -99,7 +99,7 @@ class KE_6H extends AttackWeapon {
         this.followPoint.radius = 2;
         this.roamingBombs = new ONMap();
         this.configureAttackStats(2.5, 8, 1, 100);
-        this.modAbility.configureStats(2, 4);
+        this.modAbility.configureStats(Infinity, 4);
         this.modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon.canFire = false;
@@ -120,12 +120,15 @@ class KE_6H extends AttackWeapon {
 
     update(entityManager, deltaTime) {
         this.detonate = false;
-        this.canUseMod = this.currentAmmo < this.maxAmmo;
         super.update(entityManager, deltaTime);
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
+        if (this.currentAmmo === this.maxAmmo && this.roamingBombs.length === 0) {
+            this.canUseMod = false;
+        }
+
     }
 
     fire(player, entityManager, deltaTime, angle) {
