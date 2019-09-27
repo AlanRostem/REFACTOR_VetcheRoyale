@@ -11,6 +11,8 @@ class ElectricSphere extends Projectile {
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
         super(ownerID, x, y, 5, 5, angle, 0);
         this.radius = 5;
+        this.maxSpeed = 200;
+        this.velVal = 5;
         this.weapon = null;
 
         this.areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this.radius, 10,
@@ -36,13 +38,17 @@ class ElectricSphere extends Projectile {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
-        let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - this.pos.x);
+        let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
         let length = Vector2D.distance(this.getOwner(entityManager).input.mouseData.world, this.pos);
-        //TODO: Alan's camera does not update with the mouse position, only relative to the player movement
 
-        this.vel.x = Math.cos(atan2) * length * 5;
-        this.vel.y = Math.sin(atan2) * length * 5;
+        this.vel.x = Math.cos(atan2) * length * this.velVal;
+        this.vel.y = Math.sin(atan2) * length * this.velVal;
+
+        if (this.vel.x > this.maxSpeed) this.vel.x = this.maxSpeed;
+        if (this.vel.x < -this.maxSpeed) this.vel.x = -this.maxSpeed;
+        if (this.vel.y > this.maxSpeed) this.vel.y = this.maxSpeed;
+        if (this.vel.y < -this.maxSpeed) this.vel.y = -this.maxSpeed;
 
     }
 }
@@ -99,10 +105,13 @@ class SEW_9 extends AttackWeapon {
 
         this.canUseMod = this.canFire = this.currentAmmo > 0;
 
+        this.canUseMod = this.modCoolDownData === 0;
+
         if (this.misRef) {
             this.misPos = this.misRef.pos;
             if (!this.misRef.removed) this.canFire = this.canUseMod = false;
         }
+
 
         let player = entityManager.getEntity(this.playerID);
         if (player) player.setMovementState("canMove", this.canMove);

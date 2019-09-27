@@ -39,6 +39,7 @@ class AttackWeapon extends WeaponItem {
             "firing",
             "modActive",
             "superActive",
+            "modAbility"
         ]);
     }
 
