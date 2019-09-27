@@ -7,7 +7,7 @@ export default class GunBox extends UIElement {
     constructor() {
         super("gunbox", 0, 0, 32, 32);
 
-        this.src = AssetManager.get("ui/ui.png");
+        this.gunSprites = new SpriteSheet("ui/gunBoxGuns.png");
 
         this.frame = new Vector2D(64, 32);
         this.backGround = new Vector2D(60, 28);
@@ -26,6 +26,7 @@ export default class GunBox extends UIElement {
                 this.hasWeapon = true;
                 this.playerAmmo = client.player.output.invAmmo;
                 this.loadedAmmo = gun.output.currentAmmo;
+                this.iconID = gun.iconID;
             } else {
                 this.hasWeapon = false;
             }
@@ -53,6 +54,17 @@ export default class GunBox extends UIElement {
             UIElement.defaultSpriteSheet.drawCropped(
                 this.frame.x,
                 36,
+                this.backGround.x,
+                this.backGround.y,
+                R.WIDTH - 90,
+                R.HEIGHT - 34,
+                this.backGround.x,
+                this.backGround.y,
+            );
+
+           this.gunSprites.drawCropped(
+                0,
+                this.iconID * this.backGround.y,
                 this.backGround.x,
                 this.backGround.y,
                 R.WIDTH - 90,
