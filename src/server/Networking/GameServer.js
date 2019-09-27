@@ -2,7 +2,7 @@ const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("./Matchmaker.js");
 const WorldManager = require("../Game/World/WorldManager.js");
 const Thread = require("../Multithreading/Thread.js");
-const DataBridge = require("../Multithreading/DataBridge.js");
+const DBClientEventListener = require("../Multithreading/DBClientEventListener.js");
 
 // Class for the main server
 class GameServer {
@@ -11,7 +11,7 @@ class GameServer {
         this.mainSocket = new WebSocket(sio, this.matchMaker, this);
         this.lastWorldName = "playground"; // TODO: Automate
         const _this = this;
-        this.dataBridge = new DataBridge();
+        this.dataBridge = new DBClientEventListener();
 
         this.thread = new class extends Thread {
             onGetMessage(message) {
