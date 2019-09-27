@@ -125,7 +125,7 @@ class KE_6H extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (this.currentAmmo === this.maxAmmo && this.roamingBombs.length === 0) {
+        if (this.roamingBombs.length === 0) {
             this.canUseMod = false;
         }
 
