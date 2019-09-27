@@ -92,8 +92,7 @@ class Client {
     networkedUpdate(server) {
         this.inputReceiver.update(this);
         this.playerObjData = server.dataBridge.inboundData;
-        console.log(this.playerObjData)
-        this.setOutboundPacketData("entityData", this.playerObjData);
+        this.setOutboundPacketData("entityData", {});
         this.setOutboundPacketData("now", Date.now());
         this.updateDataCycle();
     }

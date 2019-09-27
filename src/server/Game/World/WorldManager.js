@@ -141,6 +141,7 @@ class WorldManager {
 
             this.playerList.set(data.id, player);
             player.homeWorldID = this.getLastWorld().id;
+            console.log("[--- CONNECTED to worldMgr! ---]")
         });
 
         this.dataBridge.on("disconnect", data => {
