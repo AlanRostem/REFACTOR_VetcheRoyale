@@ -75,11 +75,7 @@ class GameServer {
 
     defineClientResponseEvents() {
         this.dataBridge.on("clientInWorldResp", data => {
-            if (this.mainSocket.cl.getClient(data.id)) {
-                this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
-            } else {
-                console.log("FAILED TO RESPOND TO CLIENT:", data.id)
-            }
+            this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
         });
     }
 }

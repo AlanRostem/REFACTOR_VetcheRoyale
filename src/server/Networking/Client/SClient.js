@@ -91,9 +91,6 @@ class Client {
                 this.playerObjData = server.dataBridge.inboundData[this.worldID].clients[this.id];
                 this.setOutboundPacketData("entityData", this.playerObjData.entities);
                 this.setOutboundPacketData("gameData", this.playerObjData.gameData);
-                for (let eventID in this.playerObjData.events) {
-                    this.emit(eventID, this.playerObjData.events[eventID]);
-                }
             }
         }
         this.setOutboundPacketData("now", Date.now());
