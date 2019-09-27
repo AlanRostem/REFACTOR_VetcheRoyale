@@ -75,12 +75,12 @@ class GameServer {
 
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientInWorld", data => {
-            if (!this.mainSocket.cl.container.hasOwnProperty(data.id)) return
+            if (!this.mainSocket.cl.container.hasOwnProperty(data.id)) return; // Prevent crash
             if (!this.mainSocket.cl.getClient(data.id).worldID) {
                 this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
                 console.log("--- Simulation thread: Receiving client", data.id + "... ---");
             }
-            // TODO: Stop the event from looping
+            // TODO: Stop the event from looping. It causes a crash and send excessive data
         });
 
 
