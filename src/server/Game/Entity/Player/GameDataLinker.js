@@ -48,6 +48,8 @@ class GameDataLinker extends Alive {
     update(entityManager, deltaTime) {
         this.retrieveGameData(entityManager);
         super.update(entityManager, deltaTime);
+        this.setOutboundPacketData("events", this.clientEventQueue.object);
+        this.clientEventQueue.clear();
     }
 }
 
