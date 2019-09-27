@@ -4,7 +4,9 @@ class DataBridge {
     constructor() {
         this.inboundData = {};
         this.outboundData = {
-            "events": {},
+            "events": {
+                "clientEvent": {}
+            },
         };
         this.events = new ONMap();
         this.queuedEvents = new ONMap();
@@ -47,13 +49,31 @@ class DataBridge {
         this.outboundData[key] = value;
     }
 
+    transferClientEvent(clientEvent, id, data) {
+        if (!this.outboundData.events.clientEvent[clientEvent]) {
+            this.outboundData.events.clientEvent[clientEvent] = {};
+        }
+        this.outboundData.events.clientEvent[clientEvent][id] = data;
+    }
+
+    addClientResponseListener(responseEvent, callback) {
+        this.on("clientEvent", data => {
+            for (let clientID in data[responseEvent]) {
+                let clientData = data[responseEvent][clientID ];
+                callback(clientData);
+            }
+        });
+    }
+
     onDataReceived(data) {
 
     }
 
     update() {
         this.outboundData = {
-            "events": {}
+            "events": {
+                "clientEvent": {}
+            }
         };
     }
 }

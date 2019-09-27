@@ -11,7 +11,7 @@ String.random = () => {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
-Array.prototype.remove = function() {
+Array.prototype.remove = function () {
     var what, a = arguments, L = a.length, ax;
     while (L && this.length) {
         what = a[--L];
@@ -96,7 +96,7 @@ class WorldManager {
     }
 
     putPlayerInGame(playerID, gameID) {
-        const player = new Player(0,0);
+        const player = new Player(0, 0);
         player.id = playerID;
         const world = this.gameWorlds.get(gameID);
         world.spawnPlayer(player);
@@ -141,7 +141,7 @@ class WorldManager {
 
             this.playerList.set(data.id, player);
             player.homeWorldID = this.getLastWorld().id;
-            this.dataBridge.transfer("clientInWorldResp", {
+            this.dataBridge.transferClientEvent("clientInWorld", data.id, {
                 id: data.id,
                 worldID: player.homeWorldID
             })

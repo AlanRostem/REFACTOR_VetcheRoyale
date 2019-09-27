@@ -73,9 +73,12 @@ class GameServer {
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 
+
+
     defineClientResponseEvents() {
-        this.dataBridge.on("clientInWorldResp", data => {
+        this.dataBridge.addClientResponseListener("clientInWorld", data => {
             this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
+            //console.log("--- Simulation thread: Receiving client", data.id + "... ---");
         });
     }
 }
