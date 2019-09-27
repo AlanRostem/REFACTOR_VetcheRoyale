@@ -90,7 +90,10 @@ class GameWorld extends EntityManager {
     }
 
     queueClientData(key, value) {
-        this.bridgedData.set(key, value);
+        if (!this.bridgedData.has("clients")) {
+            this.bridgedData.set("clients", {});
+        }
+        this.bridgedData.get("clients")[key] = value;
     }
 
     update(deltaTime, worldManager) {

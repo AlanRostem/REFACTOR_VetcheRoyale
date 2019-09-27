@@ -52,6 +52,7 @@ class ClientPEM extends ProximityEntityManager {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
         this.spectators.update();
+        this.entRef.setOutboundPacketData("entities", this.exportDataPack())
     }
 }
 
