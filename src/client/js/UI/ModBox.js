@@ -13,35 +13,41 @@ export default class ModBox extends UIElement {
         this.hasWeapon = false;
         this.canUseMod = false;
         this.onCoolDown = false;
+        this.modActive = false;
 
         this.modPercent = 0;
+        this.durationPercent = 0;
 
     }
 
     update(deltaTime, client, entityList) {
         if (client.player) {
             let gun = entityList.getEntityByID(client.player.output.invWeaponID);
-            gun ? this.hasWeapon = true : this.hasWeapon = false;
-            gun ? this.canUseMod = gun.output.canUseMod : this.canUseMod = false;
-            gun ? this.modPercent = 100 - ((gun.output.modAbility.currentCoolDown / gun.output.modAbility.maxCoolDown) * 100) | 0 : 0;
-                gun ? this.onCoolDown = gun.output.modAbility.onCoolDown : 0;
+
+            this.hasWeapon = false;
+            if(gun) {
+                this.hasWeapon = true;
+
+                this.canUseMod = gun.output.canUseMod;
+
+                this.modPercent = 100 -
+                    ((gun.output.modAbility.currentCoolDown / gun.output.modAbility.maxCoolDown) * 100) | 0;
+
+                this.onCoolDown = gun.output.modAbility.onCoolDown;
+
+                this.durationPercent = (1 / this.backGround.y * 100) +
+                    ((gun.output.modAbility.currentDuration / gun.output.modAbility.maxDuration) * 100) | 0;
+
+                this.modActive = gun.output.modAbility.active;
+            }
         }
     }
 
     draw() {
         if (this.hasWeapon) {
             R.ctx.save();
-            R.ctx.drawImage(this.src,
-                0,
-                68,
-                this.frame.x,
-                this.frame.y,
-                R.WIDTH - 110,
-                R.HEIGHT - 36 + this.frame.y,
-                this.frame.x,
-                this.frame.y,
-            );
 
+            // ModBox dark background
             R.ctx.drawImage(this.src,
                 this.frame.x,
                 68,
@@ -53,6 +59,7 @@ export default class ModBox extends UIElement {
                 this.backGround.y,
             );
 
+            // Foreground when on Cool Down
             if (this.onCoolDown)
                 R.ctx.drawImage(this.src,
                     this.frame.x + this.backGround.x,
@@ -65,10 +72,26 @@ export default class ModBox extends UIElement {
                     this.backGround.y * this.modPercent / 100 | 0,
                 );
 
-            if(this.canUseMod) R.drawRect("White", R.WIDTH - 108, R.HEIGHT - 18, 12, 12)
+            // Foreground when ready to use mod
+            if(this.canUseMod && !this.modActive)
+                R.drawRect("White",
+                    R.WIDTH - 108,
+                    R.HEIGHT - 18,
+                    this.backGround.x,
+                    this.backGround.y);
 
+
+            // When the mod is active(duration)
+            if(this.modActive)
+                R.drawRect("White",
+                    R.WIDTH - 108,
+                    R.HEIGHT - 6 - ((this.backGround.y * this.durationPercent / 100) | 0),
+                     this.backGround.x,
+                    this.backGround.y * this.durationPercent / 100 | 0);
+
+            // Weapon Icon
             R.ctx.drawImage(this.src,
-                56,
+                40,
                 76,
                 8,
                 8,
@@ -78,8 +101,19 @@ export default class ModBox extends UIElement {
                 8,
             );
 
+            // Frame around modbox
+            R.ctx.drawImage(this.src,
+                0,
+                68,
+                this.frame.x,
+                this.frame.y,
+                R.WIDTH - 110,
+                R.HEIGHT - 36 + this.frame.y,
+                this.frame.x,
+                this.frame.y,
+            );
+
             R.ctx.restore();
         }
     }
-
 }

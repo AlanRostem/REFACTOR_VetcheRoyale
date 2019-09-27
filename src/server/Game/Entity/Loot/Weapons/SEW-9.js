@@ -9,8 +9,8 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 // Projectile fired by the SEW-9 weapon
 class ElectricSphere extends Projectile {
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 5, 5, angle, 0);
-        this.radius = 5;
+        super(ownerID, x, y, 3, 3, angle, 0);
+        this.radius = 3;
         this.maxSpeed = 200;
         this.velVal = 5;
         this.weapon = null;
@@ -105,7 +105,7 @@ class SEW_9 extends AttackWeapon {
 
         this.canUseMod = this.canFire = this.currentAmmo > 0;
 
-        this.canUseMod = this.modCoolDownData === 0;
+        this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
 
         if (this.misRef) {
             this.misPos = this.misRef.pos;

@@ -104,6 +104,7 @@ class CKER90 extends AttackWeapon {
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.found = {};
+
     }
 
     fire(player, entityManager, deltaTime, angle) {

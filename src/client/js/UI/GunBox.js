@@ -9,6 +9,7 @@ export default class GunBox extends UIElement {
         this.src = AssetManager.get("ui/ui.png");
 
         this.frame = new Vector2D(64, 32);
+        this.backGround = new Vector2D(60, 28);
 
         this.hasWeapon = false;
 
@@ -19,7 +20,7 @@ export default class GunBox extends UIElement {
 
     update(deltaTime, client, entityList) {
         if (client.player) {
-            var gun = entityList.getEntityByID(client.player.output.invWeaponID);
+            let gun = entityList.getEntityByID(client.player.output.invWeaponID);
             if (gun) {
                 this.hasWeapon = true;
                 this.playerAmmo = client.player.output.invAmmo;
@@ -47,6 +48,18 @@ export default class GunBox extends UIElement {
                 this.frame.x,
                 this.frame.y,
             );
+
+            R.ctx.drawImage(this.src,
+                this.frame.x,
+                36,
+                this.backGround.x,
+                this.backGround.y,
+                R.WIDTH - 90,
+                R.HEIGHT - 34,
+                this.backGround.x,
+                this.backGround.y,
+            );
+
             R.ctx.restore();
         }
 
