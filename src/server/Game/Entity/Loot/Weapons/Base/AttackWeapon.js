@@ -209,7 +209,7 @@ class AttackWeapon extends WeaponItem {
         this.superChargeData = this.superCharge;
         this.modCoolDownData = this.modAbility.currentCoolDown;
 
-        this.canUseMod = this.modAbility.currentCoolDown > 0;
+        this.canUseMod = this.modAbility.currentCoolDown === 0;
         this.canUseSuper = this.superAbility.currentCharge === 100;
 
         if (this.reloading) {

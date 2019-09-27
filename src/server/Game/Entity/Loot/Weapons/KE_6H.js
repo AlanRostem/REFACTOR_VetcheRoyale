@@ -114,6 +114,10 @@ class KE_6H extends AttackWeapon {
         super.update(entityManager, deltaTime);
     }
 
+    updateWhenEquipped(player, entityManager, deltaTime) {
+        super.updateWhenEquipped(player, entityManager, deltaTime);
+    }
+
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(player.id, this.id, 0, 0,
