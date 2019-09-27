@@ -2,25 +2,40 @@ const SGameEvent = require("./SGameEvent.js");
 
 class SEventManager {
     constructor() {
-        this.queue = [];
+        this.globalEvents = [];
+        this.privateEvents = {};
     }
 
-    add(name, type, color, life, arg, priority = false) {
+    addPrivate(player, name, type, color, life, arg, priority = false) {
         let e = new SGameEvent(name, type, arg, color, life);
-        priority ? this.queue.push(e) : this.queue.unshift(e);
+        if (this.privateEvents[player] === undefined)
+            this.privateEvents[player] = [];
+        priority ? this.privateEvents[player].push(e)
+            : this.privateEvents[player].unshift(e);
     }
+
+    addGlobal(name, type, color, life, arg, priority = false) {
+        let e = new SGameEvent(name, type, arg, color, life);
+        priority ? this.globalEvents.push(e)
+            : this.globalEvents.unshift(e);
+    }
+
 
     sendEvent(gameWorld) {
-        if (this.queue.length > 0) {
-            let e = this.queue.pop();
-            if (e.arg.hasOwnProperty("player")) {
-                gameWorld.clients.getClient(e.arg.player).player._gameData.Event = e.getEvent();
-            } else
-                gameWorld.setGameData("Event", e.getEvent());
+        if (this.globalEvents.length > 0) {
+            gameWorld.setGameData("Event", this.globalEvents);
         }
+
+        for (let player in this.privateEvents)
+            if (gameWorld.clients.getClient(player))
+                gameWorld.clients.getClient(player).player._gameData.Event = this.privateEvents[player];
+
+        this.privateEvents = {};
+        this.globalEvents = [];
     }
 
     update(gameWorld, deltaTime) {
+
         this.sendEvent(gameWorld);
     }
 }

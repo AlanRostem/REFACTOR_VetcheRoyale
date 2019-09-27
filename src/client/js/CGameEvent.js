@@ -2,13 +2,13 @@ import CTimer from "../../shared/code/Tools/CTimer.js";
 
 export default class CGameEvent {
 
-    constructor(name, type, arg, color , life) {
-        this.name = name;
-        this.type = type;
-        this.color = color;
-        this.arg = arg;
+    constructor(e) {
+        this.name = e.name;
+        this.type = e.type;
+        this.color = e.color;
+        this.arg = e.arg;
         this.dead = false;
-        this.life = new CTimer(life, () => {
+        this.life = new CTimer(e.life, () => {
             this.dead = true;
         });
     }
