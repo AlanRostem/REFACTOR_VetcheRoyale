@@ -55,7 +55,7 @@ class Client {
                     id: this.id,
                     playerCount: clientList.length
                 });
-                server.dataBridge.transfer("clientConnectCallback", {
+                server.dataBridge.transferClientEvent("clientConnectCallback", this.id, {
                     id: this.id,
                 });
             }
@@ -64,7 +64,7 @@ class Client {
         this.socket.on("disconnect", data => {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
-            server.dataBridge.transfer("disconnect", {
+            server.dataBridge.transferClientEvent("removePlayer", this.id, {
                 id: this.id,
             });
         });

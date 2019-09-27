@@ -73,13 +73,16 @@ class GameServer {
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 
-
-
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientInWorld", data => {
-            this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
-            //console.log("--- Simulation thread: Receiving client", data.id + "... ---");
+            if (!this.mainSocket.cl.getClient(data.id).worldID) {
+                this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
+                console.log("--- Simulation thread: Receiving client", data.id + "... ---");
+            }
+            // TODO: Stop the event from looping
         });
+
+
     }
 }
 

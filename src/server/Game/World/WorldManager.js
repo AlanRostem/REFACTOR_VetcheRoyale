@@ -102,7 +102,6 @@ class WorldManager {
         world.spawnPlayer(player);
     }
 
-
     importDataBridge(data) {
         this.dataBridge.receivedData = data;
     }
@@ -134,7 +133,7 @@ class WorldManager {
     }
 
     defineClientResponseEvents() {
-        this.dataBridge.on("clientConnectCallback", data => {
+        this.dataBridge.addClientResponseListener("clientConnectCallback", data => {
             let player = new Player();
             player.id = data.id;
             this.getLastWorld().spawnPlayer(player);
@@ -144,14 +143,22 @@ class WorldManager {
             this.dataBridge.transferClientEvent("clientInWorld", data.id, {
                 id: data.id,
                 worldID: player.homeWorldID
-            })
+            });
+            console.log("Player", data.id, "spawned in", player.homeWorldID);
         });
 
-        this.dataBridge.on("disconnect", data => {
+        /*
+        this.dataBridge.addClientResponseListener("removePlayer", data => {
             let player = this.playerList.get(data.id);
             this.gameWorlds.get(player.homeWorldID).removeEntity(player.id);
             this.playerList.remove(player.id);
+            console.log("Removed player", data.id, "from", player.homeWorldID);
         });
+        */
+
+
+
+        //console.log(this.dataBridge.events.object["clientEvent"].toString())
     }
 }
 

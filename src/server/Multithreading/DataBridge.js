@@ -25,19 +25,8 @@ class DataBridge {
         this.onDataReceived(data);
     }
 
-    queueEventData(event, data) {
-        if (this.outboundData.evtQueue.hasOwnProperty(event)) {
-            this.outboundData.evtQueue[event].push(data);
-            return;
-        }
-        this.outboundData.evtQueue[event] = [data];
-    }
-
-    onQueuedEvent(event, callback) {
-        this.queuedEvents.set(event, callback);
-    }
-
     transfer(event, data) {
+        //if (event === "clientConnectCallback") console.log("clientConnectCallback")
         this.outboundData["events"][event] = data;
     }
 
@@ -54,6 +43,13 @@ class DataBridge {
             this.outboundData.events.clientEvent[clientEvent] = {};
         }
         this.outboundData.events.clientEvent[clientEvent][id] = data;
+        switch (clientEvent) {
+            case "clientInWorld":
+            case "clientConnectCallback":
+            case "removePlayer":
+                console.log(this.outboundData.events.clientEvent)
+                break;
+        }
     }
 
     addClientResponseListener(responseEvent, callback) {
