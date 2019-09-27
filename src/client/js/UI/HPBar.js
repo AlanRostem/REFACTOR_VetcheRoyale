@@ -25,19 +25,27 @@ export default class HPBar extends UIElement {
         }
 
         // Liquid Inside
-        R.ctx.drawImage(this.src,
+        UIElement.defaultSpriteSheet.drawCropped(
             0,
             this.glassTube.y,
             this.HPlength,
             this.HPjuice.y,
             6,
-            R.HEIGHT - this.glassTube.y - 2 ,
+            R.HEIGHT - this.glassTube.y - 2,
             this.HPlength,
             this.HPjuice.y,
         );
 
         // Draw Glass Tube
-        R.ctx.drawImage(this.src, 0, 0, this.glassTube.x, this.glassTube.y, 4, R.HEIGHT - this.glassTube.y - 4 | 0, this.glassTube.x, this.glassTube.y);
+        UIElement.defaultSpriteSheet.drawCropped(
+            0,
+            0,
+            this.glassTube.x,
+            this.glassTube.y,
+            4,
+            R.HEIGHT - this.glassTube.y - 4 | 0,
+            this.glassTube.x,
+            this.glassTube.y);
 
         R.ctx.restore();
     }

@@ -4,6 +4,11 @@ import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustom
 import UI from "../../../UI/UI.js";
 
 export default class CSEW_9 extends CWeapon {
+
+    constructor(data) {
+        super(data, 1);
+    }
+
     onFire(client, deltaTime) {
         super.onFire(client, deltaTime);
     }
@@ -39,10 +44,10 @@ function lightning(x, y, length, yVal, life, right) {
 
     if (length-- > 0) {
 
-       /* R.drawRect("Cyan", x, y + 1, 1, 1, true);
-        R.drawRect("Cyan", x + right, y - 1, 1, 1, true);
-        R.drawRect("Cyan", x + right, y + 1, 1, 1, true);
-        R.drawRect("Cyan", x * right, y - 1, 1, 1, true);*/
+        /* R.drawRect("Cyan", x, y + 1, 1, 1, true);
+         R.drawRect("Cyan", x + right, y - 1, 1, 1, true);
+         R.drawRect("Cyan", x + right, y + 1, 1, 1, true);
+         R.drawRect("Cyan", x * right, y - 1, 1, 1, true);*/
 
         R.drawRect("White", x, y, 1, 1, true);
         R.drawRect("Cyan", x + right, y, 1, 1, true);

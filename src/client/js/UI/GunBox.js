@@ -1,6 +1,7 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
+import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 export default class GunBox extends UIElement {
     constructor() {
@@ -38,7 +39,7 @@ export default class GunBox extends UIElement {
 
             R.drawText(this.loadedAmmo + "/" + this.playerAmmo, R.WIDTH - 72, R.HEIGHT - 44, "Green", false, 7);
 
-            R.ctx.drawImage(this.src,
+            UIElement.defaultSpriteSheet.drawCropped(
                 0,
                 36,
                 this.frame.x,
@@ -49,7 +50,7 @@ export default class GunBox extends UIElement {
                 this.frame.y,
             );
 
-            R.ctx.drawImage(this.src,
+            UIElement.defaultSpriteSheet.drawCropped(
                 this.frame.x,
                 36,
                 this.backGround.x,
