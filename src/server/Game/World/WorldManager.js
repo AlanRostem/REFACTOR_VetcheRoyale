@@ -147,14 +147,14 @@ class WorldManager {
             console.log("Player", data.id, "spawned in", player.homeWorldID);
         });
 
-        /*
+
         this.dataBridge.addClientResponseListener("removePlayer", data => {
             let player = this.playerList.get(data.id);
             this.gameWorlds.get(player.homeWorldID).removeEntity(player.id);
             this.playerList.remove(player.id);
             console.log("Removed player", data.id, "from", player.homeWorldID);
         });
-        */
+
 
 
 

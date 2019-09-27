@@ -9,7 +9,17 @@ class DataBridge {
             },
         };
         this.events = new ONMap();
-        this.queuedEvents = new ONMap();
+        this.clientEvents = new ONMap();
+        this.on("clientEvent", data => {
+            for (let responseEvent in data) {
+                if (this.clientEvents.has(responseEvent)) {
+                    for (let clientID in data[responseEvent]) {
+                        let clientData = data[responseEvent][clientID];
+                        this.clientEvents.get(responseEvent)(clientData);
+                    }
+                }
+            }
+        });
     }
 
     set receivedData(data) {
@@ -43,22 +53,10 @@ class DataBridge {
             this.outboundData.events.clientEvent[clientEvent] = {};
         }
         this.outboundData.events.clientEvent[clientEvent][id] = data;
-        switch (clientEvent) {
-            case "clientInWorld":
-            case "clientConnectCallback":
-            case "removePlayer":
-                console.log(this.outboundData.events.clientEvent)
-                break;
-        }
     }
 
     addClientResponseListener(responseEvent, callback) {
-        this.on("clientEvent", data => {
-            for (let clientID in data[responseEvent]) {
-                let clientData = data[responseEvent][clientID ];
-                callback(clientData);
-            }
-        });
+        this.clientEvents.set(responseEvent, callback);
     }
 
     onDataReceived(data) {
