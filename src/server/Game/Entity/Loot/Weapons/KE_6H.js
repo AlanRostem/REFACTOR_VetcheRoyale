@@ -28,7 +28,7 @@ class AOEKnockBackDamage extends AOEDamage {
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
+    constructor(weaponRef, ownerID, weaponID, x, y, angle, entityManager) {
         super(ownerID, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
         this.weaponID = weaponID;
@@ -39,6 +39,7 @@ class KineticBomb extends Bouncy {
             exceptions[key] = entityManager.getEntity(ownerID).team.players[key];
         }
         delete exceptions[ownerID];
+        this.weapon = weaponRef;
 
         this.areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
     }
@@ -81,6 +82,7 @@ class KineticBomb extends Bouncy {
             this.vel.y = Math.sin(angle) * d * 10;
             if (Vector2D.distance(this.center, this.point) < this.point.radius) {
                 this.detonate(entityManager);
+                this.weapon.roamingBombs--;
             }
         }
 
@@ -94,6 +96,7 @@ class KE_6H extends AttackWeapon {
         super(x, y, "KE-6H", 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
+        this.roamingBombs = 0;
         this.configureAttackStats(2.5, 8, 1, 100);
         this.modAbility.configureStats(2, 4);
         this.modAbility.onActivation = (composedWeapon, entityManager) => {
@@ -101,11 +104,17 @@ class KE_6H extends AttackWeapon {
             composedWeapon.canFire = false;
             this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
+
         };
         this.modAbility.onDeactivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = false;
             composedWeapon.canFire = true;
         };
+        this.modAbility.buffs = (weapon, game, deltaTime) => {
+            if (weapon.roamingBombs <= 0) {
+                weapon.modAbility.deActivate(weapon, game, deltaTime);
+            }
+        }
     }
 
     update(entityManager, deltaTime) {
@@ -120,8 +129,9 @@ class KE_6H extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new KineticBomb(player.id, this.id, 0, 0,
+            new KineticBomb(this, player.id, this.id, 0, 0,
                 angle, entityManager));
+        this.roamingBombs++;
     }
 
 }
