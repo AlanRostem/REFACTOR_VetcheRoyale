@@ -45,19 +45,25 @@ class SpriteSheet {
 
     /**
      * Manually crop the image and draw it. Called in a draw loop.
+     * @param x {number} - Output position x
+     * @param y {number} - Output position y
+     * @param w {number} - Output position width
+     * @param h {number} - Output position height
      * @param cropX {number} - Cropping value on the sprite
      * @param cropY {number} - Cropping value on the sprite
      * @param cropW {number} - Cropping value on the sprite
      * @param cropH {number} - Cropping value on the sprite
      * @param ctx {CanvasRenderingContext2D} - Default parameter to R.context. Can be overridden to draw on different canvases
      */
-    drawCropped(x, y, w, h, cropX, cropY, cropW, cropH, ctx = R.context) {
-        if (this.img)
+    drawCropped(cropX, cropY, cropW, cropH, x, y, w, h, ctx = R.context) {
+        if (this.img) {
+            if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
             ctx.drawImage(this.img, cropX, cropY, cropW, cropH,
                 Math.round(x),
                 Math.round(y),
                 Math.round(w),
                 Math.round(h));
+        }
     }
 
     /**
