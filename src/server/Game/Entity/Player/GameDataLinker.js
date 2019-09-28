@@ -14,6 +14,13 @@ class GameDataLinker extends Alive {
         this.addStaticSnapShotData([
             "gameData"
         ]);
+
+        this.snapShotGenerator.removeStaticSnapshotData("id");
+
+        this.addDynamicSnapShotData([
+            "id"
+        ]);
+
         this.entitiesInProximity = new ClientPEM(this);
         this.worldMgrRef = worldMgr;
         this.input = new InputBridge();

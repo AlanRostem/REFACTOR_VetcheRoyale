@@ -15,7 +15,7 @@ class DataBridge {
                 if (this.clientEvents.has(responseEvent)) {
                     for (let clientID in data[responseEvent]) {
                         let clientData = data[responseEvent][clientID];
-                        this.clientEvents.get(responseEvent)(clientData);
+                        this.clientEvents.get(responseEvent)(clientData, clientID);
                     }
                 }
             }

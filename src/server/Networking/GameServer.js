@@ -74,7 +74,10 @@ class GameServer {
             console.log("--- Simulation thread: Receiving client", data.id + "... ---");
         });
 
-
+        this.dataBridge.addClientResponseListener("initEntity", (data, id) => {
+            this.mainSocket.cl.getClient(id).emit("initEntity", data);
+            console.log("Init entity data to client:", id);
+        });
     }
 }
 
