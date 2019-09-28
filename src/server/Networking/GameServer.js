@@ -85,6 +85,14 @@ class GameServer {
             console.log("Init entity data to client:", id);
         });
 
+        this.dataBridge.addClientResponseListener("spawnEntity", (data, id) => {
+            if (!this.mainSocket.cl.getClient(id)) {
+                return;
+            }
+            this.mainSocket.cl.getClient(id).emit("spawnEntity", data);
+            console.log("Spawning entity to client:", id);
+        });
+
         this.dataBridge.addClientResponseListener("removeEntity", (data, id) => {
             if (!this.mainSocket.cl.getClient(id)) {
                 return;
