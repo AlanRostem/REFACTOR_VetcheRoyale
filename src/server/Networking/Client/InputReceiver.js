@@ -42,18 +42,11 @@ class InputReceiver {
     }
 
     update(client, server) {
-        server.dataBridge.transferClientEvent("mouseEvent", client.id, {
+        server.dataBridge.transferClientEvent("input", client.id, {
             mouseStates: this.mouseStates,
             mouseData: this.mouseData,
+            keyStates: this.keyStates
         });
-
-
-        if (this.hasPressedKey()) {
-            server.dataBridge.transferClientEvent("keyEvent", client.id, {
-                keyStates: this.keyStates
-            });
-        }
-
     }
 
     mouseHeldDown(button) {

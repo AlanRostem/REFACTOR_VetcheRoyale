@@ -27,7 +27,6 @@ class WorldManager {
         this.dataBridge = new class extends DataBridge {
             onDataReceived(data) {
                 // TODO: Do shit
-                console.log(data)
             }
         }();
 
@@ -155,19 +154,13 @@ class WorldManager {
         });
 
 
-        /*
-        this.dataBridge.addClientResponseListener("keyEvent", data => {
+
+        this.dataBridge.addClientResponseListener("input", data => {
             this.playerList.get(data.id)
-                .receiveKeyData(data);
+                .receiveInputData(data);
         });
 
-
-        this.dataBridge.addClientResponseListener("mouseEvent", data => {
-            this.playerList.get(data.id)
-                .receiveMouseData(data);
-        });
-         */
-
+        console.log(this.dataBridge.clientEvents.object)
     }
 }
 

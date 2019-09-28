@@ -29,13 +29,9 @@ class GameDataLinker extends Alive {
         this.inputData = {};
     }
 
-    receiveKeyData(data) {
-        this.inputData["keys"] = data;
-        console.log(data);
-    }
-
-    receiveMouseData(data) {
-        this.inputData["mouse"] = data;
+    receiveInputData(data) {
+        this.inputData = data;
+        console.log(data)
     }
 
     emit(event, data) {

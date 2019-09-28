@@ -6,6 +6,7 @@ let dataSpoofArray = [];
 const worldManager = new WorldManager();
 parentPort.on("message", data => {
     worldManager.importDataBridge(data);
+
 });
 
 setInterval(() => {
