@@ -36,7 +36,6 @@ class DataBridge {
     }
 
     transfer(event, data) {
-        //if (event === "clientConnectCallback") console.log("clientConnectCallback")
         this.outboundData["events"][event] = data;
     }
 

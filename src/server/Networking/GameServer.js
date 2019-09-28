@@ -25,6 +25,8 @@ class GameServer {
         this.lastTime = 0;
         this.tickRate = 60; // Hz (TEMPORARY)
         this.started = false;
+
+        this.dataSpoofArray = [];
     }
 
     update() {
@@ -42,8 +44,9 @@ class GameServer {
         this.matchMaker.update(this);
         this.mainSocket.cl.update(this);
 
-        this.thread.sendDataToParent(this.exportDataBridge());
-
+        this.dataSpoofArray.push(this.dataBridge.outboundData);
+        this.thread.sendDataToParent(this.dataSpoofArray[0]);
+        this.dataSpoofArray.splice(0);
         this.dataBridge.update();
 
         if (Date.now() > 0)
@@ -60,14 +63,6 @@ class GameServer {
         this.dataBridge.receivedData = data;
     }
 
-    exportDataBridge() {
-        return this.dataBridge.outboundData;
-    }
-
-    transferBridgeEvent(event, data) {
-        this.dataBridge.transfer(event, data);
-    }
-
     start() {
         this.thread.run();
         setInterval(() => this.update(), 1000 / this.tickRate);
@@ -75,12 +70,8 @@ class GameServer {
 
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientInWorld", data => {
-            if (!this.mainSocket.cl.container.hasOwnProperty(data.id)) return; // Prevent crash
-            if (!this.mainSocket.cl.getClient(data.id).worldID) {
-                this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
-                console.log("--- Simulation thread: Receiving client", data.id + "... ---");
-            }
-            // TODO: Stop the event from looping. It causes a crash and send excessive data
+            this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
+            console.log("--- Simulation thread: Receiving client", data.id + "... ---");
         });
 
 
