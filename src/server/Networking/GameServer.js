@@ -63,14 +63,6 @@ class GameServer {
         this.dataBridge.receivedData = data;
     }
 
-    exportDataBridge() {
-        return this.dataBridge.outboundData;
-    }
-
-    transferBridgeEvent(event, data) {
-        this.dataBridge.transfer(event, data);
-    }
-
     start() {
         this.thread.run();
         setInterval(() => this.update(), 1000 / this.tickRate);

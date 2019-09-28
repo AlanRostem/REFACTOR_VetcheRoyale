@@ -10,7 +10,6 @@ parentPort.on("message", data => {
 
 setInterval(() => {
     worldManager.update();
-
     dataSpoofArray.push(worldManager.dataBridge.outboundData);
     sendMessage(dataSpoofArray[0]);
     dataSpoofArray.splice(0);
