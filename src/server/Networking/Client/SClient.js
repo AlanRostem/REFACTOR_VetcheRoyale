@@ -85,7 +85,7 @@ class Client {
     }
 
     networkedUpdate(server) {
-        this.inputReceiver.update(this);
+        this.inputReceiver.update(this, server);
         if (server.dataBridge.inboundData[this.worldID]) {
             if (server.dataBridge.inboundData[this.worldID].clients[this.id]) {
                 this.playerObjData = server.dataBridge.inboundData[this.worldID].clients[this.id];

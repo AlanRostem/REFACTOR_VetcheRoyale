@@ -25,6 +25,17 @@ class GameDataLinker extends Alive {
         this.worldMgrRef = worldMgr;
         this.input = new InputBridge();
         this.outboundData = new ONMap();
+
+        this.inputData = {};
+    }
+
+    receiveKeyData(data) {
+        this.inputData["keys"] = data;
+        console.log(data);
+    }
+
+    receiveMouseData(data) {
+        this.inputData["mouse"] = data;
     }
 
     emit(event, data) {
