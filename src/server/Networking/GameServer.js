@@ -17,7 +17,7 @@ class GameServer {
             onGetMessage(message) {
                 _this.importDataBridge(message);
             }
-        } ({}, "./src/server/Game/SimulationSide.js");
+        }({}, "./src/server/Game/SimulationSide.js");
 
         this.defineClientResponseEvents();
 
@@ -70,13 +70,27 @@ class GameServer {
 
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientInWorld", data => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
+                return;
+            }
             this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
             console.log("--- Simulation thread: Receiving client", data.id + "... ---");
         });
 
         this.dataBridge.addClientResponseListener("initEntity", (data, id) => {
+            if (!this.mainSocket.cl.getClient(id)) {
+                return;
+            }
             this.mainSocket.cl.getClient(id).emit("initEntity", data);
             console.log("Init entity data to client:", id);
+        });
+
+        this.dataBridge.addClientResponseListener("removeEntity", (data, id) => {
+            if (!this.mainSocket.cl.getClient(id)) {
+                return;
+            }
+            this.mainSocket.cl.getClient(id).emit("removeEntity", data);
+            console.log("Passed a remove entity call to client:", id, data);
         });
     }
 }

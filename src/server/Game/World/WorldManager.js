@@ -135,9 +135,7 @@ class WorldManager {
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientConnectCallback", data => {
             let player = new Player(0, 0, this);
-            console.log(player.id);
             player.id = data.id;
-            console.log(player.id);
             this.getLastWorld().spawnPlayer(player);
 
             this.playerList.set(data.id, player);
@@ -153,7 +151,7 @@ class WorldManager {
 
         this.dataBridge.addClientResponseListener("removePlayer", data => {
             let player = this.playerList.get(data.id);
-            this.gameWorlds.get(player.homeWorldID).removeEntity(player.id);
+            this.gameWorlds.get(player.homeWorldID).removePlayer(player.id);
             this.playerList.remove(player.id);
             console.log("Removed player", data.id, "from", player.homeWorldID);
         });
