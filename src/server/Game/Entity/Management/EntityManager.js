@@ -13,6 +13,7 @@ class EntityManager {
         if (globalManager) {
             this.tileMap = gameMap;
             this.gameClock = new GameClock(0);
+            this.entitiesQueuedToDelete = [];
 
             // Create a singular quad tree with the size of
             // the whole tile map.
@@ -39,7 +40,11 @@ class EntityManager {
         this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime);
-
+        for (var i = 0; i < this.entitiesQueuedToDelete.length; i++) {
+            this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
+            delete this.container[this.entitiesQueuedToDelete[i]];
+            this.entitiesQueuedToDelete.splice(i);
+        }
     }
 
     // Regenerates data packs every frame for every entity
@@ -90,9 +95,7 @@ class EntityManager {
     // it to deletion.
     removeEntity(id) {
         this.getEntity(id).remove();
-        delete this.container[id];
-
-        //this.entitiesQueuedToDelete.push(id);
+        this.entitiesQueuedToDelete.push(id);
     }
 }
 
