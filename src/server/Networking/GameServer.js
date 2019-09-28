@@ -25,6 +25,8 @@ class GameServer {
         this.lastTime = 0;
         this.tickRate = 60; // Hz (TEMPORARY)
         this.started = false;
+
+        this.dataSpoofArray = [];
     }
 
     update() {
@@ -42,8 +44,9 @@ class GameServer {
         this.matchMaker.update(this);
         this.mainSocket.cl.update(this);
 
-        this.thread.sendDataToParent(this.exportDataBridge());
-
+        this.dataSpoofArray.push(this.dataBridge.outboundData);
+        this.thread.sendDataToParent(this.dataSpoofArray[0]);
+        this.dataSpoofArray.splice(0);
         this.dataBridge.update();
 
         if (Date.now() > 0)
@@ -75,12 +78,8 @@ class GameServer {
 
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientInWorld", data => {
-            if (!this.mainSocket.cl.container.hasOwnProperty(data.id)) return
-            if (!this.mainSocket.cl.getClient(data.id).worldID) {
-                this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
-                console.log("--- Simulation thread: Receiving client", data.id + "... ---");
-            }
-            // TODO: Stop the event from looping
+            this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
+            console.log("--- Simulation thread: Receiving client", data.id + "... ---");
         });
 
 
