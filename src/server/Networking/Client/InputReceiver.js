@@ -18,12 +18,13 @@ class InputReceiver {
         // Holds all mouse states of corresponding mouse button numbers
         this.mouseStates = {};
         this.singlePressMouseButtons = {};
+        this.serverRef = null;
 
         client.addClientUpdateListener("processInput", data => {
             if (PacketValidator.validateData(client, data.input, "object")) {
                 const input = data.input;
                 if (validateInput(input)) {
-                    this.applyInput(input);
+                    this.applyInput(input, client);
                     client.setOutboundPacketData(
                         "lastProcessedInputSequence", input.sequence);
                 }
@@ -31,10 +32,16 @@ class InputReceiver {
         });
     }
 
-    applyInput(input) {
+    applyInput(input, client) {
         this.keyStates = input.keyStates;
         this.mouseStates = input.mouseStates;
         this.mouseData = input.mouseData;
+        if (this.serverRef)
+            this.serverRef.dataBridge.transferClientEvent("listenToInput", client.id, {
+                mouseStates: this.mouseStates,
+                mouseData: this.mouseData,
+                keyStates: this.keyStates
+            });
     }
 
     hasPressedKey() {
@@ -42,12 +49,8 @@ class InputReceiver {
     }
 
     update(client, server) {
-        if (this.hasPressedKey()) {
-            server.dataBridge.transferClientEvent("listenToInput", client.id, {
-                mouseStates: this.mouseStates,
-                mouseData: this.mouseData,
-                keyStates: this.keyStates
-            });
+        if (!this.serverRef) {
+            this.serverRef = server;
         }
     }
 

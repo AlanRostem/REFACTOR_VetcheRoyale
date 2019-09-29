@@ -154,7 +154,7 @@ class WorldManager {
         });
 
         this.dataBridge.addClientResponseListener("listenToInput", (data, id) => {
-            this.playerList.get(data.id)
+            this.playerList.get(id)
                 .receiveInputData(data);
         });
     }
