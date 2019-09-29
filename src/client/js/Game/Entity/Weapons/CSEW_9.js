@@ -2,6 +2,7 @@ import CWeapon from "./CWeapon.js";
 import R from "../../../Graphics/Renderer.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import UI from "../../../UI/UI.js";
+import Scene from "../../Scene.js";
 
 export default class CSEW_9 extends CWeapon {
 
@@ -14,7 +15,7 @@ export default class CSEW_9 extends CWeapon {
     }
 
     update(deltaTime, client) {
-        this.client = client;
+        this.player = Scene.entityManager.getEntityByID(this.output.playerID);
         super.update(deltaTime, client);
         if (this.getRealtimeProperty("playerID") !== client.id) return;
         let secondary = this.getRealtimeProperty("secondaryFire");
@@ -31,11 +32,11 @@ export default class CSEW_9 extends CWeapon {
         super.draw();
 
         let superAbility = this.getRealtimeProperty("superAbilitySnap");
-        let client = this.client;
-        let right = (client.player.output.movementState.direction === "right") ? 1 : -1;
+        let player = this.player;
+        if(!player) return;
+        let right = (player.output.movementState.direction === "right") ? 1 : -1;
         if (superAbility) {
-            lightning(client.player.output.pos.x + client.player.output.width / 2, client.player.output.pos.y + client.player.output.height / 2, 200, 0, 0, right);
-            // lightning(client.player.output.pos.x + client.player.output.width/2, client.player.output.pos.y + client.player.output.height / 2, 200);
+            lightning(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, 200, 0, 0, right);
         }
     }
 }
@@ -44,11 +45,6 @@ function lightning(x, y, length, yVal, life, right) {
 
     if (length-- > 0) {
 
-        /* R.drawRect("Cyan", x, y + 1, 1, 1, true);
-         R.drawRect("Cyan", x + right, y - 1, 1, 1, true);
-         R.drawRect("Cyan", x + right, y + 1, 1, 1, true);
-         R.drawRect("Cyan", x * right, y - 1, 1, 1, true);*/
-
         R.drawRect("White", x, y, 1, 1, true);
         R.drawRect("Cyan", x + right, y, 1, 1, true);
 
@@ -56,24 +52,4 @@ function lightning(x, y, length, yVal, life, right) {
         let ny = y + (yVal ? 0 : ((Math.random() * 2 | 0)) * ((Math.random() * 2 | 0) ? 1 : -1));
         lightning(nx, ny, length, life ? 0 : ny - y, life ? --life : 2, right);
     }
-    //R.drawRect("Cyan", x * right + right, y, 1, 1, true);
 }
-
-/*
-
-function lightning(x, y, length, xVal, yLife, yVal) {
-    length--;
-    if (length > 0) {
-        R.drawRect("Cyan", x, y, 1, 1, true);
-        let nx = x + 1;
-        let ny = y + yVal;
-        lightning(
-            nx,
-            ny,
-            length,
-            xVal  ? 0 : Math.abs(nx - x),
-            yLife > 0 ? yLife - 1 : ((Math.random() * 2 | 0) + 2),
-            yLife > 0 ? 0 : (Math.random() * 2 | 0) ? 1 : -1);
-    }
-}
- */

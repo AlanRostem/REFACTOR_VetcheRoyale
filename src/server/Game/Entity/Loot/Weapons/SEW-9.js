@@ -4,6 +4,8 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+const SEntity = require("../../SEntity.js");
+const Player = require("../../Player/SPlayer.js");
 
 
 // Projectile fired by the SEW-9 weapon
@@ -53,6 +55,31 @@ class ElectricSphere extends Projectile {
     }
 }
 
+class SuperDamage extends SEntity {
+    constructor(x, y, w, h, playerID) {
+        super(x, y, w, h);
+        this.damage = new Damage(1, playerID);
+
+    }
+
+    update(game, deltaTime) {
+        super.update(game, deltaTime);
+        let player = game.getEntity(this.damage.playerID);
+        if(player) {
+            this.pos.x = player.x;
+            this.pos.y = player.y;
+
+            if (player.movementState.direction !== "right") this.pos.x -= this.width;
+        }
+    }
+
+    onEntityCollision(entity, entityManager) {
+        super.onEntityCollision(entity, entityManager);
+        if(entity instanceof Player) this.damage.inflict(entity, entityManager);
+    }
+
+}
+
 class SEW_9 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "SEW-9", 0, 0, 0);
@@ -93,11 +120,19 @@ class SEW_9 extends AttackWeapon {
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
+            entityManager.spawnEntity(this.center.x, this.center.y,
+                this.damageBox = new SuperDamage(this.x, this.y, 100, entityManager.getEntity(this.playerID).height, this.playerID)
+            );
         };
 
         this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = false;
+            this.damageBox = null;
         };
+
+        this.superAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
+            this.damageBox.update(entityManager, deltaTime);
+        }
     }
 
     update(entityManager, deltaTime) {
