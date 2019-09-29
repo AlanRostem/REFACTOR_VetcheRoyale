@@ -11,36 +11,36 @@ export default class CEventManager {
     }
 
     SGetEvent(client) {
-        if (client.inboundPacket !== undefined) {
+        if (client.inboundPacket) {
             let evs = [];
-
-            if (client.player.output._gameData["Event"] !== undefined) {
-                evs = client.player.output._gameData["Event"];
-                for (let e of evs){
-                    let event = new CGameEvent(e);
-                    if (event && !this.eventID.includes(event.id)){
-                        if (e.priority){
-                            this.events.unshift(event);
-                            this.eventID.unshift(event.id);
+            if (client.player)
+                if (client.player.output)
+                    if (client.player.output._gameData)
+                        if (client.player.output._gameData["Event"]) {
+                            evs = client.player.output._gameData["Event"];
+                            for (let e of evs) {
+                                let event = new CGameEvent(e);
+                                if (event && !this.eventID.includes(event.id)) {
+                                    if (e.priority) {
+                                        this.events.unshift(event);
+                                        this.eventID.unshift(event.id);
+                                    } else {
+                                        this.events.push(event);
+                                        this.eventID.push(event.id);
+                                    }
+                                }
+                            }
                         }
-                        else {
-                            this.events.push(event);
-                            this.eventID.push(event.id);
-                        }
-                    }
-                }
-            }
-
-            if (client.inboundPacket["gameData"]["Event"] !== undefined) {
+            if (client.inboundPacket.gameData)
+            if (client.inboundPacket.gameData["Event"] !== undefined) {
                 evs = client.inboundPacket["gameData"]["Event"];
-                for (let e of evs){
+                for (let e of evs) {
                     let event = new CGameEvent(e);
-                    if (event && !this.eventID.includes(event.id)){
-                        if (e.priority){
+                    if (event && !this.eventID.includes(event.id)) {
+                        if (e.priority) {
                             this.events.unshift(event);
                             this.eventID.unshift(event.id);
-                        }
-                        else {
+                        } else {
                             this.events.push(event);
                             this.eventID.push(event.id);
                         }
@@ -51,15 +51,15 @@ export default class CEventManager {
     }
 
     addEventReceiver(key, obj, callback) {
-        this.eventReceiver[key] = {obj:obj, callback:callback};
+        this.eventReceiver[key] = {obj: obj, callback: callback};
     }
 
 
     distributeEvent() {
-        for (let key in this.eventReceiver){
-            let e = this.events.filter((ev)=>{
-               return this.eventReceiver[key].callback(ev) &&
-                   (ev.type === "all" || ev.type.includes(key));
+        for (let key in this.eventReceiver) {
+            let e = this.events.filter((ev) => {
+                return this.eventReceiver[key].callback(ev) &&
+                    (ev.type === "all" || ev.type.includes(key));
             });
             if (e) this.eventReceiver[key].obj.addEvent(e);
         }
@@ -72,7 +72,7 @@ export default class CEventManager {
         this.distributeEvent();
         for (var e = 0; e < this.events.length; e++) {
             this.events[e].update(delaTime);
-            if (this.events[e].dead){
+            if (this.events[e].dead) {
                 console.log(true);
                 this.eventID.splice(e, 1);
                 this.events.splice(e, 1);

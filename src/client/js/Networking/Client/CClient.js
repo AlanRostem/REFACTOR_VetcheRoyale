@@ -137,7 +137,7 @@ class CClient {
             if (this.inboundPacket.entityData)
                 if (this.inboundPacket.entityData[this.id]) {
                     if (this.player)
-                        Scene.currentMapName = this.player.output.gameData.mapName;
+                        Scene.currentMapName = this.player.output._gameData.mapName;
                 } else {
                     //if (e) entityManager.removeEntity(e.id);
                     if (this.inboundPacket.spectatorSubject) {
