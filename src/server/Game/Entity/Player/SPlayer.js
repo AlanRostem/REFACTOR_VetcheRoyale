@@ -241,8 +241,6 @@ class Player extends GameDataLinker {
                         }
                     );
 
-
-
         if (this.client.removed) {
             entityManager.clients.removeClient(this.client.id)
         }

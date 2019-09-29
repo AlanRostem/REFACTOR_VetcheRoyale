@@ -14,8 +14,8 @@ class SEventManager {
             : this.privateEvents[player].unshift(e);
     }
 
-    addGlobal(name, type, color, life, arg, priority = false) {
-        let e = new SGameEvent(name, type, arg, color, life, priority);
+    addGlobal(id, type, color, life, arg, priority = false) {
+        let e = new SGameEvent(id, type, arg, color, life, priority);
         priority ? this.globalEvents.push(e)
             : this.globalEvents.unshift(e);
     }

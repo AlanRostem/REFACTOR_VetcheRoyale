@@ -3,7 +3,7 @@ import CTimer from "../../shared/code/Tools/CTimer.js";
 export default class CGameEvent {
 
     constructor(e) {
-        this.name = e.name;
+        this.id = e.id;
         this.type = e.type;
         this.color = e.color;
         this.arg = e.arg;

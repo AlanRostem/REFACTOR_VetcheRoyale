@@ -29,8 +29,14 @@ class MiniMap extends UIElement {
                 this.mapSize = "small";
                 this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.mapSize] - 4, 4));
             }
-        })
+        });
+
+        Scene.eventManager.addEventReceiver(this.id, this,(ev)=>{
+            return ev.arg.hasOwnProperty('pos')
+        });
     }
+
+
 
     /**
      *

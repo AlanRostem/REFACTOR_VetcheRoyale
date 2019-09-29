@@ -1,6 +1,7 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import CTimer from "../../../shared/code/Tools/CTimer.js";
+import Scene from "../Game/Scene.js";
 
 /**
  *
@@ -18,6 +19,11 @@ class Announcement extends UIElement {
             if (this.event !== undefined && this.pos.y >= 0)
                 this.event.arg.x--;
         });
+
+        Scene.eventManager.addEventReceiver(this.id, this,(ev)=>{
+            return !ev.arg.hasOwnProperty('shown') &&
+                ev.arg.hasOwnProperty('string')
+        });
     }
 
     /**
@@ -25,10 +31,12 @@ class Announcement extends UIElement {
      * @param e {CGameEvent} - Event to be displayed
      */
     addEvent(e) {
-        e.arg.shown = true;
-        e.arg.dString = "";
-        e.arg.x = this.width - 10;
-        this.event = e;
+        if (Array.isArray(e) && e.length > 0) {
+            this.event = e[0];
+            this.event.arg.shown = true;
+            this.event.arg.dString = "";
+            this.event.arg.x = this.width - 10;
+        }
     }
 
     /**
