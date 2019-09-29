@@ -4,12 +4,11 @@ class DataBridge {
     constructor() {
         this.inboundData = {};
         this.outboundData = {
-            "events": {
-                "clientEvent": {}
-            },
+            "clientEvent": {}
         };
         this.events = new ONMap();
         this.clientEvents = new ONMap();
+        /*
         this.on("clientEvent", data => {
             for (let responseEvent in data) {
                 if (this.clientEvents.has(responseEvent)) {
@@ -20,6 +19,7 @@ class DataBridge {
                 }
             }
         });
+         */
     }
 
     set receivedData(data) {
@@ -27,20 +27,14 @@ class DataBridge {
             return;
         }
         this.inboundData = data;
-        for (let event in data["events"]) {
-            let callback = this.events.get(event);
-            if (callback)
-                callback(data["events"][event]);
+
+        for (let event in data["clientEvent"]) {
+            for (let clientID in data["clientEvent"][event]) {
+                let clientData = data["clientEvent"][event][clientID];
+                this.clientEvents.get(event)(clientData, clientID);
+            }
         }
         this.onDataReceived(data);
-    }
-
-    transfer(event, data) {
-        this.outboundData["events"][event] = data;
-    }
-
-    on(event, callback) {
-        this.events.set(event, callback);
     }
 
     queueOutboundData(key, value) {
@@ -48,10 +42,10 @@ class DataBridge {
     }
 
     transferClientEvent(clientEvent, id, data) {
-        if (!this.outboundData.events.clientEvent[clientEvent]) {
-            this.outboundData.events.clientEvent[clientEvent] = {};
+        if (!this.outboundData.clientEvent[clientEvent]) {
+            this.outboundData.clientEvent[clientEvent] = {};
         }
-        this.outboundData.events.clientEvent[clientEvent][id] = data;
+        this.outboundData.clientEvent[clientEvent][id] = data;
     }
 
     addClientResponseListener(responseEvent, callback) {
@@ -64,9 +58,7 @@ class DataBridge {
 
     update() {
         this.outboundData = {
-            "events": {
-                "clientEvent": {}
-            }
+            "clientEvent": {}
         };
     }
 }
