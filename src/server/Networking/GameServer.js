@@ -90,7 +90,7 @@ class GameServer {
                 return;
             }
             this.mainSocket.cl.getClient(id).emit("spawnEntity", data);
-            //console.log("Added:", "\x1b[33m" + data.eType + "\x1b[0m", "with ID:", '\x1b[36m' + data.id + "\x1b[0m");
+            //console.log("Spawning entity to client:", id);
         });
 
         this.dataBridge.addClientResponseListener("removeEntity", (data, id) => {
@@ -98,16 +98,8 @@ class GameServer {
                 return;
             }
             this.mainSocket.cl.getClient(id).emit("removeEntity", data);
-            //console.log("Deleting entity with ID:", '\x1b[36m' + id + "\x1b[0m");
+            //console.log("Passed a remove entity call to client:", id, data);
         });
-
-        this.dataBridge.addClientResponseListener("removeOutOfBoundsEntity", (data, id) => {
-            if (!this.mainSocket.cl.getClient(id)) {
-                return;
-            }
-            this.mainSocket.cl.getClient(id).emit("removeOutOfBoundsEntity", data);
-            //console.log("Throwing entity out of bounds with ID:", '\x1b[36m' + id + "\x1b[0m");
-        })
     }
 }
 
