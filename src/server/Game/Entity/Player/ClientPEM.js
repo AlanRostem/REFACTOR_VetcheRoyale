@@ -15,13 +15,14 @@ class ClientPEM extends ProximityEntityManager {
         super.addEntity(entity);
         this.entRef.emit("spawnEntity", entity.getDataPack());
         this.spectators.onSpawnEntity(entity);
+        //console.log("Added:", "\x1b[33m" + entity.eType + "\x1b[0m", "with ID:", '\x1b[36m' + entity.id + "\x1b[0m");
     }
 
     removeEntity(id) {
         super.removeEntity(id);
         delete this.dataBox[id];
 
-        //console.log("Removing entity:", id, Object.keys(this.container));
+        //console.log("Removing entity:", id);
 
         this.entRef.emit("removeEntity", id);
         this.spectators.onRemoveEntity(id);
@@ -31,6 +32,8 @@ class ClientPEM extends ProximityEntityManager {
         super.removeEntity(id);
         delete this.dataBox[id];
         this.entRef.emit("removeOutOfBoundsEntity", id);
+        //console.log("Throwing entity out of bounds:", "with ID:", '\x1b[36m' + id + "\x1b[0m");
+
         this.spectators.onRemoveOutOfBoundsEntity(id);
     }
 
