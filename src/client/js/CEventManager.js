@@ -67,13 +67,10 @@ export default class CEventManager {
 
     update(client, delaTime) {
         this.SGetEvent(client);
-        console.log(this.events);
-        console.log(this.eventID);
         this.distributeEvent();
         for (var e = 0; e < this.events.length; e++) {
             this.events[e].update(delaTime);
             if (this.events[e].dead) {
-                console.log(true);
                 this.eventID.splice(e, 1);
                 this.events.splice(e, 1);
             }
