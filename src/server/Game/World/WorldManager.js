@@ -3,6 +3,7 @@ const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js
 const GameWorld = require("../../Game/World/GameWorld.js");
 const HubWorld = require("../../Game/World/Matches/Hubs/HubWorld.js");
 const PlayGround = require("../../Game/World/Matches/PlayGround/PlayGround.js");
+const Match = require("../../Game/World/Matches/Match/Match.js");
 const SPlayer = require("../Entity/Player/SPlayer.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
@@ -52,8 +53,11 @@ class WorldManager {
 
         let playground = new PlayGround(this.gameWorlds);
         this.playground = playground;
-
         this.addWorld(playground, "playground");
+
+        let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
+        this.addWorld(match, "match");
+
     }
 
     checkQueuedPlayers() {

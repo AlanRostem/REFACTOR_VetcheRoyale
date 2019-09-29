@@ -4,8 +4,8 @@ const HubPortal = require("../../../Entity/Portal/HubPortal.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
 class Match extends GameWorld{
-    constructor(socket, worldList, name, gameMap) {
-        super(socket, name, gameMap);
+    constructor(worldList, name, gameMap) {
+        super(name, gameMap);
         this.setGameRules({
             "lootLife": 2,
             "pvp": true,
@@ -22,8 +22,8 @@ class Match extends GameWorld{
                     202 * Tile.SIZE)));
     }
 
-    update(deltaTime) {
-        super.update(deltaTime);
+    update(deltaTime, worldManager) {
+        super.update(deltaTime, worldManager);
     }
 }
 

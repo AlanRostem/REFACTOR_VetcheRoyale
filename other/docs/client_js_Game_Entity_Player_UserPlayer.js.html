@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/js/Game/Entity/Player/UserPlayer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/js/Game/Entity/Player/UserPlayer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import RemotePlayer from "./RemotePlayer.js";
+import R from "../../../Graphics/Renderer.js";
+import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
+import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
+import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
+import Scene from "../../Scene.js";
+
+
+const TILE_SIZE = 8;
+
+
+/**
+ * The player the client controls. It contains the client side prediction code and the interface
+ * for events happening only to the user end player entity.
+ * @memberOf ClientSide
+
+ */
+class UserPlayer extends RemotePlayer {
+    constructor(data) {
+        super(data);
+        this.serverState = data;
+        this.localVel = new Vector2D(0, 0);
+        this.localSides = {
+            left: false,
+            right: false,
+            top: false,
+            bottom: false,
+            reset: () => {
+                this.localSides.left = this.localSides.right = this.localSides.top = this.localSides.bottom = false;
+            }
+        };
+    }
+
+    updateFromDataPack(dataPack, client) {
+        this.dataBuffer.t_directServerUpdate(dataPack, this);
+        //super.updateFromDataPack(dataPack, client);
+        //this._serverState = dataPack;
+        //this._output = dataPack;
+        //this.updateRemainingServerData(client);
+        //this.serverReconciliation(client);
+    }
+
+    overlapTile(pos, e) {
+        return pos.y + this.height > e.y
+            &amp;&amp; pos.y &lt; (e.y + TILE_SIZE)
+            &amp;&amp; pos.x + this.width > e.x
+            &amp;&amp; pos.x &lt; (e.x + TILE_SIZE);
+    }
+
+    t_drawGhost() {
+        R.ctx.save();
+        R.ctx.globalAlpha = 0.4;
+        //this.animations.animate(RemotePlayer.sprite, this.serverState.teamName, 16, 16);
+        SpriteSheet.beginChanges();
+        if (this.serverState.movementState.direction === "left") {
+            RemotePlayer.sprite.flipX();
+        }
+        RemotePlayer.sprite.drawAnimated(
+            Math.round(this.serverState.pos.x) + R.camera.displayPos.x,
+            Math.round(this.serverState.pos.y) + R.camera.displayPos.y);
+        SpriteSheet.end();
+        R.ctx.restore();
+    }
+
+    draw() {
+        super.draw();
+        //this.t_drawGhost();
+    }
+
+    update(deltaTime, client, currentMap) {
+        super.update(deltaTime, client);
+        this.currentMap = currentMap;
+        this.weapon = Scene.entities.getEntityByID(this.output.invWeaponID);
+        if (R.camera.config("followPlayer")) {
+            R.camera.setCurrentFollowPos(this.getRealtimeProperty("centerData"));
+        }
+        //console.log(Date.now() - client.latency, this.serverState.serverTimeStamp);
+        /*
+        let t = client.latency / 1000;
+        if (Date.now() - client.latency &lt;= this.serverState.serverTimeStamp) {
+            this.output.pos =
+                vectorLinearInterpolation(this.output.pos,
+                    vectorLinearInterpolation(this.serverState.pos, this.localPos, 60 * t),
+                    .36);
+        } else {
+            this.output.pos = this.localPos;
+        }
+
+         */
+        R.camera.setConfig("followPlayer", true);
+    }
+
+    updateRemainingServerData(client) {
+        for (let key in this.serverState) {
+            if (key !== "pos") {
+                this.output[key] = this.serverState[key];
+            }
+        }
+        //this.localPos.x = this.serverState.pos.x;
+        //this.localPos.y = this.serverState.pos.y;
+    }
+
+    physics(deltaTime, client, currentMap) {
+        this.localSides.reset();
+        this.output.pos.x += this.localVel.x;
+        this.reconciledCollisionCorrectionX(currentMap);
+        this.reconciledCollisionCorrectionY(currentMap);
+    }
+
+    reconciledCollisionCorrectionX(currentMap) {
+        let pos = this.output.pos;
+        var cx = Math.floor(pos.x / TILE_SIZE);
+        var cy = Math.floor(pos.y / TILE_SIZE);
+
+        var proxy = 2; // Amount of margin of tiles around entity
+
+        var tileX = Math.floor(this.width / TILE_SIZE) + proxy;
+        var tileY = Math.floor(this.height / TILE_SIZE) + proxy;
+
+        for (var y = -proxy; y &lt; tileY; y++) {
+            for (var x = -proxy; x &lt; tileX; x++) {
+                var xx = cx + x;
+                var yy = cy + y;
+
+                let tile = {
+                    x: xx * TILE_SIZE,
+                    y: yy * TILE_SIZE,
+                };
+
+                let id = currentMap.getID(xx, yy);
+                if (currentMap.isSolid(id)) {
+                    if (this.overlapTile(pos, tile)) {
+                        if (pos.x + this.width > tile.x
+                            //&amp;&amp; this.oldPos.x + this.width &lt;= tile.x
+                            &amp;&amp; this.localVel.x > 0
+                        ) {
+                            pos.x = tile.x - this.width;
+                            this.localVel.x = 0;
+                            this.localSides.right = true;
+                        }
+                        if (pos.x &lt; tile.x + TILE_SIZE
+                            //&amp;&amp; this.oldPos.x >= tile.x + TILE_SIZE
+                            &amp;&amp; this.localVel.x &lt; 0
+                        ) {
+                            pos.x = tile.x + TILE_SIZE;
+                            this.localVel.x = 0;
+                            this.localSides.left = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    reconciledCollisionCorrectionY(currentMap) {
+        let pos = this.output.pos;
+        var cx = Math.floor(pos.x / TILE_SIZE);
+        var cy = Math.floor(pos.y / TILE_SIZE);
+
+        var proxy = 2; // Amount of margin of tiles around entity
+
+        var tileX = Math.floor(this.width / TILE_SIZE) + proxy;
+        var tileY = Math.floor(this.height / TILE_SIZE) + proxy;
+
+        for (var y = -proxy; y &lt; tileY; y++) {
+            for (var x = -proxy; x &lt; tileX; x++) {
+                var xx = cx + x;
+                var yy = cy + y;
+
+                let tile = {
+                    x: xx * TILE_SIZE,
+                    y: yy * TILE_SIZE,
+                };
+
+                let id = currentMap.getID(xx, yy);
+                if (currentMap.isSolid(id)) {
+                    if (this.overlapTile(pos, tile)) {
+                        if (pos.y + this.height > tile.y &amp;&amp; this.oldPos.y + this.height &lt;= tile.y) {
+                            pos.y = tile.y - this.height;
+                            this.localSides.bottom = true;
+                        }
+                        if (pos.y &lt; tile.y + TILE_SIZE &amp;&amp; this.oldPos.y >= tile.y + TILE_SIZE) {
+                            pos.y = tile.y + TILE_SIZE;
+                            this.localSides.top = true;
+                        }
+                        /*
+                        if (this.localVel.y > 0) {
+                        }
+                        if (this.localVel.y &lt; 0) {
+                        }
+                         */
+                    }
+                }
+            }
+        }
+    }
+
+    serverReconciliation(client) {
+        let pending = client.input.pending;
+        let j = 0;
+        while (j &lt; pending.length) {
+            let input = pending[j];
+            if (input.sequence &lt;= client.inboundPacket.lastProcessedInputSequence) {
+                pending.splice(j, 1);
+            } else {
+                this.oldPos = this.output.pos;
+                this.localVel.x = 0;
+
+                if (input.keyStates[68]) {
+                    if (!this.localSides.right) {
+                        this.localVel.x = 1;
+                    }
+                }
+
+                if (input.keyStates[65]) {
+                    if (!this.localSides.left) {
+                        this.localVel.x = -1;
+                    }
+                }
+
+                this.physics(input.pressTime, client, this.currentMap);
+
+
+                j++;
+            }
+        }
+    }
+}
+
+export default UserPlayer;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ClientSide.html">ClientSide</a></li><li><a href="ClientSide.EntityTypeSpawner.html">EntityTypeSpawner</a></li><li><a href="ClientSide.R.html">R</a></li><li><a href="ClientSide.Scene.html">Scene</a></li></ul><h3>Classes</h3><ul><li><a href="Announcement.html">Announcement</a></li><li><a href="Camera.html">Camera</a></li><li><a href="CClient.html">CClient</a></li><li><a href="ClientSide.AnimationManager.html">AnimationManager</a></li><li><a href="ClientSide.AssetManager.html">AssetManager</a></li><li><a href="ClientSide.CEntity.html">CEntity</a></li><li><a href="ClientSide.JSONFile.html">JSONFile</a></li><li><a href="ClientSide.RemotePlayer.html">RemotePlayer</a></li><li><a href="ClientSide.SpriteSheet.html">SpriteSheet</a></li><li><a href="ClientSide.SpriteSheet.Animation.html">Animation</a></li><li><a href="ClientSide.TileSheet.html">TileSheet</a></li><li><a href="ClientSide.UserPlayer.html">UserPlayer</a></li><li><a href="CTileMap.html">CTileMap</a></li><li><a href="EntityManager.html">EntityManager</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="TileMapManager.html">TileMapManager</a></li><li><a href="UIElement.html">UIElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Sep 29 2019 20:47:49 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
