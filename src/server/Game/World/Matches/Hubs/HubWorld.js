@@ -5,8 +5,8 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
 /// Base class of a hub.
 class HubWorld extends GameWorld {
-    constructor(socket, worldList, name, gameMap) {
-        super(socket, name, gameMap);
+    constructor(worldList, name, gameMap) {
+        super(name, gameMap);
         this.spawnEntity(
             61 * Tile.SIZE,
             104 * Tile.SIZE,
