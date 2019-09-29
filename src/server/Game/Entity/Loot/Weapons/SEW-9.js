@@ -4,13 +4,17 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+const SEntity = require("../../SEntity.js");
+const Player = require("../../Player/SPlayer.js");
 
 
 // Projectile fired by the SEW-9 weapon
 class ElectricSphere extends Projectile {
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 5, 5, angle, 0);
-        this.radius = 5;
+        super(ownerID, x, y, 3, 3, angle, 0);
+        this.radius = 3;
+        this.maxSpeed = 200;
+        this.velVal = 5;
         this.weapon = null;
 
         this.areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this.radius, 10,
@@ -36,15 +40,48 @@ class ElectricSphere extends Projectile {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
-        let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - this.pos.x);
+        let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
         let length = Vector2D.distance(this.getOwner(entityManager).input.mouseData.world, this.pos);
-        //TODO: Alan's camera does not update with the mouse position, only relative to the player movement
 
-        this.vel.x = Math.cos(atan2) * length * 5;
-        this.vel.y = Math.sin(atan2) * length * 5;
+        this.vel.x = Math.cos(atan2) * length * this.velVal;
+        this.vel.y = Math.sin(atan2) * length * this.velVal;
+
+        if (this.vel.x > this.maxSpeed) this.vel.x = this.maxSpeed;
+        if (this.vel.x < -this.maxSpeed) this.vel.x = -this.maxSpeed;
+        if (this.vel.y > this.maxSpeed) this.vel.y = this.maxSpeed;
+        if (this.vel.y < -this.maxSpeed) this.vel.y = -this.maxSpeed;
 
     }
+}
+
+class SuperDamage extends SEntity {
+    constructor(x, y, w, h, playerID) {
+        super(x, y, w, h);
+        this.damage = new Damage(1, playerID);
+
+    }
+
+    update(game, deltaTime) {
+        super.update(game, deltaTime);
+        let player = game.getEntity(this.damage.playerID);
+        if(player) {
+            this.pos.x = player.x;
+            this.pos.y = player.y;
+
+            if (player.movementState.direction !== "right") this.pos.x -= this.width;
+        }
+    }
+
+    onEntityCollision(entity, entityManager) {
+        super.onEntityCollision(entity, entityManager);
+        if (entity instanceof Player) {
+            if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
+                this.damage.inflict(entity, entityManager);
+            }
+        }
+    }
+
 }
 
 class SEW_9 extends AttackWeapon {
@@ -87,6 +124,15 @@ class SEW_9 extends AttackWeapon {
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
+            entityManager.spawnEntity(this.center.x, this.center.y,
+                this.damageBox = new SuperDamage(this.x, this.y, 100, entityManager.getEntity(this.playerID).height, this.playerID)
+            );
+        };
+
+        this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
+            this.superAbilitySnap = false;
+            this.damageBox.remove();
+            this.damageBox = null;
         };
     }
 
@@ -94,6 +140,8 @@ class SEW_9 extends AttackWeapon {
         super.update(entityManager, deltaTime);
 
         this.canUseMod = this.canFire = this.currentAmmo > 0;
+
+        this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
 
         if (this.misRef) {
             this.misPos = this.misRef.pos;

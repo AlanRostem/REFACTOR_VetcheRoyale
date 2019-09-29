@@ -7,7 +7,7 @@ const PacketValidator = require("./PacketValidator.js");
 
 // Object that represents a client connected to the server
 class Client {
-    constructor(socket, clientList) {
+    constructor(socket, clientList, server) {
         this.inboundDataCallbacks = new ONMap();
         this.outboundPacket = new ONMap();
 
@@ -21,10 +21,11 @@ class Client {
         this.removed = false;
         this.disconnected = false;
 
-        this.player = new Player(0, 0, this);
+        this.playerObjData = {};
+
         // Used to store packets over time and check their frequency
         this.frequencyBuffer = [];
-        this.defineSocketEvents(socket, clientList);
+        this.defineSocketEvents(socket, clientList, server);
     }
 
     addClientUpdateListener(eventName, callback) {
@@ -46,12 +47,7 @@ class Client {
         return this.disconnected;
     }
 
-    setPlayer(player) {
-        this.player = player;
-    }
-
-
-    defineSocketEvents(socket, clientList) {
+    defineSocketEvents(socket, clientList, server) {
         this.socket.on("connectClientCallback", data => {
             if (PacketValidator.validatePacket(this, data)) {
                 console.log("Client [ " + data.id + " ] successfully connected!");
@@ -59,12 +55,18 @@ class Client {
                     id: this.id,
                     playerCount: clientList.length
                 });
+                server.dataBridge.transferClientEvent("clientConnectCallback", this.id, {
+                    id: this.id,
+                });
             }
         });
 
         this.socket.on("disconnect", data => {
             clientList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
+            server.dataBridge.transferClientEvent("removePlayer", this.id, {
+                id: this.id,
+            });
         });
 
         this.socket.on("clientPacketToServer", packet => {
@@ -82,13 +84,16 @@ class Client {
         }
     }
 
-    update() {
-        this.inputReceiver.update(this);
-        this.setOutboundPacketData("entityData", this.player.entitiesInProximity.exportDataPack());
-        this.setOutboundPacketData("now", Date.now());
-    }
-
     networkedUpdate(server) {
+        this.inputReceiver.update(this, server);
+        if (server.dataBridge.inboundData[this.worldID]) {
+            if (server.dataBridge.inboundData[this.worldID].clients[this.id]) {
+                this.playerObjData = server.dataBridge.inboundData[this.worldID].clients[this.id];
+                this.setOutboundPacketData("entityData", this.playerObjData.entities);
+                this.setOutboundPacketData("gameData", this.playerObjData.gameData);
+            }
+        }
+        this.setOutboundPacketData("now", Date.now());
         this.updateDataCycle();
     }
 

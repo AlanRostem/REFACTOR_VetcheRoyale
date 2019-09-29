@@ -6,7 +6,7 @@ import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 
 class CCKER90 extends CWeapon {
     constructor(props) {
-        super(props);
+        super(props, 0);
         this.toLerp = {
             x: 0,
             y: 0,

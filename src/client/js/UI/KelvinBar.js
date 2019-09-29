@@ -82,7 +82,15 @@ export default class KelvinBar extends UIElement {
         var diff = this.liquidFill.y * this.charge / 100 | 0;
 
         // Draw Glass Tube
-        R.ctx.drawImage(this.src, 0, 0, this.glassTube.x, this.glassTube.y, R.WIDTH - this.glassTube.x - 4 | 0, R.HEIGHT - this.glassTube.y - 4 | 0, this.glassTube.x, this.glassTube.y);
+            UIElement.defaultSpriteSheet.drawCropped(
+                0,
+                124,
+                this.glassTube.x,
+                this.glassTube.y,
+                R.WIDTH - this.glassTube.x - 4 | 0,
+                R.HEIGHT - this.glassTube.y - 4 | 0,
+                this.glassTube.x,
+                this.glassTube.y);
 
         if (diff === 0) {
             return;

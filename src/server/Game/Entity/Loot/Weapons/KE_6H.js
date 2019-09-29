@@ -1,4 +1,5 @@
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+const ONMap = require("../../../../../shared/code/DataStructures/SObjectNotationMap.js");
 
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
@@ -28,7 +29,7 @@ class AOEKnockBackDamage extends AOEDamage {
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
+    constructor(weaponRef, ownerID, weaponID, x, y, angle, entityManager) {
         super(ownerID, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
         this.weaponID = weaponID;
@@ -39,6 +40,7 @@ class KineticBomb extends Bouncy {
             exceptions[key] = entityManager.getEntity(ownerID).team.players[key];
         }
         delete exceptions[ownerID];
+        this.weapon = weaponRef;
 
         this.areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
     }
@@ -57,6 +59,7 @@ class KineticBomb extends Bouncy {
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);
+        this.weapon.roamingBombs.remove(this.id);
         this.remove();
     }
 
@@ -71,6 +74,7 @@ class KineticBomb extends Bouncy {
         if (entityManager.getEntity(this.weaponID).kineticImplosion) {
             this.followPoint = true;
             this.point = entityManager.getEntity(this.weaponID).followPoint;
+            this.hits = 1;
         }
 
         if (this.followPoint) {
@@ -82,10 +86,7 @@ class KineticBomb extends Bouncy {
                 this.detonate(entityManager);
             }
         }
-
-
     }
-
 }
 
 class KE_6H extends AttackWeapon {
@@ -93,30 +94,43 @@ class KE_6H extends AttackWeapon {
         super(x, y, "KE-6H", 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
+        this.roamingBombs = new ONMap();
         this.configureAttackStats(2.5, 8, 1, 100);
-        this.modAbility.configureStats(2, 4);
+        this.modAbility.configureStats(Infinity, 4);
         this.modAbility.onActivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon.canFire = false;
             this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
+
         };
         this.modAbility.onDeactivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = false;
             composedWeapon.canFire = true;
         };
+        this.modAbility.buffs = (weapon, game, deltaTime) => {
+            if (weapon.roamingBombs.length <= 0) {
+                weapon.modAbility.deActivate(weapon, game, deltaTime);
+            }
+        }
     }
 
     update(entityManager, deltaTime) {
-        this.detonate = false;
-        this.canUseMod = this.currentAmmo < this.maxAmmo;
         super.update(entityManager, deltaTime);
     }
 
+    updateWhenEquipped(player, entityManager, deltaTime) {
+        super.updateWhenEquipped(player, entityManager, deltaTime);
+        if (this.roamingBombs.length === 0) {
+            this.canUseMod = false;
+        }
+    }
+
     fire(player, entityManager, deltaTime, angle) {
-        entityManager.spawnEntity(this.center.x, this.center.y,
-            new KineticBomb(player.id, this.id, 0, 0,
+        let bomb = entityManager.spawnEntity(this.center.x, this.center.y,
+            new KineticBomb(this, player.id, this.id, 0, 0,
                 angle, entityManager));
+        this.roamingBombs.set(bomb.id, 1);
     }
 
 }

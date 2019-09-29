@@ -2,6 +2,7 @@ const AttackWeapon = require("./Base/AttackWeapon.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const Player = require("../../../Entity/Player/SPlayer.js");
+const ModAbility = require("./Base/ModAbility.js");
 
 class ATBullet extends Projectile {
     constructor(oID, wID, x, y, angle) {
@@ -82,15 +83,17 @@ class CKER90 extends AttackWeapon {
         this.dataIsScoping = false;
         this.configureAttackStats(2, 10, 1, 60);
 
-        this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-            let player = entityManager.getEntity(this.playerID);
-            if (player) {
-                this.dataIsScoping = player.input.mouseHeldDown(3);
+        this.modAbility = new class extends ModAbility {
+            buffs(composedWeapon, entityManager, deltaTime) {
+                let player = entityManager.getEntity(this.playerID);
+                if (player) {
+                    this.dataIsScoping = player.input.mouseHeldDown(3);
+                }
             }
-        };
 
-        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-            this.dataIsScoping = false;
+            onDeactivation(composedWeapon, entityManager, deltaTime) {
+                this.dataIsScoping = false;
+            }
         };
 
         this.found = {};
@@ -104,6 +107,7 @@ class CKER90 extends AttackWeapon {
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.found = {};
+
     }
 
     fire(player, entityManager, deltaTime, angle) {
