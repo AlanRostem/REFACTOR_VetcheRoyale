@@ -20,7 +20,10 @@ class Thread {
                 resolve(value);
                 _this.onGetMessage(value);
             });
-            worker.on('error', reject);
+            worker.on('error', (value) => {
+                reject(value);
+                console.log(value)
+            });
             worker.on('exit', (code) => {
                 if (code !== 0)
                     reject(new Error(`Worker stopped with exit code ${code}`));
