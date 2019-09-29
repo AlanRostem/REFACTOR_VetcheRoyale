@@ -8,18 +8,6 @@ class DataBridge {
         };
         this.events = new ONMap();
         this.clientEvents = new ONMap();
-        /*
-        this.on("clientEvent", data => {
-            for (let responseEvent in data) {
-                if (this.clientEvents.has(responseEvent)) {
-                    for (let clientID in data[responseEvent]) {
-                        let clientData = data[responseEvent][clientID];
-                        this.clientEvents.get(responseEvent)(clientData, clientID);
-                    }
-                }
-            }
-        });
-         */
     }
 
     set receivedData(data) {
@@ -28,13 +16,19 @@ class DataBridge {
         }
         this.inboundData = data;
 
-        for (let event in data["clientEvent"]) {
-            for (let clientID in data["clientEvent"][event]) {
-                let clientData = data["clientEvent"][event][clientID];
-                this.clientEvents.get(event)(clientData, clientID);
+        try {
+            for (let event in data["clientEvent"]) {
+                for (let clientID in data["clientEvent"][event]) {
+                    let clientData = data["clientEvent"][event][clientID];
+                    if (this.clientEvents.has(event))
+                        this.clientEvents.get(event)(clientData, clientID);
+                }
             }
+            this.onDataReceived(data);
+        } catch (e) {
+            console.log("DataBridgeError:", e);
         }
-        this.onDataReceived(data);
+
     }
 
     queueOutboundData(key, value) {

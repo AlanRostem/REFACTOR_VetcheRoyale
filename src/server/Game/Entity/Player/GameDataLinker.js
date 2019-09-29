@@ -26,12 +26,10 @@ class GameDataLinker extends Alive {
         this.input = new InputBridge();
         this.outboundData = new ONMap();
 
-        this.inputData = {};
     }
 
     receiveInputData(data) {
-        this.inputData = data;
-        console.log(data)
+        this.input.inputData = data;
     }
 
     emit(event, data) {

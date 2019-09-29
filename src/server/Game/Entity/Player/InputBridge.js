@@ -5,8 +5,16 @@ class InputBridge {
         this.singlePressKeys = {};
         // Holds all mouse states of corresponding mouse button numbers
         this.mouseStates = {};
+        this.mouseData = {};
+        this.mouseData.sinCenter = 0;
+        this.mouseData.cosCenter = 1;
+        this.mouseData.angleCenter = 0;
+
+        this.mouseData.world = {
+            x: 0,
+            y: 0
+        };
         this.singlePressMouseButtons = {};
-        // TODO: Receive input from somewhere
     }
 
     mouseHeldDown(button) {
@@ -43,6 +51,12 @@ class InputBridge {
             keyState = false;
         }
         return keyState;
+    }
+
+    set inputData(value) {
+        this.mouseData = value.mouseData;
+        this.keyStates = value.keyStates;
+        this.mouseStates = value.mouseStates;
     }
 }
 
