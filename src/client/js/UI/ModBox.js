@@ -34,14 +34,14 @@ export default class ModBox extends UIElement {
                 this.canUseMod = gun.output.canUseMod;
 
                 this.modPercent = 100 -
-                    ((gun.output.modAbility.currentCoolDown / gun.output.modAbility.maxCoolDown) * 100) | 0;
+                    ((gun.output.modAbilityData.currentCoolDown / gun.output.modAbilityData.maxCoolDown) * 100) | 0;
 
-                this.onCoolDown = gun.output.modAbility.onCoolDown;
+                this.onCoolDown = gun.output.modAbilityData.onCoolDown;
 
                 this.durationPercent = (1 / this.backGround.y * 100) +
-                    ((gun.output.modAbility.currentDuration / gun.output.modAbility.maxDuration) * 100) | 0;
+                    ((gun.output.modAbilityData.currentDuration / gun.output.modAbilityData.maxDuration) * 100) | 0;
 
-                this.modActive = gun.output.modAbility.active;
+                this.modActive = gun.output.modAbilityData.active;
 
                 this.iconID = gun.iconID;
             }

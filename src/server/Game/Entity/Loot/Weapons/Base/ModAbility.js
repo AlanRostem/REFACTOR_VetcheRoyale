@@ -10,6 +10,7 @@ class ModAbility {
 
         this.active = false;
         this.onCoolDown = false;
+        this.data = {};
     }
 
     // Configure cool-down and duration of the ability.
@@ -18,10 +19,14 @@ class ModAbility {
         this.maxCoolDown = coolDown;
     }
 
-
-
     update(composedWeapon, entityManager, deltaTime) {
         composedWeapon.modActive = this.active;
+        for (let key in this) {
+            let data = this[key];
+            if (typeof data !== "function") {
+                this.data[key] = data;
+            }
+        }
         if (this.active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
             if (this.currentDuration > 0) {

@@ -28,6 +28,7 @@ class AttackWeapon extends WeaponItem {
         this.canFire = true;
         this.modActive = false;
         this.superActive = false;
+        this.modAbilityData = {};
         this.configureAttackStats(2, 10, 1, 600);
         this.addDynamicSnapShotData([
             "superChargeData",
@@ -39,7 +40,7 @@ class AttackWeapon extends WeaponItem {
             "firing",
             "modActive",
             "superActive",
-            "modAbility"
+            "modAbilityData"
         ]);
     }
 
@@ -203,6 +204,7 @@ class AttackWeapon extends WeaponItem {
     // picked up the weapon.
     updateWhenEquipped(player, entityManager, deltaTime) {
         //this.canFire = this.currentAmmo > 0;
+        this.modAbilityData = this.modAbility.data;
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.listenToInput(player, entityManager, deltaTime);
         this.modAbility.update(this, entityManager, deltaTime);
