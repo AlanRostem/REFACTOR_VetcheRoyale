@@ -42,7 +42,7 @@ class InputReceiver {
     }
 
     update(client, server) {
-        server.dataBridge.transferClientEvent("input", client.id, {
+        server.dataBridge.transferClientEvent("listenToInput", client.id, {
             mouseStates: this.mouseStates,
             mouseData: this.mouseData,
             keyStates: this.keyStates
