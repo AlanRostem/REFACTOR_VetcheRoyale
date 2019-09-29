@@ -75,7 +75,11 @@ class SuperDamage extends SEntity {
 
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
-        if(entity instanceof Player) this.damage.inflict(entity, entityManager);
+        if (entity instanceof Player) {
+            if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
+                this.damage.inflict(entity, entityManager);
+            }
+        }
     }
 
 }
@@ -127,12 +131,9 @@ class SEW_9 extends AttackWeapon {
 
         this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = false;
+            this.damageBox.remove();
             this.damageBox = null;
         };
-
-        this.superAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-            this.damageBox.update(entityManager, deltaTime);
-        }
     }
 
     update(entityManager, deltaTime) {
@@ -146,7 +147,6 @@ class SEW_9 extends AttackWeapon {
             this.misPos = this.misRef.pos;
             if (!this.misRef.removed) this.canFire = this.canUseMod = false;
         }
-
 
         let player = entityManager.getEntity(this.playerID);
         if (player) player.setMovementState("canMove", this.canMove);
