@@ -40,6 +40,9 @@ class CEntity {
      * @see CClient
      */
     updateFromDataPack(dataPack, client) {
+        this.color = this.output.color;
+        this.width = this.output.width;
+        this.height = this.output.height;
         this.dataBuffer.updateFromServerFrame(dataPack, this, client);
     }
 

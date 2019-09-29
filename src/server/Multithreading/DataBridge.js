@@ -19,9 +19,12 @@ class DataBridge {
         try {
             for (let event in data["clientEvent"]) {
                 for (let clientID in data["clientEvent"][event]) {
-                    let clientData = data["clientEvent"][event][clientID];
-                    if (this.clientEvents.has(event))
-                        this.clientEvents.get(event)(clientData, clientID);
+                    let dataQueue = data["clientEvent"][event][clientID];
+                    if (this.clientEvents.has(event)) {
+                        for (let data of dataQueue) {
+                            this.clientEvents.get(event)(data, clientID);
+                        }
+                    }
                 }
             }
             this.onDataReceived(data);
@@ -39,7 +42,10 @@ class DataBridge {
         if (!this.outboundData.clientEvent[clientEvent]) {
             this.outboundData.clientEvent[clientEvent] = {};
         }
-        this.outboundData.clientEvent[clientEvent][id] = data;
+        if (!this.outboundData.clientEvent[clientEvent][id]) {
+            this.outboundData.clientEvent[clientEvent][id] = [];
+        }
+        this.outboundData.clientEvent[clientEvent][id].push(data);
     }
 
     addClientResponseListener(responseEvent, callback) {
