@@ -38,16 +38,6 @@ class SnapShotGenerator {
         }
     }
 
-    removeStaticSnapshotData(key) {
-        delete this.snapShot[key];
-    }
-
-    removeDynamicSnapshotData(key) {
-        delete this.snapShot[key];
-        let i = this.dynamicValues.indexOf(key);
-        this.dynamicValues.splice(i);
-    }
-
     setStaticSnapshotData(key, value) {
         this.snapShot[key] = value;
     }

@@ -11,9 +11,9 @@ class EntityManager {
         // If true it will be used as a global entity manager
         // for a game world. Otherwise it might have other use cases.
         if (globalManager) {
+            this.entitiesQueuedToDelete = [];
             this.tileMap = gameMap;
             this.gameClock = new GameClock(0);
-            this.entitiesQueuedToDelete = [];
 
             // Create a singular quad tree with the size of
             // the whole tile map.

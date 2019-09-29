@@ -14,8 +14,7 @@ export default class HPBar extends UIElement {
     }
 
     update(deltaTime, client, entityList) {
-        if (client.player)
-            this.HPlength = client.player.output.hp * this.HPjuice.x / 100 | 0;
+        this.HPlength = client.player.output.hp * this.HPjuice.x / 100 | 0;
     }
 
     draw() {

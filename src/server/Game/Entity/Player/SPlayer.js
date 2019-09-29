@@ -1,4 +1,5 @@
 const GameDataLinker = require("./GameDataLinker.js");
+const ClientPEM = require("./ClientPEM.js");
 const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
@@ -11,13 +12,16 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
-    constructor(x, y, worldMgr) {
-        super(x, y, 6, 12, 100, true, worldMgr);
+    constructor(x, y, client) {
+        super(client, x, y, 6, 12, 100, true);
 
         // MISC VAR INITS
 
+        this.id = client.id;
         this.teamName = "red";
         this.snapShotGenerator.snapShot.id = this.id;
+        this.clientRef = client;
+        this.entitiesInProximity = new ClientPEM(this);
         this.inventory = new Inventory();
         this.invWeaponID = null;
         this.invAmmo = null;
@@ -95,6 +99,22 @@ class Player extends GameDataLinker {
             }
             this.itemsNearby.clear();
         }
+    }
+
+    // Sends the initial data pack to the client.
+    initFromEntityManager(entityManager) {
+        super.initFromEntityManager(entityManager);
+        this.entitiesInProximity.initProximityEntityData(entityManager);
+        this.clientRef.emit("initEntity", this.entitiesInProximity.exportDataPack())
+    }
+
+
+    get client() {
+        return this.clientRef;
+    }
+
+    get input() {
+        return this.clientRef.inputReceiver;
     }
 
 
@@ -211,7 +231,10 @@ class Player extends GameDataLinker {
 
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
-        entityManager.queueClientData(this.id, this.outboundData.object);
+        this.client.update(entityManager);
+        if (this.client.removed) {
+            entityManager.clients.removeClient(this.client.id)
+        }
     }
 }
 

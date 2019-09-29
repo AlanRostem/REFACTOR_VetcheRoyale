@@ -20,6 +20,9 @@ class Physical extends Entity {
             right: false,
             top: false,
             bottom: false,
+            reset: () => {
+                this.side.left = this.side.right = this.side.top = this.side.bottom = false;
+            }
         };
         this.addStaticSnapShotData([
             "vel",
@@ -39,9 +42,6 @@ class Physical extends Entity {
 
     }
 
-    resetSides() {
-        this.side.left = this.side.right = this.side.top = this.side.bottom = false;
-    }
 
     get CR_ID() {
         return this.collisionResponseID;
@@ -217,7 +217,7 @@ class Physical extends Entity {
             if (!this.side.bottom)
                 this.accelerateY(this.acc.y, deltaTime);
 
-        this.resetSides();
+        this.side.reset();
 
         if (!this.physicsConfig.static)
             this.moveY(this.vel.y, deltaTime); // Adding velocity to position

@@ -31,7 +31,9 @@ class CClient {
         this.defineSocketEvents();
         this.latency = 0;
         this.discReasonMsg = "reason: server error";
+
     }
+
 
     onServerUpdateReceived(packet) {
         this.timeSyncer.onServerUpdate(this.latency);
@@ -134,19 +136,17 @@ class CClient {
         this.localTime += deltaTime;
         this.startTime = Date.now();
         if (this.inboundPacket) {
-            if (this.inboundPacket.entityData)
-                if (this.inboundPacket.entityData[this.id]) {
-                    if (this.player)
-                        Scene.currentMapName = this.player.output.gameData.mapName;
-                } else {
-                    //if (e) entityManager.removeEntity(e.id);
-                    if (this.inboundPacket.spectatorSubject) {
-                        let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
-                        if (s) {
-                            R.camera.update(s.output.pos);
-                        }
+            if (this.inboundPacket.entityData[this.id]) {
+                Scene.currentMapName = this.player.output.gameData.mapName;
+            } else {
+                //if (e) entityManager.removeEntity(e.id);
+                if (this.inboundPacket.spectatorSubject) {
+                    let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
+                    if (s) {
+                        R.camera.update(s.output.pos);
                     }
                 }
+            }
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);

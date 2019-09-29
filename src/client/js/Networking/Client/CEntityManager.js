@@ -30,7 +30,7 @@ export default class CEntityManager {
         //if (dataPack.entityOrder >= toArray[toArray.length-2][1].getRealtimeProperty("entityOrder")) return;
         this.container = new Map(toArray.sort((a, b) => {
             return a[1].getRealtimeProperty("entityOrder") -
-                b[1].getRealtimeProperty("entityOrder");
+                   b[1].getRealtimeProperty("entityOrder");
         }));
     }
 
@@ -78,7 +78,7 @@ export default class CEntityManager {
                     this.removeOutOfBoundsEntity(id);
                 }
             } else {
-                console.error("Attempted to remove a non existent entity:", id)
+                console.warn("Attempted to remove a non existent entity. Something's wrong here...")
             }
         });
 
@@ -89,8 +89,8 @@ export default class CEntityManager {
                     var existingEntity = this.getEntity(entityData);
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {
-                    console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);
-                    //throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
+                    //console.warn("Attempted to update a non existent entity. There's a hole in your programming...");
+                    throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
                 }
             }
         });
