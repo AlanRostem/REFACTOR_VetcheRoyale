@@ -11,6 +11,7 @@ export default class CEventManager {
     SGetEvent(client) {
         if (client.inboundPacket !== undefined) {
             let evs = [];
+            console.log(client.player.output._gameData);
             if (client.player.output._gameData["Event"] !== undefined) {
                 evs = client.player.output._gameData["Event"];
                 for (let e of evs)

@@ -12,7 +12,7 @@ class MiniMap extends UIElement {
         super("minimap", R.WIDTH - 36, 4, 1, 1);
         this.pPos = {x: 0, y: 0};
         this.tiles = {small: 32, big: 120};
-        this.currentTiles = "small";
+        this.mapSize = "small";
         this.events = [];
         AssetManager.addDownloadCallback(() => {
             for (var key in Scene.tileMaps.getAllMaps()) {
@@ -20,6 +20,16 @@ class MiniMap extends UIElement {
                 AssetManager.addPainting(this.paintImage(tileMap), tileMap.name);
             }
         });
+
+        Scene.clientRef.inputListener.addKeyMapping(70, (keyState) => {
+            if (keyState) {
+                this.mapSize = "big";
+                this.pos.set(new Vector2D((R.WIDTH - this.tiles[this.mapSize]) / 2, (R.HEIGHT - this.tiles[this.mapSize]) / 2));
+            } else {
+                this.mapSize = "small";
+                this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.mapSize] - 4, 4));
+            }
+        })
     }
 
     /**
@@ -54,7 +64,7 @@ class MiniMap extends UIElement {
 
             for (var i = 0; i < tileMap.h; i++) {
                 for (var j = 0; j < tileMap.w; j++) {
-                    if (tileMap.array[i * tileMap.w + j] !== 0) {
+                    if (tileMap.isSolid(tileMap.array[i * tileMap.w + j])) {
                         obj[key].mapInfo.array
                             [i / obj[key].mapInfo.tileSizeH | 0]
                             [j / obj[key].mapInfo.tileSizeW | 0] += 1;
@@ -72,12 +82,11 @@ class MiniMap extends UIElement {
                     R.drawRect(color,
                         this.width * x,
                         this.height * y,
-                        1, 1,
+                        this.width, this.height,
                         false, ctx)
                 }
             }
         }
-
         return obj;
     }
 
@@ -89,25 +98,19 @@ class MiniMap extends UIElement {
 
     posOnMap(pos) {
 
-        var x = pos.x / 8 / this.image[this.currentTiles].mapInfo.tileSizeW * this.width | 0;
-        var y = pos.y / 8 / this.image[this.currentTiles].mapInfo.tileSizeH * this.height | 0;
+        var x = pos.x / 8 / this.image[this.mapSize].mapInfo.tileSizeW * this.width | 0;
+        var y = pos.y / 8 / this.image[this.mapSize].mapInfo.tileSizeH * this.height | 0;
 
         return {x: x, y: y};
     }
 
 
     update(deltaTime, client, entityList) {
-        this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.currentTiles] - 4, 4));
+        //this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.mapSize] - 4, 4));
+        //this.mapSize = "small";
 
-        if (client.input.getReconKey(69)) {
-            this.currentTiles = "big";
-            this.pos.set(new Vector2D((R.WIDTH - this.tiles[this.currentTiles]) / 2, (R.HEIGHT - this.tiles[this.currentTiles]) / 2));
-        } else {
-            this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.currentTiles] - 4, 4));
-            this.currentTiles = "small";
-        }
-
-        if (this.image === undefined || this.image[this.currentTiles].mapInfo.name !== Scene.currentMap)
+        if (this.image === undefined
+            || this.image[this.mapSize].mapInfo.name !== Scene.currentMap)
             this.image = AssetManager.get(Scene.currentMap);
 
 
@@ -117,11 +120,11 @@ class MiniMap extends UIElement {
 
     draw() {
         R.ctx.drawImage(
-            this.image[this.currentTiles].canvas,
-            this.pos.x,
-            this.pos.y,
-            this.tiles[this.currentTiles] * 8,
-            this.tiles[this.currentTiles] * 8
+            this.image[this.mapSize].canvas,
+            this.pos.x | 0,
+            this.pos.y | 0,
+            this.tiles[this.mapSize] * 8,
+            this.tiles[this.mapSize] * 8
         );
 
         for (var e of this.events) {

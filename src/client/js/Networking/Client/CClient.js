@@ -20,7 +20,7 @@ class CClient {
         this.inputListener = new InputListener(this);
         this.timeSyncer = new ServerTimeSyncer();
 
-        [32, 83, 68, 65, 87, 69, 71, 82, 81].forEach(keyCode => {
+        [32, 83, 68, 65, 87, 69, 70, 71, 82, 81].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
         });
 
