@@ -15,12 +15,6 @@ export default class Stats extends UIElement {
     }
 
     update(deltaTime, client, entityList) {
-<<<<<<< Updated upstream
-        if (client.player) {
-            this.killCount = client.player.output.statData.Kills;
-            this.playersAlive = client.inboundPacket.gameData.playerCount;
-        }
-=======
         if (client.player)
             if (client.player.output)
                 if (client.player.output.statData)
@@ -29,7 +23,7 @@ export default class Stats extends UIElement {
             if (client.inboundPacket.gameData)
                 if (client.inboundPacket.gameData.playerCount)
                     this.playersAlive = client.inboundPacket.gameData.playerCount;
->>>>>>> Stashed changes
+
     }
 
     draw() {
