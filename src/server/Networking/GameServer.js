@@ -82,7 +82,7 @@ class GameServer {
                 return;
             }
             this.mainSocket.cl.getClient(id).emit("initEntity", data);
-            console.log("Init entity data to client:", id);
+            //console.log("Init entity data to client:", id);
         });
 
         this.dataBridge.addClientResponseListener("spawnEntity", (data, id) => {
@@ -90,7 +90,7 @@ class GameServer {
                 return;
             }
             this.mainSocket.cl.getClient(id).emit("spawnEntity", data);
-            console.log("Spawning entity to client:", id);
+            //console.log("Spawning entity to client:", id);
         });
 
         this.dataBridge.addClientResponseListener("removeEntity", (data, id) => {
@@ -98,7 +98,7 @@ class GameServer {
                 return;
             }
             this.mainSocket.cl.getClient(id).emit("removeEntity", data);
-            console.log("Passed a remove entity call to client:", id, data);
+            //console.log("Passed a remove entity call to client:", id, data);
         });
     }
 }
