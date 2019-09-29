@@ -10,18 +10,31 @@ const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
 const GameRules = require("./GameRules.js");
 const EventManager = require("./Matches/SEventManager.js");
 
+class PlayerList extends ClientList {
+    constructor() {
+        super();
+    }
+
+    removeClient(id) {
+        if (id === this.getClient(id).player.id) {
+            this.getClient(id).player.remove();
+        }
+        super.removeClient(id);
+    }
+}
+
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
-    constructor(name, gameMap) {
+    constructor(serverSocket, name, gameMap) {
         super(true, gameMap);
         this.settings = new GameRules();
         this.teamManager = new TeamManager(this);
         this.dataPacket = {};
         this.eventManager = new EventManager(gameMap);
 
+        this.clients = new PlayerList();
         this.id = name;
         this.portals = new ONMap();
-        this.bridgedData = new ONMap();
 
         this.spawner.spawnAll(this);
     }
@@ -35,6 +48,14 @@ class GameWorld extends EntityManager {
         this.settings.configure(object);
     }
 
+    changeMap(name) {
+        this.tileMap = TileMapConfigs.getMap(name);
+        this.clients.forEach(client => {
+            client.emit("gameEvent-changeMap", {
+                mapName: name
+            });
+        });
+    }
 
     spawnEntity(x, y, entity) {
         entity.setWorld(this);
@@ -63,19 +84,18 @@ class GameWorld extends EntityManager {
         return this.getGameRule("maxPlayers");
     }
 
-    // TODO: Fix
     get playerCount() {
-        return 0;
+        return this.clients.length;
     }
 
     get isFull() {
         return this.playerCount === this.getGameRule("maxPlayers");
     }
 
-    spawnPlayer(player) {
-        //this.clients.addClient(player.id, player);
-        this.teamManager.addPlayer(player, this);
-        this.spawner.spawnSpecificAtPos(105, player, this);
+    spawnPlayer(client) {
+        this.clients.addClient(client.id, client);
+        this.teamManager.addPlayer(client.player, this);
+        this.spawner.spawnSpecificAtPos(105, client.player, this);
         /*this.spawnEntity(
             61 * Tile.SIZE,
             105 * Tile.SIZE,
@@ -85,26 +105,19 @@ class GameWorld extends EntityManager {
 
     removePlayer(id) {
         this.removeEntity(id);
+        this.clients.removeClient(id);
     }
 
     setGameData(key, value) {
         this.dataPacket[key] = value;
     }
 
-    queueClientData(key, value) {
-        if (!this.bridgedData.has("clients")) {
-            this.bridgedData.set("clients", {});
-        }
-        this.bridgedData.get("clients")[key] = value;
-    }
-
-    update(deltaTime, worldManager) {
+    update(deltaTime) {
         // Update the entities, then create data packs
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);
-        worldManager.setBridgedData(this.id, this.bridgedData.object);
     }
 }
 
