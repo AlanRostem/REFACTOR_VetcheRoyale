@@ -82,19 +82,18 @@ class CKER90 extends AttackWeapon {
         super(x, y, "C-KER .90", "rifle");
         this.dataIsScoping = false;
         this.configureAttackStats(2, 10, 1, 60);
-
         this.modAbility = new class extends ModAbility {
             buffs(composedWeapon, entityManager, deltaTime) {
-                let player = entityManager.getEntity(this.playerID);
+                let player = entityManager.getEntity(composedWeapon.playerID);
                 if (player) {
-                    this.dataIsScoping = player.input.mouseHeldDown(3);
+                    composedWeapon.dataIsScoping = player.input.mouseHeldDown(3);
                 }
             }
 
             onDeactivation(composedWeapon, entityManager, deltaTime) {
-                this.dataIsScoping = false;
+                composedWeapon.dataIsScoping = false;
             }
-        };
+        } (5, 5);
 
         this.found = {};
         this.addDynamicSnapShotData([
