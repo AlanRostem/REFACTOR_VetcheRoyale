@@ -20,7 +20,6 @@ class UserPlayer extends RemotePlayer {
         super(data);
         this.serverState = data;
         this.localVel = new Vector2D(0, 0);
-        this.localPos = new Vector2D(data.pos.x, data.pos.y);
         this.localSides = {
             left: false,
             right: false,
@@ -97,8 +96,8 @@ class UserPlayer extends RemotePlayer {
                 this.output[key] = this.serverState[key];
             }
         }
-        this.localPos.x = this.serverState.pos.x;
-        this.localPos.y = this.serverState.pos.y;
+        //this.localPos.x = this.serverState.pos.x;
+        //this.localPos.y = this.serverState.pos.y;
     }
 
     physics(deltaTime, client, currentMap) {

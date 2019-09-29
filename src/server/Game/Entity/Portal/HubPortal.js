@@ -9,6 +9,7 @@ class HubPortal extends Portal {
     }
 
     teleport(entity, game) {
+        return; // TODO: Fix it
         var client = entity.client;
         super.teleport(client.player, game);
         this.destinationWorld.spawnPlayer(client);

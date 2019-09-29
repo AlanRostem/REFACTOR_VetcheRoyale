@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
+    "wt": "node --experimental-worker src/app.js",
     "doc": "jsdoc -c jsdoc.conf.json"
   },
   "author": "",
@@ -12,6 +13,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "jsdoc": "^3.6.3",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.3.0"
   }
 }
