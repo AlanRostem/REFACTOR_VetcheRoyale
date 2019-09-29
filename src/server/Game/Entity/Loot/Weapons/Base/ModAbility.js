@@ -21,12 +21,14 @@ class ModAbility {
 
     update(composedWeapon, entityManager, deltaTime) {
         composedWeapon.modActive = this.active;
-        for (let key in this) {
-            let data = this[key];
-            if (typeof data !== "function") {
-                this.data[key] = data;
-            }
-        }
+        this.data = {
+            currentDuration: this.currentDuration,
+            maxDuration: this.maxDuration,
+            currentCoolDown: this.currentCoolDown,
+            maxCoolDown: this.maxCoolDown,
+            active: this.active,
+            onCoolDown: this.onCoolDown,
+        };
         if (this.active) {
             this.buffs(composedWeapon, entityManager, deltaTime);
             if (this.currentDuration > 0) {
