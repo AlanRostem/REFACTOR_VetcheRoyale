@@ -22,20 +22,14 @@ class MiniMap extends UIElement {
         });
 
         Scene.clientRef.inputListener.addKeyMapping(70, (keyState) => {
-            if (keyState) {
-                this.mapSize = "big";
-                this.pos.set(new Vector2D((R.WIDTH - this.tiles[this.mapSize]) / 2, (R.HEIGHT - this.tiles[this.mapSize]) / 2));
-            } else {
-                this.mapSize = "small";
-                this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.mapSize] - 4, 4));
-            }
+            if (keyState) this.mapSize = "big";
+            else this.mapSize = "small";
         });
 
-        Scene.eventManager.addEventReceiver(this.id, this,(ev)=>{
+        Scene.eventManager.addEventReceiver(this.id, this, (ev) => {
             return ev.arg.hasOwnProperty('pos')
         });
     }
-
 
 
     /**
@@ -114,6 +108,13 @@ class MiniMap extends UIElement {
     update(deltaTime, client, entityList) {
         //this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.mapSize] - 4, 4));
         //this.mapSize = "small";
+
+        if (this.mapSize === "small")
+            this.pos.set(new Vector2D(R.screenSize.x - this.tiles[this.mapSize] - 4, 4));
+
+        else
+            this.pos.set(new Vector2D((R.screenSize.x - this.tiles[this.mapSize]) / 2, (R.screenSize.y - this.tiles[this.mapSize]) / 2));
+
 
         if (this.image === undefined
             || this.image[this.mapSize].mapInfo.name !== Scene.currentMap)
