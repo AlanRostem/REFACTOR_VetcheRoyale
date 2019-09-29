@@ -150,12 +150,12 @@ const R = {
      * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
      */
     drawLine(startPos, endPos, thickness = 1, color = "white", dotSpace = 1, useCamera = false) {
-        var a = Vector2D.angle(startPos, endPos) | 0;
+        var a = Vector2D.angle(startPos, endPos);
         var d = Vector2D.distance(startPos, endPos) | 0;
         R.context.fillStyle = color;
         for (var i = 0; i < d; i += dotSpace) {
-            var x = startPos.x + i * Math.cos(a);
-            var y = startPos.y + i * Math.sin(a);
+            var x = startPos.x + i * -Math.cos(a);
+            var y = startPos.y + i * -Math.sin(a);
             R.context.fillRect(
                 Math.round(x + (useCamera ? R.camera.pos.x : 0)),
                 Math.round(y + (useCamera ? R.camera.pos.y : 0)),

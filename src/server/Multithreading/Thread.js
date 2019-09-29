@@ -1,4 +1,4 @@
-const { Worker } = require('worker_threads');
+const {Worker} = require('worker_threads');
 
 class Thread {
     constructor(workerData, source) {
@@ -13,7 +13,7 @@ class Thread {
     runService(workerData, source) {
         const _this = this;
         return new Promise((resolve, reject) => {
-            const worker = new Worker(source, { workerData });
+            const worker = new Worker(source, {workerData});
             this.worker = worker;
 
             worker.on('message', value => {
@@ -28,7 +28,7 @@ class Thread {
                 if (code !== 0)
                     reject(new Error(`Worker stopped with exit code ${code}`));
             });
-        })
+        });
     }
 
     sendDataToParent(data) {

@@ -88,13 +88,19 @@ class BIGMotorizer extends AttackWeapon {
         this.configureAttackStats(1.5, 36, 1, this.minFireRate);
         this.modAbility.configureStats(1, 10);
         this.upgradeStage = 0;
+        this.thunderPulsePos = null;
         this.thunderPulse = new HitScanner([]);
         this.thunderPulse.onEntityHit = (entity, game, angle) => {
             if (entity instanceof Affectable) {
-                entity.applyEffect(new StunEffect(entity.id), game);
+                if (!entity.isTeammate(game.getEntity(this.playerID))) {
+                    entity.applyEffect(new StunEffect(entity.id), game);
+                }
             }
         };
         this.thunderPulseRange = 12 * 8;
+        this.addDynamicSnapShotData([
+            "thunderPulsePos"
+        ]);
     }
 
     onModActivation(entityManager, deltaTime) {
@@ -103,6 +109,7 @@ class BIGMotorizer extends AttackWeapon {
         end.x = this.center.x + Math.cos(this.fireAngle) * this.thunderPulseRange;
         end.y = this.center.y + Math.sin(this.fireAngle) * this.thunderPulseRange;
         this.thunderPulse.scan(this.center, end, entityManager, entityManager.tileMap);
+        this.thunderPulsePos = end;
     }
 
     onModBuffs(entityManager, deltaTime) {
@@ -117,6 +124,7 @@ class BIGMotorizer extends AttackWeapon {
         if (this.upgradeStage < 2) {
             this.canFire = true;
         }
+        this.thunderPulsePos = null;
     }
 
     onSuperActivation(entityManager, deltaTime) {
