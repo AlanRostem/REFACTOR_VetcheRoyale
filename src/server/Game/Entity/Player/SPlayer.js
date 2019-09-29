@@ -211,6 +211,16 @@ class Player extends GameDataLinker {
 
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
+
+        if (this.team)
+            for (let p in this.team.players)
+                if (this.team.players[p].id !== this.id)
+                    entityManager.eventManager.addPrivate(
+                        this.team.players[p].id, "teamMember: " + this.id, "minimap", "Blue", 0, {
+                            pos: this.pos
+                        }
+                    );
+
         entityManager.queueClientData(this.id, this.outboundData.object);
     }
 }

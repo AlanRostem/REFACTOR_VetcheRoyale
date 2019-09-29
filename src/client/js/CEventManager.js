@@ -6,43 +6,77 @@ import CGameEvent from "./CGameEvent.js";
 export default class CEventManager {
     constructor() {
         this.events = [];
+        this.eventID = [];
+        this.eventReceiver = {};
     }
 
     SGetEvent(client) {
-        if (client.inboundPacket !== undefined)
-            if(client.inboundPacket["gameData"]["Event"] !== undefined) {
-                let e = client.inboundPacket["gameData"]["Event"];
-                this.events.push(new CGameEvent(e.name, e.type, e.arg, e.color, e.life));
+        if (client.inboundPacket) {
+            let evs = [];
+            if (client.player)
+                if (client.player.output)
+                    if (client.player.output._gameData)
+                        if (client.player.output._gameData["Event"]) {
+                            evs = client.player.output._gameData["Event"];
+                            for (let e of evs) {
+                                let event = new CGameEvent(e);
+                                if (event && !this.eventID.includes(event.id)) {
+                                    if (e.priority) {
+                                        this.events.unshift(event);
+                                        this.eventID.unshift(event.id);
+                                    } else {
+                                        this.events.push(event);
+                                        this.eventID.push(event.id);
+                                    }
+                                }
+                            }
+                        }
+            if (client.inboundPacket.gameData)
+            if (client.inboundPacket.gameData["Event"] !== undefined) {
+                evs = client.inboundPacket["gameData"]["Event"];
+                for (let e of evs) {
+                    let event = new CGameEvent(e);
+                    if (event && !this.eventID.includes(event.id)) {
+                        if (e.priority) {
+                            this.events.unshift(event);
+                            this.eventID.unshift(event.id);
+                        } else {
+                            this.events.push(event);
+                            this.eventID.push(event.id);
+                        }
+                    }
+                }
             }
+        }
     }
 
+    addEventReceiver(key, obj, callback) {
+        this.eventReceiver[key] = {obj: obj, callback: callback};
+    }
+
+
     distributeEvent() {
-        try {
+        for (let key in this.eventReceiver) {
             let e = this.events.filter((ev) => {
-                return (ev.arg.hasOwnProperty('pos') &&
-                    (ev.type === "all" || ev.type.includes("minimap")));
+                return this.eventReceiver[key].callback(ev) &&
+                    (ev.type === "all" || ev.type.includes(key));
             });
-            if (e) UI.elements["minimap"].addEvent(e);
-
-            if (UI.elements["announcement"].event === undefined) {
-                let e = this.events.find((ev) => {
-                    return (!ev.arg.hasOwnProperty('shown') &&
-                        ev.arg.hasOwnProperty('string') &&
-                        (ev.type === "all" || ev.type.includes("announcement")));
-                });
-                if (e) UI.elements["announcement"].addEvent(e);
-            }
-        }catch (e) {
-
+            if (e) this.eventReceiver[key].obj.addEvent(e);
         }
     }
 
     update(client, delaTime) {
         this.SGetEvent(client);
-        for (var e = 0; e < this.events.length; e++){
-            this.events[e].update(delaTime);
-            if (this.events[e].dead) this.events.splice(e, 1);
-        }
+        console.log(this.events);
+        console.log(this.eventID);
         this.distributeEvent();
+        for (var e = 0; e < this.events.length; e++) {
+            this.events[e].update(delaTime);
+            if (this.events[e].dead) {
+                console.log(true);
+                this.eventID.splice(e, 1);
+                this.events.splice(e, 1);
+            }
+        }
     }
 }

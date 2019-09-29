@@ -24,6 +24,8 @@ class GameWorld extends EntityManager {
         this.bridgedData = new ONMap();
 
         this.spawner.spawnAll(this);
+
+
     }
 
 
@@ -100,6 +102,7 @@ class GameWorld extends EntityManager {
 
     update(deltaTime, worldManager) {
         // Update the entities, then create data packs
+        this.dataPacket = {};
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;

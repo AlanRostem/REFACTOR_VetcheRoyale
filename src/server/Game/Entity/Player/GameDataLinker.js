@@ -10,9 +10,9 @@ const InputBridge = require("./InputBridge.js");
 class GameDataLinker extends Alive {
     constructor(x, y, w, h, HP, regenCoolDown, worldMgr) {
         super(x, y, w, h, HP, regenCoolDown);
-        this.gameData = {};
+        this._gameData = {};
         this.addStaticSnapShotData([
-            "gameData"
+            "_gameData"
         ]);
 
         this.snapShotGenerator.removeStaticSnapshotData("id");
@@ -49,6 +49,14 @@ class GameDataLinker extends Alive {
         super.initFromEntityManager(entityManager);
         this.entitiesInProximity.initProximityEntityData(entityManager);
         this.emit("initEntity", this.entitiesInProximity.exportDataPack())
+    }
+
+    set gameData(value){
+        this._gameData = value;
+    }
+
+    get gameData(){
+        return this._gameData;
     }
 
     update(entityManager, deltaTime) {

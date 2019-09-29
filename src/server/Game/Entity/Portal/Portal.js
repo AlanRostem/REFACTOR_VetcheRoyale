@@ -1,6 +1,7 @@
 const Interactable = require("../Traits/Interactable.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
-
+const Player = require("../Player/SPlayer.js");
+const SGameEvent = require("../../World/Matches/SGameEvent.js");
 // Teleports players to a given position. Can also be linked to
 // another portal.
 class Portal extends Interactable {
@@ -46,6 +47,21 @@ class Portal extends Interactable {
     onPlayerInteraction(player, entityManager) {
         super.onPlayerInteraction(player, entityManager);
         this.teleport(player, entityManager);
+    }
+
+    onEntityCollision(entity, entityManager) {
+        super.onEntityCollision(entity, entityManager);
+        if (this.portalTileID)
+            if (entity instanceof Player)
+                if (entityManager.exists(entity.id)){
+                    entityManager.eventManager.addPrivate(
+                        entity.id, "Portal: " + this.portalTileID, "minimap", "Green", 0, {
+                            pos: this.destination,
+                            string: "Portal: " + this.portalTileID
+                        }, true
+                    );
+                }
+
     }
 }
 

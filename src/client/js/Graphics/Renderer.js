@@ -172,14 +172,14 @@ const R = {
      * @param height {number} - Height of the rectangle
      * @param useCamera {boolean} - Determines if the rect should be a part of the camera viewport
      */
-    drawRect(color, x, y, width, height, useCamera = false) {
-        R.context.save();
-        R.context.fillStyle = color;
-        R.context.fillRect(
+    drawRect(color, x, y, width, height, useCamera = false, ctx = R.context) {
+        ctx.save();
+        ctx.fillStyle = color;
+        ctx.fillRect(
             Math.round(x + (useCamera ? R.camera.displayPos.x : 0)),
             Math.round(y + (useCamera ? R.camera.displayPos.y : 0)),
             width, height);
-        R.context.restore();
+        ctx.restore();
     }
 };
 
