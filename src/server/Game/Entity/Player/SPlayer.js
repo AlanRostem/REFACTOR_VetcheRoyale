@@ -222,7 +222,7 @@ class Player extends GameDataLinker {
                     );
 
         this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
-        //entityManager.queueClientData(this.id, this.outboundData.object);
+        this.gameData = {}
     }
 }
 
