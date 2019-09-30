@@ -16,7 +16,8 @@ class AssetManager {
         this.onFileDownloadedCallbacks = new ONMap;
         this.maxPool = 5;
 
-        // Web Audio API related stuff:
+        // Web Audio API context:
+        this.AudioContext = window.AudioContext || window.webkitAudioContext;
         this.audioCtx = new AudioContext();
     }
 
@@ -128,8 +129,6 @@ class AssetManager {
                     this.cache[path] = audio;
                     break;
                 case "oggp":
-                    this.successCount++;
-                    /*
                     path = path.slice(0, -1);
                     var cachePath = path + 'p';
                     this.cache[cachePath] = [];
@@ -155,37 +154,37 @@ class AssetManager {
 
                     downloadAudio.src = "public/assets/audio/" + path;
 
-                    for (var p = 0; p < _this.maxPool; p++) {
+                    /*for (var p = 0; p < _this.maxPool; p++) {
                         var audioPool = new Audio();
                         audioPool.src = downloadAudio.src;
                         this.cache[cachePath][p] = audioPool;
-                    }
+                    }*/
+                    this.cache[cachePath] = downloadAudio;
 
-                     */
                     break;
                 case "oggSE":
-                    path = path.slice(0, -2);
-                    let request = new XMLHttpRequest();
-                    request.open("GET", "public/assets/audio/" + path, true);
-                    request.responseType = "arraybuffer";
-                    request.audioPath = path + "SE";
-                    request.onload = () => {
-                        _this.audioCtx.decodeAudioData(request.response, buffer => {
-                            _this.cache[request.audioPath] = buffer;
-                            console.log("Loaded!", buffer);
-                        }, () => console.log("Audio loading error!"));
+                       path = path.slice(0, -2);
+                       let request = new XMLHttpRequest();
+                       request.open("GET", "public/assets/audio/" + path, true);
+                       request.responseType = "arraybuffer";
+                       request.audioPath = path + "SE";
+                       request.onload = () => {
+                           _this.audioCtx.decodeAudioData(request.response, buffer => {
+                               _this.cache[request.audioPath] = buffer;
+                               console.log("Loaded!", buffer);
+                           }, () => console.log("Audio loading error!"));
 
-                        _this.successCount++;
-                        if (_this.done()) {
-                            downloadCallback();
-                        }
+                           _this.successCount++;
+                           if (_this.done()) {
+                               downloadCallback();
+                           }
 
-                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
-                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
-                            _this.onFileDownloadedCallbacks.remove(this.testPath);
-                        }
-                    };
-                    request.send();
+                           if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                               _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                               _this.onFileDownloadedCallbacks.remove(this.testPath);
+                           }
+                       };
+                       request.send();
                     break;
                 case "png":
                     var img = new Image();
@@ -248,15 +247,15 @@ class AssetManager {
     get(path) {
         if (this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
         else if (path.substring(path.lastIndexOf(('.')) + 1 === "oggp")) {
-            for (var p = 0; p <  this.maxPool; p++) {
+          /*  for (var p = 0; p < this.maxPool; p++) {
                 if (this.cache[path][p] !== undefined) {
                     if (this.cache[path][p].paused) {
                         this.cache[path][p].play();
                         return;
                     }
-                    if (p ===  this.maxPool) return;
+                    if (p === this.maxPool) return;
                 }
-            }
+            }*/
         }
         return this.cache[path];
     }

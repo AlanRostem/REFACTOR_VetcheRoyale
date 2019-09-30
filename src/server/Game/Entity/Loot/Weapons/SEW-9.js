@@ -40,18 +40,19 @@ class ElectricSphere extends Projectile {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
-        let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
+        if (this.getOwner(entityManager)) {
+            let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
-        let length = Vector2D.distance(this.getOwner(entityManager).input.mouseData.world, this.pos);
+            let length = Vector2D.distance(this.getOwner(entityManager).input.mouseData.world, this.pos);
 
-        this.vel.x = Math.cos(atan2) * length * this.velVal;
-        this.vel.y = Math.sin(atan2) * length * this.velVal;
+            this.vel.x = Math.cos(atan2) * length * this.velVal;
+            this.vel.y = Math.sin(atan2) * length * this.velVal;
 
-        if (this.vel.x > this.maxSpeed) this.vel.x = this.maxSpeed;
-        if (this.vel.x < -this.maxSpeed) this.vel.x = -this.maxSpeed;
-        if (this.vel.y > this.maxSpeed) this.vel.y = this.maxSpeed;
-        if (this.vel.y < -this.maxSpeed) this.vel.y = -this.maxSpeed;
-
+            if (this.vel.x > this.maxSpeed) this.vel.x = this.maxSpeed;
+            if (this.vel.x < -this.maxSpeed) this.vel.x = -this.maxSpeed;
+            if (this.vel.y > this.maxSpeed) this.vel.y = this.maxSpeed;
+            if (this.vel.y < -this.maxSpeed) this.vel.y = -this.maxSpeed;
+        }
     }
 }
 
@@ -65,7 +66,7 @@ class SuperDamage extends SEntity {
     update(game, deltaTime) {
         super.update(game, deltaTime);
         let player = game.getEntity(this.damage.playerID);
-        if(player) {
+        if (player) {
             this.pos.x = player.x;
             this.pos.y = player.y;
 
@@ -96,12 +97,15 @@ class SEW_9 extends AttackWeapon {
         this.secondaryFire = false;
         this.superAbilitySnap = false;
 
+        this.isShooting = false;
+
         this.configureAttackStats(1.5, 5, 1, 100);
 
-        this.addDynamicSnapShotData(["misPos", "secondaryFire", "superAbilitySnap"]);
+        this.addDynamicSnapShotData(["misPos", "secondaryFire", "superAbilitySnap", "isShooting"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
             this.currentAmmo--;
+            this.isShooting = true;
             entityManager.spawnEntity(this.center.x, this.center.y,
                 this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
                     0, entityManager));
@@ -116,10 +120,13 @@ class SEW_9 extends AttackWeapon {
 
             this.secondaryFire = false;
             this.canMove = true;
+
+            this.isShooting = false;
         };
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
             this.canMove = false;
+            this.isShooting = true;
         };
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
@@ -144,8 +151,10 @@ class SEW_9 extends AttackWeapon {
         this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
 
         if (this.misRef) {
+          //  this.isShooting = true;
             this.misPos = this.misRef.pos;
             if (!this.misRef.removed) this.canFire = this.canUseMod = false;
+            else this.isShooting = false;
         }
 
         let player = entityManager.getEntity(this.playerID);
@@ -158,6 +167,7 @@ class SEW_9 extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
+        this.isShooting = true;
         this.misRef =
             entityManager.spawnEntity(this.center.x, this.center.y,
                 new ElectricSphere(player.id, this.id, 0, 0,
@@ -170,7 +180,7 @@ class SEW_9 extends AttackWeapon {
         if (this.misRef)
             if (!this.misRef.removed)
                 this.misRef.detonate(entityManager);
-
+        this.isShooting = false;
         this.secondaryFire = false;
         player.setMovementState("canMove", true);
     }

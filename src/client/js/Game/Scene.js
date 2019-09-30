@@ -3,6 +3,7 @@
 
 import R from "../Graphics/Renderer.js"
 import AssetManager from "../AssetManager/AssetManager.js"
+import AudioPool from "../AssetManager/Classes/Audio/AudioPool.js"
 import CEventManager from "../CEventManager.js"
 import UI from "../UI/UI.js";
 import MiniMap from "../UI/MiniMap.js";
@@ -109,7 +110,8 @@ const Scene = {
             Scene.eventManager.update(Scene.clientRef, Scene.deltaTime);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
-            R.camera.update()
+            R.camera.update();
+            AudioPool.update();
         }
     },
 

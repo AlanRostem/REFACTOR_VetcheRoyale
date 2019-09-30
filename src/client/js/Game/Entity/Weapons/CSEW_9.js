@@ -3,11 +3,13 @@ import R from "../../../Graphics/Renderer.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import UI from "../../../UI/UI.js";
 import Scene from "../../Scene.js";
+import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
 
 export default class CSEW_9 extends CWeapon {
 
     constructor(data) {
         super(data, 1);
+        this.isShooting = false;
     }
 
     onFire(client, deltaTime) {
@@ -25,6 +27,10 @@ export default class CSEW_9 extends CWeapon {
         } else {
             R.camera.setConfig("followPlayer", true);
         }
+
+        this.isShooting = this.getRealtimeProperty("isShooting");
+
+        if(this.isShooting) AudioPool.play("Weapons/sew-9_a.oggSE", this.output.misPos, this.isShooting);
 
     }
 

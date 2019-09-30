@@ -24,12 +24,8 @@ Array.prototype.remove = function () {
 };
 
 class WorldManager {
-    constructor() {
-        this.dataBridge = new class extends DataBridge {
-            onDataReceived(data) {
-                // TODO: Do shit
-            }
-        }();
+    constructor(parentPort) {
+        this.dataBridge = new DataBridge(parentPort);
 
         this.defineClientResponseEvents();
 
@@ -71,10 +67,6 @@ class WorldManager {
         }
     }
 
-    setBridgedData(key, value) {
-        this.dataBridge.queueOutboundData(key, value);
-    }
-
     addWorld(world, id) {
         if (!id) {
             id = String.random();
@@ -103,14 +95,6 @@ class WorldManager {
         world.spawnPlayer(player);
     }
 
-    importDataBridge(data) {
-        this.dataBridge.receivedData = data;
-    }
-
-    exportDataBridge() {
-        return this.dataBridge.outboundData;
-    }
-
     update() {
         if (Date.now() > 0)
             this.deltaTime = (Date.now() - this.lastTime) / 1000;
@@ -136,8 +120,7 @@ class WorldManager {
     defineClientResponseEvents() {
 
         this.dataBridge.addClientResponseListener("clientConnectCallback", data => {
-            let player = new Player(0, 0, this);
-            player.id = data.id;
+            let player = new Player(data.id, this);
             this.getLastWorld().spawnPlayer(player);
 
             this.playerList.set(data.id, player);
@@ -147,7 +130,7 @@ class WorldManager {
                 id: data.id,
                 worldID: player.homeWorldID
             });
-            //console.log("Player", data.id, "spawned in", player.homeWorldID);
+            console.log("Player", data.id, "spawned in", player.homeWorldID);
         });
 
         this.dataBridge.addClientResponseListener("removePlayer", data => {
@@ -157,10 +140,10 @@ class WorldManager {
             //console.log("Removed player", data.id, "from", player.homeWorldID);
         });
 
-        this.dataBridge.addClientResponseListener("listenToInput", (data, id) => {
-            if (this.playerList.has(id)) {
-                this.playerList.get(id)
-                    .receiveInputData(data);
+        this.dataBridge.addClientResponseListener("listenToInput", (data) => {
+            if (this.playerList.has(data.id)) {
+                this.playerList.get(data.id)
+                    .receiveInputData(data.data);
             }
         });
 

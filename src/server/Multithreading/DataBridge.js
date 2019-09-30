@@ -1,65 +1,45 @@
 const ONMap = require("../../shared/code/DataStructures/SObjectNotationMap.js");
 
 class DataBridge {
-    constructor() {
-        this.inboundData = {};
-        this.outboundData = {
-            "clientEvent": {}
-        };
-        this.events = new ONMap();
-        this.clientEvents = new ONMap();
+    constructor(messagePort) {
+        this.messagePort = messagePort;
+        this.messagePort.on("message", this.onMessageReceived.bind(this));
+        this.events = new ONMap()
     }
 
-    set receivedData(data) {
-        if (!data) {
-            return;
+    addEventListener(eventName, callback) {
+        if (!this.events.has(eventName)) {
+            this.events.set(eventName, []);
         }
-        this.inboundData = data;
+        this.events.get(eventName).push(callback);
+    }
 
-        try {
-            for (let event in data["clientEvent"]) {
-                for (let clientID in data["clientEvent"][event]) {
-                    let dataQueue = data["clientEvent"][event][clientID];
-                    if (this.clientEvents.has(event)) {
-                        for (let data of dataQueue) {
-                            this.clientEvents.get(event)(data, clientID);
-                        }
-                    }
+    onMessageReceived(message) {
+        for (let eventName in message) {
+            if (this.events.has(eventName)) {
+                for (let callback of this.events.get(eventName)) {
+                    callback(message[eventName]);
                 }
             }
-            this.onDataReceived(data);
-        } catch (e) {
-            console.log("DataBridgeError:", e);
         }
-
     }
 
-    queueOutboundData(key, value) {
-        this.outboundData[key] = value;
+    emitMessage(eventName, message) {
+        this.messagePort.postMessage({
+            [eventName]: message
+        });
+    }
+
+    // TODO: Refactor away these wrapper functions
+    addClientResponseListener(responseEvent, callback) {
+        this.addEventListener(responseEvent, callback);
     }
 
     transferClientEvent(clientEvent, id, data) {
-        if (!this.outboundData.clientEvent[clientEvent]) {
-            this.outboundData.clientEvent[clientEvent] = {};
-        }
-        if (!this.outboundData.clientEvent[clientEvent][id]) {
-            this.outboundData.clientEvent[clientEvent][id] = [];
-        }
-        this.outboundData.clientEvent[clientEvent][id].push(data);
-    }
-
-    addClientResponseListener(responseEvent, callback) {
-        this.clientEvents.set(responseEvent, callback);
-    }
-
-    onDataReceived(data) {
-
-    }
-
-    update() {
-        this.outboundData = {
-            "clientEvent": {}
-        };
+        this.emitMessage(clientEvent, {
+            id: id,
+            data: data
+        })
     }
 }
 

@@ -209,6 +209,7 @@ class UserPlayer extends RemotePlayer {
                 if (input.keyStates[68]) {
                     if (!this.localSides.right) {
                         this.localVel.x = 1;
+
                     }
                 }
 

@@ -19,11 +19,11 @@ export default class Stats extends UIElement {
             if (client.player.output)
                 if (client.player.output.statData)
                     this.killCount = client.player.output.statData.Kills;
-        if (client.inboundPacket)
-            if (client.inboundPacket.gameData)
-                if (client.inboundPacket.gameData.playerCount)
+            if (client.inboundPacket)
+                if (client.inboundPacket.gameData) {
                     this.playersAlive = client.inboundPacket.gameData.playerCount;
-
+                }
+        }
     }
 
     draw() {

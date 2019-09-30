@@ -41,7 +41,7 @@ class GameDataLinker extends Alive {
     }
 
     retrieveGameData(game) {
-        this.setOutboundPacketData("gameData", game.dataPacket);
+        this.setOutboundPacketData("gameData", this.gameData);
     }
 
     // Sends the initial data pack to the client.
