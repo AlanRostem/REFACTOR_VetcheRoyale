@@ -17,7 +17,7 @@ class ClientList {
 
     getClient(id) {
         if (!this.container.hasOwnProperty(id)) {
-            console.log("WARNING: Client list is returning undefined on 'getClient'");
+            console.log("WARNING: Client list is returning undefined on 'getClient':", id);
         }
         return this.container[id];
     }
@@ -48,11 +48,6 @@ class ClientList {
         }
     }
 
-    update(server) {
-        for (var id in this.container) {
-            this.container[id].networkedUpdate(server);
-        }
-    }
 }
 
 module.exports = ClientList;
