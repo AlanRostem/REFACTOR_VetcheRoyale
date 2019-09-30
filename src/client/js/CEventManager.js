@@ -32,21 +32,21 @@ export default class CEventManager {
                             }
                         }
             if (client.inboundPacket.gameData)
-            if (client.inboundPacket.gameData["Event"] !== undefined) {
-                evs = client.inboundPacket["gameData"]["Event"];
-                for (let e of evs) {
-                    let event = new CGameEvent(e);
-                    if (event && !this.eventID.includes(event.id)) {
-                        if (e.priority) {
-                            this.events.unshift(event);
-                            this.eventID.unshift(event.id);
-                        } else {
-                            this.events.push(event);
-                            this.eventID.push(event.id);
+                if (client.inboundPacket.gameData["Event"] !== undefined) {
+                    evs = client.inboundPacket["gameData"]["Event"];
+                    for (let e of evs) {
+                        let event = new CGameEvent(e);
+                        if (event && !this.eventID.includes(event.id)) {
+                            if (e.priority) {
+                                this.events.unshift(event);
+                                this.eventID.unshift(event.id);
+                            } else {
+                                this.events.push(event);
+                                this.eventID.push(event.id);
+                            }
                         }
                     }
                 }
-            }
         }
     }
 

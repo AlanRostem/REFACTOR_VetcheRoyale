@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: UserPlayer</title>
+    <title>JSDoc: Source: client/js/AssetManager/Classes/Graphical/AnimationManager.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,139 +17,69 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: UserPlayer</h1>
+    <h1 class="page-title">Source: client/js/AssetManager/Classes/Graphical/AnimationManager.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="ClientSide.html">ClientSide</a>~</span>UserPlayer<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description"><p>The player the client controls. It contains the client side prediction code and the interface
-for events happening only to the user end player entity.</p></div>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="UserPlayer"><span class="type-signature"></span>new UserPlayer<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="client_js_Game_Entity_Player_UserPlayer.js.html">client/js/Game/Entity/Player/UserPlayer.js</a>, <a href="client_js_Game_Entity_Player_UserPlayer.js.html#line19">line 19</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* Manages animations for an object by mapping certain Animation objects to strings.
+ * @memberOf ClientSide
+ */
+class AnimationManager {
+    constructor() {
+        this.animations = {};
+    }
+
+    /**
+    * Sets the current animation key to be played.
+    * @param name {string} - String that decides the current animation to be played.
+     */
+    setCurrentAnimation(name) {
+        this.currentAnimName = name;
+    }
+
+    /**
+     * Creates a new animation mapped to a name.
+     * @param name {string} - Name of the new animation.
+     * @param animation {Animation} - Object with sprite animation configurations.
+     */
+    addAnimation(name, animation) {
+        this.animations[name] = animation;
+    }
+
+
+    /**
+     * Retrieve an existing animation.
+     * @param name {string} - The mapped name of an existing animation.
+     * @return {Animation}
+     */
+    getAnimation(name) {
+        if (!this.animations[name]) {
+            throw new Error("No animation such as " + name + " found!");
+        }
+        return this.animations[name];
+    }
+
+    /**
+     * Function run in a draw loop that updates the animation frames.
+     * @param spriteSheetObj {SpriteSheet} - Respective sprite sheet object
+     * @param spriteLocationName {string} - Mapped location name of the sprite
+     * @param fw {number} - Frame width of the sprite region
+     * @param fh {number} - Frame height of the sprite region
+     */
+    animate(spriteSheetObj, spriteLocationName, fw, fh) {
+        spriteSheetObj.animate(spriteLocationName, this.getAnimation(this.currentAnimName), fw, fh);
+    }
+}
+
+export default AnimationManager;</code></pre>
+        </article>
+    </section>
 
 
 

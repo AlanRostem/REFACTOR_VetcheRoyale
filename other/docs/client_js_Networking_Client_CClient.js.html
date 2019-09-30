@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/js/Networking/Client/CClient.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/js/Networking/Client/CClient.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import InputListener from "../../InputListener.js"
+import R from "../../Graphics/Renderer.js";
+import Scene from "../../Game/Scene.js"
+import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
+import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
+
+/**
+ * Class representation of the client. Holds input callbacks and manages socket events.
+ * An instance of this class can be found in the update methods as parameters in the
+ * UIElement, CEntity, CEntityManager, InputListener and EntitySnapshotBuffer instances
+ * and as the clientRef member in Scene.
+ */
+class CClient {
+    constructor(socket) {
+        this.socket = socket;
+        this.id = socket.id;
+        this.localTime = 0;
+        this.serverUpdateCallbacks = new ONMap();
+        this.clientEmitPacket = new ONMap();
+        this.inputListener = new InputListener(this);
+        this.timeSyncer = new ServerTimeSyncer();
+
+        [32, 83, 68, 65, 87, 69, 70, 71, 82, 81].forEach(keyCode => {
+            this.addKeyEmitter(keyCode);
+        });
+
+        [1, 2, 3].forEach(mouseButton => {
+            this.addMouseEmitter(mouseButton);
+        });
+
+        this.defineSocketEvents();
+        this.latency = 0;
+        this.discReasonMsg = "reason: server error";
+    }
+
+    onServerUpdateReceived(packet) {
+        this.timeSyncer.onServerUpdate(this.latency);
+        this.lastReceivedData = packet;
+        for (let callback of this.serverUpdateCallbacks.array) {
+            callback(packet);
+        }
+    }
+
+    /**
+     * Get the input listener instance from the client
+     * @returns {InputListener}
+     */
+    get input() {
+        return this.inputListener;
+    }
+
+    /**
+     * Map a key code to the input listener with a
+     * callback. This mapping function's difference
+     * is that upon the key state the key state data
+     * is sent to the server.
+     * @param keyCode {number} - JS key code
+     * @param callback {function} - Callback when pressing and releasing the key
+     */
+    addKeyEmitter(keyCode, callback) {
+        this.inputListener.addKeyMapping(keyCode, keyState => {
+            if (callback) {
+                callback(keyState);
+            }
+        });
+    }
+
+    /**
+     * Map (in an update loop) a piece of data to be sent to the server.
+     * The data is present on the server as an object property with the
+     * respective mapping name. It can be found in SClient.
+     * @see SClient
+     * @param key {string} - Mapping name
+     * @param value {object} - Data values
+     */
+    setOutboundPacketData(key, value) {
+        this.clientEmitPacket.set(key, value);
+    }
+
+    /**
+     * Map a callback event for every tick the server sends packet data.
+     * The callback takes the global packet data as a parameter.
+     * @param eventName {string} - Mapping name
+     * @param callback {function} - Callback executed every server frame (with latency)
+     */
+    addServerUpdateListener(eventName, callback) {
+        this.serverUpdateCallbacks.set(eventName, callback);
+    }
+
+    /**
+     * Reference to all the packet data gathered from the server
+     * @returns {object}
+     */
+    get inboundPacket() {
+        return this.lastReceivedData;
+    }
+
+    /**
+     * Reference to all the packet data sent to the server
+     */
+    get outboundPacket() {
+        return this.clientEmitPacket.object;
+    }
+
+    /**
+     * Map a mouse code to the input listener with a
+     * callback. This mapping function's difference
+     * is that upon the key state the mouse button state data
+     * is sent to the server.
+     * @param mouseButton {number} - JS mouse code
+     * @param callback {function} - Callback when pressing and releasing the mouse button
+     */
+    addMouseEmitter(mouseButton, callback) {
+        this.inputListener.addMouseMapping(mouseButton, mouseState => {
+            if (callback) {
+                callback(keyState);
+            }
+        });
+    }
+
+
+    /**
+     * Get the reference to the client player object
+     * @returns {UserPlayer}
+     */
+    get player() {
+        return this.eMgr.getEntityByID(this.id);
+    }
+
+    update(entityManager, deltaTime) {
+        if (!this.eMgr) {
+            this.eMgr = entityManager;
+        }
+        this.localTime += deltaTime;
+        this.startTime = Date.now();
+        if (this.inboundPacket) {
+            if (this.inboundPacket.entityData)
+                if (this.inboundPacket.entityData[this.id]) {
+                    if (this.player)
+                        Scene.currentMapName = this.player.output._gameData.mapName;
+                } else {
+                    //if (e) entityManager.removeEntity(e.id);
+                    if (this.inboundPacket.spectatorSubject) {
+                        let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
+                        if (s) {
+                            R.camera.update(s.output.pos);
+                        }
+                    }
+                }
+        }
+        this.inputListener.update(this);
+        this.emit("clientPacketToServer", this.clientEmitPacket.object);
+    }
+
+    emit(eventType, data) {
+        this.socket.emit(eventType, data);
+    }
+
+    on(eventType, callback) {
+        this.socket.on(eventType, callback);
+    }
+
+    defineSocketEvents() {
+        // Establishes a full connection using a promise.
+        // The server is then notified of a proper connection.
+        const connectedPromise = new Promise(resolve => {
+            this.on('connectClient', data => {
+                this.id = data.id;
+                this.disconnected = false;
+                this.socket.emit("connectClientCallback", {id: this.id});
+                resolve();
+            });
+        });
+
+        this.on('serverUpdateTick', packet => {
+            this.latency = Math.abs(Date.now() - packet.now);
+            this.onServerUpdateReceived(packet);
+        });
+
+        this.on('broadcast-newPlayer', data => {
+            console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
+        });
+
+        this.on("gameEvent-changeMap", data => {
+            Scene.currentMapName = data.mapName;
+        });
+
+        this.on("gameEvent-changeWorld", data => {
+
+        });
+
+        this.on("manualDisconnect", message => {
+            this.discReasonMsg = "reason: " + message;
+            this.disconnected = true;
+            this.socket.close();
+            document.body.style.cursor = "default";
+        });
+
+        this.on("disconnect", message => {
+            this.discActionMsg = "action: " + message;
+            this.disconnected = true;
+            this.socket.close();
+            document.body.style.cursor = "default";
+        })
+    }
+}
+
+export default CClient;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ClientSide.html">ClientSide</a></li><li><a href="ClientSide.EntityTypeSpawner.html">EntityTypeSpawner</a></li><li><a href="ClientSide.R.html">R</a></li><li><a href="ClientSide.Scene.html">Scene</a></li></ul><h3>Classes</h3><ul><li><a href="Announcement.html">Announcement</a></li><li><a href="Camera.html">Camera</a></li><li><a href="CClient.html">CClient</a></li><li><a href="ClientSide.AnimationManager.html">AnimationManager</a></li><li><a href="ClientSide.AssetManager.html">AssetManager</a></li><li><a href="ClientSide.CEntity.html">CEntity</a></li><li><a href="ClientSide.JSONFile.html">JSONFile</a></li><li><a href="ClientSide.RemotePlayer.html">RemotePlayer</a></li><li><a href="ClientSide.SpriteSheet.html">SpriteSheet</a></li><li><a href="ClientSide.SpriteSheet.Animation.html">Animation</a></li><li><a href="ClientSide.TileSheet.html">TileSheet</a></li><li><a href="ClientSide.UserPlayer.html">UserPlayer</a></li><li><a href="CTileMap.html">CTileMap</a></li><li><a href="EntityManager.html">EntityManager</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="TileMapManager.html">TileMapManager</a></li><li><a href="UIElement.html">UIElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Sep 29 2019 20:47:48 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

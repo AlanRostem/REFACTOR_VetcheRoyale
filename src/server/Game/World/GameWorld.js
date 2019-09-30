@@ -103,10 +103,10 @@ class GameWorld extends EntityManager {
     update(deltaTime, worldManager) {
         // Update the entities, then create data packs
         this.dataPacket = {};
+        this.eventManager.update(this, deltaTime);
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
-        this.eventManager.update(this, deltaTime);
         // TODO: Re-implement if needed:
         // worldManager.setBridgedData(this.id, this.bridgedData.object);
     }
