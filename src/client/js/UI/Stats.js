@@ -15,16 +15,16 @@ export default class Stats extends UIElement {
     }
 
     update(deltaTime, client, entityList) {
-        if (client.player) {
+        if (client.player)
             if (client.player.output)
                 if (client.player.output.statData)
                     this.killCount = client.player.output.statData.Kills;
-            if (client.inboundPacket)
-                if (client.inboundPacket.gameData) {
-                    this.playersAlive = client.inboundPacket.gameData.playerCount;
-                }
-        }
+        if (client.inboundPacket)
+            if (client.inboundPacket.gameData) {
+                this.playersAlive = client.inboundPacket.gameData.playerCount;
+            }
     }
+
 
     draw() {
         R.ctx.save();

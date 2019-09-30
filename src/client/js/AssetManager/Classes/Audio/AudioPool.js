@@ -18,6 +18,18 @@ class AudioPool {
 
     }
 
+    updatePos(src) {
+        this.SFXrefs[src].objPos = objPos;
+    }
+
+    stop(src)
+    {
+        if(this.SFXrefs[src]!==undefined) {
+            this.SFXrefs[src].stop(src);
+            delete this.SFXrefs[src];
+        }
+    }
+
     update() {
         for (let key in this.SFXrefs) {
             this.SFXrefs[key].findPan();
@@ -28,7 +40,6 @@ class AudioPool {
             }
         }
     }
-
 }
 
 export default new AudioPool();

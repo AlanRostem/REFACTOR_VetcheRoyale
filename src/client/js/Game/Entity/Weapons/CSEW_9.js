@@ -31,6 +31,7 @@ export default class CSEW_9 extends CWeapon {
         this.isShooting = this.getRealtimeProperty("isShooting");
 
         if(this.isShooting) AudioPool.play("Weapons/sew-9_a.oggSE", this.output.misPos, this.isShooting);
+        else AudioPool.stop("Weapons/sew-9_a.oggSE");
 
     }
 
