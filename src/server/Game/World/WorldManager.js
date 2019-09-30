@@ -47,13 +47,11 @@ class WorldManager {
         let hub = new HubWorld(this.gameWorlds, "hub", TileMapConfigs.getMap("hub"));
         this.addWorld(hub, "hub");
 
-        let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
-        this.addWorld(match, "match");
-
         let playground = new PlayGround(this.gameWorlds);
-        this.playground = playground;
         this.addWorld(playground, "playground");
 
+        let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
+        this.addWorld(match, "match");
     }
 
     checkQueuedPlayers() {
