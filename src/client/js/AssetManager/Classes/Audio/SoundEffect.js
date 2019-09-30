@@ -33,14 +33,14 @@ export default class SoundEffect {
         }
     }
 
-    stop() {
+    stop(src) {
         this.source.disconnect();
     }
 
     findPan(){
-        this.gainNode.gain.value = 1 - Vector2D.distance(this.objPos, R.camera.follow)/250;
-        this.panner.pan.value = -Math.cos(Math.atan2(- R.camera.y + R.camera.offset.y - this.objPos.y,  - R.camera.x + R.camera.offset.x - this.objPos.x));
-      //  console.log(this.panner.pan.value);
+        //this.panner.pan.value = -Math.cos(Math.atan2(- R.camera.y + R.camera.offset.y - this.objPos.y,  - R.camera.x + R.camera.offset.x - this.objPos.x));
+        this.panner.pan.value =  - ( - R.camera.x + R.camera.offset.x - this.objPos.x) / R.screenSize.x / 4;
+        this.gainNode.gain.value < 0 ? 0 : this.gainNode.gain.value = 1 - Vector2D.distance(this.objPos, R.camera.follow)/200;
         //console.log(Math.atan2(R.camera.y + R.camera.offset.y - this.objPos.y,  R.camera.x + R.camera.offset.x - (this.objPos.x | 0)), - R.camera.x + R.camera.offset.x, this.objPos.x);
        // console.log(this.panner.pan.value);
        // console.log(Math.atan2(this.objPos.y - R.camera.offset.y,  this.objPos.x - R.camera.offset.x));
