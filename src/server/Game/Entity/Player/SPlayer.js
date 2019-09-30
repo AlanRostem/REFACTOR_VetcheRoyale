@@ -11,11 +11,11 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
-    constructor(x, y, worldMgr) {
-        super(x, y, 6, 12, 100, true, worldMgr);
+    constructor(clientID, worldMgr) {
+        super(0, 0, 6, 12, 100, true, worldMgr);
 
         // MISC VAR INITS
-
+        this.id = clientID;
         this.teamName = "red";
         this.snapShotGenerator.snapShot.id = this.id;
         this.inventory = new Inventory();
@@ -26,8 +26,8 @@ class Player extends GameDataLinker {
 
         this.jumping = false;
         this.centerData = {
-            x: x + this.width / 2,
-            y: y + this.height / 2,
+            x: this.width / 2,
+            y: this.height / 2,
         };
 
         this.addMovementListener("main", "stand", () => 0);
@@ -221,7 +221,8 @@ class Player extends GameDataLinker {
                         }
                     );
 
-        entityManager.queueClientData(this.id, this.outboundData.object);
+        this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
+        //entityManager.queueClientData(this.id, this.outboundData.object);
     }
 }
 

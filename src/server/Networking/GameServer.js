@@ -2,7 +2,7 @@ const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("./Matchmaker.js");
 const WorldManager = require("../Game/World/WorldManager.js");
 const Thread = require("../Multithreading/Thread.js");
-const DBClientEventListener = require("../Multithreading/DBClientEventListener.js");
+const DataBridge = require("../Multithreading/DataBridge.js");
 
 // Class for the main server
 class GameServer {
@@ -11,15 +11,10 @@ class GameServer {
         this.mainSocket = new WebSocket(sio, this.matchMaker, this);
         this.lastWorldName = "playground"; // TODO: Automate
         const _this = this;
-        this.dataBridge = new DBClientEventListener();
 
-        this.thread = new class extends Thread {
-            onGetMessage(message) {
-                _this.importDataBridge(message);
-            }
-        }({}, "./src/server/Game/SimulationSide.js");
+        this.thread = new Thread({}, "./src/server/Game/SimulationSide.js");
 
-        this.defineClientResponseEvents();
+        this.dataBridge = null;
 
         this.deltaTime = 0;
         this.lastTime = 0;
@@ -42,12 +37,6 @@ class GameServer {
         }
 
         this.matchMaker.update(this);
-        this.mainSocket.cl.update(this);
-
-        this.dataSpoofArray.push(this.dataBridge.outboundData);
-        this.thread.sendDataToParent(this.dataSpoofArray[0]);
-        this.dataSpoofArray.splice(0);
-        this.dataBridge.update();
 
         if (Date.now() > 0)
             this.lastTime = Date.now();
@@ -59,12 +48,10 @@ class GameServer {
         }
     }
 
-    importDataBridge(data) {
-        this.dataBridge.receivedData = data;
-    }
-
     start() {
         this.thread.run();
+        this.dataBridge = new DataBridge(this.thread.worker);
+        this.defineClientResponseEvents();
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 
@@ -77,37 +64,45 @@ class GameServer {
             console.log("--- Simulation thread: Receiving client", data.id + "... ---");
         });
 
-        this.dataBridge.addClientResponseListener("initEntity", (data, id) => {
-            if (!this.mainSocket.cl.getClient(id)) {
+        this.dataBridge.addClientResponseListener("initEntity", (data) => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
                 return;
             }
-            this.mainSocket.cl.getClient(id).emit("initEntity", data);
+            this.mainSocket.cl.getClient(data.id).emit("initEntity", data.data);
             //console.log("Init entity data to client:", id);
         });
 
-        this.dataBridge.addClientResponseListener("spawnEntity", (data, id) => {
-            if (!this.mainSocket.cl.getClient(id)) {
+        this.dataBridge.addClientResponseListener("spawnEntity", (data) => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
                 return;
             }
-            this.mainSocket.cl.getClient(id).emit("spawnEntity", data);
+            this.mainSocket.cl.getClient(data.id).emit("spawnEntity", data.data);
             //console.log("Added:", "\x1b[33m" + data.eType + "\x1b[0m", "with ID:", '\x1b[36m' + data.id + "\x1b[0m");
         });
 
-        this.dataBridge.addClientResponseListener("removeEntity", (data, id) => {
-            if (!this.mainSocket.cl.getClient(id)) {
+        this.dataBridge.addClientResponseListener("removeEntity", (data) => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
                 return;
             }
-            this.mainSocket.cl.getClient(id).emit("removeEntity", data);
+            this.mainSocket.cl.getClient(data.id).emit("removeEntity", data.data);
             //console.log("Deleting entity with ID:", '\x1b[36m' + id + "\x1b[0m");
         });
 
-        this.dataBridge.addClientResponseListener("removeOutOfBoundsEntity", (data, id) => {
-            if (!this.mainSocket.cl.getClient(id)) {
+        this.dataBridge.addClientResponseListener("removeOutOfBoundsEntity", (data) => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
                 return;
             }
-            this.mainSocket.cl.getClient(id).emit("removeOutOfBoundsEntity", data);
+            this.mainSocket.cl.getClient(data.id).emit("removeOutOfBoundsEntity", data.data);
             //console.log("Throwing entity out of bounds with ID:", '\x1b[36m' + id + "\x1b[0m");
-        })
+        });
+
+        this.dataBridge.addClientResponseListener("serverUpdateTick", (data) => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
+                return;
+            }
+            this.mainSocket.cl.getClient(data.id).networkedUpdate(data.data, this);
+            //console.log("Throwing entity out of bounds with ID:", '\x1b[36m' + id + "\x1b[0m");
+        });
     }
 }
 

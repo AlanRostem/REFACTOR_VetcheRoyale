@@ -7,7 +7,7 @@ class Thread {
     }
 
     onGetMessage(message) {
-        console.log(message)
+
     }
 
     runService(workerData, source) {
