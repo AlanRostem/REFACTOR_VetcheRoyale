@@ -138,7 +138,7 @@ class SEW_9 extends AttackWeapon {
 
         this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = false;
-            this.damageBox.remove();
+            if (this.damageBox) this.damageBox.remove();
             this.damageBox = null;
         };
     }
