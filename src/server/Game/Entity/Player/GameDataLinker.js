@@ -11,9 +11,6 @@ class GameDataLinker extends Alive {
     constructor(x, y, w, h, HP, regenCoolDown, worldMgr) {
         super(x, y, w, h, HP, regenCoolDown);
         this._gameData = {};
-        this.addStaticSnapShotData([
-            "_gameData"
-        ]);
 
         this.snapShotGenerator.removeStaticSnapshotData("id");
 

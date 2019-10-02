@@ -134,19 +134,17 @@ class CClient {
         this.localTime += deltaTime;
         this.startTime = Date.now();
         if (this.inboundPacket) {
-            if (this.inboundPacket.entityData)
-                if (this.inboundPacket.entityData[this.id]) {
-                    if (this.player)
-                        Scene.currentMapName = this.player.output._gameData.mapName;
-                } else {
-                    //if (e) entityManager.removeEntity(e.id);
-                    if (this.inboundPacket.spectatorSubject) {
-                        let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
-                        if (s) {
-                            R.camera.update(s.output.pos);
-                        }
+            if (this.inboundPacket.gameData) {
+                Scene.currentMapName = this.inboundPacket.gameData.mapName;
+            } else {
+                //if (e) entityManager.removeEntity(e.id);
+                if (this.inboundPacket.spectatorSubject) {
+                    let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
+                    if (s) {
+                        R.camera.update(s.output.pos);
                     }
                 }
+            }
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);
