@@ -148,6 +148,7 @@ class CClient {
         }
         this.inputListener.update(this);
         this.emit("clientPacketToServer", this.clientEmitPacket.object);
+        this.clientEmitPacket.clear();
     }
 
     emit(eventType, data) {

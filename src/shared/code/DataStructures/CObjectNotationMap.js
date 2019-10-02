@@ -57,7 +57,7 @@ export default class ObjectNotationMap {
         delete this["_jsonContainer"];
         this._count = 0;
         this._jsonContainer = {};
-        this._arrayContainer.clear();
+        this._arrayContainer = [];
     }
 
     forEach(callback) {
