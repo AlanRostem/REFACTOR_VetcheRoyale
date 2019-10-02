@@ -53,7 +53,7 @@ class Player extends GameDataLinker {
         // PHYSICS DATA
 
         this.speed = {
-            ground: 65 * 55,
+            ground: 65, //* 55,
             jump: -190,
             gravity: 500
         };
@@ -182,13 +182,15 @@ class Player extends GameDataLinker {
         this.vel.x *= this.fric.x;
 
         if (this.input.keyHeldDown(68) && this.checkMovementState("canMove", true)) {
-            this.accelerateX(this.acc.x, deltaTime);
+            //this.accelerateX(this.acc.x, deltaTime);
+            this.vel.x = this.speed.ground;
             this.setMovementState("direction", "right");
 
         }
 
         if (this.input.keyHeldDown(65) && this.checkMovementState("canMove", true)) {
-            this.accelerateX(-this.acc.x, deltaTime);
+            //this.accelerateX(-this.acc.x, deltaTime);
+            this.vel.x = this.speed.ground;
             this.setMovementState("direction", "left");
         }
 
