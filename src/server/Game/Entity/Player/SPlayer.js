@@ -190,7 +190,7 @@ class Player extends GameDataLinker {
 
         if (this.input.keyHeldDown(65) && this.checkMovementState("canMove", true)) {
             //this.accelerateX(-this.acc.x, deltaTime);
-            this.vel.x = this.speed.ground;
+            this.vel.x = -this.speed.ground;
             this.setMovementState("direction", "left");
         }
 
