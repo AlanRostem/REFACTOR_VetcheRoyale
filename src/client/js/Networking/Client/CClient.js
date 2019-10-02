@@ -11,7 +11,7 @@ import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
  * and as the clientRef member in Scene.
  */
 class CClient {
-    constructor(socket) {
+    constructor(socket, tickRate = 24) {
         this.socket = socket;
         this.id = socket.id;
         this.localTime = 0;
@@ -147,8 +147,6 @@ class CClient {
             }
         }
         this.inputListener.update(this);
-        this.emit("clientPacketToServer", this.clientEmitPacket.object);
-        this.clientEmitPacket.clear();
     }
 
     emit(eventType, data) {
@@ -168,6 +166,13 @@ class CClient {
                 this.disconnected = false;
                 this.socket.emit("connectClientCallback", {id: this.id});
                 resolve();
+                const _this = this;
+                setInterval(function () {
+                    if (_this.clientEmitPacket.length > 0) {
+                        _this.emit("clientPacketToServer", _this.clientEmitPacket.object);
+                        _this.clientEmitPacket.clear();
+                    }
+                }, 1000 / data.tickRate);
             });
         });
 

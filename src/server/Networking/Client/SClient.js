@@ -1,6 +1,3 @@
-const Player = require("../../Game/Entity/Player/SPlayer.js");
-const Tile = require("../../Game/TileBased/Tile.js");
-const QuadTree = require("../../Game/Entity/Management/QuadTree.js");
 const InputReceiver = require("./InputReceiver.js");
 const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
 const PacketValidator = require("./PacketValidator.js");
@@ -14,7 +11,7 @@ class Client {
         // Object given by socket.io
         this.socket = socket;
 
-        this.socket.emit("connectClient", {id: socket.id});
+        this.socket.emit("connectClient", {id: socket.id, tickRate: server.tickRate});
 
         this.inputReceiver = new InputReceiver(this);
 
