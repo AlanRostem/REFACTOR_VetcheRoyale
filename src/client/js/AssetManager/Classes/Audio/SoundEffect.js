@@ -44,7 +44,7 @@ export default class SoundEffect {
         if(this.panner.pan.value < -1) this.panner.pan.value = -1;
         this.gainNode.gain.value < 0 ?  this.gainNode.gain.value = 0 : this.gainNode.gain.value = 1 - Vector2D.distance(this.objPos, R.camera.follow)/200;
         //console.log(Math.atan2(R.camera.y + R.camera.offset.y - this.objPos.y,  R.camera.x + R.camera.offset.x - (this.objPos.x | 0)), - R.camera.x + R.camera.offset.x, this.objPos.x);
-        console.log(this.panner.pan.value);
+        //console.log(this.panner.pan.value);
        // console.log(Math.atan2(this.objPos.y - R.camera.offset.y,  this.objPos.x - R.camera.offset.x));
   //      this.panner.pan.value < 1 ?  this.panner.pan.value+=0.05 : this.panner.pan.value = -1;
     }
