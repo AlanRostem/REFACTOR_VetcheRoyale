@@ -20,7 +20,7 @@ export default class HPBar extends UIElement {
 
     draw() {
         R.ctx.save();
-
+        /*
         R.drawText("B.I.G Motorizer\n" +
             "Description: Motor driven death machine.\n" +
             "Ammo Capacity: 36\n" +
@@ -33,6 +33,7 @@ export default class HPBar extends UIElement {
             "\n" +
             "\n" +
             "\n", 0, 0, "Green", false, 200);
+        */
 
 
         if (this.HPlength === 0) {
