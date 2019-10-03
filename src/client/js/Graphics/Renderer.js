@@ -121,21 +121,28 @@ const R = {
      * @param color {string} - White, Red, Green, Blue and Yellow are supported
      * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
      */
-    drawText(str, x, y, color = "White", useCamera = false) {
+    drawText(str, x, y, color = "White", useCamera = false, boundary = this.screenSize.x) {
         R.context.save();
         var img = AssetManager.get("font/ascii" + color + ".png");
 
+        var newLine = 0;
+        var newLetter = 0;
+
         if (!img)  return;
         str = str.toString();
-        for (var i = 0; i < str.length; i++) {
-            var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;
-            R.context.drawImage(img,
-                (asciiCode % 8 * 4),
-                ((asciiCode / 8) | 0) * 5,
-                4, 5,
-                Math.round(x + i * 5 + (useCamera ? R.camera.x : 0)),
-                Math.round(y + (useCamera ? R.camera.y : 0)),
-                4, 5);
+        for (var i = 0; i < str.length; i++, newLetter++) {
+            if(x+newLetter*5 > boundary){ newLetter = 0; newLine++; }
+            if(str[i] === "\n") { newLetter = -1; newLine++;}
+            else {
+                var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;
+                R.context.drawImage(img,
+                    (asciiCode % 8 * 4),
+                    ((asciiCode / 8) | 0) * 5,
+                    4, 5,
+                    Math.round(x + newLetter * 5 + (useCamera ? R.camera.x : 0)),
+                    Math.round(y + newLine * 6 + (useCamera ? R.camera.y : 0)),
+                    4, 5);
+            }
         }
         R.context.restore();
     },
