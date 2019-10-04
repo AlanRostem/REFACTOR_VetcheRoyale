@@ -38,7 +38,7 @@ export default class Stats extends UIElement {
             this.frame.x,
             this.frame.y,
         );
-        R.drawText(this.playersAlive, R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120, "White", false, 5);
+        R.drawText(this.playersAlive, R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120, "White", false);
         UIElement.defaultSpriteSheet.drawCropped(
             this.frame.x + 40,
             68,
