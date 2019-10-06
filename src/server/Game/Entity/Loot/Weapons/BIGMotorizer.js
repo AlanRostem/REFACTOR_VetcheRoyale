@@ -83,7 +83,7 @@ class BIGMotorizer extends AttackWeapon {
             5 * Math.PI / 180,
             Math.PI / 180,
             0.07 * Math.PI / 180,
-            0.5, 6, 0.05);
+            0, 6, 0.05);
         this.minFireRate = 100;
         this.configureAttackStats(1.5, 36, 1, this.minFireRate);
         this.modAbility.configureStats(1, 10);
