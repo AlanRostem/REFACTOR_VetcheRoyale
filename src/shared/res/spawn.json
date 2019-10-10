@@ -41,6 +41,14 @@
       "id": 116
     }
   },
+  "117": {
+    "name": "GunSpawner",
+    "classType": "GunSpawner",
+    "isPositionalData": false,
+    "parameters": {
+      "id": 117
+    }
+  },
   "97": {
     "name": "Portal",
     "classType": "Portal",

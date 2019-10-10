@@ -5,6 +5,7 @@ const WeaponItem = require("../../../Entity/Loot/Weapons/Base/WeaponItem.js");
 const KE_6H = require("../../../Entity/Loot/Weapons/KE_6H.js");
 const BIGMotorizer = require("../../../Entity/Loot/Weapons/BIGMotorizer.js");
 const SEW_9 = require("../../../Entity/Loot/Weapons/SEW-9.js");
+const Interlux = require("../../../Entity/Loot/Weapons/Interlux.js");
 const CKER90 = require("../../../Entity/Loot/Weapons/CKER90.js");
 
 const START_TILE = 14 * 8; // 14 rows times 8 cols on tile-sheet
@@ -13,7 +14,8 @@ const GUN_LIST = {
     1: (x, y) => new CKER90(x, y),
     2: (x, y) => new SEW_9(x, y),
     3: (x, y) => new KE_6H(x, y),
-    4: (x, y) => new BIGMotorizer(x, y),
+    4: (x, y) => new Interlux(x, y),
+    5: (x, y) => new BIGMotorizer(x, y),
 };
 
 class GunSpawner extends Entity {
