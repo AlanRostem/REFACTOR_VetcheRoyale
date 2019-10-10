@@ -25,8 +25,6 @@ export default class CInterlux extends CWeapon {
         super.draw();
         R.ctx.save();
 
-        console.log(this.lines);
-
         for (var i = 0; i <= this.lines.length-2; i += 2) {
             R.ctx.beginPath();
             R.ctx.strokeStyle = "Red";
