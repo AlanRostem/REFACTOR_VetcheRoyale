@@ -19,6 +19,9 @@ class Portal extends Interactable {
         this.addDynamicSnapShotData([
             "pairData"
         ]);
+
+        this.maxTeleportCooldown = 1; // Seconds
+        this.recentlyTeleportedPlayers = new ONMap();
     }
 
     link(portal) {
@@ -34,10 +37,29 @@ class Portal extends Interactable {
         this.destination = pos;
     }
 
+    update(game, deltaTime) {
+        super.update(game, deltaTime);
+        // Decrement the cool down
+        for (let id in this.recentlyTeleportedPlayers.object) {
+            this.recentlyTeleportedPlayers.set(id, this.recentlyTeleportedPlayers.get(id) - deltaTime);
+            if (this.recentlyTeleportedPlayers.get(id) <= 0) {
+                this.recentlyTeleportedPlayers.remove(id)
+            }
+        }
+    }
+
     teleport(entity, game) {
         if (!this.pair) {
             return;
         }
+
+        if (!this.recentlyTeleportedPlayers.has(entity.id)) {
+            this.recentlyTeleportedPlayers.set(entity.id, this.maxTeleportCooldown);
+        } else {
+            this.pair.recentlyTeleportedPlayers.set(entity.id, this.maxTeleportCooldown);
+            return;
+        }
+
         entity.pos.x = this.destination.x
             + this.width / 2 - entity.width / 2;
         entity.pos.y = this.destination.y

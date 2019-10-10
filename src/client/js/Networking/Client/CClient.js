@@ -28,7 +28,12 @@ class CClient {
             this.addMouseEmitter(mouseButton);
         });
 
-        this.defineSocketEvents();
+        // Establishes a full connection using a promise.
+        // The server is then notified of a proper connection.
+        new Promise(resolve => {
+            this.defineSocketEvents();
+            resolve();
+        });
         this.latency = 0;
         this.discReasonMsg = "reason: server error";
     }
@@ -158,22 +163,17 @@ class CClient {
     }
 
     defineSocketEvents() {
-        // Establishes a full connection using a promise.
-        // The server is then notified of a proper connection.
-        const connectedPromise = new Promise(resolve => {
-            this.on('connectClient', data => {
-                this.id = data.id;
-                this.disconnected = false;
-                this.socket.emit("connectClientCallback", {id: this.id});
-                resolve();
-                const _this = this;
-                setInterval(function () {
-                    if (_this.clientEmitPacket.length > 0) {
-                        _this.emit("clientPacketToServer", _this.clientEmitPacket.object);
-                        _this.clientEmitPacket.clear();
-                    }
-                }, 1000 / data.tickRate);
-            });
+        this.on('connectClient', data => {
+            this.id = data.id;
+            this.disconnected = false;
+            this.socket.emit("connectClientCallback", {id: this.id});
+            const _this = this;
+            setInterval(function () {
+                if (_this.clientEmitPacket.length > 0) {
+                    _this.emit("clientPacketToServer", _this.clientEmitPacket.object);
+                    _this.clientEmitPacket.clear();
+                }
+            }, 1000 / data.tickRate);
         });
 
         this.on('serverUpdateTick', packet => {
@@ -184,6 +184,7 @@ class CClient {
             console.log("Connected: ", data.id + ".", "There are " + data.playerCount + " players online!");
         });
 
+        // TODO: Deprecate if needed
         this.on("gameEvent-changeMap", data => {
             Scene.currentMapName = data.mapName;
         });
