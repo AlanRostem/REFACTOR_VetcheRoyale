@@ -193,18 +193,19 @@ class CClient {
         });
 
         this.on("manualDisconnect", message => {
-            this.discReasonMsg = "reason: " + message;
-            this.disconnected = true;
-            this.socket.close();
-            document.body.style.cursor = "default";
+            this.onDisconnect("reason: " + message);
         });
 
         this.on("disconnect", message => {
-            this.discActionMsg = "action: " + message;
-            this.disconnected = true;
-            this.socket.close();
-            document.body.style.cursor = "default";
+            this.onDisconnect("action: " + message);
         })
+    }
+
+    onDisconnect(message) {
+        this.discActionMsg = message;
+        this.disconnected = true;
+        this.socket.close();
+        document.body.style.cursor = "default";
     }
 }
 
