@@ -19,7 +19,7 @@ class Interlux extends AttackWeapon {
         this.secondaryFire = false;
         this.superAbilitySnap = false;
 
-        this.configureAttackStats(1.5, Infinity/*40*/, 1, 500);
+        this.configureAttackStats(1.5, 40, 1, 500);
 
         this.addDynamicSnapShotData(["secondaryFire", "superAbilitySnap", "lines"]);
 
