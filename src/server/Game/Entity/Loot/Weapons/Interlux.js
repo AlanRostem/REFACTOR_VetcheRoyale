@@ -55,7 +55,9 @@ class Interlux extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        this.aimAngle = this.getOwner(entityManager).input.mouseData.angleCenter;
+        if (entityManager.getEntity(this.playerID)) {
+            this.aimAngle = this.getOwner(entityManager).input.mouseData.angleCenter;
+        }
 
     }
 
