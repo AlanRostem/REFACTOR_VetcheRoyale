@@ -87,6 +87,7 @@ class Client {
         this.setOutboundPacketData("entityData", this.playerObjData.entities);
         this.setOutboundPacketData("gameData", this.playerObjData.gameData);
 
+        // TODO: May be deprecated
         this.setOutboundPacketData("now", Date.now());
         this.updateDataCycle();
     }

@@ -177,7 +177,6 @@ class CClient {
         });
 
         this.on('serverUpdateTick', packet => {
-            this.latency = Math.abs(Date.now() - packet.now);
             this.onServerUpdateReceived(packet);
         });
 
@@ -189,8 +188,8 @@ class CClient {
             Scene.currentMapName = data.mapName;
         });
 
-        this.on("gameEvent-changeWorld", data => {
-
+        this.on("pong", data => {
+            this.latency = data || 0
         });
 
         this.on("manualDisconnect", message => {
