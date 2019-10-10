@@ -1,0 +1,91 @@
+Weapon ideas for Vetche Royale
+
+Level 1 weapons
+
+KE-L
+Description: Compressed kinetic energy pistol.
+Ammo Capacity: 10
+Primary fire: Kinetic orbs: Automatic pistol that fires bouncy projectiles.
+Mod: Kinetic energy: Fire a wave of kinetic energy that knocks you and enemies away from each other. 
+Super: Kinetic bubble: Launch a big projectile that moves enemies caught in it in its moving direction. It moves through walls.
+
+Firewall
+Description: Incendiary shotgun.
+Ammo Capacity: 4
+Primary Attack: Dragon's Breath: Close-range flame blasts.
+Mod: Incendiary Wave: Unleash a wave of fire that burns an enemy when in very close proximity. Deals damage over time.
+Super: Napalm Gas: Blanket your surroundings with a highly flammable gas. Detonated by firing at the gas. 
+
+Hamilton P336 (or HP336)
+Description: Advanced tech tactical pistol.
+Ammo Capacity: 14
+Primary Attack: Semi-automatic pistol: Slow firing low damage pistol.
+Mod: Select fire: Toggle fire mode to rapid full auto.
+Super: Smart split-barrel: Lock on to two targets and fire at them simultaneously.
+Level 2 weapons
+
+C-KER 90
+Description: Belt-fed anti-tank rifle.
+Ammo Capacity: 10
+Primary Attack: Bolt-action sonar rounds: Fire a large fast arcing projectile dealing high damage. 
+Mod: Tracker scope: Turn the camera to further line of sight. Enemies hit outside of this line of sight are marked. 
+Super: Seeker smoke: Blanket a large area with smoke where the enemy can’t see you but you can see them. Lasts 5 seconds.
+
+Falchion SLR
+Description: Rocket powered hunting rifle
+Ammo Capacity: 12
+Primary Attack: Semi-automatic rifle: Fire bullets at a moderate fire rate with moderate damage.
+Mod: Rocket bayonet charge: Charge towards an enemy in only one ground direction at high speed and deal high damage with your bayonet upon contact.
+Super: Rocket bayonet overcharge: Your primary fire is replaced with infinite bayonet dashes that can launch in any direction and through enemies for a short time.
+
+LiqAK
+Description: Powerful automatic Rifle
+Ammo Capacity: 25
+Primary Attack: Automatic Fire: Shoot fast medium-bullets with high recoil.
+Mod: Cargo bolt: All bullets in the magazine fired at once. Higher recoil. Less damage per shot.
+Super: Heavy Metal: Ammo Capacity set to 100 and auto-filled with bullets, no recoil and high fire rate. Every shot is fired automatically until empty.
+Level 3 weapons
+
+KE-6H
+Description: Compressed kinetic energy rifle, predecessor to the KE-L.
+Ammo Capacity: 8
+Primary Attack: Kinetic bomb: Explosive bouncy projectile that detonates after a couple of bounces. 
+Mod: Kinetic implosion: Retract all roaming bombs into one spot and detonate them.
+Super: Kinetic scatter blast: Fire a slow projectile that scatters many small low damage bouncy projectiles upon detonation. They can be guided.
+
+Gust Motorizer
+Description: Motor driven death machine.
+Ammo Capacity: 36
+Primary Attack: Wind Rockets: Rapid-6-shot-burst micro missile launcher. Missiles travel harmonically.
+Mod: Whirlwind: Lock down enemies hit by the whirlwind. 
+Super: Salvo storm: Fire faster and more accurate while moving enemies towards you for 5 seconds. 
+
+SEW-9
+Description: Electric Missile Launcher
+Ammo Capacity: 1
+Primary Attack: Sphere Missile: Launch a sphere which follows the cursor. Electric discharge on impact, damaging nearby players.
+Mod: Zoomed missile: Sphere follows your mouse, and outside camera boundaries. Lasts for 5 seconds.
+Super: Short-Circuiting: Electric overload. Electric beams stream from the launcher damaging nearby players. Controllable.
+
+Level 4 weapons
+
+Hadron Railgun
+Description: Hadron particle cannon
+Ammo Capacity: 15
+Primary Attack: Hadron wave: Charge up a powerful laser shot. 
+Mod: Brute shot: Fire a laser that creates an explosion on impact that knocks enemies away. 
+Super: Quantum boost: Become invulnerable and move faster.
+
+3.93 World-Line
+Description: Space-time manipulator
+Ammo Capacity: 1
+Primary Attack: Wormhole: Fire an arcing projectile that creates a wormhole on tile impact only. The wormhole lasts for 1 second (half of the reload-speed) and deals damage over time on enemies while slowing them down.
+Mod: Space-time tunnel: Block all incoming damage for 2 seconds. 
+Super: Space-time subordinate: Fire a projectile that places a copy of yourself in its landing location. The copy auto locks on enemies and fires at them. 
+
+Interlux 
+Description: Light bending
+Ammo Capacity: 4
+Primary Attack: Phocus: Controls a laser starting. Maxlength: 64 pixels, bounces, giving more damage each bounce.
+Mod: Lux Aeterna: Creates a light shield around your team for 3 seconds. 
+Super: Et lux perpetua luceat eis: Steals life from everyone on screen.
