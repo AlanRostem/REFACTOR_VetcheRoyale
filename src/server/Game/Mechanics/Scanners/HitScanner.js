@@ -31,18 +31,35 @@ class HitScanner {
     }
 
     scanGeometry(a, b, entityManager, tileMap) {
+        var distX = b.x - a.x;
+        var distY = b.y - a.y;
 
-        var d = Vector2D.distance(a, b);
-        var height;
-        var width = height = Math.floor(d / tileMap.tileSize);
+        var startX = Math.floor(a.x / tileMap.tileSize);
+        var startY = Math.floor((a.y + distY) / tileMap.tileSize);
 
-        var startX = Math.floor(a.x / tileMap.tileSize - width / 2);
-        var startY = Math.floor(a.y / tileMap.tileSize - height / 2);
+        var endX = startX + Math.floor(distX / tileMap.tileSize) + 1;
+        var endY = Math.floor(a.y / tileMap.tileSize) + 1;
 
-        var endX = startX + width + 1;
-        var endY = startY + height + 1;
+        entityManager.debugData.scanBox = {
+            sx: startX * 8,
+            sy: startY * 8,
+            ex: endX * 8,
+            ey: endY * 8
+        };
 
         if (this.scanTiles) {
+            if (startX > endX) {
+                let temp = endX;
+                endX = startX;
+                startX = temp;
+            }
+
+            if (startY > endY) {
+                let temp = endY;
+                endY = startY;
+                startY = temp;
+            }
+
             for (var y = startY; y <= endY; y++) {
                 for (var x = startX; x <= endX; x++) {
                     if (TileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {

@@ -24,7 +24,7 @@ class GameWorld extends EntityManager {
         this.bridgedData = new ONMap();
 
         this.spawner.spawnAll(this);
-
+        this.debugData = {};
 
     }
 

@@ -62,6 +62,7 @@ class GameDataLinker extends Alive {
         super.update(entityManager, deltaTime);
         this.gameData.mapName = entityManager.tileMap.name;
         this.gameData.playerCount = entityManager.playerCount;
+        this.gameData.debugData = entityManager.debugData;
     }
 }
 

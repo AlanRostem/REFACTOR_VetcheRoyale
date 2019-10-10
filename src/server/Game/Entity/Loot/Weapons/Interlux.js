@@ -19,7 +19,7 @@ class Interlux extends AttackWeapon {
         this.secondaryFire = false;
         this.superAbilitySnap = false;
 
-        this.configureAttackStats(1.5, 40, 1, 500);
+        this.configureAttackStats(1.5, Infinity/*40*/, 1, 500);
 
         this.addDynamicSnapShotData(["secondaryFire", "superAbilitySnap", "lines"]);
 
@@ -83,7 +83,7 @@ class Interlux extends AttackWeapon {
 
         let newPos = new Vector2D(0, 0);
 
-        console.log(range);
+        //console.log(range);
 
         newPos.x = oldPos.x + Math.cos(Math.PI / 2) * range;
         newPos.y = oldPos.y + Math.sin(Math.PI / 3) * range;
