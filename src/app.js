@@ -7,6 +7,8 @@ var server = require('http').Server(app);
 
 app.use(express.static(path.join(__dirname)));
 
+
+
 // All these app.get calls send the following
 // directories to the client.
 
@@ -31,9 +33,11 @@ app.get('/', (req, res) => {
    res.sendFile(path.join(__dirname + "/client/html/index.html"));
 });
 
-server.listen(process.env.PORT || 8080);
+PORT = process.env.PORT || 8080;
+server.listen(PORT);
 
 console.log("Dome 24 online!");
+console.log("DEBUG MODE: Hosting on http://localhost:" + PORT + "/");
 
 var io = require('socket.io').listen(server);
 var GameServer = require("./server/Networking/GameServer.js");
