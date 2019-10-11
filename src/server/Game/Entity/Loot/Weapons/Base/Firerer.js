@@ -131,6 +131,12 @@ class Firerer {
         weapon.spreadAngle = this.currentRecoil + this.defaultSpread;
     }
 
+    reset() {
+        this.currentRecoil = 0;
+        this.burstCount = 0;
+        this.chargeTime = 0;
+    }
+
 }
 
 

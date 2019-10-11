@@ -9,6 +9,8 @@ class WeaponItem extends Loot {
         this.playerID = null;
         this.displayName = displayName;
         this.weaponClass = weaponClass;
+        this.dropped = false;
+
         // All possible weapon classes:
         // pistol, rifle
 
@@ -16,9 +18,11 @@ class WeaponItem extends Loot {
             "displayName",
             "weaponClass",
         ]);
+
         this.addDynamicSnapShotData([
             "equippedToPlayer",
             "playerID",
+            "dropped",
         ]);
     }
 
@@ -32,6 +36,7 @@ class WeaponItem extends Loot {
         if (!this.equippedToPlayer) {
             // Update the world item behaviour when not equipped to player.
             super.update(entityManager, deltaTime);
+            this.dropped = false;
         } else {
             if (this.playerID) {
                 // If the player disconnects (or is removed from game world)
@@ -89,6 +94,7 @@ class WeaponItem extends Loot {
             this.vel.x = WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter;
             this.vel.y = WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter;
             this.onDrop(player, entityManager, deltaTime);
+            this.dropped = true;
         }
     }
 

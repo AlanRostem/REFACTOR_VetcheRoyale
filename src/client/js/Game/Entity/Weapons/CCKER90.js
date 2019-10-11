@@ -11,12 +11,13 @@ class CCKER90 extends CWeapon {
             x: 0,
             y: 0,
         };
-        this.prevFrom = {
-            x: 0,
-            y: 0,
-        };
     }
 
+    onDrop(client, deltaTime) {
+        super.onDrop(client, deltaTime);
+        this.toLerp.x = 0;
+        this.toLerp.y = 0;
+    }
 
     update(deltaTime, client) {
         super.update(deltaTime, client);

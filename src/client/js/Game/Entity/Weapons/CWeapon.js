@@ -12,10 +12,18 @@ export default class CWeapon extends CEntity {
 
     }
 
+    onDrop(client, deltaTime) {
+
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         if (this.getRealtimeProperty("firing") && this.getRealtimeProperty("equippedToPlayer")) {
             this.onFire(client, deltaTime);
+        }
+
+        if (this.getRealtimeProperty("dropped")) {
+            this.onDrop(client, deltaTime);
         }
     }
 

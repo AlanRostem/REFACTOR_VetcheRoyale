@@ -79,14 +79,14 @@ class StunEffect extends Effect {
 
 class BIGMotorizer extends AttackWeapon {
     constructor(x, y) {
-        super(x, y, "B.I.G Motorizer", "rifle", 0, 10, 0, 50, 15,
+        super(x, y, "Gust Motorizer", "rifle", 0, 10, 0, 50, 15,
             5 * Math.PI / 180,
             Math.PI / 180,
             0.07 * Math.PI / 180,
             0, 6, 0.05);
         this.minFireRate = 100;
         this.configureAttackStats(1.5, 36, 1, this.minFireRate);
-        this.modAbility.configureStats(1, 10);
+        this.modAbility.configureStats(.5, 10);
         this.upgradeStage = 0;
         this.thunderPulsePos = null;
         this.thunderPulse = new HitScanner([]);
@@ -105,44 +105,26 @@ class BIGMotorizer extends AttackWeapon {
 
     onModActivation(entityManager, deltaTime) {
         super.onModActivation(entityManager, deltaTime);
+    }
+
+    onModBuffs(entityManager, deltaTime) {
+        super.onModBuffs(entityManager, deltaTime);
+        this.canFire = false;
+    }
+
+    onModDeactivation(entityManager, deltaTime) {
+        super.onModDeactivation(entityManager, deltaTime);
         let end = {};
         end.x = this.center.x + Math.cos(this.fireAngle) * this.thunderPulseRange;
         end.y = this.center.y + Math.sin(this.fireAngle) * this.thunderPulseRange;
         this.thunderPulse.scan(this.center, end, entityManager, entityManager.tileMap);
         this.thunderPulsePos = end;
-    }
-
-    onModBuffs(entityManager, deltaTime) {
-        super.onModBuffs(entityManager, deltaTime);
-        if (this.upgradeStage < 2) {
-            this.canFire = false;
-        }
-    }
-
-    onModDeactivation(entityManager, deltaTime) {
-        super.onModDeactivation(entityManager, deltaTime);
-        if (this.upgradeStage < 2) {
-            this.canFire = true;
-        }
+        this.canFire = true;
         this.thunderPulsePos = null;
     }
 
     onSuperActivation(entityManager, deltaTime) {
-        this.upgradeStage++;
-        if (this.upgradeStage >= 4) {
-            this.currentAmmo = this.maxAmmo;
-            this.reloading = false;
-            this.currentReloadTime = 0;
-            this.canFire = true;
-            return;
-        }
-        if (this.upgradeStage === 1) {
-            this.firerer.maxChargeTime = 0;
-            this.firerer.maxBurstCount = 0;
-        }
-        if (this.upgradeStage === 3) {
-            this.firerer.recoil = 0;
-        }
+
     }
 
     fire(player, entityManager, deltaTime, angle) {
@@ -161,9 +143,6 @@ class BIGMotorizer extends AttackWeapon {
         super.updateWhenEquipped(player, entityManager, deltaTime);
         if (entityManager.getEntity(this.playerID)) {
             this.fireAngle = entityManager.getEntity(this.playerID).input.mouseData.angleCenter;
-        }
-        if (!this.holdingDownFireButton) {
-            this.fireRate = this.minFireRate;
         }
     }
 

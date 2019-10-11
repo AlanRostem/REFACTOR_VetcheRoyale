@@ -125,9 +125,13 @@ class AttackWeapon extends WeaponItem {
     onDrop(player, entityManager, deltaTime) {
         if (this.modAbility.active) {
             this.modAbility.deActivate(this, entityManager, deltaTime);
+        }
+        if (this.superAbility.active) {
             this.superAbility.deActivate(this, entityManager, deltaTime);
         }
+        this.firerer.reset();
         this.currentReloadTime = 0;
+        this.currentFireTime = 0;
         this.reloading = false;
         this.firing = false;
     }
