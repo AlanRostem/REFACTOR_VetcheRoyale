@@ -74,7 +74,7 @@ export default class CEntityManager {
 
         client.on('removeOutOfBoundsEntity', id => {
             if (this.existsOnClient(id)) {
-                if (id !== client.id) {
+                if (id !== client.id && id !== client.player.output.invWeaponID) {
                     this.removeOutOfBoundsEntity(id);
                 }
             } else {

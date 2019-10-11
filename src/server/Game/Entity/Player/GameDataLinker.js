@@ -22,7 +22,6 @@ class GameDataLinker extends Alive {
         this.worldMgrRef = worldMgr;
         this.input = new InputBridge();
         this.outboundData = new ONMap();
-
     }
 
     receiveInputData(data) {

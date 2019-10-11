@@ -16,6 +16,8 @@ class ElectricSphere extends Projectile {
         this.maxSpeed = 200;
         this.velVal = 5;
         this.weapon = null;
+        this.secondary = false;
+        this.addDynamicSnapShotData(["secondary"]);
 
         this.areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this.radius, 10,
             entityManager.getEntity(ownerID).team.players);
@@ -33,12 +35,13 @@ class ElectricSphere extends Projectile {
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);
-        if (this.weapon.modActive) this.weapon.modAbility.deActivate(false, entityManager);
+        if (this.weapon.modActive) this.weapon.modAbility.deActivate(null, entityManager);
         this.remove();
     }
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+
 
         if (this.getOwner(entityManager)) {
             let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
@@ -110,23 +113,32 @@ class SEW_9 extends AttackWeapon {
                 this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
                     0, entityManager));
             this.misRef.weapon = this;
+            this.misRef.secondary = true;
             this.secondaryFire = true;
+            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = false;
         };
 
         this.modAbility.configureStats(10, 4);
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-            if (composedWeapon !== false) this.misRef.detonate(entityManager);
 
             this.secondaryFire = false;
             this.canMove = true;
 
             this.isShooting = false;
+            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+            if (composedWeapon) this.misRef.detonate(entityManager);
         };
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
             this.canMove = false;
             this.isShooting = true;
+            if (this.misRef) {
+                this.getOwner(entityManager).entitiesInProximity.follow(
+                    this.misRef.x,
+                    this.misRef.y
+                );
+            }
         };
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {

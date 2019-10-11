@@ -12,6 +12,7 @@ class Projectile extends Physical {
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle)* speed;
         this.hitTile = false;
+        this.addStaticSnapShotData(["ownerID"]);
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
         this.setCollisionResponseID("Projectile");

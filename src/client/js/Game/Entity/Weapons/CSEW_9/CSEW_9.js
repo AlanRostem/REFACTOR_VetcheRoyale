@@ -1,9 +1,9 @@
-import CWeapon from "./CWeapon.js";
-import R from "../../../Graphics/Renderer.js";
-import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
-import UI from "../../../UI/UI.js";
-import Scene from "../../Scene.js";
-import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
+import CWeapon from "../CWeapon.js";
+import R from "../../../../Graphics/Renderer.js";
+import {vectorLinearInterpolation} from "../../../../../../shared/code/Math/CCustomMath.js";
+import UI from "../../../../UI/UI.js";
+import Scene from "../../../Scene.js";
+import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
 export default class CSEW_9 extends CWeapon {
 
@@ -17,24 +17,11 @@ export default class CSEW_9 extends CWeapon {
     }
 
     update(deltaTime, client) {
-        this.player = Scene.entityManager.getEntityByID(this.output.playerID);
         super.update(deltaTime, client);
-
+        this.player = Scene.entityManager.getEntityByID(this.output.playerID);
         this.isShooting = this.getRealtimeProperty("isShooting");
         if(this.isShooting) AudioPool.play("Weapons/sew-9_a.oggSE", this.output.misPos, this.isShooting);
-
         else AudioPool.stop("Weapons/sew-9_a.oggSE");
-        if (this.getRealtimeProperty("playerID") !== client.id) return;
-        let secondary = this.getRealtimeProperty("secondaryFire");
-        if (secondary) {
-            R.camera.setConfig("followPlayer", false);
-            R.camera.setCurrentFollowPos(this.output.misPos);
-        } else {
-
-            R.camera.setConfig("followPlayer", true);
-
-        }
-
     }
 
     draw() {

@@ -14,6 +14,18 @@ class ProximityEntityManager extends EntityManager {
             // actual entity check range would be a 320*2 by 160*2
             // rectangle around the entity.
             320, 160);
+        this.shouldFollowEntity = true;
+    }
+
+    toggleFollowEntity() {
+        this.shouldFollowEntity = !this.shouldFollowEntity;
+    }
+
+    follow(x, y) {
+        if (!this.shouldFollowEntity) {
+            this.qtBounds.x = x;
+            this.qtBounds.y = y;
+        }
     }
 
     addEntity(entity) {
@@ -31,8 +43,10 @@ class ProximityEntityManager extends EntityManager {
     // Binds the quad tree range bounding rect to
     // the entity's center and does interaction checks.
     update(entityManager, deltaTime) {
-        this.qtBounds.x = this.entRef.center.x;
-        this.qtBounds.y = this.entRef.center.y;
+        if (this.shouldFollowEntity) {
+            this.qtBounds.x = this.entRef.center.x;
+            this.qtBounds.y = this.entRef.center.y;
+        }
         this.quadTreePlacement(entityManager);
         this.checkProximityEntities(entityManager);
     }
@@ -40,7 +54,6 @@ class ProximityEntityManager extends EntityManager {
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
     checkProximityEntities(entityManager) {
-
         var entities = entityManager.quadTree.query(this.qtBounds);
         for (let e of entities) {
             if (e !== this.entRef) {

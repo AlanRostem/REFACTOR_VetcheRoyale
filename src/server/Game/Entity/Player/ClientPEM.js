@@ -44,6 +44,7 @@ class ClientPEM extends ProximityEntityManager {
             // Removes entities out of bounds. Suboptimal location to do this.
             if (e.toRemove) {
                 this.removeEntity(id);
+                continue;
             }
 
             if (!this.qtBounds.myContains(e)) {
@@ -51,6 +52,9 @@ class ClientPEM extends ProximityEntityManager {
             }
         }
         this.dataBox[this.entRef.id] = this.entRef.getDataPack();
+        if (this.entRef.inventory.weapon) {
+            this.dataBox[this.entRef.inventory.weapon.id] = this.entRef.inventory.weapon.getDataPack();
+        }
         return this.dataBox;
     }
 

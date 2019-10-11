@@ -154,6 +154,7 @@ const Scene = {
                 "Green");
 
         }
+        
         R.debug(Scene.clientRef.latency + "ms");
         R.drawDebug();
     },

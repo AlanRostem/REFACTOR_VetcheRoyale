@@ -131,7 +131,6 @@ class AttackWeapon extends WeaponItem {
         }
         this.firerer.reset();
         this.currentReloadTime = 0;
-        this.currentFireTime = 0;
         this.reloading = false;
         this.firing = false;
     }
