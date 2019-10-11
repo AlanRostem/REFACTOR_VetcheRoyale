@@ -34,11 +34,11 @@ class HitScanner {
         var distX = b.x - a.x;
         var distY = b.y - a.y;
 
-        var startX = Math.floor(a.x / tileMap.tileSize);
-        var startY = Math.floor((a.y + distY) / tileMap.tileSize);
+        var startX = Math.round(a.x / tileMap.tileSize);
+        var startY = Math.round((a.y + distY) / tileMap.tileSize);
 
-        var endX = startX + Math.floor(distX / tileMap.tileSize) + 1;
-        var endY = Math.floor(a.y / tileMap.tileSize) + 1;
+        var endX = startX + Math.round(distX / tileMap.tileSize);
+        var endY = Math.round(a.y / tileMap.tileSize);
 
         entityManager.debugData.scanBox = {
             sx: startX * 8,
@@ -46,6 +46,11 @@ class HitScanner {
             ex: endX * 8,
             ey: endY * 8
         };
+
+        if (Math.floor(distX / tileMap.tileSize) === 0) {
+            endX++;
+            startX--;
+        }
 
         if (this.scanTiles) {
             if (startX > endX) {
