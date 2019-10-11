@@ -1,6 +1,5 @@
 const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("./Matchmaker.js");
-const WorldManager = require("../Game/World/WorldManager.js");
 const Thread = require("../Multithreading/Thread.js");
 const DataBridge = require("../Multithreading/DataBridge.js");
 
@@ -9,8 +8,6 @@ class GameServer {
     constructor(sio) {
         this.matchMaker = new MatchMaker();
         this.mainSocket = new WebSocket(sio, this.matchMaker, this);
-        this.lastWorldName = "playground"; // TODO: Automate
-        const _this = this;
 
         this.tickRate = 60; // Hz (TEMPORARY)
 
@@ -23,8 +20,6 @@ class GameServer {
         this.deltaTime = 0;
         this.lastTime = 0;
         this.started = false;
-
-        this.dataSpoofArray = [];
     }
 
     update() {
