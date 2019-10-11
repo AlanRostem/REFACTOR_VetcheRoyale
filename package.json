@@ -8,9 +8,6 @@
     "wt": "node --experimental-worker src/app.js",
     "doc": "jsdoc -c jsdoc.conf.json"
   },
-  "engines": {
-    "npm": "12.x"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
