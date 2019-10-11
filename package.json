@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.js",
     "wt": "node --experimental-worker src/app.js",
-    "doc": "jsdoc -c jsdoc.conf.json"
+    "doc": "jsdoc -c jsdoc.conf.json",
+    "build": "babel src/client/js -d src"
   },
   "engines": {
     "node": "12.10.0"
@@ -17,5 +18,9 @@
     "express": "^4.17.1",
     "jsdoc": "^3.6.3",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   }
 }
