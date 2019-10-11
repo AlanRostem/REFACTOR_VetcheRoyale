@@ -11,7 +11,7 @@ class CCKER90 extends CWeapon {
             x: 0,
             y: 0,
         };
-        this.maxDist = 780;
+        this.maxDist = 1000;
     }
 
     onDrop(client, deltaTime) {
