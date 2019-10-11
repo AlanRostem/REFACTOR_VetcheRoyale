@@ -40,6 +40,13 @@ class HitScanner {
         var endX = startX + Math.floor(distX / tileMap.tileSize) + 1;
         var endY = Math.floor(a.y / tileMap.tileSize) + 1;
 
+        entityManager.debugData.scanBox = {
+            sx: startX * 8,
+            sy: startY * 8,
+            ex: endX * 8,
+            ey: endY * 8
+        };
+
         if (this.scanTiles) {
             if (startX > endX) {
                 let temp = endX;
