@@ -11,6 +11,7 @@ class CCKER90 extends CWeapon {
             x: 0,
             y: 0,
         };
+        this.maxDist = 780;
     }
 
     onDrop(client, deltaTime) {
@@ -29,6 +30,7 @@ class CCKER90 extends CWeapon {
                 let center = {x: R.screenSize.x / 2, y: R.screenSize.y / 2};
                 let d = Vector2D.distance(client.input.mouse, center);
                 d *= 6;
+                if (d >= this.maxDist) d = this.maxDist;
                 let to = {x: -d * client.input.mouse.cosCenter, y: -d * client.input.mouse.sinCenter};
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);
