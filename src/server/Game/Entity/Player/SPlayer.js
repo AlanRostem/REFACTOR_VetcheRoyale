@@ -77,7 +77,10 @@ class Player extends GameDataLinker {
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
                     if (entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
-                        this.itemsNearby.set(entity.id, distance);
+                        this.itemScanner.scan(this.center, entity.center, game, game.tileMap);
+                        if (HitScanner.intersectsEntity(this.center, this.itemScanner.end, entity)) {
+                            this.itemsNearby.set(entity.id, distance);
+                        }
                     }
                 }
             }
@@ -87,9 +90,7 @@ class Player extends GameDataLinker {
                 let loot = game.getEntity(id);
                 if (loot) {
                     if (this.itemsNearby.get(loot.id) === closest) {
-                        this.itemScanner.scan(this.center, loot.center, game, game.tileMap);
-                        if (HitScanner.intersectsEntity(this.center, this.itemScanner.end, loot))
-                            loot.onPlayerInteraction(this, game);
+                        loot.onPlayerInteraction(this, game);
                     }
                 }
             }
