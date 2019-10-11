@@ -20,6 +20,8 @@ const R = {
         y: 1
     },
 
+    debugStrings: "",
+
     /**
      * Current screen size of the canvas
      */
@@ -53,6 +55,14 @@ const R = {
         window.onresize = e => {
             this.calibrateScreen();
         };
+    },
+
+    debug(...args) {
+        let string = "";
+        for (let arg of args) {
+            string += arg + " ";
+        }
+        R.debugStrings += string + "\n";
     },
 
     calibrateScreen() {
@@ -187,6 +197,11 @@ const R = {
             Math.round(y + (useCamera ? R.camera.displayPos.y : 0)),
             width, height);
         ctx.restore();
+    },
+
+    drawDebug() {
+        R.drawText(R.debugStrings, 5, 5, "Green");
+        R.debugStrings = "";
     }
 };
 

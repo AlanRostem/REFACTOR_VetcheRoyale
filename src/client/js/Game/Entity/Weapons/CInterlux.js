@@ -37,7 +37,6 @@ export default class CInterlux extends CWeapon {
                     r.sy + R.camera.y,
                     -(r.sx - r.ex),
                     -(r.sy - r.ey));
-                R.drawText((r.sx - r.ex) + ", " + (r.sy - r.ey), 0, 10, "White");
                 R.ctx.stroke();
             }
 
@@ -50,7 +49,6 @@ export default class CInterlux extends CWeapon {
 
         }
         R.ctx.restore();
-
     }
 
 }

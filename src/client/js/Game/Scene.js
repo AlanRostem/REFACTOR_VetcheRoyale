@@ -137,7 +137,6 @@ const Scene = {
             Scene.tileMaps.getMap(Scene.currentMapName).draw();
             Scene.entityManager.drawEntities();
             UI.draw();
-            R.drawText(Scene.clientRef.latency + "ms", 4, 4, "White");
             document.body.style.cursor = "none";
         } else {
             document.body.style.cursor = "default";
@@ -155,6 +154,8 @@ const Scene = {
                 "Green");
 
         }
+        R.debug(Scene.clientRef.latency + "ms");
+        R.drawDebug();
     },
 
     tick(time) {
