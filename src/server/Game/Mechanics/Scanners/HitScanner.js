@@ -47,12 +47,15 @@ class HitScanner {
             ey: endY * 8
         };
 
-        if (Math.floor(distX / tileMap.tileSize) === 0) {
-            endX++;
-            startX--;
-        }
-
         if (this.scanTiles) {
+            if (startX - endX === 0) {
+                startX--;
+            }
+
+            if (startY - endY === 0) {
+                startY--;
+            }
+
             if (startX > endX) {
                 let temp = endX;
                 endX = startX;

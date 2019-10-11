@@ -31,8 +31,13 @@ export default class CInterlux extends CWeapon {
             if (Object.keys(r).length > 0) {
                 R.ctx.beginPath();
                 R.ctx.strokeStyle = "Green";
-                R.ctx.moveTo(r.sx + R.camera.x, r.sy + R.camera.y);
-                R.ctx.lineTo(r.ex + R.camera.x, r.ey + R.camera.y);
+                R.ctx.lineWidth = 2;
+                R.ctx.rect(
+                    r.sx + R.camera.x,
+                    r.sy + R.camera.y,
+                    -(r.sx - r.ex),
+                    -(r.sy - r.ey));
+                R.drawText((r.sx - r.ex) + ", " + (r.sy - r.ey), 0, 10, "White");
                 R.ctx.stroke();
             }
 
