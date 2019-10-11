@@ -5,4 +5,4 @@ const WorldManager = require("./World/WorldManager.js");
 const worldManager = new WorldManager(parentPort);
 setInterval(() => {
     worldManager.update();
-}, 1000/60);
+}, 1000/workerData.tickRate);

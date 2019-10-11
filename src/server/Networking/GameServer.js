@@ -12,13 +12,16 @@ class GameServer {
         this.lastWorldName = "playground"; // TODO: Automate
         const _this = this;
 
-        this.thread = new Thread({}, "./src/server/Game/SimulationSide.js");
+        this.tickRate = 60; // Hz (TEMPORARY)
+
+        this.thread = new Thread({
+            tickRate: this.tickRate
+        }, "./src/server/Game/SimulationSide.js");
 
         this.dataBridge = null;
 
         this.deltaTime = 0;
         this.lastTime = 0;
-        this.tickRate = 60; // Hz (TEMPORARY)
         this.started = false;
 
         this.dataSpoofArray = [];
