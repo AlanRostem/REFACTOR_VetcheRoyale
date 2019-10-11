@@ -191,11 +191,9 @@ class AttackWeapon extends WeaponItem {
         }
 
         // Reload when inventory ammo is over zero.
-        if (player.input.singleKeyPress(82)) {
-            if (!player.input.mouseHeldDown(1)) {
-                if (player.inventory.ammo > 0) {
-                    this.activateReloadAction();
-                }
+        if (player.input.singleKeyPress(82) && !this.reloading) {
+            if (player.inventory.ammo > 0) {
+                this.activateReloadAction();
             }
         }
     }
