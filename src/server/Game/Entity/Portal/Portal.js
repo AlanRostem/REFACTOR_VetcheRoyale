@@ -43,7 +43,7 @@ class Portal extends Interactable {
         for (let id in this.recentlyTeleportedPlayers.object) {
             this.recentlyTeleportedPlayers.set(id, this.recentlyTeleportedPlayers.get(id) - deltaTime);
             if (this.recentlyTeleportedPlayers.get(id) <= 0) {
-                this.recentlyTeleportedPlayers.remove(id)
+                this.recentlyTeleportedPlayers.remove(id);
             }
         }
     }
@@ -55,8 +55,8 @@ class Portal extends Interactable {
 
         if (!this.recentlyTeleportedPlayers.has(entity.id)) {
             this.recentlyTeleportedPlayers.set(entity.id, this.maxTeleportCooldown);
-        } else {
             this.pair.recentlyTeleportedPlayers.set(entity.id, this.maxTeleportCooldown);
+        } else {
             return;
         }
 
