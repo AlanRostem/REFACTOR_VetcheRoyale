@@ -36,7 +36,7 @@ export default class CWeapon extends CEntity {
                 let pos = this.getRealtimeProperty("pos");
                 let h = this.getRealtimeProperty("height");
                 CWeapon.sprite.drawStill(name,
-                    pos.x - rect.w / 2 + R.camera.x,
+                    pos.x - 4 + R.camera.x,
                     pos.y + R.camera.y - Math.abs(rect.h - h));
             } else {
                 let pos = this.getRealtimeProperty("pos");

@@ -26,19 +26,7 @@ export default class CInterlux extends CWeapon {
         R.ctx.save();
 
         //console.log(this.lines);
-        let r = Scene.clientRef.inboundPacket.gameData.debugData.scanBox;
-        if (r)
-            if (Object.keys(r).length > 0) {
-                R.ctx.beginPath();
-                R.ctx.strokeStyle = "Green";
-                R.ctx.lineWidth = 2;
-                R.ctx.rect(
-                    r.sx + R.camera.x,
-                    r.sy + R.camera.y,
-                    -(r.sx - r.ex),
-                    -(r.sy - r.ey));
-                R.ctx.stroke();
-            }
+
         if (this.lines)
         for (var i = 0; i <= this.lines.length - 2; i += 2) {
             R.ctx.beginPath();

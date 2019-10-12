@@ -4,35 +4,45 @@ const Entity = require("../SEntity.js");
 // Class that composes all data pack
 // exporting for every entity in the game.
 
-function isEquivalent(a, b) {
-    // Create arrays of property names
-    if (isNaN(a) || !a || isNaN(b) || !b) {
-        return a === b;
-    }
-
-    var aProps = Object.getOwnPropertyNames(a);
-    var bProps = Object.getOwnPropertyNames(b);
-
-    // If number of properties is different,
-    // objects are not equivalent
-    if (aProps.length !== bProps.length) {
+Object.equals = function (self, other) {
+    if (!other || (typeof other === "number" && isNaN(other))) {
+        //console.log("Object cannot equal to NaN, undefined or null!");
         return false;
     }
 
-    for (var i = 0; i < aProps.length; i++) {
-        var propName = aProps[i];
+    let props1 = Object.keys(self);
+    let props2 = Object.keys(other);
 
-        // If values of same property are not equal,
-        // objects are not equivalent
-        if (a[propName] !== b[propName]) {
+    if (props1.length === 0 && props2.length === 0) {
+        return true;
+    }
+
+    if (props1.length !== props2.length) {
+        //console.log("Object lengths didn't match!");
+        return false;
+    }
+
+    for (let key of props1) {
+        if (typeof self[key] === "object") {
+            if (!Object.equals(self[key], other[key])) {
+                //console.log("Object inside the object didn't match!");
+                return false;
+            }
+            continue;
+        }
+
+        if (typeof self[key] === "function") {
+            continue;
+        }
+
+        if (self[key] !== other[key]) {
+            //console.log("Value inside the object didn't match!");
             return false;
         }
     }
 
-    // If we made it this far, objects
-    // are considered equivalent
     return true;
-}
+};
 
 class SnapShotGenerator {
 
@@ -50,8 +60,8 @@ class SnapShotGenerator {
         this.valueBuffer = {};
 
         this.snapShot = {
-            init:{},
-            dynamic:{}
+            init: {},
+            dynamic: {}
         };
 
         this.composedEntity = composedEntity;
@@ -133,9 +143,10 @@ class SnapShotGenerator {
         //this.snapShot.serverTimeStamp = Date.now();
         this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
-            //if (isEquivalent(composedEntity[key], this.valueBuffer[key])) continue;
+            //if (Object.equals(composedEntity[key], this.valueBuffer[key])) continue;
             this.snapShot.dynamic[key] = composedEntity[key];
             this.valueBuffer[key] = composedEntity[key];
+
         }
     }
 
