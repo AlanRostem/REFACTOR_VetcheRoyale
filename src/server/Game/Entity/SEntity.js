@@ -67,7 +67,6 @@ class SEntity {
 
     initFromEntityManager(entityManager) {
 
-
     }
 
 

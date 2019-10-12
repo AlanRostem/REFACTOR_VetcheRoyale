@@ -3,6 +3,37 @@ const Entity = require("../SEntity.js");
 
 // Class that composes all data pack
 // exporting for every entity in the game.
+
+function isEquivalent(a, b) {
+    // Create arrays of property names
+    if (isNaN(a) || !a || isNaN(b) || !b) {
+        return a === b;
+    }
+
+    var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+
+    // If number of properties is different,
+    // objects are not equivalent
+    if (aProps.length !== bProps.length) {
+        return false;
+    }
+
+    for (var i = 0; i < aProps.length; i++) {
+        var propName = aProps[i];
+
+        // If values of same property are not equal,
+        // objects are not equivalent
+        if (a[propName] !== b[propName]) {
+            return false;
+        }
+    }
+
+    // If we made it this far, objects
+    // are considered equivalent
+    return true;
+}
+
 class SnapShotGenerator {
 
     // The 2 last parameters are arrays with strings of the
@@ -110,15 +141,16 @@ class SnapShotGenerator {
         //this.snapShot.serverTimeStamp = Date.now();
         this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
-            if (composedEntity[key] === this.valueBuffer[key]) continue;
+            //if (isEquivalent(composedEntity[key], this.valueBuffer[key])) continue;
             this.snapShot.dynamic[key] = composedEntity[key];
-            console.log(this.valueBuffer[key], this.snapShot.dynamic[key]);
+            //console.log(this.valueBuffer[key], this.snapShot.dynamic[key]);
         }
+        //console.log(this.valueBuffer, this.snapShot.dynamic);
         this.valueBuffer = this.snapShot.dynamic;
     }
 
     exportInitValues(){
-        return this.snapShot.init;
+        return this.snapShot;
     }
 
     export() {
