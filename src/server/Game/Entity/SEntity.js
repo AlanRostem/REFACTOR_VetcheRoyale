@@ -70,7 +70,6 @@ class SEntity {
 
     }
 
-
     forEachNearbyEntity(entity, entityManager) {
         // Override here
     }

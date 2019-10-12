@@ -14,7 +14,9 @@ Object.equals = function (self, other) {
         return self === other;
     }
 
-
+    if (typeof self !== "object" || typeof other !== "object") {
+        return self === other;
+    }
 
     let props1 = Object.keys(self);
     let props2 = Object.keys(other);
@@ -159,9 +161,13 @@ class SnapShotGenerator {
         //this.snapShot.serverTimeStamp = Date.now();
         this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
-           if (Object.equals(composedEntity[key], this.valueBuffer[key])) continue;
+            if (Object.equals(composedEntity[key], this.valueBuffer[key])) continue;
             this.snapShot.dynamic[key] = composedEntity[key];
-            this.valueBuffer[key] = Object.copy(composedEntity[key]);
+            if (typeof composedEntity[key] === "object") {
+                this.valueBuffer[key] = Object.copy(composedEntity[key]);
+            } else {
+                this.valueBuffer[key] = composedEntity[key];
+            }
         }
     }
 

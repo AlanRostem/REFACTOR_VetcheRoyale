@@ -21,7 +21,6 @@ class AttackWeapon extends WeaponItem {
         this.modCoolDownData = 0;
         this.firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
         this.firing = false;
-        this.holdingDownFireButton = false;
         this.spreadAngle = 0;
         this.canUseSuper = true;
         this.canUseMod = true;

@@ -150,6 +150,7 @@ class CClient {
         if (!this.eMgr) {
             this.eMgr = entityManager;
         }
+
         this.localTime += deltaTime;
         this.startTime = Date.now();
         if (this.inboundPacket) {
