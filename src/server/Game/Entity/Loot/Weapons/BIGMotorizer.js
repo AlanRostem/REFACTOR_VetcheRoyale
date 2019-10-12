@@ -67,7 +67,7 @@ class MicroMissile extends Projectile {
 
 class StunEffect extends Effect {
     constructor(id) {
-        super(id, 1);
+        super(id, 3);
     }
 
     effects(entity, entityManager, deltaTime) {
@@ -97,7 +97,7 @@ class BIGMotorizer extends AttackWeapon {
                 }
             }
         };
-        this.thunderPulseRange = 12 * 8;
+        this.thunderPulseRange = 40 * 8;
         this.addDynamicSnapShotData([
             "thunderPulsePos"
         ]);
