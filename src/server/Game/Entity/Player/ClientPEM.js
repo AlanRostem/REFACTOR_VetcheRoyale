@@ -46,23 +46,29 @@ class ClientPEM extends ProximityEntityManager {
     }
 
     exportDataPack() {
+        this.dataBox = {};
         for (let id in this.container) {
-            this.dataBox[id] = this.container[id].getDataPack();
-            let e = this.container[id];
-            // Removes entities out of bounds. Suboptimal location to do this.
-            if (e.toRemove) {
-                this.removeEntity(id);
-                continue;
-            }
+            if (Object.keys(this.container[id].getDataPack()).length)
+                this.dataBox[id] = this.container[id].getDataPack();
+                let e = this.container[id];
+                // Removes entities out of bounds. Suboptimal location to do this.
+                if (e.toRemove) {
+                    this.removeEntity(id);
+                    continue;
+                }
 
-            if (!this.qtBounds.myContains(e)) {
-                this.throwOutOfBounds(e.id);
-            }
+                if (!this.qtBounds.myContains(e)) {
+                    this.throwOutOfBounds(e.id);
+                }
+
         }
-        this.dataBox[this.entRef.id] = this.entRef.getDataPack();
-        if (this.entRef.inventory.weapon) {
-            this.dataBox[this.entRef.inventory.weapon.id] = this.entRef.inventory.weapon.getDataPack();
+        if (Object.keys(this.entRef.getDataPack()).length) {
+            this.dataBox[this.entRef.id] = this.entRef.getDataPack();
         }
+        if (this.entRef.inventory.weapon)
+            if (Object.keys(this.entRef.inventory.weapon.getDataPack()).length)
+                this.dataBox[this.entRef.inventory.weapon.id] = this.entRef.inventory.weapon.getDataPack();
+
         return this.dataBox;
     }
 
