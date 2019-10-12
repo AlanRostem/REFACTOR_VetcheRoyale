@@ -141,12 +141,10 @@ class SnapShotGenerator {
         //this.snapShot.serverTimeStamp = Date.now();
         this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
-            //if (isEquivalent(composedEntity[key], this.valueBuffer[key])) continue;
+            if (isEquivalent(composedEntity[key], this.valueBuffer[key])) continue;
             this.snapShot.dynamic[key] = composedEntity[key];
-            //console.log(this.valueBuffer[key], this.snapShot.dynamic[key]);
+            this.valueBuffer[key] = composedEntity[key];
         }
-        //console.log(this.valueBuffer, this.snapShot.dynamic);
-        this.valueBuffer = this.snapShot.dynamic;
     }
 
     exportInitValues(){
