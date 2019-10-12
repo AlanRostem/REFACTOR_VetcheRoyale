@@ -107,6 +107,7 @@ const Scene = {
     update() {
         if (AssetManager.done()) {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
+            if (!Scene.clientRef.isReady()) return;
             Scene.eventManager.update(Scene.clientRef, Scene.deltaTime);
             UI.update(Scene.deltaTime, Scene.clientRef, Scene.entityManager);
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
@@ -134,6 +135,7 @@ const Scene = {
         }
 
         if (AssetManager.done()) {
+            if (!Scene.clientRef.isReady()) return;
             Scene.tileMaps.getMap(Scene.currentMapName).draw();
             Scene.entityManager.drawEntities();
             UI.draw();

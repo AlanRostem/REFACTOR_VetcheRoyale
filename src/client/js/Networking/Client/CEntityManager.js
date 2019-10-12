@@ -23,10 +23,6 @@ export default class CEntityManager {
         let entity = EntityTypeSpawner.spawn(dataPack.init.entityType, dataPack, client);
         this.container.set(dataPack.init.id, entity);
         entity.onClientSpawn(dataPack, client);
-        if (dataPack.init.entityType === "Player") {
-            console.log(dataPack.init.id === client.id);
-        }
-
         if (this.container.size < 1) return;
         let toArray = [...this.container.entries()];
 

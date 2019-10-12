@@ -132,6 +132,20 @@ class CClient {
         return this.eMgr.getEntityByID(this.id);
     }
 
+    isReady() {
+        if (!this.eMgr) {
+            return false;
+        }
+
+        if (!this.player) {
+            return false;
+
+        }
+        if (Object.keys(this.player.output).length > 0) {
+            return true;
+        }
+    }
+
     update(entityManager, deltaTime) {
         if (!this.eMgr) {
             this.eMgr = entityManager;

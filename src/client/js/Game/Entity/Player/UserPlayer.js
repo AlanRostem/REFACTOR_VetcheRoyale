@@ -31,15 +31,6 @@ class UserPlayer extends RemotePlayer {
         };
     }
 
-    updateFromDataPack(dataPack, client) {
-        this.dataBuffer.t_directServerUpdate(dataPack, this);
-        //super.updateFromDataPack(dataPack, client);
-        //this._serverState = dataPack;
-        //this._output = dataPack;
-        //this.updateRemainingServerData(client);
-        //this.serverReconciliation(client);
-    }
-
     overlapTile(pos, e) {
         return pos.y + this.height > e.y
             && pos.y < (e.y + TILE_SIZE)

@@ -39,7 +39,7 @@ export default class EntitySnapshotBuffer {
     }
 
     t_directServerUpdate(data, entity) {
-        entity.output = data;
+        //entity.output = data;
     }
 
     onServerUpdateReceived(data, entity, client) {

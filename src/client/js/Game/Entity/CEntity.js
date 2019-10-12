@@ -21,7 +21,6 @@ class CEntity {
          * @type {Object}
          */
         this.output = {};
-        console.log(initDataPack.dynamic)
         this.consts = initDataPack.init;
         for (let key in initDataPack.dynamic) {
             this.output[key] = initDataPack.dynamic[key];
@@ -36,7 +35,7 @@ class CEntity {
          */
         this.dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
-        this.color = "white"//this.output.color;
+        this.color = "white";//this.output.color;
         this.width = this.output.width;
         this.height = this.output.height;
     }
