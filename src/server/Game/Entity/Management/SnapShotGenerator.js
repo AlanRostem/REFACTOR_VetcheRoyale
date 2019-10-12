@@ -5,9 +5,13 @@ const Entity = require("../SEntity.js");
 // exporting for every entity in the game.
 
 Object.equals = function (self, other) {
-    if (!other || (typeof other === "number" && isNaN(other))) {
+    if (typeof other === "number" && isNaN(other)) {
         //console.log("Object cannot equal to NaN, undefined or null!");
         return false;
+    }
+
+    if (other === null || other === undefined) {
+        return self === other;
     }
 
     let props1 = Object.keys(self);
@@ -42,6 +46,16 @@ Object.equals = function (self, other) {
     }
 
     return true;
+};
+
+
+Object.copy = function (obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = new obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
 };
 
 class SnapShotGenerator {
@@ -143,17 +157,16 @@ class SnapShotGenerator {
         //this.snapShot.serverTimeStamp = Date.now();
         this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
-            //if (Object.equals(composedEntity[key], this.valueBuffer[key])) continue;
+           if (Object.equals(composedEntity[key], this.valueBuffer[key])) continue;
             this.snapShot.dynamic[key] = composedEntity[key];
-            this.valueBuffer[key] = composedEntity[key];
-
+            this.valueBuffer[key] = Object.copy(composedEntity[key]);
         }
     }
 
     exportInitValues() {
         for (let key of this.dynamicValues) {
             this.snapShot.dynamic[key] = this.composedEntity[key];
-            this.valueBuffer[key] = this.composedEntity[key];
+            this.valueBuffer[key] = Object.copy(this.composedEntity[key]);
         }
         return this.snapShot;
     }
