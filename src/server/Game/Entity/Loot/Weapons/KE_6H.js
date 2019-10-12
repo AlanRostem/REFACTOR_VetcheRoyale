@@ -42,7 +42,7 @@ class KineticBomb extends Bouncy {
         delete exceptions[ownerID];
         this.weapon = weaponRef;
 
-        this.areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 4, 300, 15, exceptions);
+        this.areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 3, 300, 15, exceptions);
     }
 
     onTileHit(entityManager, deltaTime) {
