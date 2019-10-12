@@ -62,10 +62,11 @@ class SEntity {
     }
 
     addStaticSnapShotData(array) {
-        this.snapShotGenerator.addReferenceValues(this, array);
+        this.snapShotGenerator.addStaticValues(this, array);
     }
 
     initFromEntityManager(entityManager) {
+
 
     }
 
@@ -101,6 +102,10 @@ class SEntity {
 
     getDataPack() {
         return this.snapShotGenerator.export();
+    }
+
+    getInitDataPack(){
+        return this.snapShotGenerator.exportInitValues();
     }
 
     get toRemove() {

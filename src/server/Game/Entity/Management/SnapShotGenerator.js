@@ -7,7 +7,7 @@ class SnapShotGenerator {
 
     // The 2 last parameters are arrays with strings of the
     // entity's specified properties.
-    constructor(composedEntity, referenceValues, dynamicValues = []) {
+    constructor(composedEntity, referenceValues, dynamicValues = [], constValues = []) {
 
         // Pass in constants or reference objects that
         // are updated in referenceValues.
@@ -16,9 +16,16 @@ class SnapShotGenerator {
         // require to be manually updated
         this.dynamicValues = dynamicValues;
 
-        this.snapShot = {};
+        this.constValues = constValues;
 
-        this.snapShot.entityType = composedEntity.constructor.name;
+        this.valueBuffer = {};
+
+        this.snapShot = {
+            init:{},
+            dynamic:{}
+        };
+
+        this.snapShot.init.entityType = composedEntity.constructor.name;
 
         for (let key of referenceValues) {
             if (!composedEntity.hasOwnProperty(key)) {
@@ -26,7 +33,7 @@ class SnapShotGenerator {
                     " does not have property " + key + " in reference values.");
             }
 
-            this.snapShot[key] = composedEntity[key];
+            this.snapShot.init[key] = composedEntity[key];
         }
 
         for (let key of dynamicValues) {
@@ -34,7 +41,15 @@ class SnapShotGenerator {
                 throw new Error(composedEntity.constructor.name +
                     " does not have property " + key + " in dynamic values.");
             }
-            this.snapShot[key] = composedEntity[key];
+            this.snapShot.dynamic[key] = composedEntity[key];
+        }
+
+        for (let key of constValues) {
+            if (!composedEntity.hasOwnProperty(key)) {
+                throw new Error(composedEntity.constructor.name +
+                    " does not have property " + key + " in dynamic values.");
+            }
+            this.snapShot.init[key] = composedEntity[key];
         }
     }
 
@@ -56,7 +71,7 @@ class SnapShotGenerator {
     // to the snapshot object. These values are usually constant values
     // such as strings and numbers but also can also hold a reference to
     // an object that changes.
-    addReferenceValues(composedEntity, referenceValues) {
+    addStaticValues(composedEntity, referenceValues) {
         for (let key of referenceValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
@@ -64,11 +79,10 @@ class SnapShotGenerator {
             }
 
 
-
             if (this.snapShot.hasOwnProperty(key)) {
                 throw new Error("Added duplicate reference value: " + key);
             }
-            this.snapShot[key] = composedEntity[key];
+            this.snapShot.init[key] = composedEntity[key];
         }
     }
 
@@ -87,22 +101,28 @@ class SnapShotGenerator {
                 throw new Error("Added duplicate dynamic value: " + key);
             }
             this.dynamicValues.push(key);
-            this.snapShot[key] = composedEntity[key];
+            this.snapShot.dynamic[key] = composedEntity[key];
         }
     }
 
     update(entityManager, composedEntity, deltaTime) {
-        this.snapShot.deltaTime = deltaTime;
-        this.snapShot.serverTimeStamp = Date.now();
-
+        //this.snapShot.deltaTime = deltaTime;
+        //this.snapShot.serverTimeStamp = Date.now();
+        this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
-
-            this.snapShot[key] = composedEntity[key];
+            if (composedEntity[key] === this.valueBuffer[key]) continue;
+            this.snapShot.dynamic[key] = composedEntity[key];
+            console.log(this.valueBuffer[key], this.snapShot.dynamic[key]);
         }
+        this.valueBuffer = this.snapShot.dynamic;
+    }
+
+    exportInitValues(){
+        return this.snapShot.init;
     }
 
     export() {
-        return this.snapShot;
+        return this.snapShot.dynamic;
     }
 
 }
