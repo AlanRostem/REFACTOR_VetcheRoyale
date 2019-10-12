@@ -51,7 +51,7 @@ export default class CWeapon extends CEntity {
 
 CWeapon.sprite = new SpriteSheet("entity/guns.png");
 CWeapon.sprite.bind("KE-6H-World", 64, 40, 16, 8);
-CWeapon.sprite.bind("C-KER .90-World", 64, 96, 32, 16);
-CWeapon.sprite.bind("SEW-9-World", 64, 64, 26, 10);
-CWeapon.sprite.bind("Interlux-World", 64, 76, 26, 12);
+CWeapon.sprite.bind("C-KER .90-World", 64, 96, 16, 8);
+CWeapon.sprite.bind("SEW-9-World", 64, 64, 16, 8);
+CWeapon.sprite.bind("Interlux-World", 64, 76, 16, 8);
 CWeapon.sprite.bind("none", 64, 52, 27, 12);
