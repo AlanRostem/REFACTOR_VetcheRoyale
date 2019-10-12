@@ -18,6 +18,7 @@ import Stats from "../UI/Stats.js";
 import TileMapManager from "./TileBased/TileMapManager.js"
 import Announcement from "../UI/Announcement.js";
 import EnemyDetector from "../UI/EnemyDetector.js";
+import EffectManager from "../Graphics/EffectManager.js";
 
 /**
  * The main object on the client that renders the game world and UI.
@@ -138,6 +139,7 @@ const Scene = {
             if (!Scene.clientRef.isReady()) return;
             Scene.tileMaps.getMap(Scene.currentMapName).draw();
             Scene.entityManager.drawEntities();
+            EffectManager.draw(Scene.deltaTime);
             UI.draw();
             document.body.style.cursor = "none";
         } else {
