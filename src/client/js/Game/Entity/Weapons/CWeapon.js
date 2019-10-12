@@ -29,7 +29,6 @@ export default class CWeapon extends CEntity {
 
     draw() {
         if (!this.getRealtimeProperty("equippedToPlayer")) {
-
             let name = this.getRealtimeProperty("displayName") + "-World";
             let rect = CWeapon.sprite.offsetRects.get(name);
             if (rect) {

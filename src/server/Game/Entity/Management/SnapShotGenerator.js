@@ -10,9 +10,11 @@ Object.equals = function (self, other) {
         return false;
     }
 
-    if (other === null || other === undefined) {
+    if (other === null || other === undefined || self === null || self === undefined) {
         return self === other;
     }
+
+
 
     let props1 = Object.keys(self);
     let props2 = Object.keys(other);
