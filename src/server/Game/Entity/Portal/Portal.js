@@ -14,9 +14,6 @@ class Portal extends Interactable {
 
         this.addStaticSnapShotData([
             "frameColor",
-        ]);
-
-        this.addDynamicSnapShotData([
             "pairData"
         ]);
 

@@ -21,10 +21,9 @@ class Physical extends Entity {
             top: false,
             bottom: false,
         };
-        this.addStaticSnapShotData([
+        this.addDynamicSnapShotData([
             "vel",
             "movementState",
-            "side",
         ]);
 
         this.physicsConfig = {

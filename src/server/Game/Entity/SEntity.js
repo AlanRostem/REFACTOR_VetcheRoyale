@@ -18,11 +18,11 @@ class SEntity {
         this.snapShotGenerator = new SnapShotGenerator(this,
         [
             "id",
-            "pos",
             "width",
             "height",
         ],
         [
+            "pos",
             "removed",
             "color",
             "eType",

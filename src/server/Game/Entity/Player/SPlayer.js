@@ -42,9 +42,6 @@ class Player extends GameDataLinker {
             "hp",
             "invAmmo",
             "invWeaponID",
-        ]);
-
-        this.addStaticSnapShotData([
             "statData"
         ]);
 
