@@ -20,7 +20,15 @@ class CEntity {
          * from client prediction, server reconciliation and entity interpolation.
          * @type {Object}
          */
-        this.output = initDataPack;
+        this.output = {};
+        console.log(initDataPack.dynamic)
+        this.consts = initDataPack.init;
+        for (let key in initDataPack.dynamic) {
+            this.output[key] = initDataPack.dynamic[key];
+        }
+        for (let key in this.consts) {
+            this.output[key] = this.consts[key];
+        }
 
         /**
          * Packet buffer tuning the entity data
@@ -28,7 +36,7 @@ class CEntity {
          */
         this.dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
-        this.color = this.output.color;
+        this.color = "white"//this.output.color;
         this.width = this.output.width;
         this.height = this.output.height;
     }
@@ -43,7 +51,13 @@ class CEntity {
         this.color = this.output.color;
         this.width = this.output.width;
         this.height = this.output.height;
-        this.dataBuffer.updateFromServerFrame(dataPack, this, client);
+        //this.dataBuffer.updateFromServerFrame(dataPack, this, client);
+        for (let key in dataPack) {
+            this.output[key] = dataPack[key];
+        }
+        for (let key in this.consts) {
+            this.output[key] = this.consts[key];
+        }
     }
 
     /**

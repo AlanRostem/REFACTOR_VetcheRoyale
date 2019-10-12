@@ -2,8 +2,8 @@ const Affectable = require("./Affectable.js");
 
 // Entity with HP and regenerative abilities.
 class Alive extends Affectable {
-    constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.2, regenCoolDown = 10) {
-        super(x, y, w, h);
+    constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.2, regenCoolDown = 10, id) {
+        super(x, y, w, h, id);
 
         this.maxHP = HP;
         this.hp = HP;

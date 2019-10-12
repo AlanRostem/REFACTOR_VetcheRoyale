@@ -40,7 +40,7 @@ const EntityTypeSpawner = {
             console.warn("Entity with name " + name + " does not exist in the spawner.");
             return new CEntity(data);
         }
-        if (client.id === data.id)
+        if (client.id === data.init.id)
             return new UserPlayer(data);
 
         return EntityTypeSpawner.functions[name](data);

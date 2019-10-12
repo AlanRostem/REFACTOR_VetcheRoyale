@@ -12,10 +12,8 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
     constructor(clientID, worldMgr) {
-        super(0, 0, 6, 12, 100, true, worldMgr);
-
+        super(0, 0, 6, 12, 100, true, worldMgr, clientID);
         // MISC VAR INITS
-        this.id = clientID;
         this.teamName = "red";
         this.snapShotGenerator.snapShot.id = this.id;
         this.inventory = new Inventory();
@@ -42,7 +40,7 @@ class Player extends GameDataLinker {
             "hp",
             "invAmmo",
             "invWeaponID",
-            "statData"
+            "statData",
         ]);
 
         this.setEntityOrder(1);

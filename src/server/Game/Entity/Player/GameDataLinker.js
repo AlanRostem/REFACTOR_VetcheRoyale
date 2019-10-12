@@ -8,8 +8,8 @@ const InputBridge = require("./InputBridge.js");
 // server based data given to the player by
 // certain events.
 class GameDataLinker extends Alive {
-    constructor(x, y, w, h, HP, regenCoolDown, worldMgr) {
-        super(x, y, w, h, HP, regenCoolDown);
+    constructor(x, y, w, h, HP, regenCoolDown, worldMgr, clientID) {
+        super(x, y, w, h, HP, true, 1, .2, regenCoolDown, clientID);
         this._gameData = {};
 
         this.snapShotGenerator.removeStaticSnapshotData("id");
@@ -45,14 +45,14 @@ class GameDataLinker extends Alive {
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
         this.entitiesInProximity.initProximityEntityData(entityManager);
-        this.emit("initEntity", this.entitiesInProximity.exportDataPack())
+        this.emit("initEntity", this.entitiesInProximity.exportInitDataPack())
     }
 
-    set gameData(value){
+    set gameData(value) {
         this._gameData = value;
     }
 
-    get gameData(){
+    get gameData() {
         return this._gameData;
     }
 

@@ -7,8 +7,8 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 // Entity with tile tileCollision and movement.
 class Physical extends Entity {
-    constructor(x, y, w, h) {
-        super(x, y, w, h);
+    constructor(x, y, w, h, id) {
+        super(x, y, w, h, id);
         this.old = new Vector2D(x, y);
         this.vel = new Vector2D(0, 0);
         this.fric = new Vector2D(0, 0);

@@ -20,9 +20,12 @@ export default class CEntityManager {
 
     addEntityFromDataPack(dataPack, client) {
         //if (dataPack.removed) return;
-        let entity = EntityTypeSpawner.spawn(dataPack.entityType, dataPack, client);
-        this.container.set(dataPack.id, entity);
+        let entity = EntityTypeSpawner.spawn(dataPack.init.entityType, dataPack, client);
+        this.container.set(dataPack.init.id, entity);
         entity.onClientSpawn(dataPack, client);
+        if (dataPack.init.entityType === "Player") {
+            console.log(dataPack.init.id === client.id);
+        }
 
         if (this.container.size < 1) return;
         let toArray = [...this.container.entries()];
@@ -74,7 +77,10 @@ export default class CEntityManager {
 
         client.on('removeOutOfBoundsEntity', id => {
             if (this.existsOnClient(id)) {
-                if (id !== client.id && id !== client.player.output.invWeaponID) {
+                if (id !== client.id) {
+                    if (client.player) {
+                        if (id === client.player.output.invWeaponID) return;
+                    }
                     this.removeOutOfBoundsEntity(id);
                 }
             } else {
@@ -86,7 +92,7 @@ export default class CEntityManager {
             for (var id in dataPack.entityData) {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
-                    var existingEntity = this.getEntity(entityData);
+                    var existingEntity = this.getEntityByID(id);
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {
                     console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);

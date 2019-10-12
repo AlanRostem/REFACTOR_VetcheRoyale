@@ -37,6 +37,14 @@ class ClientPEM extends ProximityEntityManager {
         this.spectators.onRemoveOutOfBoundsEntity(id);
     }
 
+    exportInitDataPack() {
+        for (let id in this.container) {
+            this.dataBox[id] = this.container[id].getInitDataPack();
+        }
+        this.dataBox[this.entRef.id] = this.entRef.getInitDataPack();
+        return this.dataBox;
+    }
+
     exportDataPack() {
         for (let id in this.container) {
             this.dataBox[id] = this.container[id].getDataPack();

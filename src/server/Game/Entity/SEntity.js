@@ -5,11 +5,12 @@ const ProximityEntityManager = require("./Management/ProximityEntityManager.js")
 
 // Base class of dynamic objects in the game world.
 class SEntity {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, id) {
         this.pos = new Vector2D(x, y);
         this.width = width;
         this.height = height;
-        this.id = String.random();
+        if (id) this.id = id;
+        else this.id = String.random();
         this.removed = false;
         this.eType = this.constructor.name;
         this.color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";

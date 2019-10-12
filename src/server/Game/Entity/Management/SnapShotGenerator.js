@@ -38,7 +38,7 @@ class SnapShotGenerator {
 
     // The 2 last parameters are arrays with strings of the
     // entity's specified properties.
-    constructor(composedEntity, referenceValues, dynamicValues = [], constValues = []) {
+    constructor(composedEntity, constValues, dynamicValues = []) {
 
         // Pass in constants or reference objects that
         // are updated in referenceValues.
@@ -47,8 +47,6 @@ class SnapShotGenerator {
         // require to be manually updated
         this.dynamicValues = dynamicValues;
 
-        this.constValues = constValues;
-
         this.valueBuffer = {};
 
         this.snapShot = {
@@ -56,9 +54,11 @@ class SnapShotGenerator {
             dynamic:{}
         };
 
+        this.composedEntity = composedEntity;
+
         this.snapShot.init.entityType = composedEntity.constructor.name;
 
-        for (let key of referenceValues) {
+        for (let key of constValues) {
             if (!composedEntity.hasOwnProperty(key)) {
                 throw new Error(composedEntity.constructor.name +
                     " does not have property " + key + " in reference values.");
@@ -73,14 +73,6 @@ class SnapShotGenerator {
                     " does not have property " + key + " in dynamic values.");
             }
             this.snapShot.dynamic[key] = composedEntity[key];
-        }
-
-        for (let key of constValues) {
-            if (!composedEntity.hasOwnProperty(key)) {
-                throw new Error(composedEntity.constructor.name +
-                    " does not have property " + key + " in dynamic values.");
-            }
-            this.snapShot.init[key] = composedEntity[key];
         }
     }
 
@@ -147,7 +139,11 @@ class SnapShotGenerator {
         }
     }
 
-    exportInitValues(){
+    exportInitValues() {
+        for (let key of this.dynamicValues) {
+            this.snapShot.dynamic[key] = this.composedEntity[key];
+            this.valueBuffer[key] = this.composedEntity[key];
+        }
         return this.snapShot;
     }
 
