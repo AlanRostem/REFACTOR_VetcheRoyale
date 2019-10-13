@@ -27,8 +27,8 @@ export default class CInterlux extends CWeapon {
 
         //console.log(this.lines);
 
-        if (this.lines)
         for (var i = 0; i <= this.lines.length - 2; i += 2) {
+            //  if (this.lines)
             R.ctx.beginPath();
             R.ctx.strokeStyle = "Red";
             R.ctx.moveTo(this.lines[i].x + R.camera.x, this.lines[i].y + R.camera.y);

@@ -76,6 +76,16 @@ class Interlux extends AttackWeapon {
 
         this.lines.push(player.center);
         this.lines.push(newPoint);
+        /*
+        this.shootPos.x = this.pos.x + (this.width / 2 | 0) + Math.cos(this.aimAngle) * this.scanRange;
+        this.shootPos.y = this.pos.y - (this.height / 2 | 0) + Math.sin(this.aimAngle) * this.scanRange;
+
+        let newPoint = this.scanner.scan(this.pos, this.shootPos, entityManager, entityManager.tileMap);
+
+        let length = Vector2D.distance(this.pos, newPoint);
+
+        this.lines.push(this.pos);
+        this.lines.push(newPoint);*/
 
      //   if (length < this.scanRange) this.scan(newPoint, this.scanRange - length, entityManager);
 
