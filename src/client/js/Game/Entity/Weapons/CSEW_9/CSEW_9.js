@@ -4,6 +4,7 @@ import {vectorLinearInterpolation} from "../../../../../../shared/code/Math/CCus
 import UI from "../../../../UI/UI.js";
 import Scene from "../../../Scene.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
+import SoundManager from "../../../../AssetManager/Classes/Audio/SoundManager.js";
 
 export default class CSEW_9 extends CWeapon {
 
