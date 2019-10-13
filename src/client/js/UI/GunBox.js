@@ -17,6 +17,8 @@ export default class GunBox extends UIElement {
         this.playerAmmo = 0;
         this.loadedAmmo = 0;
 
+        this.isReloading = false;
+
     }
 
     update(deltaTime, client, entityList) {
@@ -27,6 +29,7 @@ export default class GunBox extends UIElement {
                 this.playerAmmo = client.player.output.invAmmo;
                 this.loadedAmmo = gun.output.currentAmmo;
                 this.iconID = gun.iconID;
+                this.isReloading = gun.output.reloading;
             } else {
                 this.hasWeapon = false;
             }
@@ -38,7 +41,8 @@ export default class GunBox extends UIElement {
         if (this.hasWeapon) {
             R.ctx.save();
 
-            R.drawText(this.loadedAmmo + "/" + this.playerAmmo, R.WIDTH - 72, R.HEIGHT - 44, "Green", false);
+
+            R.drawText((this.isReloading ? "Reloading..." : this.loadedAmmo + "/" + this.playerAmmo), R.WIDTH - (this.isReloading ? 88 : 72), R.HEIGHT - 44, "Green", false);
 
             UIElement.defaultSpriteSheet.drawCropped(
                 0,
