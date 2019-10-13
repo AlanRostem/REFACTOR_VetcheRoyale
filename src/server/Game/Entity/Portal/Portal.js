@@ -86,9 +86,8 @@ class Portal extends Interactable {
             if (entity instanceof Player)
                 if (entityManager.exists(entity.id)){
                     entityManager.eventManager.addPrivate(
-                        entity.id, "Portal: " + this.portalTileID, "all", "Green", 0, {
+                        entity.id, "Portal: " + this.portalTileID, "minimap", "Green", 0, {
                             pos: this.destination,
-                            string: "Portal: " + this.portalTileID
                         }, true
                     );
                 }

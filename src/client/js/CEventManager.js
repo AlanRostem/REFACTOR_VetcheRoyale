@@ -13,6 +13,7 @@ export default class CEventManager {
     SGetEvent(client) {
         if (client.inboundPacket) {
             let evs = [];
+            console.log(client.inboundPacket.gameData.Event);
             if (client.player)
                 if (client.player.output)
                     if (client.player.output._gameData)

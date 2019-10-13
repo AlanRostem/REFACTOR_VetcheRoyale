@@ -62,8 +62,7 @@ Object.copy = function (obj) {
     return copy;
 };
 
-class SnapShotGenerator {
-
+class SnapShotGenerator{
     // The 2 last parameters are arrays with strings of the
     // entity's specified properties.
     constructor(composedEntity, constValues, dynamicValues = []) {
@@ -174,7 +173,11 @@ class SnapShotGenerator {
     exportInitValues() {
         for (let key of this.dynamicValues) {
             this.snapShot.dynamic[key] = this.composedEntity[key];
-            this.valueBuffer[key] = Object.copy(this.composedEntity[key]);
+            if (typeof this.composedEntity[key] === "object") {
+                this.valueBuffer[key] = Object.copy(this.composedEntity[key]);
+            } else {
+                this.valueBuffer[key] = this.composedEntity[key];
+            }
         }
         return this.snapShot;
     }
