@@ -16,6 +16,7 @@ class CKineticBomb extends CEntity {
     onClientDelete(client) {
         super.onClientDelete(client);
         EffectManager.createEffect(this.output.pos.x - 12, this.output.pos.y - 12, "kineticBombExpl", 0);
+        SoundManager.play("Weapons/explo" + (Math.random() * 4 | 0) + ".oggSE")
     }
 
     draw() {
