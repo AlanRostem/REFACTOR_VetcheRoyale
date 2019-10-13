@@ -31,6 +31,7 @@ class Announcement extends UIElement {
      * @param e {CGameEvent} - Event to be displayed
      */
     addEvent(e) {
+        if (this.event === undefined)
         if (Array.isArray(e) && e.length > 0) {
             this.event = e[0];
             this.event.arg.shown = true;
@@ -88,12 +89,13 @@ class Announcement extends UIElement {
         if (this.pos.y > -this.height - 4) {
 
             UIElement.defaultSpriteSheet.drawCropped(
+
+                0, 110,
+                118, 14,
                 this.pos.x,
                 this.pos.y + 6,
                 this.width - 10,
                 this.height - 4,
-                0, 110,
-                118, 14,
             );
 
             if (this.event !== undefined) {
@@ -106,12 +108,12 @@ class Announcement extends UIElement {
 
 
             UIElement.defaultSpriteSheet.drawCropped(
+                0, 88,
+                128, 22,
                 this.pos.x - 5,
                 this.pos.y,
                 this.width,
                 this.height + 4,
-                0, 88,
-                128, 22,
             );
         }
     }
