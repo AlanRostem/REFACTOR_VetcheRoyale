@@ -49,8 +49,8 @@ class Interlux extends AttackWeapon {
     }
 
     update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
         this.lines = [];
+        super.update(entityManager, deltaTime);
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
