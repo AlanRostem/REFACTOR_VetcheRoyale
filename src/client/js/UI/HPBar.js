@@ -1,6 +1,7 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
+import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 export default class HPBar extends UIElement {
     constructor() {
@@ -11,6 +12,10 @@ export default class HPBar extends UIElement {
         this.HPjuice = new Vector2D(50, 8);
 
         this.HPlength = 0;
+
+        this.animation = new SpriteSheet.Animation(0, 11 - 1, 3, 0.1);
+        UIElement.defaultSpriteSheet.bind("HPLiquid", 54, 0, 150, 32);
+
     }
 
     update(deltaTime, client, entityList) {
@@ -41,7 +46,7 @@ export default class HPBar extends UIElement {
         }
 
         // Liquid Inside
-        UIElement.defaultSpriteSheet.drawCropped(
+     /*   UIElement.defaultSpriteSheet.drawCropped(
             0,
             this.glassTube.y,
             this.HPlength,
@@ -50,7 +55,21 @@ export default class HPBar extends UIElement {
             R.HEIGHT - this.glassTube.y - 2,
             this.HPlength,
             this.HPjuice.y,
-        );
+        );*/
+
+
+        // Liquid Top
+        UIElement.defaultSpriteSheet.animate("HPLiquid", this.animation, 50, 8);
+        UIElement.defaultSpriteSheet.drawCroppedAnimated(
+            0,
+            0,
+            this.HPlength,
+            this.HPjuice.y,
+            6,
+            R.HEIGHT - this.glassTube.y - 2,
+            this.HPlength,
+            this.HPjuice.y);
+        //
 
         // Draw Glass Tube
         UIElement.defaultSpriteSheet.drawCropped(

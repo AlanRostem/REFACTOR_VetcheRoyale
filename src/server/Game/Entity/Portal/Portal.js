@@ -11,10 +11,15 @@ class Portal extends Interactable {
         this.frameColor = args.frameColor;
         this.pairData = null;
         this.pair = null;
+        this.teleported = false;
 
         this.addStaticSnapShotData([
             "frameColor",
             "pairData"
+        ]);
+
+        this.addDynamicSnapShotData([
+            "teleported"
         ]);
 
         this.maxTeleportCooldown = 1; // Seconds
@@ -34,15 +39,19 @@ class Portal extends Interactable {
         this.destination = pos;
     }
 
+    // Decrement the cool down
     update(game, deltaTime) {
+
+        this.teleported = false;
+
         super.update(game, deltaTime);
-        // Decrement the cool down
         for (let id in this.recentlyTeleportedPlayers.object) {
             this.recentlyTeleportedPlayers.set(id, this.recentlyTeleportedPlayers.get(id) - deltaTime);
             if (this.recentlyTeleportedPlayers.get(id) <= 0) {
                 this.recentlyTeleportedPlayers.remove(id);
             }
         }
+
     }
 
     teleport(entity, game) {
@@ -61,6 +70,9 @@ class Portal extends Interactable {
             + this.width / 2 - entity.width / 2;
         entity.pos.y = this.destination.y
             + this.height / 2 - entity.height / 2;
+
+        this.teleported = true;
+
     }
 
     onPlayerInteraction(player, entityManager) {

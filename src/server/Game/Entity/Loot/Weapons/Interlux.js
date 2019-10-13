@@ -7,7 +7,7 @@ class Interlux extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "Interlux", 0, 0, 0);
 
-        this.scanRange = 64;
+        this.scanRange = 640;
         this.scanner = new HitScanner({}, false, true);
 
         this.lines = [];
@@ -19,7 +19,7 @@ class Interlux extends AttackWeapon {
         this.secondaryFire = false;
         this.superAbilitySnap = false;
 
-        this.configureAttackStats(1.5, 40, 1, 500);
+        this.configureAttackStats(1.5, 400, 1, 500);
 
         this.addDynamicSnapShotData(["secondaryFire", "superAbilitySnap", "lines"]);
 

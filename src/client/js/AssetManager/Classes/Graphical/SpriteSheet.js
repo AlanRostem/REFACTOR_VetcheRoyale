@@ -194,6 +194,35 @@ class SpriteSheet {
 
         this.flipped = false;
     }
+
+    drawCroppedAnimated(cropX, cropY, cropW, cropH, x, y, w = this.animRect.w, h = this.animRect.h, ctx = R.context) {
+        if (!this.img) return;
+
+        var rect = this.animRect;
+
+        // FireFox compatibility sake
+        if (rect.w === 0 || rect.h === 0) {
+            this.flipped = false;
+            return;
+        }
+
+        if (this.flipped) {
+            R.context.translate(x - this.centralOffset, y - this.centralOffset);
+            R.context.scale(-1, 1);
+        }
+
+        if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
+
+        R.context.drawImage(this.img,
+            rect.x - cropX, rect.y - cropY, cropW, cropH,
+            Math.round(!this.flipped ? x - this.centralOffset : -w + this.centralOffset / 2),
+            Math.round(!this.flipped ? y - this.centralOffset : 0),
+            Math.round(w),
+            Math.round(h));
+
+        this.flipped = false;
+    }
+
 }
 
 SpriteSheet.Rect = class {
