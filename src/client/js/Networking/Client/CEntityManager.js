@@ -18,11 +18,25 @@ export default class CEntityManager {
         return this.container.has(id);
     }
 
-    addEntityFromDataPack(dataPack, client) {
+    spawnEntityFromDataPack(dataPack, client) {
         //if (dataPack.removed) return;
         let entity = EntityTypeSpawner.spawn(dataPack.init.entityType, dataPack, client);
         this.container.set(dataPack.init.id, entity);
         entity.onClientSpawn(dataPack, client);
+        if (this.container.size < 1) return;
+        let toArray = [...this.container.entries()];
+
+        //if (dataPack.entityOrder >= toArray[toArray.length-2][1].getRealtimeProperty("entityOrder")) return;
+        this.container = new Map(toArray.sort((a, b) => {
+            return a[1].getRealtimeProperty("entityOrder") -
+                b[1].getRealtimeProperty("entityOrder");
+        }));
+    }
+
+    addEntityFromDataPack(dataPack, client) {
+        //if (dataPack.removed) return;
+        let entity = EntityTypeSpawner.spawn(dataPack.init.entityType, dataPack, client);
+        this.container.set(dataPack.init.id, entity);
         if (this.container.size < 1) return;
         let toArray = [...this.container.entries()];
 
@@ -57,7 +71,7 @@ export default class CEntityManager {
         client.on('initEntity', dataPack => {
             for (var id in dataPack) {
                 var entityData = dataPack[id];
-                this.addEntityFromDataPack(entityData, client);
+                this.spawnEntityFromDataPack(entityData, client);
             }
         });
 
@@ -99,13 +113,16 @@ export default class CEntityManager {
 
         client.on("gameEvent-changeWorld", data => {
             this.clear();
-            this.addEntityFromDataPack(data, client);
+            this.spawnEntityFromDataPack(data, client);
         });
 
         client.on('spawnEntity', entityData => {
-            this.addEntityFromDataPack(entityData, client);
+            this.spawnEntityFromDataPack(entityData, client);
         });
 
+        client.on('addEntity', entityData => {
+           this.addEntityFromDataPack(entityData, client);
+        });
     }
 
     updateEntities(deltaTime, client, map) {

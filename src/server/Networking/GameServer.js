@@ -78,6 +78,14 @@ class GameServer {
             //console.log("Added:", "\x1b[33m" + data.eType + "\x1b[0m", "with ID:", '\x1b[36m' + data.id + "\x1b[0m");
         });
 
+        this.dataBridge.addClientResponseListener("addEntity", (data) => {
+            if (!this.mainSocket.cl.getClient(data.id)) {
+                return;
+            }
+            this.mainSocket.cl.getClient(data.id).emit("addEntity", data.data);
+            //console.log("Added:", "\x1b[33m" + data.eType + "\x1b[0m", "with ID:", '\x1b[36m' + data.id + "\x1b[0m");
+        });
+
         this.dataBridge.addClientResponseListener("removeEntity", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
                 return;

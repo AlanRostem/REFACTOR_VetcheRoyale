@@ -23,9 +23,9 @@ class GameWorld extends EntityManager {
         this.portals = new ONMap();
         this.bridgedData = new ONMap();
 
+        this.recentlySpawnedEntities = new ONMap();
         this.spawner.spawnAll(this);
         this.debugData = {};
-
     }
 
 
@@ -40,6 +40,7 @@ class GameWorld extends EntityManager {
 
     spawnEntity(x, y, entity) {
         entity.setWorld(this);
+        this.recentlySpawnedEntities.set(entity.id, 1);
         if (entity instanceof GameDataLinker) {
             entity.gameData.mapName = this.tileMap.name;
             entity.gameData.playerCount = this.playerCount;
@@ -107,6 +108,7 @@ class GameWorld extends EntityManager {
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);
+        this.recentlySpawnedEntities.clear();
     }
 }
 

@@ -6,8 +6,4 @@ export default class CKE_6H extends CWeapon {
     {
         super(data, 2);
     }
-    onFire(client, deltaTime) {
-        super.onFire(client, deltaTime);
-        SoundManager.play("Weapons/ke-6h_s.oggSE");
-    }
 }

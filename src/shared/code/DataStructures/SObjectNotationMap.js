@@ -60,6 +60,9 @@ class ObjectNotationMap {
     }
 
     clear() {
+        if (this._count === 0) {
+            return;
+        }
         this._count = 0;
         delete this["_jsonContainer"];
         this._jsonContainer = {};

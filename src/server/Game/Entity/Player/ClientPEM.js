@@ -11,10 +11,15 @@ class ClientPEM extends ProximityEntityManager {
         this.spectators = new SpectatorManager(player);
     }
 
-    addEntity(entity) {
+    addEntity(entity, game) {
         super.addEntity(entity);
-        this.entRef.emit("spawnEntity", entity.getInitDataPack());
-        this.spectators.onSpawnEntity(entity);
+        if (game.recentlySpawnedEntities.has(entity.id)) {
+            this.entRef.emit("spawnEntity", entity.getInitDataPack());
+        } else {
+            this.entRef.emit("addEntity", entity.getInitDataPack());
+        }
+
+        //this.spectators.onSpawnEntity(entity);
         //console.log("Added:", "\x1b[33m" + entity.eType + "\x1b[0m", "with ID:", '\x1b[36m' + entity.id + "\x1b[0m");
     }
 
