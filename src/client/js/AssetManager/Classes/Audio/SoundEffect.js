@@ -5,7 +5,7 @@ import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 export default class SoundEffect {
     constructor(src, objPos, canPlay = true) {
         this.src = src;
-      //  this.volume = volume;
+        //  this.volume = volume;
         this.objPos = objPos;
 
         this.canPlay = canPlay;
@@ -13,14 +13,14 @@ export default class SoundEffect {
 
         this.gainNode = AssetManager.audioCtx.createGain();
 
-        this.pannerOptions = { pan: 0 };
+        this.pannerOptions = {pan: 0};
         this.panner = new StereoPannerNode(AssetManager.audioCtx, this.pannerOptions);
     }
 
-    play() {
+    play(src = this.src, objPos = this.objPos, canPlay = true) {
         if (AssetManager.audioCtx.state === 'suspended') AssetManager.audioCtx.resume();
 
-        if(this.canPlay) {
+        if (this.canPlay) {
             this.source = AssetManager.audioCtx.createBufferSource();
             this.source.onended = () => {
                 this.isEnded = true;
@@ -33,19 +33,27 @@ export default class SoundEffect {
         }
     }
 
-    stop(src) {
-        this.source.disconnect();
+    updatePanPos(obj) {
+        this.objPos = obj;
     }
 
-    findPan(){
-       // this.panner.pan.value = -Math.cos(Math.atan2(- R.camera.y + R.camera.offset.y - this.objPos.y,  - R.camera.x + R.camera.offset.x - this.objPos.x));
-        this.panner.pan.value =  - ( - R.camera.x + R.camera.offset.x - this.objPos.x) / R.screenSize.x * 2;
-        if(this.panner.pan.value > 1) this.panner.pan.value = 1;
-        if(this.panner.pan.value < -1) this.panner.pan.value = -1;
-        this.gainNode.gain.value < 0 ?  this.gainNode.gain.value = 0 : this.gainNode.gain.value = 1 - Vector2D.distance(this.objPos, R.camera.follow)/200;
+    stop() {
+        this.source.disconnect();
+        this.isEnded = true;
+    }
+
+    findPan() {
+        if (!this.objPos) {
+            return;
+        }
+        // this.panner.pan.value = -Math.cos(Math.atan2(- R.camera.y + R.camera.offset.y - this.objPos.y,  - R.camera.x + R.camera.offset.x - this.objPos.x));
+        this.panner.pan.value = -(-R.camera.x + R.camera.offset.x - this.objPos.x) / R.screenSize.x * 2;
+        if (this.panner.pan.value > 1) this.panner.pan.value = 1;
+        if (this.panner.pan.value < -1) this.panner.pan.value = -1;
+        this.gainNode.gain.value < 0 ? this.gainNode.gain.value = 0 : this.gainNode.gain.value = 1 - Vector2D.distance(this.objPos, R.camera.follow) / 200;
         //console.log(Math.atan2(R.camera.y + R.camera.offset.y - this.objPos.y,  R.camera.x + R.camera.offset.x - (this.objPos.x | 0)), - R.camera.x + R.camera.offset.x, this.objPos.x);
         //console.log(this.panner.pan.value);
-       // console.log(Math.atan2(this.objPos.y - R.camera.offset.y,  this.objPos.x - R.camera.offset.x));
-  //      this.panner.pan.value < 1 ?  this.panner.pan.value+=0.05 : this.panner.pan.value = -1;
+        // console.log(Math.atan2(this.objPos.y - R.camera.offset.y,  this.objPos.x - R.camera.offset.x));
+        //this.panner.pan.value < 1 ?  this.panner.pan.value+=0.05 : this.panner.pan.value = -1;
     }
 };

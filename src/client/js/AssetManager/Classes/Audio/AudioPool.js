@@ -4,39 +4,29 @@ import SoundEffect from "./SoundEffect.js";
 class AudioPool {
     constructor() {
         this.maxInstance = 10;
-        this.SFXrefs = {};
-
+        this.sounds = [];
     }
 
     play(src, objPos, canPlay) {
-        if (this.SFXrefs[src] === undefined) {
-            let sound = new SoundEffect(src, objPos, canPlay);
-            sound.play();
-            this.SFXrefs[src] = sound;
-            return sound;
-        } else this.SFXrefs[src].objPos = objPos;
-
+        let sound = new SoundEffect(src, objPos, canPlay);
+        sound.play();
+        this.sounds.push(sound);
+        return sound;
     }
 
-    updatePos(src) {
-        this.SFXrefs[src].objPos = objPos;
-    }
-
-    stop(src)
-    {
-        if(this.SFXrefs[src]!==undefined) {
-            this.SFXrefs[src].stop(src);
-            delete this.SFXrefs[src];
+    stop(src) {
+        if (this.sounds[src] !== undefined) {
+            this.sounds[src].stop(src);
+            delete this.sounds[src];
         }
     }
 
     update() {
-        for (let key in this.SFXrefs) {
-            this.SFXrefs[key].findPan();
-            if (this.SFXrefs[key].isEnded)
-            {
-                this.SFXrefs[key].stop();
-                delete this.SFXrefs[key];
+        for (let i in this.sounds) {
+            this.sounds[i].findPan();
+            if (this.sounds[i].isEnded) {
+                this.sounds[i].stop();
+                delete this.sounds[i];
             }
         }
     }

@@ -4,25 +4,42 @@ import {vectorLinearInterpolation} from "../../../../../../shared/code/Math/CCus
 import UI from "../../../../UI/UI.js";
 import Scene from "../../../Scene.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
-import SoundManager from "../../../../AssetManager/Classes/Audio/SoundManager.js";
 
 export default class CSEW_9 extends CWeapon {
 
     constructor(data) {
         super(data, 1);
         this.isShooting = false;
+        this.missileSound = null;
     }
 
     onFire(client, deltaTime) {
         super.onFire(client, deltaTime);
+        this.missileSound = AudioPool.play("Weapons/sew-9_a.oggSE")
     }
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
         this.player = Scene.entityManager.getEntityByID(this.output.playerID);
         this.isShooting = this.getRealtimeProperty("isShooting");
-        if(this.isShooting) AudioPool.play("Weapons/sew-9_a.oggSE", this.output.misPos, this.isShooting);
-        else AudioPool.stop("Weapons/sew-9_a.oggSE");
+        if (this.missileSound) {
+            this.missileSound.updatePanPos(this.output.misPos);
+            if (!this.isShooting) {
+                this.missileSound.stop();
+                this.missileSound = null;
+            }
+        }
+
+        if (this.output.modAbilityData.active) {
+            if (!this.missileSound) {
+                this.missileSound = AudioPool.play("Weapons/sew-9_a.oggSE")
+            }
+        } else if (this.missileSound && !this.isShooting) {
+            this.missileSound.stop();
+            this.missileSound = null;
+        }
+
+
     }
 
     draw() {
@@ -30,7 +47,7 @@ export default class CSEW_9 extends CWeapon {
 
         let superAbility = this.getRealtimeProperty("superAbilitySnap");
         let player = this.player;
-        if(!player) return;
+        if (!player) return;
         let right = (player.output.movementState.direction === "right") ? 1 : -1;
         if (superAbility) {
             lightning(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, 200, 0, 0, right);
