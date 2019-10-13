@@ -1,7 +1,7 @@
 import CEntity from "./CEntity.js";
 import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../Graphics/Renderer.js";
-import SoundManager from "../../AssetManager/Classes/Audio/SoundManager.js";
+import AudioPool from "../../AssetManager/Classes/Audio/AudioPool.js";
 
 
 export default class CPortal extends CEntity {
@@ -20,7 +20,7 @@ export default class CPortal extends CEntity {
 
     update(deltaTime, client) {
         let teleported = this.getRealtimeProperty("teleported");
-        if(teleported) SoundManager.play("Map/portal.oggSE");
+        if(teleported) AudioPool.play("Map/portal.oggSE");
        // console.log(teleported);
         super.update(deltaTime, client);
     }
