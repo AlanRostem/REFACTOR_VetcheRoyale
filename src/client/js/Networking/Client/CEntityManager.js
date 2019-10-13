@@ -121,7 +121,7 @@ export default class CEntityManager {
         });
 
         client.on('addEntity', entityData => {
-           this.addEntityFromDataPack(entityData, client);
+            this.addEntityFromDataPack(entityData, client);
         });
     }
 
