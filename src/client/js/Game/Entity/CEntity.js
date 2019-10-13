@@ -54,9 +54,6 @@ class CEntity {
         for (let key in dataPack) {
             this.output[key] = dataPack[key];
         }
-        for (let key in this.consts) {
-            this.output[key] = this.consts[key];
-        }
     }
 
     /**
