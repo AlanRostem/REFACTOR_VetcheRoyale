@@ -10,13 +10,15 @@ class CKineticBomb extends CEntity {
 
     onClientSpawn(dataPack, client) {
         super.onClientSpawn(dataPack, client);
-        AudioPool.play("Weapons/ke-6h_s.oggSE");
+        AudioPool.play("Weapons/ke-6h_s.oggSE")
+            .updatePanPos(this.output.pos);
     }
 
     onClientDelete(client) {
         super.onClientDelete(client);
         EffectManager.createEffect(this.output.pos.x - 12, this.output.pos.y - 12, "kineticBombExpl", 0);
         AudioPool.play("Weapons/explo1.oggSE")
+            .updatePanPos(this.output.pos);
     }
 
     draw() {
