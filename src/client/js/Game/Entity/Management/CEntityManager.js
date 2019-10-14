@@ -1,6 +1,6 @@
 // Manages inbound entity data packs from the server.
 // This singleton class also renders those entities.
-import EntityTypeSpawner from "../../Game/Entity/Management/EntityTypeSpawner.js";
+import EntityTypeSpawner from "./EntityTypeSpawner.js";
 
 // TODO: Add docs if needed
 export default class CEntityManager {
@@ -37,6 +37,7 @@ export default class CEntityManager {
         //if (dataPack.removed) return;
         let entity = EntityTypeSpawner.spawn(dataPack.init.entityType, dataPack, client);
         this.container.set(dataPack.init.id, entity);
+        entity.onClientAdd(dataPack, client);
         if (this.container.size < 1) return;
         let toArray = [...this.container.entries()];
 

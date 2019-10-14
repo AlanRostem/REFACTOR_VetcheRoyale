@@ -75,11 +75,20 @@ class CEntity {
     }
 
     /**
-     * Overridable event called when the entity shows up on the client
+     * Overridable event called when the entity spawns on the server
      * @param dataPack {object} - Initial data pack (shows up in constructor too)
      * @param client {CClient} - Reference to the end user object
      */
     onClientSpawn(dataPack, client) {
+
+    }
+
+    /**
+     * Overridable event called when the entity appears on the client
+     * @param dataPack {object} - Initial data pack (shows up in constructor too)
+     * @param client {CClient} - Reference to the end user object
+     */
+    onClientAdd(dataPack, client) {
 
     }
 

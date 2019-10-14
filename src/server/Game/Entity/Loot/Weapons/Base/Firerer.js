@@ -40,7 +40,7 @@ class Firerer {
             weapon.fire(player, entityManager, deltaTime, angle);
             weapon.firing = true;
             weapon.currentAmmo -= weapon.ammoPerShot;
-        } else if (player.inventory.ammo > 0) {
+        } else if (player.inventory.ammo > 0 && !weapon.reloading) {
             weapon.activateReloadAction();
         }
         return angle;
@@ -85,7 +85,7 @@ class Firerer {
                         weapon.currentFireTime = 60 / weapon.fireRate;
                     }
                 }
-            } else if (weapon.currentAmmo === 0 && player.inventory.ammo > 0){
+            } else if (weapon.currentAmmo === 0 && player.inventory.ammo > 0 && !weapon.reloading){
                 weapon.activateReloadAction()
             }
         }
