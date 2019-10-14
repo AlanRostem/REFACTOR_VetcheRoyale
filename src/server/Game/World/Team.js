@@ -44,9 +44,9 @@ class Team {
 }
 
 Team.Names = {
-    0: "red",
+    0: "green",
     1: "blue",
-    2: "green",
+    2: "red",
     3: "yellow",
 };
 

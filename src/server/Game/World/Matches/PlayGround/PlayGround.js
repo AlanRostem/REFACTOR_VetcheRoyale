@@ -12,7 +12,7 @@ module.exports = class PlayGround extends GameWorld {
             "lootLife": 2,
             "pvp": true,
             "maxPlayers": 64,
-            "maxTeamMembers": 2,
+            "maxTeamMembers": 1,
             "dropLootOnDeath": false,
         });
         this.spawnEntity(
