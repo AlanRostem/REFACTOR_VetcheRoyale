@@ -4,7 +4,6 @@ import EntitySnapshotBuffer from "../../Networking/Interpolation/EntitySnapshotB
 import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 
 
-
 /**
  * The visual representation of entities present on the server.
  * @memberOf ClientSide
@@ -90,6 +89,18 @@ class CEntity {
      */
     onClientDelete(client) {
 
+    }
+
+    overlapLocalPlayer(client) {
+        if (client.player) {
+            if (this.output.id === client.player.id)
+                return false;
+            let e = client.player;
+            return this.output.pos.y + this.height > e.output.pos.y
+                && this.output.pos.y < (e.output.pos.y + e.height)
+                && this.output.pos.x + this.width > e.output.pos.x
+                && this.output.pos.x < (e.output.pos.x + e.width);
+        }
     }
 
     /**

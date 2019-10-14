@@ -21,7 +21,6 @@ export default class CPortal extends CEntity {
     update(deltaTime, client) {
         let teleported = this.getRealtimeProperty("teleported");
         if(teleported) AudioPool.play("Map/portal.oggSE");
-       // console.log(teleported);
         super.update(deltaTime, client);
     }
 };

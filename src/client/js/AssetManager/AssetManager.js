@@ -171,7 +171,6 @@ class AssetManager {
                        request.onload = () => {
                            _this.audioCtx.decodeAudioData(request.response, buffer => {
                                _this.cache[request.audioPath] = buffer;
-                               console.log("Loaded!", buffer);
                            }, () => console.log("Audio loading error!"));
 
                            _this.successCount++;

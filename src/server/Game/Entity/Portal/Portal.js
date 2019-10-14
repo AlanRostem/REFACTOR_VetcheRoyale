@@ -71,8 +71,7 @@ class Portal extends Interactable {
         entity.pos.y = this.destination.y
             + this.height / 2 - entity.height / 2;
 
-        this.teleported = true;
-
+        this.pair.teleported = true;
     }
 
     onPlayerInteraction(player, entityManager) {
