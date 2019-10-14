@@ -158,6 +158,8 @@ class Player extends GameDataLinker {
             this.invWeaponID = null;
         }
 
+        this.inventory.update(entityManager);
+
         if (this.side.bottom) {
             this.setMovementState("main", "stand");
         } else {

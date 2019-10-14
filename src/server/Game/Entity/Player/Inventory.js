@@ -1,8 +1,10 @@
 // Composition class that keeps track of the
 // player inventory data such as ammo and weapon.
+
+const MAX_AMMO = 240;
 class Inventory {
     constructor() {
-        this.ammoCount = Infinity;
+        this.ammoCount = 0;
         this.equippedWeapon = null;
     }
 
@@ -30,6 +32,14 @@ class Inventory {
     dropWeapon() {
         if (this.equippedWeapon !== null) {
             this.equippedWeapon = null;
+        }
+    }
+
+    update(game) {
+        if (game.getGameRule("infiniteAmmo")) {
+            if (this.ammo < MAX_AMMO) {
+                this.ammo++;
+            }
         }
     }
 }

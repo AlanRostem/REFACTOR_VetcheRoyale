@@ -14,6 +14,7 @@ module.exports = class PlayGround extends GameWorld {
             "maxPlayers": 64,
             "maxTeamMembers": 1,
             "dropLootOnDeath": false,
+            "infiniteAmmo": true,
         });
         this.spawnEntity(
             61 * Tile.SIZE,
