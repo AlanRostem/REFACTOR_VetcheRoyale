@@ -47,12 +47,6 @@ class TileSheet extends SpriteSheet {
                         y * this.tileSize,
                         this.tileSize, this.tileSize,
                         ctx);
-                    /*
-                    ctx.fillStyle = "yellow";
-                    ctx.fillText(tile + 1,
-                        x * this.tileSize,
-                        y * this.tileSize + 8)
-                     */
                 }
             }
         }

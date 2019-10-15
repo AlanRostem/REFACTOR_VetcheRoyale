@@ -1,6 +1,7 @@
 import {typeCheck} from "../../shared/code/Debugging/CtypeCheck.js"
 import R from "./Graphics/Renderer.js"
 import {sqrt} from "../../shared/code/Math/CCustomMath.js";
+import PacketBuffer from "./Networking/Client/PacketBuffer.js";
 
  class InputListener {
     constructor(client) {
@@ -32,8 +33,12 @@ import {sqrt} from "../../shared/code/Math/CCustomMath.js";
             mouseData: this.mouse,
             mouseStates: this.mouseStates,
             sequence: this.sequence,
+            pressTime: 400
         };
+        this.objectInputKeys = ["keyStates", "mouseData", "mouseStates", "sequence", "pressTime"];
         client.setOutboundPacketData("input", input);
+
+        this.packetBuffer = new PacketBuffer;
     }
 
     update(client) {
@@ -47,30 +52,14 @@ import {sqrt} from "../../shared/code/Math/CCustomMath.js";
             mouseData: this.mouse,
             mouseStates: this.mouseStates,
             sequence: this.sequence++,
+            pressTime: 400
         };
 
-
-        if (this.getReconKey(68)) {
-            input.pressTime = dtsec;
-        } else if (this.getReconKey(65)) {
-            input.pressTime = -dtsec;
-        } else {
-            input.pressTime = -dtsec;
-            // TODO: Recon shit
-        }
-
-        client.setOutboundPacketData("input", input);
+        client.setOutboundPacketData("input", this.packetBuffer.export(this.objectInputKeys, input));
         this.mouse.world = {
             x: this.mouse.x - R.camera.displayPos.x,
             y: this.mouse.y - R.camera.displayPos.y,
         };
-
-        //client.player.output.pos.x += input.pressTime * 65;
-        //client.player.pendingKeys = input.keyStates;
-        //client.player.output.pos.x += client.player.localVel.x = Math.sign(input.pressTime);
-
-        this.pendingInputs.push(input);
-
     }
 
     get pending() {

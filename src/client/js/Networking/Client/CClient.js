@@ -4,6 +4,7 @@ import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 
+
 /**
  * Class representation of the client. Holds input callbacks and manages socket events.
  * An instance of this class can be found in the update methods as parameters in the
