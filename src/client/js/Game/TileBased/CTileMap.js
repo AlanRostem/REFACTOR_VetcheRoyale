@@ -16,7 +16,6 @@ class CTileMap {
             _this.array = fromJSON.array;
             _this.w = fromJSON.width;
             _this.h = fromJSON.height;
-            console.log(_this.w * _this.h, _this.array.length)
             _this.tileSheet = new TileSheet(imgSrc, 8, _this);
         });
 
