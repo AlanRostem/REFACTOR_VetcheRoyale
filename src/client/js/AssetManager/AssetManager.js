@@ -1,4 +1,5 @@
 import ONMap from "../../../shared/code/DataStructures/CObjectNotationMap.js";
+import R from "../Graphics/Renderer.js";
 
 /**
  * Singleton class managing assets by their file extension
@@ -15,6 +16,8 @@ class AssetManager {
         this.downloadCallbacks = [];
         this.onFileDownloadedCallbacks = new ONMap;
         this.maxPool = 5;
+
+        this.imageMap = {};
 
         // Web Audio API context:
         this.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -208,6 +211,7 @@ class AssetManager {
                     img.src = "public/assets/img/" + path;
                     this.cache[path] = img;
                     break;
+
                 case "json":
                     var txt = _this.loadJSON("shared/res/" + path, () => {
                         _this.successCount++;
@@ -261,6 +265,23 @@ class AssetManager {
 
     addPainting(img, key) {
         this.cache[key] = img;
+    }
+
+    addMapImage(name, x, y, w, h) {
+        this.addDownloadCallback(()=>{
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext('2d');
+            canvas.width = w; canvas.height = h;
+            ctx.drawImage(this.get("ui/ui.png"), x, y, w, h, 0, 0, w, h);
+            var img = new Image();
+            img.src = canvas.toDataURL("image/png");
+
+            this.imageMap[name] = img;
+        })
+    }
+
+    getMapImage(name) {
+        return this.imageMap[name];
     }
 
     /**

@@ -2,6 +2,7 @@ import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
 import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
+import AssetManager from "../AssetManager/AssetManager.js";
 
 export default class GunBox extends UIElement {
     constructor() {
@@ -18,6 +19,12 @@ export default class GunBox extends UIElement {
         this.loadedAmmo = 0;
 
         this.isReloading = false;
+
+        AssetManager.addMapImage("gunBoxFrame",
+            0,
+            36,
+            this.frame.x,
+            this.frame.y)
 
     }
 
@@ -44,7 +51,7 @@ export default class GunBox extends UIElement {
 
             R.drawText((this.isReloading ? "Reloading..." : this.loadedAmmo + "/" + this.playerAmmo), R.WIDTH - (this.isReloading ? 88 : 72), R.HEIGHT - 44, "Green", false);
 
-            UIElement.defaultSpriteSheet.drawCropped(
+         /*   UIElement.defaultSpriteSheet.drawCropped(
                 0,
                 36,
                 this.frame.x,
@@ -53,6 +60,14 @@ export default class GunBox extends UIElement {
                 R.HEIGHT - 36,
                 this.frame.x,
                 this.frame.y,
+            );*/
+
+            R.ctx.drawImage(
+                AssetManager.getMapImage("gunBoxFrame"),
+                R.WIDTH - 92,
+                R.HEIGHT - 36,
+                this.frame.x,
+                this.frame.y
             );
 
             UIElement.defaultSpriteSheet.drawCropped(
@@ -66,7 +81,7 @@ export default class GunBox extends UIElement {
                 this.backGround.y,
             );
 
-           this.gunSprites.drawCropped(
+            this.gunSprites.drawCropped(
                 0,
                 this.iconID * this.backGround.y,
                 this.backGround.x,
