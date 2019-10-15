@@ -56,7 +56,9 @@ class TileSheet extends SpriteSheet {
                 }
             }
         }
-        return canvas;
+        const img = new Image();
+        img.src = canvas.toDataURL("png/image");
+        return img;
     }
 
     /**
