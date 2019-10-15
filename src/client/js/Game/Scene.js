@@ -57,10 +57,9 @@ const Scene = {
      */
     setup() {
         Scene.tileMaps = new TileMapManager();
-        Scene.tileMaps.createMap("MegaMap", "tilemaps/MegaMap.json");
-        Scene.tileMaps.createMap("lobby", "tilemaps/lobby.json");
-        Scene.tileMaps.createMap("hub", "tilemaps/hub.json");
         AssetManager.addDownloadCallback(() => {
+            Scene.tileMaps.createMap("MegaMap", "tilemaps/MegaMap.json");
+            Scene.tileMaps.createMap("lobby", "tilemaps/lobby.json");
             UI.setup(() => {
                 UI.append(new MiniMap());
                 UI.append(new Announcement());
@@ -177,4 +176,5 @@ const Scene = {
     }
 };
 
+window.Scene = Scene;
 export default Scene;

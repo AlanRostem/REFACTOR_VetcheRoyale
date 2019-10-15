@@ -18,7 +18,8 @@ class TileSheet extends SpriteSheet {
     constructor(src, tileSize, map) {
         super(src);
         this.tileSize = tileSize;
-        AssetManager.addDownloadCallback(() => {
+        this.name = map.name;
+        AssetManager.addDownloadCallback( () => {
             this.tilesPerRow = (this.img.width / tileSize) | 0;
             this.image = this.paintImage(map);
         });
@@ -60,7 +61,9 @@ class TileSheet extends SpriteSheet {
      * Draw the image to the main canvas
      */
     draw() {
-        R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
+        if (this.image)
+            R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
     }
 }
+
 export default TileSheet;

@@ -7,13 +7,15 @@ const TileMap = require("../../../server/Game/TileBased/STileMap.js");
 
 const TileMapConfigs = {
     _maps: {},
-    createFromJSON(name, src) {
-        this._maps[name] = new TileMap(name, src);
+    _jsonRes: {},
+    createFromJSON(name) {
+        this._maps[name] = new TileMap(name, this._jsonRes);
+
     },
     setup() {
-        this.createFromJSON("lobby", "src/shared/res/tilemaps/lobby.json");
-        this.createFromJSON("MegaMap", "src/shared/res/tilemaps/MegaMap.json");
-        this.createFromJSON("hub", "src/shared/res/tilemaps/hub.json");
+        this._jsonRes = new JSONFile("src/shared/res/all_tilemaps.json").get();
+        this.createFromJSON("lobby");
+        this.createFromJSON("MegaMap");
     },
     getMap(name) {
         return this._maps[name];

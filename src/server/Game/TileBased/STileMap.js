@@ -6,11 +6,10 @@ const TileCollider = require("./TileCollider.js");
 // Specify global file path relative to app.js
 // for the JSON tile map file
 class TileMap {
-    constructor(name, src) {
-        var json = new JSONFile(src);
-        this.array = json.get().layers[0].data;
-        this.w = json.get().width;
-        this.h = json.get().height;
+    constructor(name, res) {
+        this.array = res[name]["array"];
+        this.w = res[name]["width"];
+        this.h = res[name]["height"];
         this.tileSize = Tile.SIZE;
         this.name = name;
         this.spawner = new EntitySpawnerLocator(this);

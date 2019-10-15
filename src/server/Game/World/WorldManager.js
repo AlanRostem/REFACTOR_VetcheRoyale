@@ -38,15 +38,6 @@ class WorldManager {
 
         // TODO: FIX THIS HACK
 
-        let megaMap = new GameWorld("MegaMap", TileMapConfigs.getMap("MegaMap"));
-        this.addWorld(megaMap, "MegaMap");
-
-        let lobby = new HubWorld(this.gameWorlds, "lobby", TileMapConfigs.getMap("lobby"));
-        this.addWorld(lobby, "lobby");
-
-        let hub = new HubWorld(this.gameWorlds, "hub", TileMapConfigs.getMap("hub"));
-        this.addWorld(hub, "hub");
-
         let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(match, "match");
 

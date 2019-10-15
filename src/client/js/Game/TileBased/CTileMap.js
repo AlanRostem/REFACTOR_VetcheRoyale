@@ -10,12 +10,16 @@ class CTileMap {
     constructor(jsonSrc, imgSrc, name) {
         var _this = this;
         this.name = name;
-        this.json = new JSONFile(jsonSrc, object => {
-            _this.array = object.layers[0].data;
-            _this.w = object.width;
-            _this.h = object.height;
+
+        AssetManager.addDownloadCallback(() => {
+            let fromJSON = AssetManager.get("all_tilemaps.json").object[name];
+            _this.array = fromJSON.array;
+            _this.w = fromJSON.width;
+            _this.h = fromJSON.height;
+            console.log(_this.w * _this.h, _this.array.length)
             _this.tileSheet = new TileSheet(imgSrc, 8, _this);
         });
+
         this.dontDrawID = 0;
     }
 
