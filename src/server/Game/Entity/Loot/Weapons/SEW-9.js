@@ -118,7 +118,7 @@ class SEW_9 extends AttackWeapon {
             this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = false;
         };
 
-        this.modAbility.configureStats(10, 4);
+        this.modAbility.configureStats(9, 4);
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
 
