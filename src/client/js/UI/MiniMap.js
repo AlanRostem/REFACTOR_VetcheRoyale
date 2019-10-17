@@ -38,8 +38,6 @@ class MiniMap extends UIElement {
      * @returns {{mapInfo: {tileSizeH: number, tileSizeW: number, array: Array, name: *}, canvas: HTMLCanvasElement}}
      */
     paintImage(tileMap) {
-
-        console.log(tileMap);
         var obj = {
             small: {},
             big: {}

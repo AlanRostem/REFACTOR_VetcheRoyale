@@ -120,10 +120,8 @@ class GameWorld extends EntityManager {
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);
-        this.recentlySpawnedEntities.clear();
         this.dataPacket = this.dataBuffer.export(this.bufferKeys, this.dataPacket);
-        if (Object.keys(this.dataPacket).length > 0)
-            console.log(this.dataPacket);
+        this.recentlySpawnedEntities.clear();
     }
 }
 

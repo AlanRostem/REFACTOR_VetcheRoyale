@@ -81,9 +81,9 @@ class Portal extends Interactable {
         super.onEntityCollision(entity, entityManager);
         if (this.portalTileID)
             if (entity instanceof Player)
-                if (entityManager.exists(entity.id)){ //TODO::Portalene med id 99 sender to events
+                if (entityManager.exists(entity.id)){ //TODO::Portalene med id 99 sender 2 events. 2 Collision?
                     entityManager.eventManager.addPrivate(
-                        entity.id, "Portal: " + this.portalTileID, "minimap", "Green", 0, {
+                        entity.id, "Portal: " + this.portalTileID + Math.random(), "minimap", "Green", 0, {
                             pos: this.destination,
                             string: "Noe",
                         }, true
