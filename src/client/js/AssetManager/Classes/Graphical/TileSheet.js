@@ -54,10 +54,9 @@ class TileSheet extends SpriteSheet {
 
         const img = new Image();
         img.src = canvas.toDataURL("png/image");
-        console.log("----------------------------------");
-        console.log("Tile map dimensions:", map.w, map.h);
-        console.log("Image dimensions:", img.width, img.height);
-        console.log("Iterations:", x, y);
+        img.onload = () => {
+            img.isLoaded = true;
+        };
         return img;
     }
 
@@ -65,7 +64,7 @@ class TileSheet extends SpriteSheet {
      * Draw the image to the main canvas
      */
     draw() {
-        if (this.image)
+        if (this.image) if (this.image.isLoaded)
             R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
     }
 }
