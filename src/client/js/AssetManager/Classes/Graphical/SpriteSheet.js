@@ -14,8 +14,8 @@ class SpriteSheet {
      */
     constructor(src) {
         this.src = src;
-        AssetManager.addDownloadCallback(() => {
-            this.img = AssetManager.get(this.src);
+        AssetManager.addSpriteCreationCallback(() => {
+            this.img = AssetManager.getMapImage(src);
         });
         /**
          * Map of rectangles representing sprite regions
@@ -37,7 +37,7 @@ class SpriteSheet {
      * @param fh {number} - Frame height of the given sprite region
      */
     bind(name, ox, oy, fw, fh) {
-        AssetManager.addDownloadCallback(() => {
+        AssetManager.addSpriteCreationCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
         });
     }

@@ -19,7 +19,7 @@ class TileSheet extends SpriteSheet {
         super(src);
         this.tileSize = tileSize;
         this.name = map.name;
-        AssetManager.addDownloadCallback( () => {
+        AssetManager.addSpriteCreationCallback( () => {
             this.tilesPerRow = (this.img.width / tileSize) | 0;
             this.image = this.paintImage(map);
         });

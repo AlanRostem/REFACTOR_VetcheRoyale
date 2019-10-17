@@ -14,7 +14,7 @@ class TileMapManager {
      * @param src {string} - Relative file path of the tile map source file
      */
     createMap(name, src) {
-        this.maps[name] = new CTileMap(src, "tileSet.png", name);
+        this.maps[name] = new CTileMap("worldTileSet", name);
     }
 
     /**

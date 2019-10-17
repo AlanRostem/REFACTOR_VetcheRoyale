@@ -130,10 +130,11 @@ const R = {
      * @param y {number} - Y position
      * @param color {string} - White, Red, Green, Blue and Yellow are supported
      * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
+     * @param boundary {number} - Newline margin
      */
     drawText(str, x, y, color = "White", useCamera = false, boundary = this.screenSize.x) {
-        R.context.save();
-        var img = AssetManager.get("font/ascii" + color + ".png");
+
+        var img = AssetManager.getMapImage("font" + color);
 
         var newLine = 0;
         var newLetter = 0;

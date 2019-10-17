@@ -41,7 +41,7 @@ class RemotePlayer extends CEntity {
     }
 }
 
-RemotePlayer.sprite = new SpriteSheet("entity/player.png");
+RemotePlayer.sprite = new SpriteSheet("playerSprite");
 
 
 RemotePlayer.sprite.bind("red", 0, 0, 16 * 16, 16);

@@ -7,11 +7,11 @@ import AssetManager from "../../AssetManager/AssetManager.js"
  * that the server also has access to.
  */
 class CTileMap {
-    constructor(jsonSrc, imgSrc, name) {
+    constructor(imgSrc, name) {
         var _this = this;
         this.name = name;
 
-        AssetManager.addDownloadCallback(() => {
+        AssetManager.addSpriteCreationCallback(() => {
             let fromJSON = AssetManager.get("all_tilemaps.json").object[name];
             _this.array = fromJSON.array;
             _this.w = fromJSON.width;

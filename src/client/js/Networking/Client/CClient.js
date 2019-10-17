@@ -140,8 +140,8 @@ class CClient {
 
         if (!this.player) {
             return false;
-
         }
+
         if (Object.keys(this.player.output).length > 0) {
             return true;
         }

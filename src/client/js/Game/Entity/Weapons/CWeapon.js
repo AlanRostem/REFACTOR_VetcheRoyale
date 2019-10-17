@@ -49,7 +49,7 @@ export default class CWeapon extends CEntity {
     }
 }
 
-CWeapon.sprite = new SpriteSheet("entity/guns.png");
+CWeapon.sprite = new SpriteSheet("weapons");
 CWeapon.sprite.bind("KE-6H-World", 64, 40, 16, 8);
 CWeapon.sprite.bind("C-KER .90-World", 64, 96, 16, 8);
 CWeapon.sprite.bind("SEW-9-World", 64, 64, 16, 8);
