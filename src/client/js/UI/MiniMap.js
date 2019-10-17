@@ -14,7 +14,7 @@ class MiniMap extends UIElement {
         this.tiles = {small: 32, big: 120};
         this.mapSize = "small";
         this.events = [];
-        AssetManager.addDownloadCallback(() => {
+        AssetManager.addSpriteCreationCallback(() => {
             for (var key in Scene.tileMaps.getAllMaps()) {
                 var tileMap = Scene.tileMaps.getAllMaps()[key];
                 AssetManager.addPainting(this.paintImage(tileMap), tileMap.name);
@@ -39,6 +39,7 @@ class MiniMap extends UIElement {
      */
     paintImage(tileMap) {
 
+        console.log(tileMap);
         var obj = {
             small: {},
             big: {}
