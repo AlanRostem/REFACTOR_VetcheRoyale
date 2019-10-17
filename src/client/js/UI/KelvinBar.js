@@ -1,6 +1,5 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
-import Vector2D from "../../../shared/code/Math/CVector2D.js";
 import SpriteSheet from "../AssetManager/Classes/Graphical/SpriteSheet.js";
 import AssetManager from "../AssetManager/AssetManager.js";
 
@@ -13,7 +12,7 @@ export default class KelvinBar extends UIElement {
             this.kelvinThinLiquid = AssetManager.getMapImage("kelvinThinLiquid");
             this.kelvinIcons = AssetManager.getMapImage("kelvinIcons");
 
-            this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.1);
+            this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.15);
 
             this.kelvinLiquidAnimation = new SpriteSheet("kelvinLiquidAnimation");
             this.kelvinLiquidAnimation.bind("liquid", 0, 0, 40, 8);
