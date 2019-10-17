@@ -16,7 +16,6 @@ export default class CEventManager {
                     if (client.inboundPacket.gameData){
                         if (client.inboundPacket.gameData.privateEvents) {
                             evs = client.inboundPacket.gameData.privateEvents;
-                            console.log(evs);
                             for (let e of evs) {
                                 let event = new CGameEvent(e);
                                 if (event && !this.eventID.includes(event.id)) {
