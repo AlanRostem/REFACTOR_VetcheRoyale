@@ -226,7 +226,6 @@ class AssetManager {
                         if (_this.done()) {
                             downloadCallback();
                         }
-                        console.log("The tile map file was loaded!")
                         if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
                             _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
                             _this.onFileDownloadedCallbacks.remove(this.testPath);
