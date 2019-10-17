@@ -40,7 +40,6 @@ class SpriteSheet {
     bind(name, ox, oy, fw, fh) {
         AssetManager.addDownloadCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
-            console.log(new Error().stack)
         });
     }
 

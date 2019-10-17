@@ -87,7 +87,7 @@ class AssetManager {
                         _this.downloadCallbacks = null;
                         console.log('%cThe program loaded in ' + (_this.successCount) + ' assets.', 'color: green; font-weight: bold;');
                         if (_this.errorCount > 0) console.error(_this.errorCount + " asset(s) failed to load.");
-                    }, false);
+                    });
                     break;
                 default:
                     alert("error");
