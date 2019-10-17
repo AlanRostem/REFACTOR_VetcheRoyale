@@ -157,12 +157,6 @@ class AssetManager {
                     }, false);
 
                     downloadAudio.src = "public/assets/audio/" + path;
-
-                    /*for (var p = 0; p < _this.maxPool; p++) {
-                        var audioPool = new Audio();
-                        audioPool.src = downloadAudio.src;
-                        this.cache[cachePath][p] = audioPool;
-                    }*/
                     this.cache[cachePath] = downloadAudio;
 
                     break;
@@ -250,17 +244,6 @@ class AssetManager {
      */
     get(path) {
         if (this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
-        else if (path.substring(path.lastIndexOf(('.')) + 1 === "oggp")) {
-          /*  for (var p = 0; p < this.maxPool; p++) {
-                if (this.cache[path][p] !== undefined) {
-                    if (this.cache[path][p].paused) {
-                        this.cache[path][p].play();
-                        return;
-                    }
-                    if (p === this.maxPool) return;
-                }
-            }*/
-        }
         return this.cache[path];
     }
 
