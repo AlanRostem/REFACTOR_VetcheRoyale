@@ -283,6 +283,10 @@ class AssetManager {
         return this.imageMap[name];
     }
 
+    setMapImage(name, image) {
+        this.imageMap[name] = image;
+    }
+
     /**
      * Add a callback function to the queue when all assets are downloaded in the queue
      * @param callback {function} - Callback function
