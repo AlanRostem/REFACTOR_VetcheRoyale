@@ -270,12 +270,7 @@ class AssetManager {
         canvas.width = w;
         canvas.height = h;
         ctx.drawImage(this.get("spriteSheet.png"), x, y, w, h, 0, 0, w, h);
-        var img = new Image();
-        img.src = canvas.toDataURL("image/png");
-        img.onerror = () => {
-            console.log("nonono")
-        };
-        this.imageMap[name] = img;
+        this.imageMap[name] = canvas;
     }
 
     addSpriteCreationCallback(callback) {

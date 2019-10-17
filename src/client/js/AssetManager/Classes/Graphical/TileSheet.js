@@ -52,21 +52,15 @@ class TileSheet extends SpriteSheet {
             }
         }
 
-        const img = new Image();
-        const self = this;
-        img.onload = () => {
-            img.isLoaded = true;
-            self.image = img;
-        };
-        img.src = canvas.toDataURL("png/image");
-        AssetManager.setMapImage(this.name, img);
+        this.image = canvas;
+        AssetManager.setMapImage(this.name, canvas);
     }
 
     /**
      * Draw the image to the main canvas
      */
     draw() {
-        if (this.image) if (this.image.isLoaded)
+        if (this.image)
             R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
     }
 }
