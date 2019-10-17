@@ -14,6 +14,7 @@ class AssetManager {
         this.cache = {};
         this.downloadQueue = [];
         this.downloadCallbacks = [];
+        this.downloadCallbacks = [];
         this.onFileDownloadedCallbacks = new ONMap;
         this.maxPool = 5;
 

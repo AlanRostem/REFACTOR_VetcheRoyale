@@ -17,7 +17,6 @@ export default class CPortal extends CEntity {
         ) {
             AudioPool.play("Map/portal.oggSE")
         }
-        console.log(this.output)
     }
 
     localPlayerOverlapsPair(client) {
@@ -26,7 +25,7 @@ export default class CPortal extends CEntity {
                 return false;
             let e = client.player;
             if (!this.output.pairData) {
-                console.log("pair is returning null data")
+                console.log("pair is returning null data");
                 return false;
             }
             return this.output.pairData.pos.y + this.height > e.output.pos.y
