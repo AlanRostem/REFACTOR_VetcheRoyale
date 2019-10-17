@@ -2,6 +2,7 @@ import CEntity from "../CEntity.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
 import AnimationManager from "../../../AssetManager/Classes/Graphical/AnimationManager.js";
+import AssetManager from "../../../AssetManager/AssetManager.js"
 
 /**
  * Other players in the game. Overrides update and draw methods of CEntity and contains sprite
@@ -19,7 +20,6 @@ class RemotePlayer extends CEntity {
         this.animations.addAnimation("jump", new SpriteSheet.Animation(0, 0, 16, 0.1));
         this.animations.addAnimation("fall", new SpriteSheet.Animation(5, 5, 16, 0.1));
         this.animations.setCurrentAnimation("stand");
-
     }
 
 
@@ -41,7 +41,7 @@ class RemotePlayer extends CEntity {
     }
 }
 
-RemotePlayer.sprite = new SpriteSheet("playerSprite");
+RemotePlayer.sprite = new SpriteSheet("entity/player.png");
 
 
 RemotePlayer.sprite.bind("red", 0, 0, 16 * 16, 16);

@@ -1,6 +1,5 @@
 import Camera from "./Camera.js"
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
-import AssetManager from "../AssetManager/AssetManager.js";
 
 
 /**
@@ -35,8 +34,6 @@ const R = {
     canvas: null,
     ctx: null,
 
-
-
     /**
      * Sets up an HTML canvas element and initializes rendering elements.
      */
@@ -58,15 +55,6 @@ const R = {
         window.onresize = e => {
             this.calibrateScreen();
         };
-
-
-        AssetManager.addMapImage("fontBlue", 512, 0, 32, 60);
-        AssetManager.addMapImage("fontGreen", 544, 0, 32, 60);
-        AssetManager.addMapImage("fontRed", 576, 0, 32, 60);
-        AssetManager.addMapImage("fontWhite", 608, 0, 32, 60);
-        AssetManager.addMapImage("fontYellow", 640, 0, 32, 60);
-
-
     },
 
     debug(...args) {
@@ -144,8 +132,8 @@ const R = {
      * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
      */
     drawText(str, x, y, color = "White", useCamera = false, boundary = this.screenSize.x) {
-
-        var img = AssetManager.getMapImage("font" + color);
+        R.context.save();
+        var img = AssetManager.get("font/ascii" + color + ".png");
 
         var newLine = 0;
         var newLetter = 0;
