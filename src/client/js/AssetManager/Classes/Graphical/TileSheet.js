@@ -22,6 +22,7 @@ class TileSheet extends SpriteSheet {
         AssetManager.addSpriteCreationCallback( () => {
             this.tilesPerRow = (this.img.width / tileSize) | 0;
             this.image = this.paintImage(map);
+            console.log("The entire map image was made!")
         });
     }
 
