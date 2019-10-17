@@ -59,7 +59,7 @@ class TileSheet extends SpriteSheet {
             self.image = img;
         };
         img.src = canvas.toDataURL("png/image");
-        AssetManager.setMapImage(this.src, img);
+        AssetManager.setMapImage(this.name, img);
     }
 
     /**
