@@ -19,7 +19,7 @@ class TileSheet extends SpriteSheet {
         super(src);
         this.tileSize = tileSize;
         this.name = map.name;
-        AssetManager.addSpriteCreationCallback( () => {
+        AssetManager.addSpriteCreationCallback(() => {
             this.tilesPerRow = (this.img.width / tileSize) | 0;
             this.image = this.paintImage(map);
         });
@@ -54,6 +54,10 @@ class TileSheet extends SpriteSheet {
 
         const img = new Image();
         img.src = canvas.toDataURL("png/image");
+        console.log("----------------------------------");
+        console.log("Tile map dimensions:", map.w, map.h);
+        console.log("Image dimensions:", img.width, img.height);
+        console.log("Iterations:", x, y);
         return img;
     }
 
