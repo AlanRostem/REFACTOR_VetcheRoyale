@@ -48,7 +48,6 @@ class MiniMap extends UIElement {
             var ctx = canvas.getContext('2d');
             canvas.width = this.tiles[key];
             canvas.height = this.tiles[key];
-            console.log(canvas.width,canvas.height);
 
             obj[key].image = new Image();
             obj[key].mapInfo = {
