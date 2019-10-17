@@ -21,7 +21,7 @@ class TileSheet extends SpriteSheet {
         this.name = map.name;
         AssetManager.addSpriteCreationCallback(() => {
             this.tilesPerRow = (this.img.width / tileSize) | 0;
-            this.image = this.paintImage(map);
+            this.paintImage(map);
         });
     }
 
@@ -53,11 +53,12 @@ class TileSheet extends SpriteSheet {
         }
 
         const img = new Image();
+        const self = this;
         img.onload = () => {
             img.isLoaded = true;
+            self.image = img;
         };
         img.src = canvas.toDataURL("png/image");
-        return img;
     }
 
     /**
