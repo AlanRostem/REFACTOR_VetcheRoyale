@@ -19,9 +19,9 @@ class TileSheet extends SpriteSheet {
         super(src);
         this.tileSize = tileSize;
         this.name = map.name;
-        AssetManager.addSpriteCreationCallback( () => {
+        AssetManager.addSpriteCreationCallback(() => {
             this.tilesPerRow = (this.img.width / tileSize) | 0;
-            this.image = this.paintImage(map);
+            this.paintImage(map);
         });
     }
 
@@ -53,15 +53,19 @@ class TileSheet extends SpriteSheet {
         }
 
         const img = new Image();
+        const self = this;
+        img.onload = () => {
+            img.isLoaded = true;
+            self.image = img;
+        };
         img.src = canvas.toDataURL("png/image");
-        return img;
     }
 
     /**
      * Draw the image to the main canvas
      */
     draw() {
-        if (this.image)
+        if (this.image) if (this.image.isLoaded)
             R.context.drawImage(this.image, R.camera.displayPos.x, R.camera.displayPos.y);
     }
 }
