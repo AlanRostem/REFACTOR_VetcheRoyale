@@ -18,15 +18,13 @@ export default class HPBar extends UIElement {
 
         });
 
-        this.HPjuice = new Vector2D(50, 8);
-
         this.HPlength = 0;
 
     }
 
     update(deltaTime, client, entityList) {
         if (client.player)
-            this.HPlength = client.player.output.hp * this.HPjuice.x / 100 | 0;
+            this.HPlength = client.player.output.hp * 50 / 100 | 0;
     }
 
     draw() {
@@ -42,11 +40,11 @@ export default class HPBar extends UIElement {
             0,
             0,
             this.HPlength,
-            this.HPjuice.y,
+            8,
             6,
             R.HEIGHT - this.hpBarFrame.height - 2,
             this.HPlength,
-            this.HPjuice.y);
+            8);
 
         // Draw Glass Tube
         R.drawCroppedImage(

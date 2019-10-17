@@ -1,17 +1,19 @@
 import R from "../Graphics/Renderer.js";
 import UIElement from "./UIElement.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
+import AssetManager from "../AssetManager/AssetManager.js";
 
 export default class Stats extends UIElement {
     constructor() {
         super("stats", 0, 0, 32, 32);
-        this.src = AssetManager.get("ui/ui.png");
+        AssetManager.addSpriteCreationCallback(() => {
+            this.stats = AssetManager.getMapImage("stats");
+        });
 
         this.frame = new Vector2D(8, 8);
 
         this.killCount = 0;
         this.playersAlive = 0;
-
 
     }
 
@@ -29,28 +31,34 @@ export default class Stats extends UIElement {
 
     draw() {
         R.ctx.save();
-        UIElement.defaultSpriteSheet.drawCropped(
-            40,
-            68,
-            this.frame.x,
-            this.frame.y,
+
+        // Players alive
+        R.drawCroppedImage(
+            this.stats,
+            0,
+            0,
+            8,
+            8,
             R.WIDTH - 36,
             R.HEIGHT - 122,
-            this.frame.x,
-            this.frame.y,
-        );
-        R.drawText(this.playersAlive, R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120, "White", false);
-        UIElement.defaultSpriteSheet.drawCropped(
-            this.frame.x + 40,
-            68,
-            this.frame.x,
-            this.frame.y,
+            8,
+            8);
+
+        R.drawText(this.playersAlive, R.WIDTH - 36 + 10, R.HEIGHT - 120, "White", false);
+
+        // Kill Count
+        R.drawCroppedImage(
+            this.stats,
+            8,
+            0,
+            8,
+            8,
             R.WIDTH - 36,
-            R.HEIGHT - 122 + this.frame.y + 2,
-            this.frame.x,
-            this.frame.y,
-        );
-        R.drawText(this.killCount, R.WIDTH - 36 + this.frame.x + 2, R.HEIGHT - 120 + this.frame.y + 2, "Red");
+            R.HEIGHT - 112,
+            8,
+            8);
+
+        R.drawText(this.killCount, R.WIDTH - 36 + 10, R.HEIGHT - 120 + 10, "Red");
 
         R.ctx.restore();
     }
