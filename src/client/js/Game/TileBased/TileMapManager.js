@@ -1,4 +1,5 @@
 import CTileMap from "./CTileMap.js";
+import AssetManager from "../../AssetManager/AssetManager.js";
 
 /**
  *  Holds data of tile maps loaded from JSON
@@ -14,7 +15,7 @@ class TileMapManager {
      * @param src {string} - Relative file path of the tile map source file
      */
     createMap(name, src) {
-        this.maps[name] = new CTileMap(src, "tileSet.png", name);
+        this.maps[name] = new CTileMap(src, "worldTileSet", name);
     }
 
     /**

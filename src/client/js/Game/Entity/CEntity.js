@@ -129,6 +129,6 @@ class CEntity {
     }
 }
 
-CEntity.defaultSprite = new SpriteSheet("entity/entities.png");
+CEntity.defaultSprite = new SpriteSheet("entities");
 
 export default CEntity;

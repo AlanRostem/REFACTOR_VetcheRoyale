@@ -11,9 +11,13 @@ class AssetManager {
     constructor() {
         this.successCount = 0;
         this.errorCount = 0;
+
+        this.configSuccess = 0;
         this.cache = {};
         this.downloadQueue = [];
+        this.configureQueue = [];
         this.downloadCallbacks = [];
+        this.configureCallbacks = [];
         this.onFileDownloadedCallbacks = new ONMap;
         this.maxPool = 5;
 
@@ -74,9 +78,17 @@ class AssetManager {
                 case 4 : // COMPLETED
                     allText = rawFile.responseText;
                     var lines = allText.split('\n');
-                    for (var i = 0; i < lines.length; i++) {
+
+                    var i = 0;
+
+                    for (i; i < lines.length; i++) {
                         lines[i] = lines[i].replace('\r', '');
-                        _this.downloadQueue.push(lines[i]);
+                        if (lines[i] !== "end") _this.downloadQueue.push(lines[i]);
+                        else break;
+                    }
+
+                    for (i++; i < lines.length; i++) {
+                        (_this.configureQueue.push(lines[i]));
                     }
 
                     _this.download(() => {
@@ -85,11 +97,19 @@ class AssetManager {
                         }
                         _this.downloadCallbacks = null;
                         console.log('%cThe program loaded in ' + (_this.successCount) + ' assets.', 'color: green; font-weight: bold;');
-                        if (_this.errorCount > 0) console.error(_this.errorCount + " asset(s) failed to load.");
+                        if (_this.errorCount > 0) console.error(_this.errorCount + " asset(s) failed to download.");
                     }, false);
+
+                    _this.configure(() => {
+                        for (var fun of _this.configureCallbacks) {
+                            fun();
+                            console.log("1");
+                        }
+                    }, false );
                     break;
                 default:
                     alert("error");
+                    break;
             }
         };
         rawFile.send(null);
@@ -103,6 +123,7 @@ class AssetManager {
         for (var i = 0; i < this.downloadQueue.length; i++) {
             var path = this.downloadQueue[i];
             var type = path.substring(path.lastIndexOf(('.')) + 1);
+
             const _this = this;
 
             switch (type) {
@@ -166,27 +187,27 @@ class AssetManager {
 
                     break;
                 case "oggSE":
-                       path = path.slice(0, -2);
-                       let request = new XMLHttpRequest();
-                       request.open("GET", "public/assets/audio/" + path, true);
-                       request.responseType = "arraybuffer";
-                       request.audioPath = path + "SE";
-                       request.onload = () => {
-                           _this.audioCtx.decodeAudioData(request.response, buffer => {
-                               _this.cache[request.audioPath] = buffer;
-                           }, () => console.log("Audio loading error!"));
+                    path = path.slice(0, -2);
+                    let request = new XMLHttpRequest();
+                    request.open("GET", "public/assets/audio/" + path, true);
+                    request.responseType = "arraybuffer";
+                    request.audioPath = path + "SE";
+                    request.onload = () => {
+                        _this.audioCtx.decodeAudioData(request.response, buffer => {
+                            _this.cache[request.audioPath] = buffer;
+                        }, () => console.log("Audio loading error!"));
 
-                           _this.successCount++;
-                           if (_this.done()) {
-                               downloadCallback();
-                           }
+                        _this.successCount++;
+                        if (_this.done()) {
+                            downloadCallback();
+                        }
 
-                           if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
-                               _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
-                               _this.onFileDownloadedCallbacks.remove(this.testPath);
-                           }
-                       };
-                       request.send();
+                        if (_this.onFileDownloadedCallbacks.has(this.testPath)) {
+                            _this.onFileDownloadedCallbacks.get(this.testPath)(this.cache);
+                            _this.onFileDownloadedCallbacks.remove(this.testPath);
+                        }
+                    };
+                    request.send();
                     break;
                 case "png":
                     var img = new Image();
@@ -232,14 +253,34 @@ class AssetManager {
                     this.cache[path] = txt;
                     break;
                 default:
-                    window.alert("FILENAME ERROR");
+                    window.alert("FILENAME ERROR, check .cfg file");
                     break;
+
             }
+
         }
     }
 
+    configure(downloadCallback) {
+        if (this.configureQueue.length === 0) {
+            downloadCallback();
+        }
+        for (var i = 0; i < this.configureQueue.length; i++) {
+            //  var path = this.downloadQueue[i];
+            // var type = path.substring(path.lastIndexOf(('.')) + 1);
+
+            var lines = this.configureQueue[i].split(',');
+            console.log(lines);
+            this.addMapImage(lines[0], Number(lines[1]), Number(lines[2]), Number(lines[3]), Number(lines[4]));
+            this.configSuccess++;
+
+        }
+       downloadCallback();
+    }
+
+
     done() {
-        return (this.downloadQueue.length === this.successCount + this.errorCount);
+        return (this.downloadQueue.length === this.successCount + this.errorCount) && (this.configureQueue.length === this.configSuccess);
     }
 
     /**
@@ -250,15 +291,15 @@ class AssetManager {
     get(path) {
         if (this.cache[path] === undefined) console.warn("Resource not loaded yet: (" + path + "), or check if in cfg file!");
         else if (path.substring(path.lastIndexOf(('.')) + 1 === "oggp")) {
-          /*  for (var p = 0; p < this.maxPool; p++) {
-                if (this.cache[path][p] !== undefined) {
-                    if (this.cache[path][p].paused) {
-                        this.cache[path][p].play();
-                        return;
-                    }
-                    if (p === this.maxPool) return;
-                }
-            }*/
+            /*  for (var p = 0; p < this.maxPool; p++) {
+                  if (this.cache[path][p] !== undefined) {
+                      if (this.cache[path][p].paused) {
+                          this.cache[path][p].play();
+                          return;
+                      }
+                      if (p === this.maxPool) return;
+                  }
+              }*/
         }
         return this.cache[path];
     }
@@ -268,11 +309,12 @@ class AssetManager {
     }
 
     addMapImage(name, x, y, w, h) {
-        this.addDownloadCallback(()=>{
+        this.addDownloadCallback(() => {
             var canvas = document.createElement("canvas");
             var ctx = canvas.getContext('2d');
-            canvas.width = w; canvas.height = h;
-            ctx.drawImage(this.get("ui/ui.png"), x, y, w, h, 0, 0, w, h);
+            canvas.width = w;
+            canvas.height = h;
+            ctx.drawImage(this.get("spriteSheet.png"), x, y, w, h, 0, 0, w, h);
             var img = new Image();
             img.src = canvas.toDataURL("image/png");
 
@@ -290,6 +332,10 @@ class AssetManager {
      */
     addDownloadCallback(callback) {
         this.downloadCallbacks.push(callback);
+    }
+
+    addConfigureCallback(callback) {
+        this.configureCallbacks.push(callback);
     }
 }
 

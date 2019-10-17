@@ -1,6 +1,6 @@
-import AssetManager from "../../AssetManager.js"
 import R from "../../../Graphics/Renderer.js";
 import Scene from "../../../Game/Scene.js";
+import AssetManager from "../../AssetManager.js"
 
 
 /**
@@ -14,10 +14,8 @@ class SpriteSheet {
      * @see AssetManager
      */
     constructor(src) {
-        this.src = src;
-        AssetManager.addDownloadCallback(() => {
-            this.img = AssetManager.get(this.src);
-        });
+
+        this.img = AssetManager.getMapImage(src);
         /**
          * Map of rectangles representing sprite regions
          * @type {Map<string, SpriteSheet.Rect>}
@@ -38,7 +36,7 @@ class SpriteSheet {
      * @param fh {number} - Frame height of the given sprite region
      */
     bind(name, ox, oy, fw, fh) {
-        AssetManager.addDownloadCallback(() => {
+        AssetManager.addConfigureCallback(() => {
             this.offsetRects.set(name, new SpriteSheet.Rect(ox, oy, fw, fh));
         });
     }
