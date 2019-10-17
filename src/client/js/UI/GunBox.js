@@ -8,23 +8,23 @@ export default class GunBox extends UIElement {
     constructor() {
         super("gunbox", 0, 0, 32, 32);
 
-        this.gunSprites = new SpriteSheet("ui/gunBoxGuns.png");
+        AssetManager.addSpriteCreationCallback(() => {
+            this.gunBoxFrame = AssetManager.getMapImage("gunBoxFrame");
+            this.gunBoxBackground = AssetManager.getMapImage("gunBoxBackground");
 
-        this.frame = new Vector2D(64, 32);
-        this.backGround = new Vector2D(60, 28);
+            this.animationSpec = new SpriteSheet.Animation(0, 6, 7, 0.1);
 
-        this.hasWeapon = false;
+            this.gunAnimation = new SpriteSheet("SEW-9");
+            this.gunAnimation.bind("gunStandby", 0, 0, 60 * 7, 26);
+        });
 
         this.playerAmmo = 0;
         this.loadedAmmo = 0;
 
-        this.isReloading = false;
+        this.oldName = null;
 
-        AssetManager.addMapImage("gunBoxFrame",
-            0,
-            36,
-            this.frame.x,
-            this.frame.y)
+        this.isReloading = false;
+        this.hasWeapon = false;
 
     }
 
@@ -32,10 +32,15 @@ export default class GunBox extends UIElement {
         if (client.player) {
             let gun = entityList.getEntityByID(client.player.output.invWeaponID);
             if (gun) {
+                this.iconName = gun.output.displayName;
+                if (this.iconName !== this.oldName) {
+                    this.gunAnimation.img = AssetManager.getMapImage(this.iconName);
+                    this.oldName = this.iconName;
+
+                }
                 this.hasWeapon = true;
                 this.playerAmmo = client.player.output.invAmmo;
                 this.loadedAmmo = gun.output.currentAmmo;
-                this.iconID = gun.iconID;
                 this.isReloading = gun.output.reloading;
             } else {
                 this.hasWeapon = false;
@@ -48,49 +53,46 @@ export default class GunBox extends UIElement {
         if (this.hasWeapon) {
             R.ctx.save();
 
-
+            // Ammo Info
             R.drawText((this.isReloading ? "Reloading..." : this.loadedAmmo + "/" + this.playerAmmo), R.WIDTH - (this.isReloading ? 88 : 72), R.HEIGHT - 44, "Green", false);
 
-         /*   UIElement.defaultSpriteSheet.drawCropped(
+            // Gunboxframe
+            R.drawCroppedImage(
+                this.gunBoxFrame,
                 0,
-                36,
-                this.frame.x,
-                this.frame.y,
+                0,
+                this.gunBoxFrame.width,
+                this.gunBoxFrame.height,
                 R.WIDTH - 92,
                 R.HEIGHT - 36,
-                this.frame.x,
-                this.frame.y,
-            );*/
-
-            R.ctx.drawImage(
-                AssetManager.getMapImage("gunBoxFrame"),
-                R.WIDTH - 92,
-                R.HEIGHT - 36,
-                this.frame.x,
-                this.frame.y
+                this.gunBoxFrame.width,
+                this.gunBoxFrame.height
             );
 
-            UIElement.defaultSpriteSheet.drawCropped(
-                this.frame.x,
-                36,
-                this.backGround.x,
-                this.backGround.y,
-                R.WIDTH - 90,
-                R.HEIGHT - 34,
-                this.backGround.x,
-                this.backGround.y,
-            );
-
-            this.gunSprites.drawCropped(
+            // Gunbox Background
+            R.drawCroppedImage(
+                this.gunBoxBackground,
                 0,
-                this.iconID * this.backGround.y,
-                this.backGround.x,
-                this.backGround.y,
+                0,
+                this.gunBoxBackground.width,
+                this.gunBoxBackground.height,
                 R.WIDTH - 90,
                 R.HEIGHT - 34,
-                this.backGround.x,
-                this.backGround.y,
+                this.gunBoxBackground.width,
+                this.gunBoxBackground.height
             );
+
+            // Gun inside box
+            this.gunAnimation.animate("gunStandby", this.animationSpec, this.gunBoxBackground.width, this.gunBoxBackground.height);
+            this.gunAnimation.drawCroppedAnimated(
+                0,
+                0,
+                this.gunBoxBackground.width,
+                this.gunBoxBackground.height,
+                R.WIDTH - 90,
+                R.HEIGHT - 34,
+                this.gunBoxBackground.width,
+                this.gunBoxBackground.height);
 
             R.ctx.restore();
         }
