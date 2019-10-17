@@ -14,8 +14,8 @@ class SEventManager {
             : this.privateEvents[player].unshift(e);
     }
 
-    addGlobal(id, type, color, life, arg, priority = false) {
-        let e = new SGameEvent(id, type, arg, color, life, priority);
+    addGlobal(name, type, color, life, arg, priority = false) {
+        let e = new SGameEvent(name, type, arg, color, life, priority);
         priority ? this.globalEvents.push(e)
             : this.globalEvents.unshift(e);
     }
@@ -27,7 +27,8 @@ class SEventManager {
 
         for (let player in this.privateEvents)
             if (gameWorld.getEntity(player))
-                gameWorld.getEntity(player)._gameData.Event = this.privateEvents[player];
+                gameWorld.getEntity(player)._gameData.privateEvents = this.privateEvents[player];
+
 
         this.privateEvents = {};
         this.globalEvents = [];

@@ -46,12 +46,12 @@ class MiniMap extends UIElement {
         };
 
         for (var key in obj) {
-            obj[key].canvas = document.createElement('canvas');
-            var ctx = obj[key].canvas.getContext('2d');
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            canvas.width = this.tiles[key] * 8;
+            canvas.height = this.tiles[key] * 8;
 
-            obj[key].canvas.width = this.tiles[key] * 8;
-            obj[key].canvas.height = this.tiles[key] * 8;
-
+            obj[key].image = new Image();
             obj[key].mapInfo = {
                 name: tileMap.name,
                 array: [],
@@ -87,6 +87,7 @@ class MiniMap extends UIElement {
                         false, ctx)
                 }
             }
+            obj[key].image.src = canvas.toDataURL("image/png");
         }
         return obj;
     }
@@ -107,12 +108,8 @@ class MiniMap extends UIElement {
 
 
     update(deltaTime, client, entityList) {
-        //this.pos.set(new Vector2D(R.WIDTH - this.tiles[this.mapSize] - 4, 4));
-        //this.mapSize = "small";
-
         if (this.mapSize === "small")
             this.pos.set(new Vector2D(R.screenSize.x - this.tiles[this.mapSize] - 4, 4));
-
         else
             this.pos.set(new Vector2D((R.screenSize.x - this.tiles[this.mapSize]) / 2, (R.screenSize.y - this.tiles[this.mapSize]) / 2));
 
@@ -121,14 +118,13 @@ class MiniMap extends UIElement {
             || this.image[this.mapSize].mapInfo.name !== Scene.currentMap)
             this.image = AssetManager.get(Scene.currentMap);
 
-
         if (client.player)
-            this.pPos = this.posOnMap(client.player.output.pos);
+            this.pPos = this.posOnMap(client.player.output.pos)
     }
 
     draw() {
         R.ctx.drawImage(
-            this.image[this.mapSize].canvas,
+            this.image[this.mapSize].image,
             this.pos.x | 0,
             this.pos.y | 0,
             this.tiles[this.mapSize] * 8,

@@ -88,6 +88,14 @@ class Announcement extends UIElement {
     draw() {
         if (this.pos.y > -this.height - 4) {
 
+            R.ctx.drawImage(
+                AssetManager.getMapImage("announcementBoxBackground"),
+                this.pos.x,
+                this.pos.y + 6,
+                this.width - 10,
+                this.height - 4,
+            );
+            /*
             UIElement.defaultSpriteSheet.drawCropped(
 
                 0, 110,
@@ -96,7 +104,7 @@ class Announcement extends UIElement {
                 this.pos.y + 6,
                 this.width - 10,
                 this.height - 4,
-            );
+            );*/
 
             if (this.event !== undefined) {
                 R.drawText(
@@ -106,6 +114,14 @@ class Announcement extends UIElement {
                 );
             }
 
+
+            R.ctx.drawImage(
+                AssetManager.getMapImage("announcementBoxFrame"),
+                this.pos.x - 5,
+                this.pos.y,
+                this.width,
+                this.height + 4,
+            );
 
             UIElement.defaultSpriteSheet.drawCropped(
                 0, 88,

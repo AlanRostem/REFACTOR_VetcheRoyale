@@ -61,6 +61,10 @@ class Player extends GameDataLinker {
         this.itemsNearby = new ONMap();
         this.itemScanner = new HitScanner({}, false);
         this.scanItems = false;
+
+
+
+
     }
 
     // Calculates the closest item capable of being picked

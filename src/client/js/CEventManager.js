@@ -13,12 +13,9 @@ export default class CEventManager {
     SGetEvent(client) {
         if (client.inboundPacket) {
             let evs = [];
-            // console.log(client.inboundPacket.gameData.Event);
-            if (client.player)
-                if (client.player.output)
-                    if (client.player.output._gameData)
-                        if (client.player.output._gameData["Event"]) {
-                            evs = client.player.output._gameData["Event"];
+                    if (client.inboundPacket.gameData){
+                        if (client.inboundPacket.gameData.privateEvents) {
+                            evs = client.inboundPacket.gameData.privateEvents;
                             for (let e of evs) {
                                 let event = new CGameEvent(e);
                                 if (event && !this.eventID.includes(event.id)) {
@@ -32,9 +29,8 @@ export default class CEventManager {
                                 }
                             }
                         }
-            if (client.inboundPacket.gameData)
-                if (client.inboundPacket.gameData["Event"] !== undefined) {
-                    evs = client.inboundPacket["gameData"]["Event"];
+                if (client.inboundPacket.gameData.Event) {
+                    evs = client.inboundPacket.gameData.Event;
                     for (let e of evs) {
                         let event = new CGameEvent(e);
                         if (event && !this.eventID.includes(event.id)) {
@@ -48,6 +44,7 @@ export default class CEventManager {
                         }
                     }
                 }
+            }
         }
     }
 

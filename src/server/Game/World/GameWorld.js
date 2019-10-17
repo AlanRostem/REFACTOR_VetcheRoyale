@@ -1,6 +1,6 @@
 const EntityManager = require("../Entity/Management/EntityManager.js");
 const TeamManager = require("./TeamManager.js");
-const Tile = require("../TileBased/Tile");
+const Tile = require("../TileBased/Tile.js");
 const ClientList = require("../../Networking/ClientList.js");
 const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
 const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
@@ -9,6 +9,7 @@ const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
 const GameRules = require("./GameRules.js");
 const EventManager = require("./Matches/SEventManager.js");
+const PacketBuffer = require("../../Networking/PacketBuffer.js");
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
@@ -16,8 +17,16 @@ class GameWorld extends EntityManager {
         super(true, gameMap);
         this.settings = new GameRules();
         this.teamManager = new TeamManager(this);
-        this.dataPacket = {};
         this.eventManager = new EventManager(gameMap);
+        this.dataPacket = {};
+        this.players = 0;
+
+        this.dataBuffer = new PacketBuffer();
+        this.bufferKeys = [
+            "mapName",
+            "playerCount",
+            "Event"
+        ];
 
         this.id = name;
         this.portals = new ONMap();
@@ -26,6 +35,7 @@ class GameWorld extends EntityManager {
         this.recentlySpawnedEntities = new ONMap();
         this.spawner.spawnAll(this);
         this.debugData = {};
+
     }
 
 
@@ -68,7 +78,7 @@ class GameWorld extends EntityManager {
 
     // TODO: Fix
     get playerCount() {
-        return 0;
+        return this.players;
     }
 
     get isFull() {
@@ -79,15 +89,18 @@ class GameWorld extends EntityManager {
         //this.clients.addClient(player.id, player);
         this.teamManager.addPlayer(player, this);
         this.spawner.spawnSpecificAtPos(105, player, this);
-        /*this.spawnEntity(
-            61 * Tile.SIZE,
-            105 * Tile.SIZE,
-            client.player);
-         */
+        this.players++;
+
+        this.eventManager.addGlobal(
+            "Welcome", "announcement", "Green", 0, {
+                string: "Welcome to Dome24",
+            }, true
+        );
     }
 
     removePlayer(id) {
         this.removeEntity(id);
+        this.players--;
     }
 
     setGameData(key, value) {
@@ -103,12 +116,14 @@ class GameWorld extends EntityManager {
 
     update(deltaTime, worldManager) {
         // Update the entities, then create data packs
-        this.dataPacket = {};
         super.update(deltaTime);
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);
         this.recentlySpawnedEntities.clear();
+        this.dataPacket = this.dataBuffer.export(this.bufferKeys, this.dataPacket);
+        if (Object.keys(this.dataPacket).length > 0)
+            console.log(this.dataPacket);
     }
 }
 
