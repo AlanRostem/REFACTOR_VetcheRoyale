@@ -53,10 +53,10 @@ class TileSheet extends SpriteSheet {
         }
 
         const img = new Image();
-        img.src = canvas.toDataURL("png/image");
         img.onload = () => {
             img.isLoaded = true;
         };
+        img.src = canvas.toDataURL("png/image");
         return img;
     }
 
