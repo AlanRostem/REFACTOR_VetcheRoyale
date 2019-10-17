@@ -200,6 +200,18 @@ const R = {
         ctx.restore();
     },
 
+
+    drawCroppedImage(img, cropX, cropY, cropW, cropH, x, y, w, h) {
+        if (img) {
+            if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
+            R.context.drawImage(img, cropX, cropY, cropW, cropH,
+                Math.round(x),
+                Math.round(y),
+                Math.round(w),
+                Math.round(h));
+        }
+    },
+
     drawDebug() {
         R.drawText(R.debugStrings, 5, 5, "Green");
         R.debugStrings = "";
