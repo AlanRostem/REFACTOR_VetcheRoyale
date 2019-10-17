@@ -7,7 +7,7 @@ export default class CEventManager {
     constructor() {
         this.events = [];
         this.eventID = [];
-        this.eventReceiver = {};
+        this.eventReceiver = {}; 
     }
 
     SGetEvent(client) {
