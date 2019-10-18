@@ -81,7 +81,7 @@ class SuperDamage extends SEntity {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Player) {
             if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
-                this.damage.inflict(entity, entityManager);
+                this.damage.inflict(eantity, entityManager);
             }
         }
     }
