@@ -16,9 +16,11 @@ class ClientList {
     }
 
     getClient(id) {
+        /*
         if (!this.container.hasOwnProperty(id)) {
-            console.log("WARNING: Client list is returning undefined on 'getClient':", id, new Error().stack);
+            console.log("WARNING: Client list is returning undefined on 'getClient':", id, new Error());
         }
+         */
         return this.container[id];
     }
 
