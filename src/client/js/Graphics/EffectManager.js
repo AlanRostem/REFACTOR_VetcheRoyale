@@ -5,7 +5,7 @@ import R from "./Renderer.js";
 class EffectManager {
     constructor() {
         this.effects = [];
-        this.sprite = new SpriteSheet("entity/effects.png");
+        this.sprite = new SpriteSheet("effects");
         this.animations = new ObjectNotationMap();
         const self = this;
         this.VisualEffect = class VisualEffect {

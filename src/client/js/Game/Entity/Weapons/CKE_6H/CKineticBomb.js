@@ -35,10 +35,6 @@ class CKineticBomb extends CEntity {
             5,
             5
         );
-
-        /*  CWeapon.sprite.drawStill("kineticBomb",
-              this.output.pos.x + R.camera.x - 4,
-              this.output.pos.y + R.camera.y - 4)*/
     }
 }
 
