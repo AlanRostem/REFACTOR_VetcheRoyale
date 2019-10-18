@@ -16,12 +16,13 @@ Primary Attack: Dragon's Breath: Close-range flame blasts.
 Mod: Incendiary Wave: Unleash a wave of fire that burns an enemy when in very close proximity. Deals damage over time.
 Super: Napalm Gas: Blanket your surroundings with a highly flammable gas. Detonated by firing at the gas. 
 
-Hamilton P336 (or HP336)
-Description: Advanced tech tactical pistol.
+Unnamed
+Description: Corrosive tactical pistol.
 Ammo Capacity: 14
-Primary Attack: Semi-automatic pistol: Slow firing low damage pistol.
-Mod: Select fire: Toggle fire mode to rapid full auto.
-Super: Smart split-barrel: Lock on to two targets and fire at them simultaneously.
+Primary Attack: Uranium bullets: Fast radioactive bullets.
+Mod: Radioactive overload: Enemies in line of sight get slowed down.  
+Super: Tactical corrosion: Fire a projectile that weakens a targets damage and health.
+
 Level 2 weapons
 
 C-KER 90
@@ -44,6 +45,7 @@ Ammo Capacity: 25
 Primary Attack: Automatic Fire: Shoot fast medium-bullets with high recoil.
 Mod: Cargo bolt: All bullets in the magazine fired at once. Higher recoil. Less damage per shot.
 Super: Heavy Metal: Ammo Capacity set to 100 and auto-filled with bullets, no recoil and high fire rate. Every shot is fired automatically until empty.
+
 Level 3 weapons
 
 KE-6H
@@ -79,8 +81,8 @@ Super: Quantum boost: Become invulnerable and move faster.
 3.93 World-Line
 Description: Space-time manipulator
 Ammo Capacity: 1
-Primary Attack: Wormhole: Fire an arcing projectile that creates a wormhole on tile impact only. The wormhole lasts for 1 second (half of the reload-speed) and deals damage over time on enemies while slowing them down.
-Mod: Space-time tunnel: Block all incoming damage for 2 seconds. 
+Primary Attack: Wormhole: Arcing projectile with wormhole effect on impact.
+Mod: Gravitiational mind: Controllable flight. 
 Super: Space-time subordinate: Fire a projectile that places a copy of yourself in its landing location. The copy auto locks on enemies and fires at them. 
 
 Interlux 
