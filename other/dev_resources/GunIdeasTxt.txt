@@ -1,8 +1,7 @@
 Weapon ideas for the game. These are the in-game descriptions
 
 |||||Level 1 weapons|||||
-
-KE-L
+KE-L 
 Description: Compressed kinetic energy pistol.
 Ammo Capacity: 10
 Primary fire: Kinetic orbs: Bouncy projectiles.

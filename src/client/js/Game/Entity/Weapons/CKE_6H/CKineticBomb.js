@@ -3,6 +3,7 @@ import CWeapon from "../CWeapon.js";
 import R from "../../../../Graphics/Renderer.js";
 import EffectManager from "../../../../Graphics/EffectManager.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
+import AssetManager from "../../../../AssetManager/AssetManager.js";
 
 let explSpeed = 0.05;
 
@@ -22,13 +23,25 @@ class CKineticBomb extends CEntity {
     }
 
     draw() {
-        CWeapon.sprite.drawStill("kineticBomb",
+
+        R.drawCroppedImage(
+            AssetManager.getMapImage("KE-6H_bullet"),
+            0,
+            0,
+            5,
+            5,
             this.output.pos.x + R.camera.x - 4,
-            this.output.pos.y + R.camera.y - 4)
+            this.output.pos.y + R.camera.y - 4,
+            5,
+            5
+        );
+
+        /*  CWeapon.sprite.drawStill("kineticBomb",
+              this.output.pos.x + R.camera.x - 4,
+              this.output.pos.y + R.camera.y - 4)*/
     }
 }
 
 EffectManager.configureEffect("kineticBombExpl", 0, 0, 24, 24, 6, explSpeed);
-CWeapon.sprite.bind("kineticBomb", 64, 32, 8, 8);
 
 export default CKineticBomb;

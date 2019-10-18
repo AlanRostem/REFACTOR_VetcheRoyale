@@ -2,12 +2,13 @@ import CEntity from "./CEntity.js";
 import SpriteSheet from "../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../Graphics/Renderer.js";
 import AudioPool from "../../AssetManager/Classes/Audio/AudioPool.js";
+import AssetManager from "../../AssetManager/AssetManager.js";
 
 
 export default class CPortal extends CEntity {
     constructor(d) {
         super(d);
-        this.animation = new SpriteSheet.Animation(0, 3, 4, 0.1);
+
     }
 
     onClientAdd(dataPack, client) {
@@ -37,10 +38,11 @@ export default class CPortal extends CEntity {
 
     draw() {
         let pos = this.getRealtimeProperty("pos");
-        CEntity.defaultSprite.animate("portal", this.animation, 10, 16);
-        CEntity.defaultSprite.drawAnimated(
-            pos.x + R.camera.x,
-            pos.y + R.camera.y - 3, 10, 16);
+
+        CPortal.portalAnimation.animate("portal", CPortal.animationSpec, 10, 16);
+        CPortal.portalAnimation.drawAnimated(
+                pos.x + R.camera.x,
+                pos.y + R.camera.y - 3, 10, 16);
     }
 
     update(deltaTime, client) {
@@ -50,4 +52,10 @@ export default class CPortal extends CEntity {
     }
 };
 
-CEntity.defaultSprite.bind("portal", 0, 8, 10 * 4, 16);
+
+AssetManager.addSpriteCreationCallback(() => {
+    CPortal.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.15);
+
+    CPortal.portalAnimation = new SpriteSheet("portal");
+    CPortal.portalAnimation.bind("portal", 0, 0, 40, 16);
+});
