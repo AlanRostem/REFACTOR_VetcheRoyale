@@ -55,11 +55,11 @@ Primary Attack: Kinetic bomb: Explosive bouncy projectile.
 Mod: Kinetic implosion: Retract all roaming bombs into one spot and detonate them.
 Super: Propulsive scatter: Ticking energy bomb scattering bouncy projectile.
 
-Gust Motorizer
+AE Motorizer
 Description: Motor driven death machine.
 Ammo Capacity: 36
 Primary Attack: Gust Rockets: Burst micro missile launcher.
-Mod: Whirlwind: Lock down enemies hit by the whirlwind. 
+Mod: Whirlwind: Lock down enemies hit by your whirlwind.
 Super: Salvo storm: Move enemies towards your salvo of rockets.
 
 SEW-9
