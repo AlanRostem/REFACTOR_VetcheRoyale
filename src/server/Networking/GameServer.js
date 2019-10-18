@@ -56,6 +56,7 @@ class GameServer {
     defineClientResponseEvents() {
         this.dataBridge.addClientResponseListener("clientInWorld", data => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "clientInWorld" + "\x1b[0m");
                 return;
             }
             this.mainSocket.cl.getClient(data.id).worldID = data.worldID;
@@ -64,6 +65,7 @@ class GameServer {
 
         this.dataBridge.addClientResponseListener("initEntity", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "initEntity" + "\x1b[0m");
                 return;
             }
             this.mainSocket.cl.getClient(data.id).emit("initEntity", data.data);
@@ -72,6 +74,7 @@ class GameServer {
 
         this.dataBridge.addClientResponseListener("spawnEntity", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "spawnEntity" + "\x1b[0m");
                 return;
             }
             this.mainSocket.cl.getClient(data.id).emit("spawnEntity", data.data);
@@ -80,6 +83,8 @@ class GameServer {
 
         this.dataBridge.addClientResponseListener("addEntity", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "addEntity" + "\x1b[0m");
+
                 return;
             }
             this.mainSocket.cl.getClient(data.id).emit("addEntity", data.data);
@@ -88,6 +93,7 @@ class GameServer {
 
         this.dataBridge.addClientResponseListener("removeEntity", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "removeEntity" + "\x1b[0m");
                 return;
             }
             this.mainSocket.cl.getClient(data.id).emit("removeEntity", data.data);
@@ -96,6 +102,7 @@ class GameServer {
 
         this.dataBridge.addClientResponseListener("removeOutOfBoundsEntity", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "removeOutOfBoundsEntity" + "\x1b[0m");
                 return;
             }
             this.mainSocket.cl.getClient(data.id).emit("removeOutOfBoundsEntity", data.data);
@@ -104,6 +111,7 @@ class GameServer {
 
         this.dataBridge.addClientResponseListener("serverUpdateTick", (data) => {
             if (!this.mainSocket.cl.getClient(data.id)) {
+                //console.log("\x1b[33m" + "serverUpdateTick" + "\x1b[0m");
                 return;
             }
             this.mainSocket.cl.getClient(data.id).networkedUpdate(data.data, this);

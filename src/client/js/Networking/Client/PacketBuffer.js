@@ -57,11 +57,11 @@ Object.copy = function (obj) {
 };
 
 class PacketBuffer {
-    constructor(){
+    constructor() {
         this.buffer = {};
     }
 
-    exportInitValues(values, composedEntity){
+    exportInitValues(values, composedEntity) {
         let snapShot = {};
         for (let key of values) {
             snapShot[key] = composedEntity[key];
@@ -74,7 +74,7 @@ class PacketBuffer {
         return snapShot;
     }
 
-    export(values, composedEntity){
+    export(values, composedEntity) {
         let snapShot = {};
         for (let key of values) {
             if (Object.equals(composedEntity[key], this.buffer[key])) continue;

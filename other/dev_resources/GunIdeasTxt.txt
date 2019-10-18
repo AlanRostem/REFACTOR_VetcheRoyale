@@ -1,35 +1,36 @@
-Weapon ideas for Vetche Royale
+Weapon ideas for the game. These are the in-game descriptions
 
-Level 1 weapons
+|||||Level 1 weapons|||||
 
 KE-L
 Description: Compressed kinetic energy pistol.
 Ammo Capacity: 10
-Primary fire: Kinetic orbs: Automatic pistol that fires bouncy projectiles.
-Mod: Kinetic energy: Fire a wave of kinetic energy that knocks you and enemies away from each other. 
-Super: Kinetic bubble: Launch a big projectile that moves enemies caught in it in its moving direction. It moves through walls.
+Primary fire: Kinetic orbs: Bouncy projectiles.
+Mod: Propulsive energy: Knock yourself and enemies away.
+Super: Propulsive bubble: Large bubble moving enemies caught in it.
 
 Firewall
 Description: Incendiary shotgun.
 Ammo Capacity: 4
 Primary Attack: Dragon's Breath: Close-range flame blasts.
-Mod: Incendiary Wave: Unleash a wave of fire that burns an enemy when in very close proximity. Deals damage over time.
-Super: Napalm Gas: Blanket your surroundings with a highly flammable gas. Detonated by firing at the gas. 
+Mod: Incendiary Wave: Area of effect burn.
+Super: Napalm Gas: Blanket your surroundings with a flammable gas.
 
-Hamilton P336 (or HP336)
-Description: Advanced tech tactical pistol.
+238. Fusion
+Description: Corrosive tactical pistol.
 Ammo Capacity: 14
-Primary Attack: Semi-automatic pistol: Slow firing low damage pistol.
-Mod: Select fire: Toggle fire mode to rapid full auto.
-Super: Smart split-barrel: Lock on to two targets and fire at them simultaneously.
-Level 2 weapons
+Primary Attack: Uranium chunks: Fast radioactive bullets.
+Mod: Rad-overload: Enemies in line of sight get slowed down.
+Super: Tactical corrosion: Projectile that weakens a targets damage and health.
+
+|||||Level 2 weapons|||||
 
 C-KER 90
-Description: Belt-fed anti-tank rifle.
+Description: Belt-fed tracking rifle.
 Ammo Capacity: 10
-Primary Attack: Bolt-action sonar rounds: Fire a large fast arcing projectile dealing high damage. 
-Mod: Tracker scope: Turn the camera to further line of sight. Enemies hit outside of this line of sight are marked. 
-Super: Seeker smoke: Blanket a large area with smoke where the enemy can’t see you but you can see them. Lasts 5 seconds.
+Primary Attack: Sonar rounds: Arcing sticky projectile with tracking abilities.
+Mod: Tracker scope: Turn your view and track enemies near your sonar rounds.
+Super: Seeker smoke: Blanket a large area with a vision impaling tracking smoke.
 
 Falchion SLR
 Description: Rocket powered hunting rifle
@@ -44,48 +45,49 @@ Ammo Capacity: 25
 Primary Attack: Automatic Fire: Shoot fast medium-bullets with high recoil.
 Mod: Cargo bolt: All bullets in the magazine fired at once. Higher recoil. Less damage per shot.
 Super: Heavy Metal: Ammo Capacity set to 100 and auto-filled with bullets, no recoil and high fire rate. Every shot is fired automatically until empty.
-Level 3 weapons
+
+|||||Level 3 weapons|||||
 
 KE-6H
 Description: Compressed kinetic energy rifle, predecessor to the KE-L.
 Ammo Capacity: 8
-Primary Attack: Kinetic bomb: Explosive bouncy projectile that detonates after a couple of bounces. 
+Primary Attack: Kinetic bomb: Explosive bouncy projectile.
 Mod: Kinetic implosion: Retract all roaming bombs into one spot and detonate them.
-Super: Kinetic scatter blast: Fire a slow projectile that scatters many small low damage bouncy projectiles upon detonation. They can be guided.
+Super: Propulsive scatter: Ticking energy bomb scattering bouncy projectile.
 
 Gust Motorizer
 Description: Motor driven death machine.
 Ammo Capacity: 36
-Primary Attack: Wind Rockets: Rapid-6-shot-burst micro missile launcher. Missiles travel harmonically.
+Primary Attack: Gust Rockets: Burst micro missile launcher.
 Mod: Whirlwind: Lock down enemies hit by the whirlwind. 
-Super: Salvo storm: Fire faster and more accurate while moving enemies towards you for 5 seconds. 
+Super: Salvo storm: Move enemies towards your salvo of rockets.
 
 SEW-9
 Description: Electric Missile Launcher
 Ammo Capacity: 1
-Primary Attack: Sphere Missile: Launch a sphere which follows the cursor. Electric discharge on impact, damaging nearby players.
-Mod: Zoomed missile: Sphere follows your mouse, and outside camera boundaries. Lasts for 5 seconds.
-Super: Short-Circuiting: Electric overload. Electric beams stream from the launcher damaging nearby players. Controllable.
+Primary Attack: Sphere Missile: Guided electric explosive.
+Mod: Eye of the volt: View your missile's location with improved damage.
+Super: Short-Circuiting: Wall-penetrating electric shock.
 
-Level 4 weapons
+|||||Level 4 weapons|||||
 
 Hadron Railgun
 Description: Hadron particle cannon
 Ammo Capacity: 15
-Primary Attack: Hadron wave: Charge up a powerful laser shot. 
-Mod: Brute shot: Fire a laser that creates an explosion on impact that knocks enemies away. 
+Primary Attack: Hadron wave: Charging laser shot with proportional damage to charge time.
+Mod: Brute shot: Constant beam with explosion effect at the end.
 Super: Quantum boost: Become invulnerable and move faster.
 
 3.93 World-Line
 Description: Space-time manipulator
 Ammo Capacity: 1
-Primary Attack: Wormhole: Fire an arcing projectile that creates a wormhole on tile impact only. The wormhole lasts for 1 second (half of the reload-speed) and deals damage over time on enemies while slowing them down.
-Mod: Space-time tunnel: Block all incoming damage for 2 seconds. 
-Super: Space-time subordinate: Fire a projectile that places a copy of yourself in its landing location. The copy auto locks on enemies and fires at them. 
+Primary Attack: Wormhole: Arcing projectile with wormhole effect on impact.
+Mod: Gravitational mind: Controllable flight.
+Super: Space-time subordinate: Spawn a clone of yourself attacking enemies.
 
 Interlux 
-Description: Light bending
+Description: Light bender
 Ammo Capacity: 4
-Primary Attack: Phocus: Controls a laser starting. Maxlength: 64 pixels, bounces, giving more damage each bounce.
-Mod: Lux Aeterna: Creates a light shield around your team for 3 seconds. 
-Super: Et lux perpetua luceat eis: Steals life from everyone on screen.
+Primary Attack: Phocus: Bouncing light beam with connected damage.
+Mod: Lux Aeterna: Protective light barrier.
+Super: Et lux perpetua luceat eis: Steal life from everyone on screen.
