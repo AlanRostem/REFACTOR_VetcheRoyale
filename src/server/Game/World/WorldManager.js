@@ -125,9 +125,12 @@ class WorldManager {
 
         this.dataBridge.addClientResponseListener("removePlayer", data => {
             let player = this.playerList.get(data.id);
+            if (!player) {
+                return;
+            }
             this.gameWorlds.get(player.homeWorldID).removePlayer(player.id);
             this.playerList.remove(player.id);
-            //console.log("Removed player", data.id, "from", player.homeWorldID);
+            console.log("Removed player", data.id, "from", player.homeWorldID);
         });
 
         this.dataBridge.addClientResponseListener("listenToInput", (data) => {
