@@ -30,8 +30,8 @@ class CKineticBomb extends CEntity {
             0,
             5,
             5,
-            this.output.pos.x + R.camera.x - 4,
-            this.output.pos.y + R.camera.y - 4,
+            this.output.pos.x + R.camera.x,
+            this.output.pos.y + R.camera.y,
             5,
             5
         );
