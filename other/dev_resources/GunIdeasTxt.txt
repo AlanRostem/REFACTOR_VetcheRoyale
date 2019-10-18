@@ -36,8 +36,8 @@ Falchion SLR
 Description: Rocket powered hunting rifle
 Ammo Capacity: 12
 Primary Attack: Semi-automatic rifle: Rifle bullets.
-Mod: Rocket bayonet charge: Charge towards an enemy and deal damage on contact.
-Super: Rocket bayonet overcharge: Bayonet dash rampage.
+Mod: Bayonet charge: Charge towards an enemy and deal damage on contact.
+Super: Rocket knight: Bayonet dash rampage.
 
 LiqAK
 Description: Powerful automatic Rifle
@@ -74,7 +74,7 @@ Super: Short-Circuiting: Wall-penetrating electric shock.
 Hadron Railgun
 Description: Hadron particle cannon
 Ammo Capacity: 15
-Primary Attack: Hadron wave: Charging laser shot with proportional damage to charge time.
+Primary Attack: Hadron wave: Laser shot with proportional damage to charge time.
 Mod: Brute shot: Constant beam with explosion effect at the end.
 Super: Quantum boost: Become invulnerable and move faster.
 
@@ -83,11 +83,11 @@ Description: Space-time manipulator
 Ammo Capacity: 1
 Primary Attack: Wormhole: Arcing projectile with wormhole effect on impact.
 Mod: Gravitational mind: Controllable flight.
-Super: Space-time subordinate: Spawn a clone of yourself attacking enemies.
+Super: Space-time ally: Spawn a clone of yourself attacking enemies.
 
 Interlux 
 Description: Light bender
 Ammo Capacity: 4
 Primary Attack: Phocus: Bouncing light beam with connected damage.
 Mod: Lux Aeterna: Protective light barrier.
-Super: Et lux perpetua luceat eis: Steal life from everyone on screen.
+Super: Esto perpetua: Steal life from everyone on screen.
