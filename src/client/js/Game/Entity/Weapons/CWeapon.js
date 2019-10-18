@@ -1,11 +1,13 @@
 import CEntity from "../CEntity.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
+import AssetManager from "../../../AssetManager/AssetManager.js";
 
 export default class CWeapon extends CEntity {
     constructor(data, iconID) {
         super(data);
         this.iconID = iconID;
+
     }
 
     onFire(client, deltaTime) {
@@ -29,29 +31,21 @@ export default class CWeapon extends CEntity {
 
     draw() {
         if (!this.getRealtimeProperty("equippedToPlayer")) {
-            let name = this.getRealtimeProperty("displayName") + "-World";
-            let rect = CWeapon.sprite.offsetRects.get(name);
-            if (rect) {
+            let name = this.getRealtimeProperty("displayName") + "_world";
                 let pos = this.getRealtimeProperty("pos");
                 let h = this.getRealtimeProperty("height");
-                CWeapon.sprite.drawStill(name,
+
+                R.drawCroppedImage(
+                    AssetManager.getMapImage(name),
+                    0,
+                    0,
+                    16,
+                    8,
                     pos.x - 4 + R.camera.x,
-                    pos.y + R.camera.y - Math.abs(rect.h - h));
-            } else {
-                let pos = this.getRealtimeProperty("pos");
-                let h = this.getRealtimeProperty("height");
-                rect = CWeapon.sprite.offsetRects.get("none");
-                CWeapon.sprite.drawStill("none",
-                    pos.x - rect.w / 2 + R.camera.x,
-                    pos.y + R.camera.y - Math.abs(rect.h - h));
-            }
+                    pos.y - 2 + R.camera.y,
+                    16,
+                    8
+                );
         }
     }
 }
-
-CWeapon.sprite = new SpriteSheet("weapons");
-CWeapon.sprite.bind("KE-6H-World", 64, 40, 16, 8);
-CWeapon.sprite.bind("C-KER .90-World", 64, 96, 16, 8);
-CWeapon.sprite.bind("SEW-9-World", 64, 64, 16, 8);
-CWeapon.sprite.bind("Interlux-World", 64, 76, 16, 8);
-CWeapon.sprite.bind("none", 64, 52, 27, 12);
