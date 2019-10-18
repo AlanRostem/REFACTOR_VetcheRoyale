@@ -16,7 +16,7 @@ Primary Attack: Dragon's Breath: Close-range flame blasts.
 Mod: Incendiary Wave: Area of effect burn.
 Super: Napalm Gas: Blanket your surroundings with a flammable gas.
 
-238. Fusion
+Fusion .238
 Description: Corrosive tactical pistol.
 Ammo Capacity: 14
 Primary Attack: Uranium chunks: Fast radioactive bullets.
@@ -35,16 +35,16 @@ Super: Seeker smoke: Blanket a large area with a vision impaling tracking smoke.
 Falchion SLR
 Description: Rocket powered hunting rifle
 Ammo Capacity: 12
-Primary Attack: Semi-automatic rifle: Fire bullets at a moderate fire rate with moderate damage.
-Mod: Rocket bayonet charge: Charge towards an enemy in only one ground direction at high speed and deal high damage with your bayonet upon contact.
-Super: Rocket bayonet overcharge: Your primary fire is replaced with infinite bayonet dashes that can launch in any direction and through enemies for a short time.
+Primary Attack: Semi-automatic rifle: Rifle bullets.
+Mod: Rocket bayonet charge: Charge towards an enemy and deal damage on contact.
+Super: Rocket bayonet overcharge: Bayonet dash rampage.
 
 LiqAK
 Description: Powerful automatic Rifle
 Ammo Capacity: 25
-Primary Attack: Automatic Fire: Shoot fast medium-bullets with high recoil.
-Mod: Cargo bolt: All bullets in the magazine fired at once. Higher recoil. Less damage per shot.
-Super: Heavy Metal: Ammo Capacity set to 100 and auto-filled with bullets, no recoil and high fire rate. Every shot is fired automatically until empty.
+Primary Attack: ???
+Mod: Cargo bolt: ???
+Super: Heavy Metal: ???
 
 |||||Level 3 weapons|||||
 
