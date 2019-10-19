@@ -170,6 +170,7 @@ class CClient {
             }
         }
         this.inputListener.update(this);
+        this.packetSendLoop.tick(Scene.deltaTime);
     }
 
     emit(eventType, data) {
@@ -189,8 +190,8 @@ class CClient {
             this.packetSendLoop = new CTimer(1/data.tickRate, () => {
                 if (this.clientEmitPacket.length > 0) {
                     this.emit("clientPacketToServer", this.clientEmitPacket.object);
-                    this.clientEmitPacket.clear();
                 }
+                this.clientEmitPacket.clear();
             });
         });
 

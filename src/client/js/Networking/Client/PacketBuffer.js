@@ -74,15 +74,15 @@ class PacketBuffer {
         return snapShot;
     }
 
-    export(values, composedEntity) {
+    export(values, composedEntity, packet = this.buffer) {
         let snapShot = {};
         for (let key of values) {
-            if (Object.equals(composedEntity[key], this.buffer[key])) continue;
+            if (Object.equals(composedEntity[key], packet[key])) continue;
             snapShot[key] = composedEntity[key];
             if (typeof composedEntity[key] === "object") {
-                this.buffer[key] = Object.copy(composedEntity[key]);
+                packet[key] = Object.copy(composedEntity[key]);
             } else {
-                this.buffer[key] = composedEntity[key];
+                packet[key] = composedEntity[key];
             }
         }
         return snapShot;
