@@ -50,14 +50,18 @@ class GameDataLinker extends Alive {
         return this._gameData;
     }
 
-    update(entityManager, deltaTime) {
-        this.retrieveGameData(entityManager);
-        super.update(entityManager, deltaTime);
+    updateGameData(entityManager) {
         this.gameData.mapName = entityManager.tileMap.name;
         this.gameData.playerCount = entityManager.playerCount;
         this.gameData.debugData = entityManager.debugData;
         for (let key in entityManager.dataPacket)
             this.gameData[key] = entityManager.dataPacket[key];
+    }
+
+    update(entityManager, deltaTime) {
+        this.retrieveGameData(entityManager);
+        super.update(entityManager, deltaTime);
+        this.updateGameData(entityManager);
     }
 }
 

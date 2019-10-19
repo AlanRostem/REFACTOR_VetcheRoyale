@@ -215,7 +215,7 @@ class Physical extends Entity {
         if (this.physicsConfig.gravity)
             if (!this.side.bottom)
                 this.accelerateY(this.acc.y, deltaTime);
-
+            
         this.resetSides();
 
         if (!this.physicsConfig.static)

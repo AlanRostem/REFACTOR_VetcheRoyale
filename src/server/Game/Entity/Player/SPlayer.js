@@ -32,7 +32,7 @@ class Player extends GameDataLinker {
         this.addMovementListener("direction", "right", () => 0);
         this.addMovementListener("tile", "slope", () => 0);
         this.addMovementListener("canMove", true);
-        this.addMovementListener("canInteract", true);
+        this.addMovementListener("onPlayer", "false");
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -105,12 +105,14 @@ class Player extends GameDataLinker {
                 if (this.isTeammate(entity)) {
                     var p = entity;
                     if (this.overlapEntity(p) && !p.jumping) {
-                        if (this.pos.y + this.height > p.pos.y && this.old.y + this.height <= p.pos.y) {
-                            this.pos.y = p.pos.y - this.height;
-                            this.vel.y = 0;
-                            this.jumping = false;
-                            this.side.bottom = true;
-                            this.setMovementState("main", "stand");
+                        if (this.pos.y + this.height > p.pos.y) {
+                            if (this.old.y + this.height <= p.pos.y) {
+                                this.pos.y = p.pos.y - this.height;
+                                this.jumping = false;
+                                this.vel.y = 0;
+                                this.setMovementState("main", "stand");
+                                this.side.bottom = true;
+                            }
                         }
                     }
                 }
@@ -225,9 +227,8 @@ class Player extends GameDataLinker {
                         }
                     );
 
-        if (!this.removed) {
-            this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
-        }
+        this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
+        this.setMovementState("onPlayer", "false");
         this.gameData = {};
     }
 }
