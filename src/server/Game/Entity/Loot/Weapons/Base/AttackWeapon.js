@@ -60,7 +60,10 @@ class AttackWeapon extends WeaponItem {
     }
 
     getOwner(entityManager) {
-        return entityManager.getEntity(this.playerID);
+        if (entityManager.getEntity(this.playerID)) {
+            return entityManager.getEntity(this.playerID);
+        }
+        return AttackWeapon.EMPTY_PLAYER;
     }
 
     onSuperActivation(entityManager, deltaTime) {
