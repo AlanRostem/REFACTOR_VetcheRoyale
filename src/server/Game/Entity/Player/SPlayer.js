@@ -60,11 +60,6 @@ class Player extends GameDataLinker {
 
         this.itemsNearby = new ONMap();
         this.itemScanner = new HitScanner({}, false);
-        this.scanItems = false;
-
-
-
-
     }
 
     // Calculates the closest item capable of being picked
@@ -96,7 +91,6 @@ class Player extends GameDataLinker {
             this.itemsNearby.clear();
         }
     }
-
 
     setTeam(team) {
         this.team = team;
@@ -152,6 +146,16 @@ class Player extends GameDataLinker {
         return this.entitiesInProximity.spectators;
     }
 
+    goRight() {
+        this.vel.x = this.speed.ground;
+        this.setMovementState("direction", "right");
+    }
+
+    goLeft() {
+        this.vel.x = -this.speed.ground;
+        this.setMovementState("direction", "left");
+    }
+
     update(entityManager, deltaTime) {
         this.setMovementState("tile", "none");
 
@@ -183,17 +187,19 @@ class Player extends GameDataLinker {
 
         this.vel.x *= this.fric.x;
 
-        if (this.input.keyHeldDown(68) && this.checkMovementState("canMove", true)) {
-            //this.accelerateX(this.acc.x, deltaTime);
-            this.vel.x = this.speed.ground;
-            this.setMovementState("direction", "right");
+        if (this.checkMovementState("canMove", true)) {
 
-        }
+            if (!(this.input.keyHeldDown(68) && this.input.keyHeldDown(65))) {
+                if (this.input.keyHeldDown(68)) {
+                    this.goRight();
+                }
 
-        if (this.input.keyHeldDown(65) && this.checkMovementState("canMove", true)) {
-            //this.accelerateX(-this.acc.x, deltaTime);
-            this.vel.x = -this.speed.ground;
-            this.setMovementState("direction", "left");
+                if (this.input.keyHeldDown(65)) {
+                    this.goLeft();
+                }
+
+            }
+
         }
 
         if (this.vel.x !== 0) {
