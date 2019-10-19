@@ -126,7 +126,8 @@ class SEW_9 extends AttackWeapon {
             this.canMove = true;
 
             this.isShooting = false;
-            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+            if (this.getOwner(entityManager))
+                this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
             if (composedWeapon) this.misRef.detonate(entityManager);
         };
 
@@ -163,7 +164,7 @@ class SEW_9 extends AttackWeapon {
         this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
 
         if (this.misRef) {
-          //  this.isShooting = true;
+            //  this.isShooting = true;
             this.misPos = this.misRef.pos;
             if (!this.misRef.removed) this.canFire = this.canUseMod = false;
             else this.isShooting = false;
