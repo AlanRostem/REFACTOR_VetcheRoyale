@@ -113,6 +113,7 @@ const Scene = {
             Scene.entityManager.updateEntities(Scene.deltaTime, Scene.clientRef, Scene.tileMaps.getMap(Scene.currentMap));
             R.camera.update();
             AudioPool.update();
+            Scene.clientRef.packetSendLoop.tick(Scene.deltaTime);
         }
     },
 

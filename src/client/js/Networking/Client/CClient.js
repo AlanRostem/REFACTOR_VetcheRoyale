@@ -3,6 +3,7 @@ import R from "../../Graphics/Renderer.js";
 import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
+import CTimer from "../../../../shared/code/Tools/CTimer.js";
 
 
 /**
@@ -20,6 +21,7 @@ class CClient {
         this.clientEmitPacket = new ONMap();
         this.inputListener = new InputListener(this);
         this.timeSyncer = new ServerTimeSyncer();
+        this.packetSendLoop = new CTimer(1, () => 0);
 
         [32, 83, 68, 65, 87, 69, 70, 71, 82, 81].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
@@ -183,13 +185,13 @@ class CClient {
             this.id = data.id;
             this.disconnected = false;
             this.socket.emit("connectClientCallback", {id: this.id});
-            const _this = this;
-            setInterval(function () {
-                if (_this.clientEmitPacket.length > 0) {
-                    _this.emit("clientPacketToServer", _this.clientEmitPacket.object);
-                    _this.clientEmitPacket.clear();
+            this.tickRate = data.tickRate;
+            this.packetSendLoop = new CTimer(1/data.tickRate, () => {
+                if (this.clientEmitPacket.length > 0) {
+                    this.emit("clientPacketToServer", this.clientEmitPacket.object);
+                    this.clientEmitPacket.clear();
                 }
-            }, 1000 / data.tickRate);
+            });
         });
 
         this.on('serverUpdateTick', packet => {
