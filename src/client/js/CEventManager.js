@@ -1,8 +1,6 @@
-import UI from "./UI/UI.js";
 import CGameEvent from "./CGameEvent.js";
 
 
-//TODO:: Make it easier to add Objects that need events
 export default class CEventManager {
     constructor() {
         this.events = [];
