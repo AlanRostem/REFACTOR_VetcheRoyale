@@ -55,7 +55,12 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             pressTime: 400
         };
 
-        client.setOutboundPacketData("input", this.packetBuffer.export(this.objectInputKeys, input));
+        let pa = this.packetBuffer.export(this.objectInputKeys, input);
+        client.setOutboundPacketData("input", pa);
+
+        //if (Object.keys(pa).length > 0 && pa.keyStates)
+        //console.log(pa.keyStates);
+
         this.mouse.world = {
             x: this.mouse.x - R.camera.displayPos.x,
             y: this.mouse.y - R.camera.displayPos.y,
@@ -108,7 +113,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         this.localKeys[keyCode] = keyState;
         if (this.keyStates[keyCode] === keyState) return;
 
-        this.keyStates[keyCode] = keyState;
+        if (keyState)this.keyStates[keyCode] = keyState;
+        else delete this.keyStates[keyCode];
         for (var callback of this.keyCallbacks[keyCode]) {
             callback(keyState);
         }
