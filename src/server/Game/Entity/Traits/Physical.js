@@ -239,8 +239,8 @@ class Physical extends Entity {
     }
 
     update(game, deltaTime) {
-        super.update(game, deltaTime);
         this.physics(game, deltaTime);
+        super.update(game, deltaTime);
     }
 
     get x() {

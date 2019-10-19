@@ -32,6 +32,7 @@ class Player extends GameDataLinker {
         this.addMovementListener("direction", "right", () => 0);
         this.addMovementListener("tile", "slope", () => 0);
         this.addMovementListener("canMove", true);
+        this.addMovementListener("canInteract", true);
 
         // INIT FUNCTIONS:
         this.addDynamicSnapShotData([
@@ -98,11 +99,11 @@ class Player extends GameDataLinker {
     }
 
     // Performs one way team tileCollision.
-    oneWayTeamCollision(deltaTime) {
+    forEachNearbyEntity(entity, entityManager) {
         if (this.team) {
-            for (var id in this.team.players) {
-                if (id !== this.id) {
-                    var p = this.team.players[id];
+            if (entity instanceof Player) {
+                if (this.isTeammate(entity)) {
+                    var p = entity;
                     if (this.overlapEntity(p) && !p.jumping) {
                         if (this.pos.y + this.height > p.pos.y && this.old.y + this.height <= p.pos.y) {
                             this.pos.y = p.pos.y - this.height;
@@ -131,10 +132,6 @@ class Player extends GameDataLinker {
         if (this.team) {
             this.team.removePlayer(this);
         }
-    }
-
-    customCollisionY(game, tileMap, deltaTime) {
-        this.oneWayTeamCollision(deltaTime);
     }
 
     onDead(entityManager, deltaTime) {
@@ -188,7 +185,6 @@ class Player extends GameDataLinker {
         this.vel.x *= this.fric.x;
 
         if (this.checkMovementState("canMove", true)) {
-
             if (!(this.input.keyHeldDown(68) && this.input.keyHeldDown(65))) {
                 if (this.input.keyHeldDown(68)) {
                     this.goRight();
@@ -197,9 +193,7 @@ class Player extends GameDataLinker {
                 if (this.input.keyHeldDown(65)) {
                     this.goLeft();
                 }
-
             }
-
         }
 
         if (this.vel.x !== 0) {
