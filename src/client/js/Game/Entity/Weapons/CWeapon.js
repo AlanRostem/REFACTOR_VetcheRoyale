@@ -32,20 +32,20 @@ export default class CWeapon extends CEntity {
     draw() {
         if (!this.getRealtimeProperty("equippedToPlayer")) {
             let name = this.getRealtimeProperty("displayName") + "_world";
-                let pos = this.getRealtimeProperty("pos");
-                let h = this.getRealtimeProperty("height");
+            let pos = this.getRealtimeProperty("pos");
+            let h = this.getRealtimeProperty("height");
 
-                R.drawCroppedImage(
-                    AssetManager.getMapImage(name),
-                    0,
-                    0,
-                    16,
-                    8,
-                    pos.x - 4 + R.camera.x,
-                    pos.y - 2 + R.camera.y,
-                    16,
-                    8
-                );
+            R.drawCroppedImage(
+                AssetManager.getMapImage(name),
+                0,
+                0,
+                16,
+                8,
+                pos.x - 4 + R.camera.x,
+                pos.y - 2 + R.camera.y,
+                16,
+                8
+            );
         }
     }
 }

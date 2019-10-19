@@ -27,8 +27,8 @@ class CElectricSphere extends CEntity {
 
         CElectricSphere.sphereAnimation.animate("SEW-9_bullet", CElectricSphere.animationSpec, 5, 5);
         CElectricSphere.sphereAnimation.drawAnimated(
-            pos.x + R.camera.x,
-            pos.y + R.camera.y);
+            pos.x + R.camera.x - 1,
+            pos.y + R.camera.y - 1);
     }
 }
 

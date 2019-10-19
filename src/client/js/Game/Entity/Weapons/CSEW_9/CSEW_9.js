@@ -52,6 +52,9 @@ export default class CSEW_9 extends CWeapon {
         if (superAbility) {
             lightning(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, 200, 0, 0, right);
         }
+        if(this.isShooting) {
+            lightningToPlayer(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, this.output.pos.x, this.output.pos.y);
+        }
     }
 }
 
@@ -66,4 +69,17 @@ function lightning(x, y, length, yVal, life, right) {
         let ny = y + (yVal ? 0 : ((Math.random() * 2 | 0)) * ((Math.random() * 2 | 0) ? 1 : -1));
         lightning(nx, ny, length, life ? 0 : ny - y, life ? --life : 2, right);
     }
+}
+
+
+function lightningToPlayer(px, py, mx, my) {
+    /*if (length-- > 0) {
+
+        R.drawRect("White", x, y, 1, 1, true);
+        R.drawRect("Cyan", x + right, y, 1, 1, true);
+
+        let nx = x + (Math.random() * 2 | 0) * right;
+        let ny = y + (yVal ? 0 : ((Math.random() * 2 | 0)) * ((Math.random() * 2 | 0) ? 1 : -1));
+        lightning(nx, ny, length, life ? 0 : ny - y, life ? --life : 2, right);
+    }*/
 }

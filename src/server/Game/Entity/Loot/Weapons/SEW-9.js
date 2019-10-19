@@ -158,9 +158,9 @@ class SEW_9 extends AttackWeapon {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
-        this.canUseMod = this.canFire = this.currentAmmo > 0;
+        this.canFire = this.currentAmmo > 0;
 
-        this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
+        this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0 && !this.reloading;
 
         if (this.misRef) {
           //  this.isShooting = true;
