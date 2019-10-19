@@ -10,6 +10,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         this.keyStates = {};
         this.localKeys = {};
 
+        this.pa = {};
+
         // Holds callback functions for each key code.
         this.keyCallbacks = {};
 
@@ -55,8 +57,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             pressTime: 400
         };
 
-        let pa = this.packetBuffer.export(this.objectInputKeys, input);
-        client.setOutboundPacketData("input", pa);
+         this.pa = this.packetBuffer.export(this.objectInputKeys, input);
+        client.setOutboundPacketData("input", this.pa);
 
 
 
