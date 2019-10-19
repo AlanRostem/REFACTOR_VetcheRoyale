@@ -97,6 +97,7 @@ export default class ModBox extends UIElement {
                     this.modBoxBackground.width,
                     this.modBoxBackground.height * this.durationPercent / 100 | 0);
 
+
             // Weapon Icon
             R.drawCroppedImage(
                 this.modIcons,

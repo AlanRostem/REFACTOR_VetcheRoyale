@@ -81,7 +81,7 @@ class SuperDamage extends SEntity {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Player) {
             if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
-                this.damage.inflict(eantity, entityManager);
+                this.damage.inflict(entity, entityManager);
             }
         }
     }
@@ -158,9 +158,9 @@ class SEW_9 extends AttackWeapon {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
-        this.canFire = this.currentAmmo > 0;
+        this.canUseMod = this.canFire = this.currentAmmo > 0;
 
-        this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0 && !this.reloading;
+        this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
 
         if (this.misRef) {
           //  this.isShooting = true;

@@ -28,12 +28,13 @@ export default class CInterlux extends CWeapon {
         //console.log(this.lines);
 
         for (var i = 0; i <= this.lines.length - 2; i += 2) {
+            if(i===0) R.drawLine(this.player.output.centerData.x, this.player.output.centerData.y, this.lines[i+1].x, this.lines[i+1].y, "Red", 2, true);
             //  if (this.lines)
-            R.ctx.beginPath();
+         /*   R.ctx.beginPath();
             R.ctx.strokeStyle = "Red";
             R.ctx.moveTo(this.lines[i].x + R.camera.x, this.lines[i].y + R.camera.y);
             R.ctx.lineTo(this.lines[i + 1].x + R.camera.x, this.lines[i + 1].y + R.camera.y);
-            R.ctx.stroke();
+            R.ctx.stroke();*/
 
         }
         R.ctx.restore();
