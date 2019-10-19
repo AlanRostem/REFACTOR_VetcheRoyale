@@ -24,7 +24,7 @@ Super: Tactical corrosion: Projectile that weakens a targets damage and health.
 
 |||||Level 2 weapons|||||
 
-C-KER 90
+C-KER 90    In Game
 Description: Belt-fed tracking rifle.
 Ammo Capacity: 10
 Primary Attack: Sonar rounds: Arcing sticky projectile with tracking abilities.
@@ -41,27 +41,27 @@ Super: Rocket knight: Bayonet dash rampage.
 LiqAK
 Description: Powerful automatic Rifle
 Ammo Capacity: 25
-Primary Attack: ???
-Mod: Cargo bolt: ???
-Super: Heavy Metal: ???
+Primary Attack: Ice bullets:
+Mod: Water jump:
+Super: Steam Blast:
 
 |||||Level 3 weapons|||||
 
-KE-6H
+KE-6H     In Game
 Description: Compressed kinetic energy rifle, predecessor to the KE-L.
 Ammo Capacity: 8
 Primary Attack: Kinetic bomb: Explosive bouncy projectile.
 Mod: Kinetic implosion: Retract all roaming bombs into one spot and detonate them.
 Super: Propulsive scatter: Ticking energy bomb scattering bouncy projectile.
 
-AE Motorizer
+AE Motorizer      In Game
 Description: Motor driven death machine.
 Ammo Capacity: 36
 Primary Attack: Gust Rockets: Burst micro missile launcher.
 Mod: Whirlwind: Lock down enemies hit by your whirlwind.
 Super: Salvo storm: Move enemies towards your salvo of rockets.
 
-SEW-9
+SEW-9			In Game
 Description: Electric Missile Launcher
 Ammo Capacity: 1
 Primary Attack: Sphere Missile: Guided electric explosive.
@@ -84,7 +84,7 @@ Primary Attack: Wormhole: Arcing projectile with wormhole effect on impact.
 Mod: Gravitational mind: Controllable flight.
 Super: Space-time ally: Spawn a clone of yourself attacking enemies.
 
-Interlux 
+Interlux 			In Game
 Description: Light bender
 Ammo Capacity: 4
 Primary Attack: Phocus: Bouncing light beam with connected damage.

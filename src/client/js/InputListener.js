@@ -10,8 +10,6 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         this.keyStates = {};
         this.localKeys = {};
 
-        this.pa = {};
-
         // Holds callback functions for each key code.
         this.keyCallbacks = {};
 
@@ -57,8 +55,10 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             pressTime: 400
         };
 
-        this.pa = this.packetBuffer.export(this.objectInputKeys, input, client.clientEmitPacket.object.input);
-        client.setOutboundPacketData("input", this.pa);
+        let pa = this.packetBuffer.export(this.objectInputKeys, input, client.clientEmitPacket.object.input);
+        client.setOutboundPacketData("input", pa);
+        //console.log(pa);
+
 
         this.mouse.world = {
             x: this.mouse.x - R.camera.displayPos.x,
