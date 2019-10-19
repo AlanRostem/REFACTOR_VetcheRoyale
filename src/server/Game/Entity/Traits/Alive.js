@@ -72,8 +72,7 @@ class Alive extends Affectable {
         }
     }
 
-    update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
+    updateHealth(entityManager, deltaTime) {
         if (this.shouldRegen) {
             this.updateRegen(deltaTime);
         }
@@ -83,6 +82,11 @@ class Alive extends Affectable {
                 this.killed = true;
             }
         }
+    }
+
+    update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
+        this.updateHealth(entityManager, deltaTime);
     }
 
     onDead(entityManager, deltaTime) {

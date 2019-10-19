@@ -7,10 +7,14 @@ class Affectable extends Physical {
         this.effects = {};
     }
 
-    update(entityManager, deltaTime) {
+    updateEffects(entityManager, deltaTime) {
         for (var id in this.effects) {
             this.effects[id].update(entityManager, deltaTime);
         }
+    }
+
+    update(entityManager, deltaTime) {
+        this.updateEffects(entityManager, deltaTime);
         super.update(entityManager, deltaTime);
     }
 
