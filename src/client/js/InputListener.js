@@ -58,8 +58,7 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         let pa = this.packetBuffer.export(this.objectInputKeys, input);
         client.setOutboundPacketData("input", pa);
 
-        //if (Object.keys(pa).length > 0 && pa.keyStates)
-        //console.log(pa.keyStates);
+
 
         this.mouse.world = {
             x: this.mouse.x - R.camera.displayPos.x,
