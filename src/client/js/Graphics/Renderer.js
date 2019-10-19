@@ -132,32 +132,58 @@ const R = {
          * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
          * @param boundary {number} - Newline margin
          */
-        drawText(str, x, y, color = "White", useCamera = false, boundary = this.screenSize.x) {
+        drawText(str, x, y, color = "White", useCamera = false, boundary = this.screenSize.x, shade = true) {
 
-            var img = AssetManager.getMapImage("font" + color);
-
+            shade = true;
+            var img = AssetManager.getMapImage("font" + (shade ? "Shade" : "") + color);
+            console.log("font" + (shade ? "Shade" : "") + color);
             var newLine = 0;
             var newLetter = 0;
 
+            //img = AssetManager.getMapImage("fontShadeGreen");
+
             if (!img) return;
             str = str.toString();
-            for (var i = 0; i < str.length; i++, newLetter++) {
-                if (x + newLetter * 5 > boundary) {
-                    newLetter = 0;
-                    newLine++;
+            if (shade === false) {
+                for (var i = 0; i < str.length; i++, newLetter++) {
+                    if (x + newLetter * 5 > boundary) {
+                        newLetter = 0;
+                        newLine++;
+                    }
+                    if (str[i] === "\n") {
+                        newLetter = -1;
+                        newLine++;
+                    } else {
+                        var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;
+                        R.context.drawImage(img,
+                            (asciiCode % 8 * 4),
+                            ((asciiCode / 8) | 0) * 5,
+                            4, 5,
+                            Math.round(x + newLetter * 5 + (useCamera ? R.camera.x : 0)),
+                            Math.round(y + newLine * 6 + (useCamera ? R.camera.y : 0)),
+                            4, 5);
+                    }
                 }
-                if (str[i] === "\n") {
-                    newLetter = -1;
-                    newLine++;
-                } else {
-                    var asciiCode = (str[i].toUpperCase().charCodeAt(0)) - 32;
-                    R.context.drawImage(img,
-                        (asciiCode % 8 * 4),
-                        ((asciiCode / 8) | 0) * 5,
-                        4, 5,
-                        Math.round(x + newLetter * 5 + (useCamera ? R.camera.x : 0)),
-                        Math.round(y + newLine * 6 + (useCamera ? R.camera.y : 0)),
-                        4, 5);
+            } else {
+                for (var j = 0; j < str.length; j++, newLetter++) {
+                    if (x + newLetter * 5 > boundary) {
+                        newLetter = 0;
+                        newLine++;
+                    }
+                    if (str[j] === "\n") {
+                        newLetter = -1;
+                        newLine++;
+                    } else {
+                        var asciiCode2 = (str[j].toUpperCase().charCodeAt(0)) - 32;
+                        R.context.drawImage(img,
+                            (asciiCode2 % 8 * 6),
+                            ((asciiCode2 / 8) | 0) * 7,
+
+                            6, 7,
+                            Math.round(x + newLetter * 5 + (useCamera ? R.camera.x : 0)),
+                            Math.round(y + newLine * 6 + (useCamera ? R.camera.y : 0)),
+                            6, 7);
+                    }
                 }
             }
             R.context.restore();

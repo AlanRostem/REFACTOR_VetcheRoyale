@@ -44,7 +44,7 @@ export default class Stats extends UIElement {
             8,
             8);
 
-        R.drawText(this.playersAlive, R.WIDTH - 36 + 10, R.HEIGHT - 120, "White", false);
+        R.drawText(this.playersAlive, R.WIDTH - 36 + 10, R.HEIGHT - 121, "White");
 
         // Kill Count
         R.drawCroppedImage(
@@ -58,7 +58,7 @@ export default class Stats extends UIElement {
             8,
             8);
 
-        R.drawText(this.killCount, R.WIDTH - 36 + 10, R.HEIGHT - 120 + 10, "Red");
+        R.drawText(this.killCount, R.WIDTH - 36 + 10, R.HEIGHT - 120 + 9, "Red");
 
         R.ctx.restore();
     }

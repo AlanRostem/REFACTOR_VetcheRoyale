@@ -54,7 +54,7 @@ export default class GunBox extends UIElement {
             R.ctx.save();
 
             // Ammo Info
-            R.drawText((this.isReloading ? "Reloading..." : this.loadedAmmo + "/" + this.playerAmmo), R.WIDTH - (this.isReloading ? 88 : 72), R.HEIGHT - 44, "Green", false);
+            R.drawText((this.isReloading ? "Reloading..." : this.loadedAmmo + "/" + this.playerAmmo), R.WIDTH - (this.isReloading ? 88 : 72), R.HEIGHT - 44, "Green");
 
             // Gunboxframe
             R.drawCroppedImage(
