@@ -3,8 +3,6 @@
 
 const PacketValidator = require("./PacketValidator.js");
 
-const TICK_RATE = 40;
-
 function validateInput(input) {
     // TODO:
     return true;
