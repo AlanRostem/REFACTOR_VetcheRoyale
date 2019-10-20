@@ -5,6 +5,10 @@ class Affectable extends Physical {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
         this.effects = {};
+        this.effectsData = {};
+        this.addDynamicSnapShotData([
+            "effectsData"
+        ]);
     }
 
     updateEffects(entityManager, deltaTime) {
@@ -20,11 +24,19 @@ class Affectable extends Physical {
 
     applyEffect(effect, entityManager) {
         this.effects[effect.id] = effect;
-        effect.onAppliedToEntity(this, entityManager)
+        if (!this.effectsData[effect.name]) {
+            this.effectsData[effect.name] = 0;
+        }
+        this.effectsData[effect.name]++;
+        effect.onAppliedToEntity(this, entityManager);
     }
 
-    removeEffect(id) {
-        delete this.effects[id];
+    removeEffect(effect) {
+        this.effectsData[effect.name]--;
+        if (this.effectsData[effect.name] === 0) {
+            delete this.effectsData[effect.name];
+        }
+        delete this.effects[effect.id];
     }
 }
 
