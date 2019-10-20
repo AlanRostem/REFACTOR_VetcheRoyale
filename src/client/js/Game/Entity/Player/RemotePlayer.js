@@ -34,7 +34,8 @@ class RemotePlayer extends CEntity {
     onTileOverlap(ID, pos) {
         //TODO: Fix this hack by making tile data global on server and client
         if (ID === 14 || ID === 13) {
-            this.setMovementState("slope", "true")
+            this.setMovementState("slope", "true");
+            this.wasOnSlope = 0;
         }
     }
 
@@ -72,9 +73,14 @@ class RemotePlayer extends CEntity {
             this.animations.setCurrentAnimation(this.movementState.main);
         }
 
-        // TODO: Set movement states based on effect data (such as knockback) from the server.
+        // TODO: Set movement states based on effect data (such as knock-back) from the server.
 
-        this.setMovementState("slope", "false");
+        // TODO: Drittløsning
+        if (this.wasOnSlope >= 3) {
+            this.setMovementState("slope", "false");
+        } else {
+            this.wasOnSlope++;
+        }
     }
 
     draw() {

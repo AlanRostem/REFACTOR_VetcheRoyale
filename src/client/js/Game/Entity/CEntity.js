@@ -84,9 +84,11 @@ class CEntity {
                     x: xx * tileMap.tileSize,
                     y: yy * tileMap.tileSize,
                 };
-                tile.id = tileMap.getID(xx, yy);
+
                 if (tileMap.withinRange(xx, yy)) {
-                    this.onTileOverlap(tileMap.getID(xx, yy), tile);
+                    if (this.overlapTile(tile, tileMap)) {
+                        this.onTileOverlap(tileMap.getID(xx, yy), tile);
+                    }
                 }
             }
         }
@@ -94,6 +96,13 @@ class CEntity {
 
     onTileOverlap(ID, pos) {
 
+    }
+
+    overlapTile(e, tileMap) {
+        return this.output.pos.y + this.height > e.y
+            && this.output.pos.y < (e.y + tileMap.tileSize)
+            && this.output.pos.x + this.width > e.x
+            && this.output.pos.x < (e.x + tileMap.tileSize);
     }
 
     /**
