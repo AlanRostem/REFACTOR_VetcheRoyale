@@ -13,6 +13,7 @@ class CTileMap {
 
         AssetManager.addSpriteCreationCallback(() => {
             let fromJSON = AssetManager.get("all_tilemaps.json").object[name];
+            _this.tileSize = AssetManager.get("all_tilemaps.json").object.tileSize;
             _this.array = fromJSON.array;
             _this.w = fromJSON.width;
             _this.h = fromJSON.height;

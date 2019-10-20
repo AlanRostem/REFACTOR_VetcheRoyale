@@ -37,6 +37,7 @@ class CEntity {
         this.color = "white";//this.output.color;
         this.width = this.output.width;
         this.height = this.output.height;
+        this.tilesCollided = [];
     }
 
     /**
@@ -63,6 +64,36 @@ class CEntity {
      */
     update(deltaTime, client) {
         //this.dataBuffer.updateFromClientFrame(deltaTime, this, client);
+    }
+
+    checkTileOverlaps(tileMap) {
+        var cx = Math.floor(this.output.pos.x / tileMap.tileSize);
+        var cy = Math.floor(this.output.pos.y / tileMap.tileSize);
+
+        var proxy = 2; // Amount of margin of tiles around entity
+
+        var tileX = Math.floor(this.width / tileMap.tileSize) + proxy;
+        var tileY = Math.floor(this.height / tileMap.tileSize) + proxy;
+
+        for (var y = -proxy; y < tileY; y++) {
+            for (var x = -proxy; x < tileX; x++) {
+                var xx = cx + x;
+                var yy = cy + y;
+
+                var tile = {
+                    x: xx * tileMap.tileSize,
+                    y: yy * tileMap.tileSize,
+                };
+                tile.id = tileMap.getID(xx, yy);
+                if (tileMap.withinRange(xx, yy)) {
+                    this.onTileOverlap(tileMap.getID(xx, yy), tile);
+                }
+            }
+        }
+    }
+
+    onTileOverlap(ID, pos) {
+
     }
 
     /**

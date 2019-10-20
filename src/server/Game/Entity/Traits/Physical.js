@@ -23,7 +23,6 @@ class Physical extends Entity {
         };
         this.addDynamicSnapShotData([
             "vel",
-            "movementState",
         ]);
 
         this.physicsConfig = {

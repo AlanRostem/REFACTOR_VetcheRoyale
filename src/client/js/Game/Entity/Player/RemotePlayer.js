@@ -20,18 +20,67 @@ class RemotePlayer extends CEntity {
         this.animations.addAnimation("jump", new SpriteSheet.Animation(0, 0, 16, 0.1));
         this.animations.addAnimation("fall", new SpriteSheet.Animation(5, 5, 16, 0.1));
         this.animations.setCurrentAnimation("stand");
+        this.movementState = {};
     }
 
+    setMovementState(key, value) {
+        this.movementState[key] = value;
+    }
+
+    checkMovementState(key, value) {
+        return this.movementState[key] === value;
+    }
+
+    onTileOverlap(ID, pos) {
+        //TODO: Fix this hack by making tile data global on server and client
+        if (ID === 14 || ID === 13) {
+            this.setMovementState("slope", "true")
+        }
+    }
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
-        this.animations.setCurrentAnimation(this.output.movementState.main);
+        this.checkTileOverlaps(Scene.getCurrentTileMap());
+
+        let self = this.output;
+
+        if (self.vel.x !== 0) {
+            this.setMovementState("main", "run");
+        } else {
+            this.setMovementState("main", "stand");
+        }
+
+        if (this.checkMovementState("main", "run")) {
+            if (self.vel.x > 0) {
+                this.setMovementState("direction", "right");
+            }
+
+            if (self.vel.x < 0) {
+                this.setMovementState("direction", "left");
+            }
+        }
+
+        if (!this.checkMovementState("slope", "true")) {
+            if (self.vel.y < 0) {
+                this.setMovementState("main", "jump");
+            } else if (self.vel.y > 0) {
+                this.setMovementState("main", "fall");
+            }
+        }
+
+        if (this.movementState.main) {
+            this.animations.setCurrentAnimation(this.movementState.main);
+        }
+
+        // TODO: Set movement states based on effect data (such as knockback) from the server.
+
+        this.setMovementState("slope", "false");
     }
 
     draw() {
         this.animations.animate(RemotePlayer.sprite, this.output.teamName, 16, 16);
         SpriteSheet.beginChanges();
-        if (this.output.movementState.direction === "left") {
+        if (this.movementState.direction === "left") {
             RemotePlayer.sprite.flipX();
         }
         RemotePlayer.sprite.drawAnimated(

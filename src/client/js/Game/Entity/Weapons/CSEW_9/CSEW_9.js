@@ -48,7 +48,7 @@ export default class CSEW_9 extends CWeapon {
         let superAbility = this.getRealtimeProperty("superAbilitySnap");
         let player = this.player;
         if (!player) return;
-        let right = (player.output.movementState.direction === "right") ? 1 : -1;
+        let right = (player.movementState.direction === "right") ? 1 : -1;
         if (superAbility) {
             lightning(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, 200, 0, 0, right);
         }
