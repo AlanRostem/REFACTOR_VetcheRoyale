@@ -38,7 +38,7 @@ Primary Attack: Semi-automatic rifle: Rifle bullets.
 Mod: Bayonet charge: Charge towards an enemy and deal damage on contact.
 Super: Rocket knight: Bayonet dash rampage.
 
-LiqAK
+Aqua SLG
 Description: Powerful automatic Rifle
 Ammo Capacity: 25
 Primary Attack: Ice bullets:
