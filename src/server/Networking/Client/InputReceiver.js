@@ -21,7 +21,7 @@ class InputReceiver {
             keyStates: {},
         };
 
-        client.addClientUpdateListener("processInput", data => {
+        /*client.addClientUpdateListener("processInput", data => {
             if (PacketValidator.validateData(client, data.input, "object")) {
                 const input = data.input;
                 if (validateInput(input)) {
@@ -30,7 +30,15 @@ class InputReceiver {
                         "lastProcessedInputSequence", input.sequence);
                 }
             }
+        });*/
+
+        client.socket.on("InputData", data => {
+            if (PacketValidator.validateData(client, data, "object")) {
+                if (validateInput(data))
+                    this.applyInput(data, client);
+            }
         });
+
     }
 
     applyInput(input, client) {

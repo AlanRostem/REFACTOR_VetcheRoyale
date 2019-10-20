@@ -36,7 +36,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             pressTime: 400
         };
         this.objectInputKeys = ["keyStates", "mouseData", "mouseStates", "sequence", "pressTime"];
-        client.setOutboundPacketData("input", input);
+
+        client.emit("InputData", input);
 
         this.packetBuffer = new PacketBuffer;
     }
@@ -51,19 +52,19 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             keyStates: this.keyStates,
             mouseData: this.mouse,
             mouseStates: this.mouseStates,
-            sequence: this.sequence++,
             pressTime: 400
         };
-
-        let pa = this.packetBuffer.export(this.objectInputKeys, input, client.clientEmitPacket.object.input);
-        client.setOutboundPacketData("input", pa);
-        //console.log(pa);
 
 
         this.mouse.world = {
             x: this.mouse.x - R.camera.displayPos.x,
             y: this.mouse.y - R.camera.displayPos.y,
         };
+
+        let packet = this.packetBuffer.export(this.objectInputKeys, input);
+        if (Object.keys(packet).length > 0)
+            client.emit("InputData", packet);
+
     }
 
     get pending() {
