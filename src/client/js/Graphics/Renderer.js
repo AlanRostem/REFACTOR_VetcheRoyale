@@ -136,7 +136,6 @@ const R = {
 
             shade = true;
             var img = AssetManager.getMapImage("font" + (shade ? "Shade" : "") + color);
-            console.log("font" + (shade ? "Shade" : "") + color);
             var newLine = 0;
             var newLetter = 0;
 

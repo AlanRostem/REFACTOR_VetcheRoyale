@@ -191,7 +191,6 @@ class CClient {
             this.packetSendLoop = new CTimer(1/data.tickRate, () => {
                 if (this.clientEmitPacket.length > 0) {
                     this.emit("clientPacketToServer", this.clientEmitPacket.object);
-                    console.log(this.clientEmitPacket.object.input)
                 }
                 this.clientEmitPacket.clear();
             });

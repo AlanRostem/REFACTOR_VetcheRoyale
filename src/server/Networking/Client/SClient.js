@@ -70,7 +70,8 @@ class Client {
             if (PacketValidator.validatePacket(this, packet)) {
                 this.onClientUpdateReceived(packet);
             }
-        })
+        });
+
     }
 
     onClientUpdateReceived(packet) {
