@@ -30,7 +30,7 @@ class EffectManager {
                     this.remove = this.anim.currentCol === this.anim.framesPerRow - 1;
                 }
                 self.sprite.animate(this.name, this.anim, self.sprite.getWidth(this.name), self.sprite.getHeight(this.name));
-                self.sprite.drawAnimated(this.x + R.camera.x, this.y + R.camera.y, 24, 24);
+                self.sprite.drawAnimated(this.x + R.camera.x, this.y + R.camera.y);
             }
         }
     }
