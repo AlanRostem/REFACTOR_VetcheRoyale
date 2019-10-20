@@ -8,7 +8,6 @@ import AssetManager from "../../AssetManager/AssetManager.js";
 export default class CPortal extends CEntity {
     constructor(d) {
         super(d);
-
     }
 
     onClientAdd(dataPack, client) {

@@ -1,6 +1,7 @@
 const KE_6H = require("./Weapons/KE_6H.js");
 const SEW_9 = require("./Weapons/SEW-9.js");
 const Interlux = require("./Weapons/Interlux.js");
+const AquaSLG = require("./Weapons/AquaSLG.js");
 const BIGMotorizer = require("./Weapons/BIGMotorizer.js");
 const Ammo = require("./Multanium/Ammo.js");
 const Charge = require("./Multanium/Charge.js");
@@ -22,6 +23,7 @@ const LootRNG = {
         LootRNG.setLootConstructor(3, BIGMotorizer);
         LootRNG.setLootConstructor(3, SEW_9);
         LootRNG.setLootConstructor(3, Interlux);
+        LootRNG.setLootConstructor(3, AquaSLG);
         LootRNG.setLootConstructor(2, Charge);
         LootRNG.setLootConstructor(1, Ammo);
     },

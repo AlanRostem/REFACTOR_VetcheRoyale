@@ -13,6 +13,7 @@ import Invisible from "../Invisible.js";
 import CElectricSphere from "../Weapons/CSEW_9/CElectricSphere.js";
 import CKineticBomb from "../Weapons/CKE_6H/CKineticBomb.js";
 import CMicroMissile from "../Weapons/CBIGMotorizer/CMicroMissile.js";
+import CAquaSLG from "../Weapons/CAquaSLG.js";
 
 /**
  * Creates client versions of inbound entity data by mapping extended classes (CEntity) to the entity
@@ -63,6 +64,7 @@ EntityTypeSpawner.createSpawner("CKER90", CCKER90);
 EntityTypeSpawner.createSpawner("KE_6H", CKE_6H);
 EntityTypeSpawner.createSpawner("SEW_9", CSEW_9);
 EntityTypeSpawner.createSpawner("Interlux", CInterlux);
+EntityTypeSpawner.createSpawner("AquaSLG", CAquaSLG);
 
 EntityTypeSpawner.createSpawner("SuperDamage", Invisible);
 EntityTypeSpawner.createSpawner("ElectricSphere", CElectricSphere);

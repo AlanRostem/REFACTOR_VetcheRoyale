@@ -1,3 +1,4 @@
+
 const Entity = require("../../../Entity/SEntity.js");
 const Tile = require("../../../TileBased/Tile.js");
 
@@ -6,6 +7,7 @@ const KE_6H = require("../../../Entity/Loot/Weapons/KE_6H.js");
 const BIGMotorizer = require("../../../Entity/Loot/Weapons/BIGMotorizer.js");
 const SEW_9 = require("../../../Entity/Loot/Weapons/SEW-9.js");
 const Interlux = require("../../../Entity/Loot/Weapons/Interlux.js");
+const AquaSLG = require("../../../Entity/Loot/Weapons/AquaSLG.js");
 const CKER90 = require("../../../Entity/Loot/Weapons/CKER90.js");
 
 const START_TILE = 14 * 8; // 14 rows times 8 cols on tile-sheet
@@ -31,6 +33,7 @@ const GUN_LIST = {
     3: new GunSpawnFunction(KE_6H),
     4: new GunSpawnFunction(Interlux),
     5: new GunSpawnFunction(BIGMotorizer),
+    6: new GunSpawnFunction(AquaSLG)
 };
 
 

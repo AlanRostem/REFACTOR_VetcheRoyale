@@ -17,6 +17,11 @@ class Damage {
                 }
             }
             var player = entityManager.getEntity(this.playerID);
+            if (entity.constructor.name === "Player") {
+                if (player.isTeammate(entity)) {
+                    return;
+                }
+            }
             if (player && player !== entity) {
                 player.stats.grantDamage(this.value);
                 if (entity.dead) {
