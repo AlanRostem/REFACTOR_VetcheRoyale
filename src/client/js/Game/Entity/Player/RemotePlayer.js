@@ -9,7 +9,6 @@ import AssetManager from "../../../AssetManager/AssetManager.js"
  * and animation data.
  * @see CEntity
  * @memberOf ClientSide
-
  */
 class RemotePlayer extends CEntity {
     constructor(dataPack) {

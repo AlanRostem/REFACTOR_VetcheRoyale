@@ -12,7 +12,7 @@ class SEntity {
         if (id) this.id = id;
         else this.id = String.random();
         this.removed = false;
-        this.eType = this.constructor.name;
+        this.entityType = this.constructor.name;
         this.color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
         this.homeWorldID = -1;
         this.entityOrder = 0;
@@ -26,7 +26,7 @@ class SEntity {
             "pos",
             "removed",
             "color",
-            "eType",
+            "entityType",
             "entityOrder"
         ]);
 

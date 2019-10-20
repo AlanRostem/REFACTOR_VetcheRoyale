@@ -100,7 +100,7 @@ class CKER90 extends AttackWeapon {
             "dataIsScoping",
             "found"
         ]);
-        this.eType = "AttackWeapon";
+        this.entityType = "AttackWeapon";
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
