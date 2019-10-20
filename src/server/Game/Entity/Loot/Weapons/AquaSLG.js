@@ -4,11 +4,10 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 
 // Projectile fired by the AquaSLG
 class IceBullet extends Projectile {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 2, 4, angle, entityManager);
+    constructor(ownerID, weaponID, x, y, angle) {
+        super(ownerID, x, y, 2, 4, angle);
         this.speed = 10;
         this.damage = new Damage(7.5, ownerID);
-
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -84,7 +83,7 @@ class AquaSLG extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new IceBullet(player, this.id, 0, 0, angle, entityManager));
+            new IceBullet(player.id, this.id, 0, 0, angle));
     }
 
     onDrop(player, entityManager, deltaTime) {

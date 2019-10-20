@@ -104,6 +104,7 @@ class KE_6H extends AttackWeapon {
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
 
         };
+
         this.modAbility.onDeactivation = (composedWeapon, entityManager) => {
             composedWeapon.kineticImplosion = false;
             composedWeapon.canFire = true;
