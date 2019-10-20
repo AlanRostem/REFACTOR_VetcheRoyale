@@ -41,9 +41,9 @@ Super: Rocket knight: Bayonet dash rampage.
 Aqua SLG
 Description: Powerful automatic Rifle
 Ammo Capacity: 25
-Primary Attack: Ice bullets:
-Mod: Water jump:
-Super: Steam Blast:
+Primary Attack: Ice bullets: Fully automatic ice rifle.
+Mod: Water jump: Activate a second jump.
+Super: Steam Blast: Deal damage to and knock back nearby enemies.
 
 |||||Level 3 weapons|||||
 
