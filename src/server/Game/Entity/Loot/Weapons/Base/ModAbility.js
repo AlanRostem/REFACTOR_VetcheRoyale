@@ -1,7 +1,7 @@
 // Composition class for the right-click ability of a weapon.
 // Handles cool-downs and callbacks based on input.
 class ModAbility {
-    constructor(duration, coolDown, resourceMeter = false, consumptionTime = 0.5) {
+    constructor(duration, coolDown, resourceMeter = false, consumptionTime = 0.16) {
         this.currentDuration = 0;
         this.maxDuration = duration;
 
