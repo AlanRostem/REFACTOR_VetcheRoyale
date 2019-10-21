@@ -1,15 +1,20 @@
 // Composition class for the right-click ability of a weapon.
 // Handles cool-downs and callbacks based on input.
 class ModAbility {
-    constructor(duration, coolDown) {
+    constructor(duration, coolDown, resourceMeter = false, consumptionTime = 0.5) {
         this.currentDuration = 0;
         this.maxDuration = duration;
+
+        this.isResourceMeter = resourceMeter;
+        this.justConsumed = false;
+        this.consumptionTime = consumptionTime;
 
         this.currentCoolDown = 0;
         this.maxCoolDown = coolDown;
 
         this.active = false;
         this.onCoolDown = false;
+
         this.data = {};
     }
 
@@ -29,20 +34,57 @@ class ModAbility {
             active: this.active,
             onCoolDown: this.onCoolDown,
         };
-        if (this.active) {
-            this.buffs(composedWeapon, entityManager, deltaTime);
-            if (this.currentDuration > 0) {
-                this.currentDuration -= deltaTime;
-            } else {
-                this.deActivate(composedWeapon, entityManager, deltaTime);
+
+        if (this.isResourceMeter) {
+            let player = composedWeapon.getOwner(entityManager);
+            if (player) {
+                if (!this.onCoolDown) {
+                    if (player.input.mouseHeldDown(3)) {
+                        if (!this.justConsumed) {
+                            this.currentDuration -= this.consumptionTime;
+                            this.justConsumed = true;
+                        }
+                        this.buffs(composedWeapon, entityManager, deltaTime);
+                        if (this.currentDuration > 0) {
+                            this.currentDuration -= deltaTime;
+                        } else {
+                            this.deActivate(composedWeapon, entityManager, deltaTime);
+                        }
+                    } else {
+                        this.justConsumed = false;
+                        this.onDeactivation(composedWeapon, entityManager, deltaTime);
+                        if (this.currentDuration < this.maxDuration) {
+                            this.currentDuration += deltaTime;
+                        } else {
+                            this.currentDuration = this.maxDuration;
+                        }
+                    }
+                } else {
+                    if (this.currentCoolDown > 0) {
+                        this.currentCoolDown -= deltaTime;
+                    } else {
+                        this.currentCoolDown = 0;
+                        this.onCoolDown = false;
+                    }
+                }
             }
-        } else if (this.onCoolDown) {
-            if (this.currentCoolDown > 0) {
-                this.currentCoolDown -= deltaTime;
-            } else {
-                this.currentCoolDown = 0;
-                this.onCoolDown = false;
+        } else {
+            if (this.active) {
+                this.buffs(composedWeapon, entityManager, deltaTime);
+                if (this.currentDuration > 0) {
+                    this.currentDuration -= deltaTime;
+                } else {
+                    this.deActivate(composedWeapon, entityManager, deltaTime);
+                }
+            } else if (this.onCoolDown) {
+                if (this.currentCoolDown > 0) {
+                    this.currentCoolDown -= deltaTime;
+                } else {
+                    this.currentCoolDown = 0;
+                    this.onCoolDown = false;
+                }
             }
+
         }
         composedWeapon.canUseMod = !this.active || !this.onCoolDown;
     }
@@ -54,7 +96,6 @@ class ModAbility {
 
     deActivate(composedWeapon, entityManager, deltaTime) {
         this.active = false;
-        this.currentDuration = 0;
         this.currentCoolDown = this.maxCoolDown;
         this.onCoolDown = true;
         this.onDeactivation(composedWeapon, entityManager, deltaTime);

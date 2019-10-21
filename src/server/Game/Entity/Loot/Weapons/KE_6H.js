@@ -33,7 +33,7 @@ class KineticBomb extends Bouncy {
         super(ownerID, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
         this.weaponID = weaponID;
-        this.directHitDmg = new Damage(30, ownerID);
+        this.directHitDmg = new Damage(8, ownerID);
 
         var exceptions = {};
         for (let key in entityManager.getEntity(ownerID).team.players) {
