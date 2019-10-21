@@ -1,8 +1,10 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Projectile = require("./AttackEntities/Projectile.js");
+const Bouncy = require("./AttackEntities/Bouncy.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const Player = require("../../../Entity/Player/SPlayer.js");
 const ModAbility = require("./Base/ModAbility.js");
+const SuperAbility = require("./Base/SuperAbility.js");
 
 class ATBullet extends Projectile {
     constructor(oID, wID, x, y, angle) {
@@ -77,6 +79,60 @@ class ATBullet extends Projectile {
     }
 }
 
+class SeekerSmoke extends Bouncy {
+    constructor(ownerID, weapon, x, y, angle) {
+        super(ownerID, x, y, 4, 6, angle, 185, 200, 0.5);
+        this.findPlayers = false;
+        this.fric.x = 0.93;
+        this.weapon = weapon;
+        this.life = 10;
+        this.minSpeed = 10;
+        this.smokeBounds = {
+            x: 80,
+            y: 40,
+        };
+        this.setQuadTreeRange(this.smokeBounds.x, this.smokeBounds.y);
+        this.entityOrder = 2;
+        this.addStaticSnapShotData([
+            "smokeBounds",
+        ]);
+
+        this.addDynamicSnapShotData([
+            "findPlayers",
+        ]);
+    }
+
+    forEachNearbyEntity(entity, entityManager) {
+        super.forEachNearbyEntity(entity, entityManager);
+        if (this.findPlayers) {
+            if (entity instanceof Player) {
+                if (!entity.isTeammate(this.getOwner(entityManager))) {
+                    this.weapon.found[entity.id] = entity.center;
+                }
+            }
+        }
+    }
+
+    update(entityManager, deltaTime) {
+        if (this.side.bottom) {
+            this.vel.x *= this.fric.x;
+        }
+
+        if (this.findPlayers) {
+            this.life -= deltaTime;
+            if (this.life <= 0) {
+                this.remove();
+            }
+        }
+
+        if (Math.abs(this.vel.x | 0) <= this.minSpeed && Math.abs(this.vel.y | 0) <= this.minSpeed && this.side.bottom) {
+            this.findPlayers = true;
+        }
+        super.update(entityManager, deltaTime);
+    }
+
+}
+
 class CKER90 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "C-KER .90", "rifle");
@@ -93,7 +149,26 @@ class CKER90 extends AttackWeapon {
             onDeactivation(composedWeapon, entityManager, deltaTime) {
                 composedWeapon.dataIsScoping = false;
             }
-        } (5, 5, true);
+        }(5, 5, true);
+
+        this.superAbility = new class extends SuperAbility {
+            onActivation(composedWeapon, entityManager, deltaTime) {
+                let player = entityManager.getEntity(composedWeapon.playerID);
+                let angle = 0;
+                if (player) {
+                    angle = player.input.mouseData.angleCenter;
+                }
+                entityManager.spawnEntity(
+                    composedWeapon.pos.x,
+                    composedWeapon.pos.y,
+                    new SeekerSmoke(
+                        composedWeapon.playerID,
+                        composedWeapon,
+                        0, 0,
+                        angle
+                    ));
+            }
+        }(0, 100, 100);
 
         this.found = {};
         this.addDynamicSnapShotData([
@@ -106,7 +181,6 @@ class CKER90 extends AttackWeapon {
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
         this.found = {};
-
     }
 
     fire(player, entityManager, deltaTime, angle) {

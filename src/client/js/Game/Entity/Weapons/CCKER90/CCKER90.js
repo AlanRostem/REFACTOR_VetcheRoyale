@@ -1,10 +1,10 @@
-import CWeapon from "./CWeapon.js";
-import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
-import R from "../../../Graphics/Renderer.js";
-import UI from "../../../UI/UI.js";
-import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
-import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
-import CTimer from "../../../../../shared/code/Tools/CTimer.js";
+import CWeapon from "../CWeapon.js";
+import {vectorLinearInterpolation} from "../../../../../../shared/code/Math/CCustomMath.js";
+import R from "../../../../Graphics/Renderer.js";
+import UI from "../../../../UI/UI.js";
+import Vector2D from "../../../../../../shared/code/Math/CVector2D.js";
+import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
+import CTimer from "../../../../../../shared/code/Tools/CTimer.js";
 
 class CCKER90 extends CWeapon {
     constructor(props) {
