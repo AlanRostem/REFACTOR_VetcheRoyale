@@ -39,7 +39,7 @@ class ModAbility {
             let player = composedWeapon.getOwner(entityManager);
             if (player) {
                 if (!this.onCoolDown) {
-                    if (player.input.mouseHeldDown(3)) {
+                    if (player.input.mouseHeldDown(3) && this.active) {
                         if (!this.justConsumed) {
                             this.currentDuration -= this.consumptionTime;
                             this.justConsumed = true;
