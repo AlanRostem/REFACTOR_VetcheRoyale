@@ -76,7 +76,7 @@ class AquaSLG extends AttackWeapon {
 
         };
 
-        this.modAbility.configureStats(0.75, 0);
+        this.modAbility.configureStats(0.75, 1.5);
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             this.secondaryUse = false;
