@@ -243,12 +243,12 @@ const R = {
         ,
 
 
-        drawCroppedImage(img, cropX, cropY, cropW, cropH, x, y, w, h) {
+        drawCroppedImage(img, cropX, cropY, cropW, cropH, x, y, w, h, useCamera = false) {
             if (img) {
                 if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
                 R.context.drawImage(img, cropX, cropY, cropW, cropH,
-                    Math.round(x),
-                    Math.round(y),
+                    Math.round(x  + (useCamera ? R.camera.displayPos.x : 0)),
+                    Math.round(y +  (useCamera ? R.camera.displayPos.y : 0)),
                     Math.round(w),
                     Math.round(h));
             }

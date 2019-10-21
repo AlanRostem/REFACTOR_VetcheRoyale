@@ -22,6 +22,11 @@ class EffectManager {
                 this.anim = new SpriteSheet.Animation(0, anim.endCol, anim.framesPerRow, anim.frameSpeed);
             }
 
+            updatePos(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+
             draw(deltaTime) {
                 if (!this.endOnSpriteAnim) {
                     this.duration -= deltaTime;
@@ -41,7 +46,9 @@ class EffectManager {
     }
 
     createEffect(x, y, name, duration) {
-        this.effects.push(new this.VisualEffect(x, y, name, duration))
+        let effect = new this.VisualEffect(x, y, name, duration);
+        this.effects.push(effect);
+        return effect;
     }
 
     draw(deltaTime) {
