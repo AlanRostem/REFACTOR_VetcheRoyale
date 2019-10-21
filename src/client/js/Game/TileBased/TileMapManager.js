@@ -1,4 +1,5 @@
 import CTileMap from "./CTileMap.js";
+import AssetManager from "../../AssetManager/AssetManager.js"
 
 /**
  *  Holds data of tile maps loaded from JSON
@@ -6,6 +7,14 @@ import CTileMap from "./CTileMap.js";
 class TileMapManager {
     constructor() {
         this.maps = {};
+        let self = this;
+        AssetManager.addDownloadCallback(() => {
+            for (let key in AssetManager.get("all_tilemaps.json").object) {
+                if (key !== "tileSize") {
+                    this.createMap(key);
+                }
+            }
+        });
     }
 
     /**
@@ -13,7 +22,7 @@ class TileMapManager {
      * @param name {string} - Name of the tile map
      * @param src {string} - Relative file path of the tile map source file
      */
-    createMap(name, src) {
+    createMap(name) {
         this.maps[name] = new CTileMap("worldTileSet", name);
     }
 

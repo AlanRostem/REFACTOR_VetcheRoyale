@@ -14,9 +14,11 @@ const TileMapConfigs = {
     },
     setup() {
         this._jsonRes = new JSONFile("src/shared/res/all_tilemaps.json").get();
-        this.createFromJSON("lobby");
-        this.createFromJSON("MegaMap");
-        this.createFromJSON("battleground");
+        for (let key in this._jsonRes) {
+            if (key !== "tileSize") {
+                this.createFromJSON(key);
+            }
+        }
     },
     getMap(name) {
         return this._maps[name];
