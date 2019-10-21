@@ -44,6 +44,9 @@ class WorldManager {
         let playground = new PlayGround(this.gameWorlds);
         this.addWorld(playground, "playground");
 
+        let battleground = new Match(this.gameWorlds, "battleground", TileMapConfigs.getMap("battleground"));
+        this.addWorld(battleground, "battleground");
+
     }
 
     checkQueuedPlayers() {

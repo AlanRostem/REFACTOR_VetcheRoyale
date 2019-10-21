@@ -98,7 +98,7 @@ class AquaSLG extends AttackWeapon {
             for (let key in entityManager.getEntity(this.getOwner(entityManager).id).team.players) {
                 exceptions[key] = entityManager.getEntity(this.getOwner(entityManager).id).team.players[key];
             }
-            this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 500, 20, exceptions);
+            this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
             this.areaDmg.applyAreaOfEffect(entityManager);
 
         };

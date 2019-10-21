@@ -64,6 +64,8 @@ export default class CAquaSLG extends CWeapon {
             if (this.effect2.remove) this.effect2 = null;
         }
 
+        if(this.modSound) this.modSound.updatePanPos(this.output.pos);
+
         super.update(deltaTime, client);
     }
 

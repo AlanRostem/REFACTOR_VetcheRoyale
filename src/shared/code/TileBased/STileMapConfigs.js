@@ -16,6 +16,7 @@ const TileMapConfigs = {
         this._jsonRes = new JSONFile("src/shared/res/all_tilemaps.json").get();
         this.createFromJSON("lobby");
         this.createFromJSON("MegaMap");
+        this.createFromJSON("battleground");
     },
     getMap(name) {
         return this._maps[name];

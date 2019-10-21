@@ -97,11 +97,13 @@ class MiniMap extends UIElement {
 
 
     posOnMap(pos) {
+        if (this.image) {
+            var x = pos.x / 8 / this.image[this.mapSize].mapInfo.tileSizeW * this.width | 0;
+            var y = pos.y / 8 / this.image[this.mapSize].mapInfo.tileSizeH * this.height | 0;
 
-        var x = pos.x / 8 / this.image[this.mapSize].mapInfo.tileSizeW * this.width | 0;
-        var y = pos.y / 8 / this.image[this.mapSize].mapInfo.tileSizeH * this.height | 0;
-
-        return {x: x, y: y};
+            return {x: x, y: y};
+        }
+        return {x: 0, y: 0};
     }
 
 
