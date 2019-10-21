@@ -7,7 +7,6 @@ import AssetManager from "../../AssetManager/AssetManager.js"
 class TileMapManager {
     constructor() {
         this.maps = {};
-        let self = this;
         AssetManager.addDownloadCallback(() => {
             for (let key in AssetManager.get("all_tilemaps.json").object) {
                 if (key !== "tileSize") {

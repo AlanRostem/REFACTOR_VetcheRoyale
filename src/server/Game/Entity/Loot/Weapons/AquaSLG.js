@@ -1,4 +1,5 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
+const ModAbility = require("./Base/ModAbility.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
@@ -63,6 +64,7 @@ class AquaSLG extends AttackWeapon {
         this.superAbilitySnap = false;
 
         this.maxSpeed = 100;
+        this.modAbility = new ModAbility(0.75, 1.5, true, 0.22);
 
         this.configureAttackStats(2, 25, 1, 500);
 
@@ -75,8 +77,6 @@ class AquaSLG extends AttackWeapon {
             this.secondaryUse = true;
 
         };
-
-        this.modAbility.configureStats(0.75, 1.5);
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             this.secondaryUse = false;
