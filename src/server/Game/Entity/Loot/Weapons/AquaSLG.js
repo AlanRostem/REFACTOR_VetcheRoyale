@@ -8,7 +8,6 @@ const Tile = require("../../../TileBased/Tile.js");
 const Player = require("../../Player/SPlayer.js");
 
 
-
 class AOEKnockBackDamage extends AOEDamage {
     constructor(ownerID, x, y, radius, knockBackSpeed, value, exceptions) {
         super(ownerID, x, y, radius, value, exceptions);
@@ -64,7 +63,7 @@ class AquaSLG extends AttackWeapon {
         this.superAbilitySnap = false;
 
         this.maxSpeed = 100;
-        this.modAbility = new ModAbility(0.75, 1.5, true, 0.22);
+        this.modAbility = new ModAbility(0.75, 1.5);
 
         this.configureAttackStats(2, 25, 1, 500);
 
@@ -76,6 +75,7 @@ class AquaSLG extends AttackWeapon {
             player.vel.y = 0;
             this.secondaryUse = true;
 
+
         };
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
@@ -85,11 +85,18 @@ class AquaSLG extends AttackWeapon {
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
             let player = this.getOwner(entityManager);
 
-            player.accelerateY(-6400, deltaTime);
+            if (player.input.mouseHeldDown(3)) {
 
-            if (player.vel.y < -this.maxSpeed) player.vel.y = -this.maxSpeed;
+                player.accelerateY(-6400, deltaTime);
 
-            if(player.vel.y === 0) player.vel.y = -1;
+                if (player.vel.y < -this.maxSpeed) player.vel.y = -this.maxSpeed;
+
+                if (player.vel.y === 0) player.vel.y = -1;
+            } else {
+                var oldCharge = this.modAbility.currentDuration - 0.5;
+                this.modAbility.deActivate(composedWeapon, entityManager, deltaTime);
+                this.modAbility.currentCoolDown = this.modAbility.maxDuration - oldCharge;
+            }
         };
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
