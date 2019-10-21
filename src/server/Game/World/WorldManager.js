@@ -45,6 +45,9 @@ class WorldManager {
         this.addWorld(playground, "playground");
 
         let battleground = new Match(this.gameWorlds, "battleground", TileMapConfigs.getMap("battleground"));
+        battleground.setGameRules({
+           "infiniteAmmo": true
+        });
         this.addWorld(battleground, "battleground");
 
     }
