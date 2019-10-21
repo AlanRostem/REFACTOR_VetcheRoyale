@@ -3,6 +3,8 @@ import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustom
 import R from "../../../Graphics/Renderer.js";
 import UI from "../../../UI/UI.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
+import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
+import CTimer from "../../../../../shared/code/Tools/CTimer.js";
 
 class CCKER90 extends CWeapon {
     constructor(props) {
@@ -12,6 +14,9 @@ class CCKER90 extends CWeapon {
             y: 0,
         };
         this.maxDist = 1000;
+        this.pinger = new CTimer(2, () => {
+            AudioPool.play("Weapons/cker90_mod.oggSE");
+        });
     }
 
     onDrop(client, deltaTime) {
@@ -20,11 +25,17 @@ class CCKER90 extends CWeapon {
         this.toLerp.y = 0;
     }
 
+    onFire(client, deltaTime) {
+        super.onFire(client, deltaTime);
+        AudioPool.play("Weapons/cker90_shoot.oggSE", this.output.pos);
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         if (this.getRealtimeProperty("playerID") !== client.id) return;
         let isScoping = this.getRealtimeProperty("dataIsScoping");
         if (isScoping) {
+            this.pinger.tick(deltaTime);
             if (client.input.getMouse(3)) {
                 let from = {x: 0, y: 0};
                 let center = {x: R.screenSize.x / 2, y: R.screenSize.y / 2};
