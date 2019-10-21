@@ -16,7 +16,7 @@ class Team {
     }
 
     update() {
-        this.data = {"lol": 1};
+        this.data = {};
     }
 
     hasEntity(id) {

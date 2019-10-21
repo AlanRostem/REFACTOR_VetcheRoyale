@@ -67,8 +67,8 @@ class InputReceiver {
             this.p = this.packetBuffer.createPacket(this.p, input);
             this.serverRef.dataBridge.transferClientEvent("listenToInput", client.id, this.inputDataToPlayer);
 
-            if (this.p)
-                console.log(this.p);
+            //if (this.p)
+            //    console.log(this.p);
         }
     }
 

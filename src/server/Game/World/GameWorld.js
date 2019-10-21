@@ -115,9 +115,9 @@ class GameWorld extends EntityManager {
     }
 
     update(deltaTime, worldManager) {
+        this.teamManager.update();
         // Update the entities, then create data packs
         super.update(deltaTime);
-        this.teamManager.update();
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);

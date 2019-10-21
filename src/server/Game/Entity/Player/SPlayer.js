@@ -21,7 +21,6 @@ class Player extends GameDataLinker {
         this.invAmmo = null;
         this.stats = new StatTracker(this.id);
         this.statData = this.stats.statMap;
-        this.teamData = {};
 
         this.jumping = false;
         this.centerData = {
@@ -231,8 +230,7 @@ class Player extends GameDataLinker {
                             pos: this.pos
                         }
                     );
-        this.teamData = this.team.data;
-        this.setOutboundPacketData("teamData", this.teamData);
+        this.setOutboundPacketData("teamData", this.team.data);
         this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
         this.setMovementState("onPlayer", "false");
         this.gameData = {};

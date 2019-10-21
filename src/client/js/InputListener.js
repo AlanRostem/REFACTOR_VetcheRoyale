@@ -66,8 +66,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         if (Object.keys(packet).length > 0)
         {
             client.emit("InputData", packet);
-            if (packet.keyStates)
-            console.log(packet.keyStates, input.keyStates);
+            //if (packet.keyStates)
+            //console.log(packet.keyStates, input.keyStates);
         }
 
     }

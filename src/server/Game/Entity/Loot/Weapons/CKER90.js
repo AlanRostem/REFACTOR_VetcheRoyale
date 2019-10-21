@@ -168,6 +168,13 @@ class CKER90 extends AttackWeapon {
                         angle
                     ));
             }
+
+            buffs(composedWeapon, entityManager, deltaTime) {
+                let player = entityManager.getEntity(composedWeapon.playerID);
+                if (player) {
+                    player.sendDataToTeam("seekerSmoke", composedWeapon.found);
+                }
+            }
         }(0, 100, 100);
 
         this.found = {};
