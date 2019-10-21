@@ -1,7 +1,9 @@
 // Composite class that retrieves input data
 // the client emitted to the server.
 
+
 const PacketValidator = require("./PacketValidator.js");
+const PacketBuffer = require("../PacketBuffer.js");
 
 function validateInput(input) {
     // TODO:
@@ -39,14 +41,34 @@ class InputReceiver {
             }
         });
 
+        this.packetBuffer = new PacketBuffer();
+        this.p = {
+            mouseStates: {},
+            mouseData: {
+                x: 50,
+                y: 100,
+                world: {
+                    x: 50,
+                    y: 100
+                }
+            },
+            keyStates: {"68":true},
+        };
     }
 
     applyInput(input, client) {
         if (this.serverRef) {
             for (let key in input) {
-                this.inputDataToPlayer[key] = input[key];
             }
+            this.inputDataToPlayer = this.packetBuffer.createPacket(this.inputDataToPlayer, input);
+
+            //console.log(this.p.keyStates, input.keyStates);
+
+            this.p = this.packetBuffer.createPacket(this.p, input);
             this.serverRef.dataBridge.transferClientEvent("listenToInput", client.id, this.inputDataToPlayer);
+
+            if (this.p)
+                console.log(this.p);
         }
     }
 
@@ -58,6 +80,8 @@ class InputReceiver {
         if (!this.serverRef) {
             this.serverRef = server;
         }
+
+
     }
 }
 

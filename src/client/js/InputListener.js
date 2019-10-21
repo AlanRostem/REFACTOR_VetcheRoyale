@@ -61,9 +61,14 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             y: this.mouse.y - R.camera.displayPos.y,
         };
 
+        //TODO::fix mouse package
         let packet = this.packetBuffer.export(this.objectInputKeys, input);
         if (Object.keys(packet).length > 0)
+        {
             client.emit("InputData", packet);
+            if (packet.keyStates)
+            console.log(packet.keyStates, input.keyStates);
+        }
 
     }
 
@@ -114,7 +119,7 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         if (this.keyStates[keyCode] === keyState) return;
 
         if (keyState) this.keyStates[keyCode] = keyState;
-        else delete this.keyStates[keyCode];
+        else this.keyStates[keyCode] = false;
         for (var callback of this.keyCallbacks[keyCode]) {
             callback(keyState);
         }

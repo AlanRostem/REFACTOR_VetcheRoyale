@@ -1,3 +1,13 @@
+Object.copy = function (obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = new obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+};
+
+
 class PacketBuffer {
     constructor(){
         this.buffer = {};
@@ -14,6 +24,17 @@ class PacketBuffer {
             }
         }
         return snapShot;
+    }
+
+
+    createPacket(packet, snapShot, first = true) {
+        let data = Object.copy(packet);
+        if (typeof snapShot !== "object" || !data) return snapShot;
+        for (let key of Object.keys(snapShot)){
+            data[key] = this.createPacket(data[key], snapShot[key], false);
+        }
+
+        return data;
     }
 
     export(values, composedEntity){
