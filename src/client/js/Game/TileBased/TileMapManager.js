@@ -20,7 +20,6 @@ class TileMapManager {
     /**
      * Makes a new tile map object from a .json tile map source
      * @param name {string} - Name of the tile map
-     * @param src {string} - Relative file path of the tile map source file
      */
     createMap(name) {
         this.maps[name] = new CTileMap("worldTileSet", name);
