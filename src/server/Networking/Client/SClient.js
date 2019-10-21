@@ -87,6 +87,7 @@ class Client {
         this.playerObjData = data;
         this.setOutboundPacketData("entityData", this.playerObjData.entities);
         this.setOutboundPacketData("gameData", this.playerObjData.gameData);
+        this.setOutboundPacketData("teamData", this.playerObjData.teamData);
 
         // TODO: May be deprecated
         this.setOutboundPacketData("now", Date.now());
@@ -94,6 +95,7 @@ class Client {
     }
 
     updateDataCycle() {
+        // TODO: Send data that changes only (use packet buffer)
         this.emit("serverUpdateTick", this.outboundPacket.object);
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }

@@ -4,6 +4,7 @@ class Team {
         this.players = {};
         this.arrayPlayers = [];
         this.playerCount = 0;
+        this.data = {};
     }
 
     get array() {
@@ -14,6 +15,9 @@ class Team {
         return Object.keys(this.players);
     }
 
+    update() {
+        this.data = {"lol": 1};
+    }
 
     hasEntity(id) {
         return this.players.hasOwnProperty(id);

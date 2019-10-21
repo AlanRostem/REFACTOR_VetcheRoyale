@@ -12,6 +12,11 @@ class TeamManager {
         return this.teams[teamCount];
     }
 
+    update() {
+        for (let name in this.teams)
+            this.teams[name].update();
+    }
+
     addPlayer(player, game) {
         if (this.teamCount === 0) {
             this.createTeam(new Team(game), game).addPlayer(player, game);
