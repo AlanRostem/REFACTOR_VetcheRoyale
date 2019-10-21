@@ -93,7 +93,7 @@ class CKER90 extends AttackWeapon {
             onDeactivation(composedWeapon, entityManager, deltaTime) {
                 composedWeapon.dataIsScoping = false;
             }
-        } (5, 5);
+        } (5, 5, true);
 
         this.found = {};
         this.addDynamicSnapShotData([
