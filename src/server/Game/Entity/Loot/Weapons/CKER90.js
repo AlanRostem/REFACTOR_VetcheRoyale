@@ -129,6 +129,10 @@ class SeekerSmoke extends Bouncy {
             this.findPlayers = true;
         }
         super.update(entityManager, deltaTime);
+        let player = this.getOwner(entityManager);
+        if (player) {
+            player.sendDataToTeam("seekerSmoke", this.weapon.found);
+        }
     }
 
 }
@@ -151,9 +155,10 @@ class CKER90 extends AttackWeapon {
             }
         }(5, 5, true);
 
+        let _this = this;
         this.superAbility = new class extends SuperAbility {
             onActivation(composedWeapon, entityManager, deltaTime) {
-                let player = entityManager.getEntity(composedWeapon.playerID);
+                let player = _this.getOwner(entityManager);
                 let angle = 0;
                 if (player) {
                     angle = player.input.mouseData.angleCenter;
@@ -167,13 +172,6 @@ class CKER90 extends AttackWeapon {
                         0, 0,
                         angle
                     ));
-            }
-
-            buffs(composedWeapon, entityManager, deltaTime) {
-                let player = entityManager.getEntity(composedWeapon.playerID);
-                if (player) {
-                    player.sendDataToTeam("seekerSmoke", composedWeapon.found);
-                }
             }
         }(0, 100, 100);
 
