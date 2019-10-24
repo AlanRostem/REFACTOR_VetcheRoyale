@@ -50,7 +50,6 @@ Object.copy = function (obj, oneTimeValues = []) {
     if (null == obj || "object" != typeof obj) return obj;
     var copy = new obj.constructor();
     for (var key in obj) {
-//        if(oneTimeValues.find((e)=>{return e === key})) continue;
         if (typeof obj[key] === "object") copy[key] = Object.copy(obj[key], oneTimeValues);
         else if (obj.hasOwnProperty(key)) copy[key] = obj[key];
     }
@@ -65,12 +64,13 @@ class PacketBuffer {
     }
 
     creatSnapShot(values, composedEntity, buffer) {
-        if (!buffer) return composedEntity;
+        if (buffer === undefined || buffer === null) return composedEntity;
         let snapShot = {};
-        if (typeof composedEntity !== "object") snapShot = composedEntity;
+        if (typeof composedEntity !== "object" || composedEntity === null) return composedEntity;
         for (let key of values) {
             if (Object.equals(composedEntity[key], buffer[key])) continue;
-            if (typeof composedEntity[key] === "object")
+            if (typeof composedEntity[key] === "object" && composedEntity[key] !== null
+                && typeof buffer[key] === "object" && buffer[key])
                 snapShot[key] = this.creatSnapShot(Object.keys(buffer[key]), composedEntity[key], buffer[key]);
             else if (composedEntity[key] !== buffer[key]) snapShot[key] = composedEntity[key];
         }
@@ -98,6 +98,7 @@ class PacketBuffer {
             if (composedEntity[key] !== undefined && composedEntity[key] !== null) {
                 snapShot[key] = this.creatSnapShot(Object.keys(composedEntity[key]), composedEntity[key], this.buffer[key]);
             }
+            else { snapShot[key] = composedEntity[key]}
             if (typeof composedEntity[key] === "object") {
                 this.buffer[key] = Object.copy(composedEntity[key]);
             } else {
@@ -111,6 +112,7 @@ class PacketBuffer {
 PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
     if (typeof snapShot !== "object" || !data) return snapShot;
+    if (snapShot === null || snapShot === undefined) return snapShot;
     if (snapShot)
         for (let key of Object.keys(snapShot)){
             if(oneTimeValues.find((e)=>{ return e === key })) continue;

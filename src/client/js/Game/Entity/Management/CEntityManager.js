@@ -105,11 +105,11 @@ export default class CEntityManager {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
-
-                    entityData = PacketBuffer.createPacket(existingEntity.output, entityData, []);
-                    existingEntity.updateFromDataPack(entityData, client);
                     if (existingEntity.constructor.name === "UserPlayer")
                         console.log(entityData.invWeaponID);
+                    entityData = PacketBuffer.createPacket(existingEntity.output, entityData, []);
+                    existingEntity.updateFromDataPack(entityData, client);
+
                 } else {
                     console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);
                     //throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");

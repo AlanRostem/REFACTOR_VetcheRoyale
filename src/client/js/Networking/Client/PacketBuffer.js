@@ -79,7 +79,7 @@ class PacketBuffer {
 
     creatSnapShot(values, composedEntity, buffer) {
         if (!buffer) return composedEntity;
-        if(typeof composedEntity !== "object") return composedEntity;
+        if (typeof composedEntity !== "object" || composedEntity === null) return composedEntity;
         let snapShot = {};
         for (let key of values) {
             if (Object.equals(composedEntity[key], buffer[key])) continue;
@@ -98,6 +98,7 @@ class PacketBuffer {
             if (composedEntity[key] !== undefined || composedEntity[key] !== null) {
                 snapShot[key] = this.creatSnapShot(Object.keys(composedEntity[key]), composedEntity[key], this.buffer[key]);
             }
+            else { snapShot[key] = composedEntity[key]}
             if (typeof composedEntity[key] === "object") {
                 this.buffer[key] = Object.copy(composedEntity[key]);
             } else {
@@ -113,6 +114,7 @@ class PacketBuffer {
 PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
     if (typeof snapShot !== "object" || !data) return snapShot;
+    if (snapShot === null || snapShot === undefined) return snapShot;
     if (snapShot)
         for (let key of Object.keys(snapShot)){
             if(oneTimeValues.find((e)=>{ return e === key })) continue;
