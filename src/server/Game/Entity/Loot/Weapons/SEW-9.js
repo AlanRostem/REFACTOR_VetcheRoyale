@@ -97,6 +97,7 @@ class SEW_9 extends AttackWeapon {
         this.superAbility.tickChargeGain = 100;
 
         this.canMove = true;
+        this.primaryFire = false;
         this.secondaryFire = false;
         this.superAbilitySnap = false;
 
@@ -107,15 +108,17 @@ class SEW_9 extends AttackWeapon {
         this.addDynamicSnapShotData(["misPos", "secondaryFire", "superAbilitySnap", "isShooting"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
-            this.currentAmmo--;
-            this.isShooting = true;
-            entityManager.spawnEntity(this.center.x, this.center.y,
-                this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
-                    0, entityManager));
-            this.misRef.weapon = this;
-            this.misRef.secondary = true;
-            this.secondaryFire = true;
-            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = false;
+            if(!this.primaryFire) {
+                this.currentAmmo--;
+                this.isShooting = true;
+                entityManager.spawnEntity(this.center.x, this.center.y,
+                    this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
+                        0, entityManager));
+                this.misRef.weapon = this;
+                this.misRef.secondary = true;
+                this.secondaryFire = true;
+                this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = false;
+            }
         };
 
         this.modAbility.configureStats(9, 4);
@@ -166,7 +169,7 @@ class SEW_9 extends AttackWeapon {
         if (this.misRef) {
             //  this.isShooting = true;
             this.misPos = this.misRef.pos;
-            if (!this.misRef.removed) this.canFire = this.canUseMod = false;
+            if (!this.misRef.removed) this.canFire = this.canUseMod = this.primaryFire = this.secondaryFire = false;
             else this.isShooting = false;
         }
 
@@ -180,12 +183,15 @@ class SEW_9 extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        this.isShooting = true;
-        this.misRef =
-            entityManager.spawnEntity(this.center.x, this.center.y,
-                new ElectricSphere(player.id, this.id, 0, 0,
-                    angle, entityManager));
-        this.misRef.weapon = this;
+        if(!this.secondaryFire) {
+            this.isShooting = true;
+            this.misRef =
+                entityManager.spawnEntity(this.center.x, this.center.y,
+                    new ElectricSphere(player.id, this.id, 0, 0,
+                        angle, entityManager));
+            this.misRef.weapon = this;
+            this.primaryFire = true;
+        }
     }
 
     onDrop(player, entityManager, deltaTime) {
