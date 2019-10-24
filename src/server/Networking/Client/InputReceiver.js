@@ -60,15 +60,14 @@ class InputReceiver {
         if (this.serverRef) {
             for (let key in input) {
             }
-            this.inputDataToPlayer = this.packetBuffer.createPacket(this.inputDataToPlayer, input);
+            this.inputDataToPlayer = PacketBuffer.createPacket(this.inputDataToPlayer, input);
 
             //console.log(this.p.keyStates, input.keyStates);
 
-            this.p = this.packetBuffer.createPacket(this.p, input);
             this.serverRef.dataBridge.transferClientEvent("listenToInput", client.id, this.inputDataToPlayer);
 
-            //if (this.p)
-            //    console.log(this.p);
+            //if (this.inputDataToPlayer)
+            //    console.log(this.inputDataToPlayer);
         }
     }
 

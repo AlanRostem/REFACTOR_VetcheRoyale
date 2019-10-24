@@ -88,6 +88,7 @@ class WeaponItem extends Loot {
     drop(player, entityManager, deltaTime) {
         if (this.equippedToPlayer) {
             player.inventory.dropWeapon();
+            player.invWeaponID = null;
             player.setMovementState("weapon", "none");
             this.equippedToPlayer = false;
             this.playerID = null;

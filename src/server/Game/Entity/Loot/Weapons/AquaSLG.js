@@ -63,6 +63,7 @@ class AquaSLG extends AttackWeapon {
         this.superAbilitySnap = false;
 
         this.maxSpeed = 102;
+
         this.modAbility = new ModAbility(0.75, 1.5);
 
         this.configureAttackStats(2, 25, 1, 500);
@@ -74,8 +75,6 @@ class AquaSLG extends AttackWeapon {
             //if(player.vel.y >= 0) player.vel.y = 0;
             player.vel.y = 0;
             this.secondaryUse = true;
-
-
         };
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
@@ -84,9 +83,7 @@ class AquaSLG extends AttackWeapon {
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
             let player = this.getOwner(entityManager);
-
             if (player.input.mouseHeldDown(3)) {
-
                 player.accelerateY(-6400, deltaTime);
 
                 if (player.vel.y < -this.maxSpeed) player.vel.y = -this.maxSpeed;
@@ -97,6 +94,7 @@ class AquaSLG extends AttackWeapon {
                 this.modAbility.deActivate(composedWeapon, entityManager, deltaTime);
                 this.modAbility.currentCoolDown = this.modAbility.maxDuration - oldCharge;
             }
+
         };
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
@@ -107,18 +105,18 @@ class AquaSLG extends AttackWeapon {
             }
             this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
             this.areaDmg.applyAreaOfEffect(entityManager);
-
         };
 
         this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = false;
-
         };
     }
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+
     }
+
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);

@@ -91,11 +91,11 @@ class GameWorld extends EntityManager {
         this.spawner.spawnSpecificAtPos(105, player, this);
         this.players++;
 
-        this.eventManager.addGlobal(
+       /* this.eventManager.addGlobal(
             "Welcome", "announcement", "Green", 0, {
                 string: "Welcome to Dome24",
             }, true
-        );
+        );*/
     }
 
     removePlayer(id) {

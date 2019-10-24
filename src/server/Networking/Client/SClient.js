@@ -97,6 +97,7 @@ class Client {
     updateDataCycle() {
         // TODO: Send data that changes only (use packet buffer)
         this.emit("serverUpdateTick", this.outboundPacket.object);
+
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }
 
