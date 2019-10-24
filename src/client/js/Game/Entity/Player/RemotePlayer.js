@@ -58,7 +58,8 @@ class RemotePlayer extends CEntity {
         super.update(deltaTime, client);
         this.checkTileOverlaps(Scene.getCurrentTileMap());
 
-        if (this.deltaPos.x !== 0) {
+        let self = this.output;
+        if (self.vel.x !== 0) {
             if (this.output.effectsData.KnockBackEffect) {
                 if (this.output.effectsData.KnockBackEffect.length === 0) {
                     this.setMovementState("main", "run");
@@ -71,11 +72,11 @@ class RemotePlayer extends CEntity {
         }
 
         if (this.checkMovementState("main", "run")) {
-            if (this.deltaPos.x > 0) {
+            if (self.vel.x > 0) {
                 this.setMovementState("direction", "right");
             }
 
-            if (this.deltaPos.x < 0) {
+            if (self.vel.x < 0) {
                 this.setMovementState("direction", "left");
             }
         }
