@@ -48,13 +48,13 @@ const TileCollider = {
                 "X": (entity, tile, deltaTime) => {
                     if (entity.overlapTile(tile)) {
                         if (entity.vel.x > 0) {
-                            if (entity.pos.x + entity.width > tile.x) {
+                            if (entity.pos.x + entity.width > tile.x && entity.old.x + entity.width <= tile.x) {
                                 entity.onRightCollision(tile);
                                 entity.side.right = true;
                             }
                         }
                         if (entity.vel.x < 0) {
-                            if (entity.pos.x < tile.x + Tile.SIZE) {
+                            if (entity.pos.x < tile.x + Tile.SIZE && entity.old.x >= tile.x + Tile.SIZE) {
                                 entity.onLeftCollision(tile);
                                 entity.side.left = true;
                             }
@@ -64,13 +64,13 @@ const TileCollider = {
                 "Y": (entity, tile, deltaTime) => {
                     if (entity.overlapTile(tile)) {
                         if (entity.vel.y > 0) {
-                            if (entity.pos.y + entity.height > tile.y) {
+                            if (entity.pos.y + entity.height > tile.y && entity.old.y + entity.height <= tile.y) {
                                 entity.onBottomCollision(tile);
                                 entity.side.bottom = true;
                             }
                         }
                         if (entity.vel.y < 0) {
-                            if (entity.pos.y < tile.y + Tile.SIZE) {
+                            if (entity.pos.y < tile.y + Tile.SIZE && entity.old.y >= tile.y + Tile.SIZE) {
                                 entity.onTopCollision(tile);
                                 entity.side.top = true;
                             }
