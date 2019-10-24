@@ -20,6 +20,14 @@ class RemotePlayer extends CEntity {
         this.animations.addAnimation("fall", new SpriteSheet.Animation(5, 5, 16, 0.1));
         this.animations.setCurrentAnimation("stand");
         this.movementState = {};
+        this.vel = {x: 0, y: 0};
+        this.prevPos = {x: 0, y: 0};
+        this.side = {
+            left: false,
+            right: false,
+            top: false,
+            bottom: false,
+        };
     }
 
     setMovementState(key, value) {
@@ -38,13 +46,19 @@ class RemotePlayer extends CEntity {
         }
     }
 
+    updateFromDataPack(dataPack, client) {
+        this.prevPos.x = this.output.pos.x;
+        this.prevPos.y = this.output.pos.y;
+        super.updateFromDataPack(dataPack, client);
+        this.vel.x = this.output.pos.x - this.prevPos.x;
+        this.vel.y = this.output.pos.y - this.prevPos.y;
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         this.checkTileOverlaps(Scene.getCurrentTileMap());
 
-        let self = this.output;
-
-        if (self.vel.x !== 0) {
+        if (this.vel.x !== 0) {
             if (this.output.effectsData.KnockBackEffect) {
                 if (this.output.effectsData.KnockBackEffect.length === 0) {
                     this.setMovementState("main", "run");
@@ -57,20 +71,22 @@ class RemotePlayer extends CEntity {
         }
 
         if (this.checkMovementState("main", "run")) {
-            if (self.vel.x > 0) {
+            if (this.vel.x > 0) {
                 this.setMovementState("direction", "right");
             }
 
-            if (self.vel.x < 0) {
+            if (this.vel.x < 0) {
                 this.setMovementState("direction", "left");
             }
         }
 
         if (!this.checkMovementState("slope", "true")) {
-            if (self.vel.y < 0) {
+            if (this.vel.y < 0) {
                 this.setMovementState("main", "jump");
-            } else if (self.vel.y > 0) {
+            } else if (this.vel.y > 0) {
                 this.setMovementState("main", "fall");
+            } else if (this.side.bottom) {
+                this.setMovementState("main", "stand");
             }
         }
 
