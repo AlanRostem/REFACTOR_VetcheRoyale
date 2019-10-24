@@ -22,6 +22,13 @@ class EnemyDetector extends UIElement {
 
     draw() {
         super.draw();
+
+        if (Scene.clientRef.inboundPacket) {
+            if (Scene.clientRef.inboundPacket.teamData.seekerSmoke) {
+                this.queryPositions(Scene.clientRef.inboundPacket.teamData.seekerSmoke);
+            }
+        }
+
         let enemies = Object.keys(this.found).length;
         let color = "Red";
         if (enemies > 0) {

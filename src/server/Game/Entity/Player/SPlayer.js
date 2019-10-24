@@ -156,7 +156,7 @@ class Player extends GameDataLinker {
     }
 
     sendDataToTeam(key, value) {
-        this.team.data[key] = value;
+        this.team.sendData(key, value);
     }
 
     update(entityManager, deltaTime) {

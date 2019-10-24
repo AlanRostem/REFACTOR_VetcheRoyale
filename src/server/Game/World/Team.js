@@ -5,6 +5,7 @@ class Team {
         this.arrayPlayers = [];
         this.playerCount = 0;
         this.data = {};
+        this.dataQueue = {};
     }
 
     get array() {
@@ -16,7 +17,12 @@ class Team {
     }
 
     update() {
-        this.data = {};
+        this.data = this.dataQueue;
+        this.dataQueue = {};
+    }
+
+    sendData(key, value) {
+        this.dataQueue[key] = value;
     }
 
     hasEntity(id) {
