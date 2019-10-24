@@ -47,11 +47,13 @@ Object.equals = function (self, other) {
 };
 
 
-Object.copy = function (obj) {
+Object.copy = function (obj, oneTimeValues = []) {
     if (null == obj || "object" != typeof obj) return obj;
     var copy = new obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    for (var key in obj) {
+        //if(oneTimeValues.find((e)=>{return e === key})) continue;
+        if (typeof obj[key] === "object") copy[key] = Object.copy(obj[key], oneTimeValues);
+        else if (obj.hasOwnProperty(key)) copy[key] = obj[key];
     }
     return copy;
 };
@@ -74,8 +76,10 @@ class PacketBuffer {
         return snapShot;
     }
 
+
     creatSnapShot(values, composedEntity, buffer) {
         if (!buffer) return composedEntity;
+        if(typeof composedEntity !== "object") return composedEntity;
         let snapShot = {};
         for (let key of values) {
             if (Object.equals(composedEntity[key], buffer[key])) continue;
@@ -89,11 +93,11 @@ class PacketBuffer {
 
     export(values, composedEntity) {
         let snapShot = {};
-        let test = {};
         for (let key of values) {
             if (Object.equals(composedEntity[key], this.buffer[key])) continue;
-            snapShot[key] = this.creatSnapShot(Object.keys(composedEntity[key]), composedEntity[key], this.buffer[key]);
-            test[key] = composedEntity[key];
+            if (composedEntity[key] !== undefined || composedEntity[key] !== null) {
+                snapShot[key] = this.creatSnapShot(Object.keys(composedEntity[key]), composedEntity[key], this.buffer[key]);
+            }
             if (typeof composedEntity[key] === "object") {
                 this.buffer[key] = Object.copy(composedEntity[key]);
             } else {
@@ -104,5 +108,18 @@ class PacketBuffer {
         return snapShot;
     }
 }
+
+
+PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
+    let data = Object.copy(packet, oneTimeValues);
+    if (typeof snapShot !== "object" || !data) return snapShot;
+    if (snapShot)
+        for (let key of Object.keys(snapShot)){
+            if(oneTimeValues.find((e)=>{ return e === key })) continue;
+            data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
+        }
+    return data;
+};
+
 
 export default PacketBuffer;

@@ -26,11 +26,12 @@ class SEventManager {
             gameWorld.setGameData("Event", this.globalEvents);
 
         for (let player in this.privateEvents)
-            if (gameWorld.getEntity(player))
+            if (gameWorld.getEntity(player)){
                 gameWorld.getEntity(player)._gameData.privateEvents = this.privateEvents[player];
+                delete this.privateEvents[player];
+            }
 
 
-        this.privateEvents = {};
         this.globalEvents = [];
     }
 
