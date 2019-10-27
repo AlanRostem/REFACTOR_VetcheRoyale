@@ -146,7 +146,7 @@ class CKER90 extends AttackWeapon {
             buffs(composedWeapon, entityManager, deltaTime) {
                 let player = entityManager.getEntity(composedWeapon.playerID);
                 if (player) {
-                    composedWeapon.dataIsScoping = player.input.mouseHeldDown(3);
+                    composedWeapon.dataIsScoping = player.input.heldDownMapping("modAbility");
                 }
             }
 

@@ -1,3 +1,66 @@
+const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap");
+
+const INPUT_MAPPER = new class {
+    constructor() {
+        this.mouseMappings = new ONMap;
+        this.keyMappings = new ONMap;
+
+        this.addInputMapping("mouse", "modAbility", 3);
+        this.addInputMapping("key", "modAbility", 87);
+    }
+
+    addInputMapping(inputType, mappingName, ...mappingCodes) {
+        if (this[inputType + "Mappings"]) {
+            if (!this[inputType + "Mappings"].has(mappingName)) {
+                this[inputType + "Mappings"].set(mappingName, []);
+            }
+            this[inputType + "Mappings"].get(mappingName).push(...mappingCodes);
+        }
+    }
+
+    getSinglePressMapping(inputType, mappingName, inputBridge) {
+        if (this[inputType + "Mappings"]) {
+            let mapping = this[inputType + "Mappings"];
+            let states = inputBridge[inputType + "States"];
+            if (states) {
+                for (let inputState of mapping.get(mappingName)) {
+                    switch (inputType) {
+                        case "mouse":
+                            if (inputBridge.singleMousePress(inputState)) return true;
+                            break;
+                        case "key":
+                            if (inputBridge.singleKeyPress(inputState)) return true;
+                            break;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    getHeldDownMapping(inputType, mappingName, inputBridge) {
+        if (this[inputType + "Mappings"]) {
+            let mapping = this[inputType + "Mappings"];
+            let states = inputBridge[inputType + "States"];
+            if (states) {
+                for (let inputState of mapping.get(mappingName)) {
+                    switch (inputType) {
+                        case "mouse":
+                            if (inputBridge.mouseHeldDown(inputState)) return true;
+                            break;
+                        case "key":
+                            if (inputBridge.keyHeldDown(inputState)) return true;
+                            break;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+};
+
 class InputBridge {
     constructor() {
         // Holds all key states of corresponding key codes
@@ -51,6 +114,16 @@ class InputBridge {
             keyState = false;
         }
         return keyState;
+    }
+
+    singleMappingPress(mappingName) {
+        return INPUT_MAPPER.getSinglePressMapping("key", mappingName, this)
+            || INPUT_MAPPER.getSinglePressMapping("mouse", mappingName, this);
+    }
+
+    heldDownMapping(mappingName) {
+        return INPUT_MAPPER.getHeldDownMapping("key", mappingName, this)
+            || INPUT_MAPPER.getHeldDownMapping("mouse", mappingName, this);
     }
 
     set inputData(value) {

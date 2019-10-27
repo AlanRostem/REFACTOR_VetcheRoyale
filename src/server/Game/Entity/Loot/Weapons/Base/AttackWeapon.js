@@ -184,7 +184,7 @@ class AttackWeapon extends WeaponItem {
 
         this.firerer.update(this, player, entityManager, deltaTime);
 
-        if (player.input.singleMousePress(3)) {
+        if (player.input.singleMappingPress("modAbility")) {
             if (this.canUseMod) {
                 this.modAbility.activate(this, entityManager, deltaTime);
             }

@@ -1,5 +1,4 @@
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap");
-
 const Alive = require("../Traits/Alive.js");
 const ClientPEM = require("./ClientPEM.js");
 const InputBridge = require("./InputBridge.js");

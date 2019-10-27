@@ -83,7 +83,7 @@ class AquaSLG extends AttackWeapon {
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
             let player = this.getOwner(entityManager);
-            if (player.input.mouseHeldDown(3)) {
+            if (player.input.heldDownMapping("modAbility")) {
                 player.accelerateY(-6400, deltaTime);
 
                 if (player.vel.y < -this.maxSpeed) player.vel.y = -this.maxSpeed;

@@ -36,7 +36,7 @@ class CCKER90 extends CWeapon {
         let isScoping = this.getRealtimeProperty("dataIsScoping");
         if (isScoping) {
             this.pinger.tick(deltaTime);
-            if (client.input.getMouse(3)) {
+            if (client.input.getMouse(3) || client.input.getLocalKey(87)) {
                 let from = {x: 0, y: 0};
                 let center = {x: R.screenSize.x / 2, y: R.screenSize.y / 2};
                 let d = Vector2D.distance(client.input.mouse, center);

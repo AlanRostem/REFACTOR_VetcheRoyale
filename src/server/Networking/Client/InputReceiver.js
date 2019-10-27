@@ -4,6 +4,7 @@
 
 const PacketValidator = require("./PacketValidator.js");
 const PacketBuffer = require("../PacketBuffer.js");
+const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
 
 function validateInput(input) {
     // TODO:
@@ -22,17 +23,6 @@ class InputReceiver {
             mouseData: {},
             keyStates: {},
         };
-
-        /*client.addClientUpdateListener("processInput", data => {
-            if (PacketValidator.validateData(client, data.input, "object")) {
-                const input = data.input;
-                if (validateInput(input)) {
-                    this.applyInput(input, client);
-                    client.setOutboundPacketData(
-                        "lastProcessedInputSequence", input.sequence);
-                }
-            }
-        });*/
 
         client.socket.on("InputData", data => {
             if (PacketValidator.validateData(client, data, "object")) {
