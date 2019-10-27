@@ -2,34 +2,34 @@
 
 var path = require('path');
 var express = require('express');
-var app = express();
-var server = require('http').Server(app);
+var main = express();
+var server = require('http').Server(main);
 
-app.use(express.static(path.join(__dirname)));
+main.use(express.static(path.join(__dirname)));
 
 
 
 // All these app.get calls send the following
 // directories to the client.
 
-app.get('/client/public', (req, res) => {
+main.get('/client/public', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
 
-app.get('/res/tileMap', (req, res) => {
+main.get('/res/tileMap', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
    console.log((__dirname + "/"))
 });
 
-app.get('/client/js/', (req, res) => {
+main.get('/client/js/', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
 
-app.get('/shared', (req, res) => {
+main.get('/shared', (req, res) => {
    res.sendFile(path.join(__dirname + "/"));
 });
 
-app.get('/', (req, res) => {
+main.get('/', (req, res) => {
    res.sendFile(path.join(__dirname + "/client/html/index.html"));
 });
 

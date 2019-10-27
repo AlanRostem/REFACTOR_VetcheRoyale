@@ -7,7 +7,8 @@
     "start": "node src/app.js",
     "wt": "node --experimental-worker src/app.js",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "build": "babel src/client/js -d src"
+    "build": "babel src/client/js -d src",
+    "ele": "electron src/gui.js"
   },
   "engines": {
     "node": "12.10.0"
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "electron": "^7.0.0"
   }
 }
