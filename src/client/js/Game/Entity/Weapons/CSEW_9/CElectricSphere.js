@@ -51,7 +51,6 @@ class CElectricSphere extends CEntity {
             lightningToPlayer(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, this.output.pos.x, this.output.pos.y, "White", 1, true);
             this.drawStatic = false;
         }
-
     }
 }
 
