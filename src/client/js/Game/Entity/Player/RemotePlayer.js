@@ -82,12 +82,10 @@ class RemotePlayer extends CEntity {
         }
 
         if (!this.checkMovementState("slope", "true")) {
-            if (this.deltaPos.y < 0) {
+            if (self.vel.y < 0) {
                 this.setMovementState("main", "jump");
-            } else if (this.deltaPos.y > 0) {
+            } else if (self.vel.y > 0) {
                 this.setMovementState("main", "fall");
-            } else if (this.side.bottom) {
-                this.setMovementState("main", "stand");
             }
         }
 

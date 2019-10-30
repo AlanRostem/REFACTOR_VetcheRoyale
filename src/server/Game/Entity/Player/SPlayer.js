@@ -42,6 +42,7 @@ class Player extends GameDataLinker {
             "invAmmo",
             "invWeaponID",
             "statData",
+            "side",
         ]);
 
         this.setEntityOrder(1);
