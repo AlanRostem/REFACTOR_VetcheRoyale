@@ -26,7 +26,7 @@ export default class CInterlux extends CWeapon {
         R.ctx.save();
 
         //console.log(this.lines);
-
+        if (this.player) 
         for (var i = 0; i <= this.lines.length - 2; i += 2) {
             if(i===0) R.drawLine(this.player.output.centerData.x, this.player.output.centerData.y, this.lines[i+1].x, this.lines[i+1].y, "Red", 2, true);
             //  if (this.lines)
