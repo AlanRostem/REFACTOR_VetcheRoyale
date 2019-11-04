@@ -21,7 +21,7 @@ export default class Stats extends UIElement {
 
     update(deltaTime, client, entityList) {
 
-        if (!this.secret && (this.secret = true) === true) AssetManager.get("Music/Equinox.ogg").play();
+        if (!this.secret && (this.secret = true) === true) AssetManager.get("Music/MainTheme.ogg").play();
 
         if (client.player)
             if (client.player.output)

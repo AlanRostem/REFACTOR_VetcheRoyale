@@ -33,8 +33,8 @@ class IceBullet extends Projectile {
 
         //let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
-        this.vel.x = Math.cos(angle) * this.speed + this.getOwner(entityManager).vel.x;
-        this.vel.y = Math.sin(angle) * this.speed + this.getOwner(entityManager).vel.y;
+        this.vel.x = Math.cos(angle) * this.speed; //+ this.getOwner(entityManager).vel.x;
+        this.vel.y = Math.sin(angle) * this.speed;// + this.getOwner(entityManager).vel.y;
     }
 
     onTileHit(entityManager, deltaTime) {
