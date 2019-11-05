@@ -219,7 +219,7 @@ class CClient {
 
         this.on("disconnect", message => {
             this.onDisconnect("action: " + message);
-        })
+        });
     }
 
     onDisconnect(message) {

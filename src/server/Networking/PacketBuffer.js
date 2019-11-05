@@ -103,12 +103,11 @@ class PacketBuffer {
 
 PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
-    if (!Object.isJSON(snapShot) || !data) return snapShot;
+    if (!Object.isJSON(snapShot) || data === undefined || data === null) return snapShot;
     if (Object.keys(snapShot).length === 0) return snapShot;
-    for (let key of Object.keys(snapShot)) {
-        //if(oneTimeValues.find((e)=>{ return e === key })) continue;
+    for (let key of Object.keys(snapShot))
         data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
-    }
+
     return data;
 };
 
