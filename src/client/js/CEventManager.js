@@ -14,7 +14,9 @@ export default class CEventManager {
                     if (client.inboundPacket.gameData){
                         if (client.inboundPacket.gameData.privateEvents) {
                             evs = client.inboundPacket.gameData.privateEvents;
-                            for (let e of evs) {
+                            if (evs)
+                            for (let i in evs) {
+                                let e = evs[i];
                                 let event = new CGameEvent(e);
                                 if (event && !this.eventID.includes(event.id)) {
                                     if (e.priority) {
@@ -29,7 +31,8 @@ export default class CEventManager {
                         }
                 if (client.inboundPacket.gameData.Event) {
                     evs = client.inboundPacket.gameData.Event;
-                    for (let e of evs) {
+                    if (evs)
+                        for (let e of evs) {
                         let event = new CGameEvent(e);
                         if (event && !this.eventID.includes(event.id)) {
                             if (e.priority) {

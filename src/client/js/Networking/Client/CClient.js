@@ -49,7 +49,6 @@ class CClient {
         for (let callback of this.serverUpdateCallbacks.array) {
             callback(this.lastReceivedData);
         }
-        console.log(packet.entityData);
     }
 
     /**
@@ -184,7 +183,9 @@ class CClient {
         this.socket.on(eventType, callback);
     }
 
+
     defineSocketEvents() {
+
         this.on('connectClient', data => {
             this.id = data.id;
             this.disconnected = false;

@@ -3,6 +3,9 @@ const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js
 const PacketValidator = require("./PacketValidator.js");
 const PacketBuffer = require("../PacketBuffer.js");
 
+
+
+
 // Object that represents a client connected to the server
 class Client {
     constructor(socket, clientList, server) {
@@ -100,9 +103,6 @@ class Client {
         // TODO: Send data that changes only (use packet buffer)
         let packet = this.packetBuffer.export(Object.keys(this.outboundPacket.object), this.outboundPacket.object);
         this.emit("serverUpdateTick", packet);
-        for (let e in packet.entityData)
-            if (packet.entityData[e].pos)
-                console.log(packet.entityData[e].pos, e);
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }
 
