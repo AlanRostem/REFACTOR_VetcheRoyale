@@ -100,12 +100,12 @@ class PacketBuffer {
 
 PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
-    if (typeof snapShot !== "object" || (data !== undefined && data !== null)) return snapShot;
-    if (Object.keys(snapShot).length === 0) return snapShot;
-    for (let key of Object.keys(snapShot)) {
-        //if(oneTimeValues.find((e)=>{ return e === key })) continue;
-        data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
-    }
+    if (typeof snapShot !== "object" || !data) return snapShot;
+    if (snapShot)
+        for (let key of Object.keys(snapShot)){
+            //if(oneTimeValues.find((e)=>{ return e === key })) continue;
+            data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
+        }
     return data;
 };
 
