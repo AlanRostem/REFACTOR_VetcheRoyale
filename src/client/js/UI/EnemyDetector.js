@@ -31,17 +31,7 @@ class EnemyDetector extends UIElement {
 
         let enemies = Object.keys(this.found).length;
         let color = "Red";
-        if (enemies > 0) {
-            color = this.flashTime < this.maxFlashTime / 2 ? "Red" : "White";
-            this.flashTime -= Scene.deltaTime;
-            if (this.flashTime <= 0) {
-                this.flashTime = this.maxFlashTime;
-            }
-            let string = "Enemy detected: " + enemies;
-            R.drawText(string,
-                R.screenSize.x / 2 - string.length * 2,
-                R.screenSize.y / 2 - 16, color);
-        }
+
         for (let id in this.found) {
             let pos = this.found[id];
             let disp = {};
@@ -73,6 +63,17 @@ class EnemyDetector extends UIElement {
             R.drawRect(color.toLowerCase(), disp.x, disp.y, dim, dim);
         }
         this.found = {};
+        if (enemies > 0) {
+            color = this.flashTime < this.maxFlashTime / 2 ? "Red" : "White";
+            this.flashTime -= Scene.deltaTime;
+            if (this.flashTime <= 0) {
+                this.flashTime = this.maxFlashTime;
+            }
+            let string = "Enemy detected: " + enemies;
+            R.drawText(string,
+                R.screenSize.x / 2 - string.length * 2,
+                R.screenSize.y / 2 - 16, color);
+        }
 
         if (this.showScope) {
             R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 - 1, 1,1);
