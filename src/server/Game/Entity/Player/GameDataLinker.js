@@ -2,6 +2,7 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 const Alive = require("../Traits/Alive.js");
 const ClientPEM = require("./ClientPEM.js");
 const InputBridge = require("./InputBridge.js");
+const PacketBuffer = require("../../../Networking/PacketBuffer.js");
 
 // Abstract class composition of miscellaneous
 // server based data given to the player by
@@ -10,6 +11,7 @@ class GameDataLinker extends Alive {
     constructor(x, y, w, h, HP, regenCoolDown, worldMgr, clientID) {
         super(x, y, w, h, HP, true, 1, .2, regenCoolDown, clientID);
         this._gameData = {};
+        this.packetBuffer = new PacketBuffer;
 
         this.entitiesInProximity = new ClientPEM(this);
         this.worldMgrRef = worldMgr;
@@ -50,11 +52,13 @@ class GameDataLinker extends Alive {
     }
 
     updateGameData(entityManager) {
-        this.gameData.mapName = entityManager.tileMap.name;
-        this.gameData.playerCount = entityManager.playerCount;
+        //this.gameData.mapName = entityManager.tileMap.name;
+        //this.gameData.playerCount = entityManager.playerCount;
+        this.gameData.test = "test";
         this.gameData.debugData = entityManager.debugData;
         for (let key in entityManager.dataPacket)
             this.gameData[key] = entityManager.dataPacket[key];
+        this.gameData = this.packetBuffer.export(Object.keys(this.gameData), this._gameData);
     }
 
     update(entityManager, deltaTime) {

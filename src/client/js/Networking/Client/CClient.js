@@ -4,6 +4,7 @@ import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 import CTimer from "../../../../shared/code/Tools/CTimer.js";
+import PacketBuffer from "./PacketBuffer.js";
 
 
 /**
@@ -44,10 +45,11 @@ class CClient {
 
     onServerUpdateReceived(packet) {
         this.timeSyncer.onServerUpdate(this.latency);
-        this.lastReceivedData = packet;
+        this.lastReceivedData = PacketBuffer.createPacket(this.lastReceivedData, packet);
         for (let callback of this.serverUpdateCallbacks.array) {
-            callback(packet);
+            callback(this.lastReceivedData);
         }
+        console.log(packet.entityData);
     }
 
     /**

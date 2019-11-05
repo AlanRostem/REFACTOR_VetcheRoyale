@@ -21,12 +21,6 @@ class GameWorld extends EntityManager {
         this.dataPacket = {};
         this.players = 0;
 
-        this.dataBuffer = new PacketBuffer();
-        this.bufferKeys = [
-            "mapName",
-            "playerCount",
-            "Event"
-        ];
 
         this.id = name;
         this.portals = new ONMap();
@@ -121,7 +115,6 @@ class GameWorld extends EntityManager {
         this.dataPacket.mapName = this.tileMap.name;
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);
-        this.dataPacket = this.dataBuffer.export(this.bufferKeys, this.dataPacket);
         this.recentlySpawnedEntities.clear();
     }
 }
