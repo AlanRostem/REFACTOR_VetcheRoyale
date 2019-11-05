@@ -62,7 +62,6 @@ class EnemyDetector extends UIElement {
             R.drawText(distance + "m", disp.x + pushX - 5, disp.y + pushY, color);
             R.drawRect(color.toLowerCase(), disp.x, disp.y, dim, dim);
         }
-        this.found = {};
         if (enemies > 0) {
             color = this.flashTime < this.maxFlashTime / 2 ? "Red" : "White";
             this.flashTime -= Scene.deltaTime;
@@ -70,10 +69,13 @@ class EnemyDetector extends UIElement {
                 this.flashTime = this.maxFlashTime;
             }
             let string = "Enemy detected: " + enemies;
+            console.log("FROM DETECTOR", this.found)
             R.drawText(string,
                 R.screenSize.x / 2 - string.length * 2,
                 R.screenSize.y / 2 - 16, color);
         }
+
+        this.found = {};
 
         if (this.showScope) {
             R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 - 1, 1,1);
