@@ -52,7 +52,12 @@ class Loot extends Interactable {
     onPlayerInteraction(player, entityManager) {
         super.onPlayerInteraction(player, entityManager);
         player.inventory.pickUp(this);
+        this.onPickUp(player);
         if (this.shouldRemove) this.remove();
+    }
+
+    onPickUp(player) {
+
     }
 }
 

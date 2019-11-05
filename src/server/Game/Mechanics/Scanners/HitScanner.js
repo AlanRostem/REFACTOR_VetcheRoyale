@@ -12,6 +12,11 @@ class HitScanner {
         this.qtRange = new QTRect(0, 0, 360, 160);
         this.end = new Vector2D(0, 0);
         this.entityExceptions = entityIDExclusions;
+        this.ownerID = null;
+    }
+
+    setOwner(playerID) {
+        this.ownerID = playerID;
     }
 
     set entityScanEnabled(val) {
@@ -106,7 +111,7 @@ class HitScanner {
         if (this.shouldScanEntities) {
             var entities = entityManager.quadTree.query(this.qtRange);
             for (var e of entities) {
-                if (this.entityExceptions.hasOwnProperty(e.id)) continue;
+                if (this.ownerID === e.id || this.entityExceptions.hasOwnProperty(e.id)) {}continue;
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                     if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
                     let ang = Math.atan2(a.y - b.y, a.x - b.x);

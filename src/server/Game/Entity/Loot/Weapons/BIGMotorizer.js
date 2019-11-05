@@ -89,7 +89,7 @@ class BIGMotorizer extends AttackWeapon {
         this.modAbility.configureStats(.5, 10);
         this.upgradeStage = 0;
         this.thunderPulsePos = null;
-        this.thunderPulse = new HitScanner([]);
+        this.thunderPulse = new HitScanner();
         this.thunderPulse.onEntityHit = (entity, game, angle) => {
             if (entity instanceof Affectable) {
                 if (!entity.isTeammate(game.getEntity(this.playerID))) {

@@ -2,6 +2,7 @@ const AttackWeapon = require("./Base/AttackWeapon.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
+const HitScanner = require("../../../Mechanics/Scanners/HitScanner.js");
 const Player = require("../../../Entity/Player/SPlayer.js");
 const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
@@ -141,6 +142,7 @@ class CKER90 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "C-KER .90", "rifle");
         this.dataIsScoping = false;
+        this.scopedFireRange = 32 * 8;
         this.configureAttackStats(2, 10, 1, 60);
         this.modAbility = new class extends ModAbility {
             buffs(composedWeapon, entityManager, deltaTime) {
@@ -175,6 +177,26 @@ class CKER90 extends AttackWeapon {
             }
         }(0, 100, 100);
 
+        this.scopedFireScanner = new class extends HitScanner {
+            constructor() {
+                super({[_this.id]: _this.id});
+                this.hitTile = false;
+            }
+
+            onEntityHit(entity, entityManager, angle) {
+                if (entity.constructor.name === "Player") {
+                    if (!entity.isTeammate(entityManager.getEntity(_this.playerID))) {
+                        let bullet = new ATBullet(_this.playerID, _this.id, _this.pos.x, _this.pos.y, 0);
+                        bullet.onPlayerHit(entity, entityManager);
+                        entityManager.spawnEntity(entity.center.x, entity.center.y, bullet);
+                    }
+                }
+            }
+
+            onTileHit(hitPos, entityManager) {
+                this.hitTile = true;
+            }
+        };
         this.found = {};
         this.addDynamicSnapShotData([
             "dataIsScoping",
@@ -188,15 +210,36 @@ class CKER90 extends AttackWeapon {
         this.found = {};
     }
 
-    fire(player, entityManager, deltaTime, angle) {
-        entityManager.spawnEntity(this.pos.x, this.pos.y,
-            new ATBullet(this.playerID, this.id, this.pos.x, this.pos.y, angle));
+    onPickUp(player) {
+        this.scopedFireScanner.setOwner(player.id);
     }
 
     onDrop(player, entityManager, deltaTime) {
         super.onDrop(player, entityManager, deltaTime);
         this.dataIsScoping = false;
+        this.scopedFireScanner.setOwner(null);
     }
+
+    fire(player, entityManager, deltaTime, angle) {
+        if (!this.dataIsScoping) {
+            entityManager.spawnEntity(this.pos.x, this.pos.y,
+                new ATBullet(this.playerID, this.id, this.pos.x, this.pos.y, angle));
+        } else {
+            let endPos = {};
+            endPos.x = this.center.x + this.scopedFireRange * Math.cos(angle);
+            endPos.y = this.center.y + this.scopedFireRange * Math.sin(angle);
+            this.scopedFireScanner.scan(this.center, endPos, entityManager, entityManager.tileMap);
+            if (this.scopedFireScanner.hitTile) {
+                let bullet = new ATBullet(this.playerID, this.id, this.pos.x, this.pos.y, 0);
+                bullet.onTileHit(entityManager, 0);
+                entityManager.spawnEntity(this.scopedFireScanner.end.x, this.scopedFireScanner.end.y,
+                    bullet);
+                this.scopedFireScanner.hitTile = false;
+            }
+        }
+    }
+
+
 }
 
 module.exports = CKER90;
