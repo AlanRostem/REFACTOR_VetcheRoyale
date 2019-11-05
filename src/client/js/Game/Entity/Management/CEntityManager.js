@@ -105,8 +105,8 @@ export default class CEntityManager {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
-                    if (existingEntity.constructor.name === "UserPlayer")
-                        console.log(entityData.invWeaponID);
+                    if (existingEntity.constructor.name === "CCER90")
+                        console.log(entityData.found);
                     entityData = PacketBuffer.createPacket(existingEntity.output, entityData, []);
                     existingEntity.updateFromDataPack(entityData, client);
 
