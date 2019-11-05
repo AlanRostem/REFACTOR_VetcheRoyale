@@ -62,6 +62,9 @@ Object.copy = function (obj, oneTimeValues = []) {
     return copy;
 };
 
+class MSG {}
+
+
 class PacketBuffer {
     constructor() {
         this.buffer = {};
@@ -84,7 +87,7 @@ class PacketBuffer {
         if (!Object.isJSON(composedEntity)) return composedEntity;
         if (!Object.isJSON(buffer)) return composedEntity;
 
-        let snapShot = {};
+        let snapShot = new MSG;
 
         for (let key of values) {
             if (buffer.hasOwnProperty(key))
