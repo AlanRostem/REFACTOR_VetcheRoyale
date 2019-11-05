@@ -73,11 +73,19 @@ class Physical extends Entity {
     }
 
     moveX(pixelsPerSecond, deltaTime) {
-        this.pos.x += (pixelsPerSecond * deltaTime);
+        let deltaX = (pixelsPerSecond * deltaTime);
+        if (Math.abs(deltaX) > Tile.SIZE) {
+            deltaX = Math.sign(deltaX) * (Tile.SIZE - 1)
+        }
+        this.pos.x += deltaX;
     }
 
     moveY(pixelsPerSecond, deltaTime) {
-        this.pos.y += (pixelsPerSecond * deltaTime);
+        let deltaY = (pixelsPerSecond * deltaTime);
+        if (Math.abs(deltaY) > Tile.SIZE) {
+            deltaY = Math.sign(deltaY) * (Tile.SIZE - 1)
+        }
+        this.pos.y += deltaY;
     }
 
     accelerateX(x, deltaTime) {
