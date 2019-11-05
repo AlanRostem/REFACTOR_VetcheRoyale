@@ -46,12 +46,16 @@ Object.equals = function (self, other) {
     return true;
 };
 
+Object.isJSON = function(obj){
+    return obj !== undefined && obj !== null && !(typeof obj === "number" && isNaN(obj)) && typeof obj !== "string" && typeof obj !== "number" && typeof obj !== "boolean";
+};
+
 
 Object.copy = function (obj, oneTimeValues = []) {
     if (null == obj || "object" != typeof obj) return obj;
     var copy = new obj.constructor();
     for (var key in obj) {
-        //if(oneTimeValues.find((e)=>{return e === key})) continue;
+        if(oneTimeValues.find((e)=>{return e === key})) continue;
         if (typeof obj[key] === "object") copy[key] = Object.copy(obj[key], oneTimeValues);
         else if (obj.hasOwnProperty(key)) copy[key] = obj[key];
     }
@@ -76,36 +80,19 @@ class PacketBuffer {
         return snapShot;
     }
 
+    export(values, composedEntity, buffer = this.buffer) {
+        if (!Object.isJSON(composedEntity)) return composedEntity;
+        if (!Object.isJSON(buffer)) return composedEntity;
 
-    creatSnapShot(values, composedEntity, buffer) {
-        if (!buffer) return composedEntity;
-        if (typeof composedEntity !== "object" || composedEntity === null) return composedEntity;
         let snapShot = {};
-        for (let key of values) {
-            if (Object.equals(composedEntity[key], buffer[key])) continue;
-            if (typeof composedEntity[key] === "object")
-                snapShot[key] = this.creatSnapShot(Object.keys(buffer[key]), composedEntity[key], buffer[key]);
-            else if (composedEntity[key] !== buffer[key])snapShot[key] = composedEntity[key];
-        }
-        return snapShot;
-    }
 
-
-    export(values, composedEntity) {
-        let snapShot = {};
         for (let key of values) {
-            if (Object.equals(composedEntity[key], this.buffer[key])) continue;
-            if (composedEntity[key] !== undefined || composedEntity[key] !== null) {
-                snapShot[key] = this.creatSnapShot(Object.keys(composedEntity[key]), composedEntity[key], this.buffer[key]);
-            }
-            else { snapShot[key] = composedEntity[key]}
-            if (typeof composedEntity[key] === "object") {
-                this.buffer[key] = Object.copy(composedEntity[key]);
-            } else {
-                this.buffer[key] = composedEntity[key];
-            }
+            if (buffer.hasOwnProperty(key))
+                if (Object.equals(composedEntity[key], buffer[key])) continue;
+            snapShot[key] = this.export(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key]);
+            buffer[key] = {};
+            buffer[key] = Object.copy(composedEntity[key]);
         }
-        //console.log(snapShot.keyStates, test.keyStates);
         return snapShot;
     }
 }
@@ -114,10 +101,9 @@ class PacketBuffer {
 PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
     if (typeof snapShot !== "object" || !data) return snapShot;
-    if (snapShot === null || snapShot === undefined) return snapShot;
     if (snapShot)
         for (let key of Object.keys(snapShot)){
-            if(oneTimeValues.find((e)=>{ return e === key })) continue;
+            //if(oneTimeValues.find((e)=>{ return e === key })) continue;
             data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
         }
     return data;
