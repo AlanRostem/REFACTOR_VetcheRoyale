@@ -14,15 +14,9 @@ export default class Stats extends UIElement {
 
         this.killCount = 0;
         this.playersAlive = 0;
-
-        this.secret = false;
-
     }
 
     update(deltaTime, client, entityList) {
-
-        if (!this.secret && (this.secret = true) === true) AssetManager.get("Music/MainTheme.ogg").play();
-
         if (client.player)
             if (client.player.output)
                 if (client.player.output.statData)

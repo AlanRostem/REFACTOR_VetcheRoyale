@@ -48,6 +48,16 @@ class ATBullet extends Projectile {
         }
     }
 
+    forEachNearbyEntity(entity, entityManager) {
+        if (this.weapon) {
+            if (entity.constructor.name === "Player") {
+                if (entity.id !== this.weapon.playerID && !this.getOwner(entityManager).isTeammate(entity)) {
+                    this.weapon.found[entity.id] = entity.center;
+                }
+            }
+        }
+    }
+
     onPlayerHit(entity, entityManager) {
         if (!this.seek) {
             this.damage.inflict(entity, entityManager);
@@ -91,17 +101,6 @@ class SeekerSmoke extends Bouncy {
         ]);
     }
 
-    forEachNearbyEntity(entity, entityManager) {
-        super.forEachNearbyEntity(entity, entityManager);
-        if (this.findPlayers) {
-            if (entity instanceof Player) {
-                if (!entity.isTeammate(this.getOwner(entityManager))) {
-                    this.weapon.found[entity.id] = entity.center;
-                }
-            }
-        }
-    }
-
     update(entityManager, deltaTime) {
         if (this.side.bottom) {
             this.vel.x *= this.fric.x;
@@ -118,10 +117,6 @@ class SeekerSmoke extends Bouncy {
             this.findPlayers = true;
         }
         super.update(entityManager, deltaTime);
-        let player = this.getOwner(entityManager);
-        if (player) {
-            player.sendDataToTeam("seekerSmoke", this.weapon.found);
-        }
     }
 
 }
@@ -176,8 +171,8 @@ class CKER90 extends AttackWeapon {
         this.entityType = "AttackWeapon";
     }
 
-    updateWhenEquipped(player, entityManager, deltaTime) {
-        super.updateWhenEquipped(player, entityManager, deltaTime);
+    update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
         this.found = {};
     }
 

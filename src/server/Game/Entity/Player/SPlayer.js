@@ -15,6 +15,7 @@ class Player extends GameDataLinker {
         super(0, 0, 6, 12, 100, true, worldMgr, clientID);
         // MISC VAR INITS
         this.teamName = "red";
+        this.teamID = null;
         this.snapShotGenerator.snapShot.id = this.id;
         this.inventory = new Inventory();
         this.invWeaponID = null;
@@ -43,6 +44,7 @@ class Player extends GameDataLinker {
             "invWeaponID",
             "statData",
             "side",
+            "teamID"
         ]);
 
         this.setEntityOrder(1);
@@ -157,10 +159,17 @@ class Player extends GameDataLinker {
     }
 
     sendDataToTeam(key, value) {
-        this.team.sendData(key, value);
+        if (this.team) {
+            this.team.sendData(key, value);
+        }
     }
 
     update(entityManager, deltaTime) {
+        if (this.team) {
+            this.teamID = this.team.id;
+        } else {
+            this.teamID = null;
+        }
         this.setMovementState("tile", "none");
 
         this.invAmmo = this.inventory.ammo;

@@ -1,6 +1,7 @@
 class Team {
     constructor() {
         this.name = "name";
+        this.id = String.random();
         this.players = {};
         this.arrayPlayers = [];
         this.playerCount = 0;

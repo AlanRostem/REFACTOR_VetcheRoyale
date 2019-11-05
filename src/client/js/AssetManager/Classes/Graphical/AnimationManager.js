@@ -37,6 +37,10 @@ class AnimationManager {
         return this.animations[name];
     }
 
+    getCurrentAnim() {
+        return this.animations[this.currentAnimName];
+    }
+
     /**
      * Function run in a draw loop that updates the animation frames.
      * @param spriteSheetObj {SpriteSheet} - Respective sprite sheet object

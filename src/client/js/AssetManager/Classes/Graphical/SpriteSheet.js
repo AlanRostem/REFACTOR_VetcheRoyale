@@ -133,6 +133,14 @@ class SpriteSheet {
         this.animRect.y = this.offsetRects.get(name).y + height * (anim.currentCol / anim.framesPerRow | 0);
     }
 
+    animateFrom(name, anim, fw, fh) {
+        this.animRect.w = fw;
+        this.animRect.h = fh;
+
+        this.animRect.x = this.offsetRects.get(name).x + fw * (anim.currentCol % anim.framesPerRow | 0);
+        this.animRect.y = this.offsetRects.get(name).y + fh * (anim.currentCol / anim.framesPerRow | 0);
+    }
+
     /**
      * Calls upon R.context.save()
      */
