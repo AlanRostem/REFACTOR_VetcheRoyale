@@ -7,8 +7,8 @@ const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
 
 class ATBullet extends Projectile {
-    constructor(oID, wID, x, y, angle) {
-        super(oID, x, y, 2, 2, angle, 350, 60, false);
+    constructor(oID, wID, x, y, speed, arc, angle) {
+        super(oID, x, y, 2, 2, angle, speed, arc, false);
         this.damage = new Damage(50, oID);
         this.seek = false;
         this.lifeTime = 10;
@@ -137,6 +137,10 @@ class SeekerSmoke extends Bouncy {
 
 }
 
+const SCOPED_SPEED = 478;
+const NORMAL_SPEED = 350;
+const ARC = 60;
+
 class CKER90 extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "C-KER .90", "rifle");
@@ -190,7 +194,10 @@ class CKER90 extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.pos.x, this.pos.y,
-            new ATBullet(this.playerID, this.id, this.pos.x, this.pos.y, angle));
+            new ATBullet(this.playerID, this.id, this.pos.x, this.pos.y,
+                this.dataIsScoping ? SCOPED_SPEED : NORMAL_SPEED,
+                this.dataIsScoping ? 0 : ARC,
+                angle));
     }
 
     onDrop(player, entityManager, deltaTime) {

@@ -2,6 +2,7 @@ const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
 const TileCollider = require("../../../../TileBased/TileCollider.js");
+const Tile = require("../../../../TileBased/Tile.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
@@ -82,6 +83,24 @@ class Projectile extends Physical {
                 }
             }
         }
+    }
+
+    moveX(pixelsPerSecond, deltaTime) {
+        let deltaX = (pixelsPerSecond * deltaTime);
+        if (Math.abs(deltaX) > Tile.SIZE) {
+            let cos = Math.cos(Math.atan2(this.vel.y, this.vel.x));
+            deltaX = cos * Tile.SIZE;
+        }
+        this.pos.x += deltaX;
+    }
+
+    moveY(pixelsPerSecond, deltaTime) {
+        let deltaY = (pixelsPerSecond * deltaTime);
+        if (Math.abs(deltaY) > Tile.SIZE) {
+            let sin = Math.sin(Math.atan2(this.vel.y, this.vel.x));
+            deltaY = sin * Tile.SIZE;
+        }
+        this.pos.y += deltaY;
     }
 
 }
