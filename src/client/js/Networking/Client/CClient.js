@@ -45,9 +45,9 @@ class CClient {
 
     onServerUpdateReceived(packet) {
         this.timeSyncer.onServerUpdate(this.latency);
-        this.lastReceivedData = PacketBuffer.createPacket(this.lastReceivedData, packet);
+        this.lastReceivedData = packet;
         for (let callback of this.serverUpdateCallbacks.array) {
-            callback(this.lastReceivedData);
+            callback(packet);
         }
     }
 
@@ -187,6 +187,7 @@ class CClient {
     defineSocketEvents() {
 
         this.on('connectClient', data => {
+            console.log(data);
             this.id = data.id;
             this.disconnected = false;
             this.socket.emit("connectClientCallback", {id: this.id});
