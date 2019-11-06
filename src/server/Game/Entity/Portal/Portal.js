@@ -78,7 +78,7 @@ class Portal extends Interactable {
     }
 
     onEntityCollision(entity, entityManager) {
-        super.onEntityCollision(entity, entityManager);
+        super.onEntityCollision(entity, entityManager);/*
         if (this.portalTileID)
             if (entity instanceof Player)
                 if (entityManager.exists(entity.id)){ //TODO::Portalene med id 99 sender 2 events. 2 Collision?
@@ -88,7 +88,7 @@ class Portal extends Interactable {
                             string: "Noe",
                         }, true
                     );
-                }
+                }*/
     }
 }
 
