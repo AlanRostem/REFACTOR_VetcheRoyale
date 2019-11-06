@@ -15,7 +15,8 @@ class KnockBackEffect extends Effect {
     onAppliedToEntity(entity, entityManager, deltaTime) {
         super.onAppliedToEntity(entity, entityManager, deltaTime);
         entity.vel.x = this.sx;
-        entity.vel.y = this.sy /// (this.tolerance / 10);
+        entity.vel.y = this.sy; /// (this.tolerance / 10);
+        entity.setMovementState("canMove", false);
     }
 
     effects(entity, entityManager, deltaTime) {
@@ -36,6 +37,7 @@ class KnockBackEffect extends Effect {
         super.onDone(entity, entityManager, deltaTime);
         entity.fric.x = 0;
         entity.acc.x = entity.speed.ground;
+        entity.setMovementState("canMove", true);
     }
 }
 

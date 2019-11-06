@@ -62,26 +62,45 @@ class OtherPlayer extends CEntity {
 
         let self = this.output;
         if (self.vel.x !== 0) {
-            if (this.output.effectsData) 
-            if (this.output.effectsData.KnockBackEffect) {
-                if (this.output.effectsData.KnockBackEffect.length === 0) {
+            if (this.output.effectsData)
+                if (this.output.effectsData.KnockBackEffect) {
+                    if (this.output.effectsData.KnockBackEffect.length === 0) {
+                        this.setMovementState("main", "run");
+                    }
+                } else {
                     this.setMovementState("main", "run");
                 }
-            } else {
-                this.setMovementState("main", "run");
-            }
         } else {
-            if(!this.jumping) this.setMovementState("main", "stand");
+            if (!this.jumping) this.setMovementState("main", "stand");
             else this.setMovementState("main", "jump")
         }
 
+
         if (this.checkMovementState("main", "run")) {
             if (self.vel.x > 0) {
-                this.setMovementState("direction", "right");
+                if (this.output.effectsData) {
+                    if (this.output.effectsData.KnockBackEffect) {
+                        if (this.output.effectsData.KnockBackEffect.length === 0)
+                            this.setMovementState("direction", "right");
+                    } else {
+                        this.setMovementState("direction", "right");
+                    }
+                } else {
+                    this.setMovementState("direction", "right");
+                }
             }
 
             if (self.vel.x < 0) {
-                this.setMovementState("direction", "left");
+                if (this.output.effectsData) {
+                    if (this.output.effectsData.KnockBackEffect) {
+                        if (this.output.effectsData.KnockBackEffect.length === 0)
+                            this.setMovementState("direction", "left");
+                    } else {
+                        this.setMovementState("direction", "left");
+                    }
+                } else {
+                    this.setMovementState("direction", "left");
+                }
             }
         }
 
