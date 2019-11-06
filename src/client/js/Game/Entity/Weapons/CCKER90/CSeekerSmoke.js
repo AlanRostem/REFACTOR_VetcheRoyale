@@ -1,5 +1,5 @@
 import CEntity from "../../CEntity.js";
-import RemotePlayer from "../../Player/RemotePlayer.js";
+import OtherPlayer from "../../Player/OtherPlayer.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../../Graphics/Renderer.js";
 
@@ -44,7 +44,7 @@ class CSeekerSmoke extends CEntity {
             && player.output.pos.y < (this.smoke.y + this.smoke.h)
             && player.output.pos.x + player.width > this.smoke.x
             && player.output.pos.x < (this.smoke.x + this.smoke.w)
-            && !this.isTeammate(player) && player instanceof RemotePlayer;
+            && !this.isTeammate(player) && player instanceof OtherPlayer;
     }
 
     draw() {

@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import RemotePlayer from "./RemotePlayer.js";
+            <pre class="prettyprint source linenums"><code>import OtherPlayer from "./OtherPlayer.js;
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
@@ -39,7 +39,7 @@ const TILE_SIZE = 8;
 /**
  * The player the client controls. It contains the client side prediction code.
  */
-class UserPlayer extends RemotePlayer {
+class UserPlayer extends OtherPlayer {
     /*
      * @param data - Initial packet data sent by the server
      */
@@ -78,12 +78,12 @@ class UserPlayer extends RemotePlayer {
     t_drawGhost() {
         R.ctx.save();
         R.ctx.globalAlpha = 0.4;
-        //this.animations.animate(RemotePlayer.sprite, this.serverState.teamName, 16, 16);
+        //this.animations.animate(OtherPlayer.sprite, this.serverState.teamName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.serverState.movementState.direction === "left") {
-            RemotePlayer.sprite.flipX();
+            OtherPlayer.sprite.flipX();
         }
-        RemotePlayer.sprite.drawAnimated(
+        OtherPlayer.sprite.drawAnimated(
             Math.round(this.serverState.pos.x) + R.camera.boundPos.x,
             Math.round(this.serverState.pos.y) + R.camera.boundPos.y);
         SpriteSheet.end();

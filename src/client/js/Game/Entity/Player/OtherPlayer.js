@@ -12,7 +12,7 @@ import Scene from "../../Scene.js";
  * @see CEntity
  * @memberOf ClientSide
  */
-class RemotePlayer extends CEntity {
+class OtherPlayer extends CEntity {
     constructor(dataPack) {
         super(dataPack);
         this.animations = new AnimationManager();
@@ -107,25 +107,25 @@ class RemotePlayer extends CEntity {
     }
 
     draw() {
-        this.animations.animate(RemotePlayer.sprite, this.output.teamName, 16, 16);
+        this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.movementState.direction === "left") {
-            RemotePlayer.sprite.flipX();
+            OtherPlayer.sprite.flipX();
         }
-        RemotePlayer.sprite.drawAnimated(
+        OtherPlayer.sprite.drawAnimated(
             Math.round(this.output.pos.x) + R.camera.displayPos.x,
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
     }
 }
 
-RemotePlayer.sprite = new SpriteSheet("playerSprite");
+OtherPlayer.sprite = new SpriteSheet("playerSprite");
 
 
-RemotePlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
-RemotePlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);
-RemotePlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
-RemotePlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
-RemotePlayer.sprite.setCentralOffset(4);
+OtherPlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
+OtherPlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);
+OtherPlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
+OtherPlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
+OtherPlayer.sprite.setCentralOffset(4);
 
-export default RemotePlayer;
+export default OtherPlayer;

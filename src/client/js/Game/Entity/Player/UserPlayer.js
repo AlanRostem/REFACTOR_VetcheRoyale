@@ -1,4 +1,4 @@
-import RemotePlayer from "./RemotePlayer.js";
+import OtherPlayer from "./OtherPlayer.js";
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
@@ -15,7 +15,7 @@ const TILE_SIZE = 8;
  * @memberOf ClientSide
 
  */
-class UserPlayer extends RemotePlayer {
+class UserPlayer extends OtherPlayer {
     constructor(data) {
         super(data);
         this.serverState = data;
@@ -40,12 +40,12 @@ class UserPlayer extends RemotePlayer {
     t_drawGhost() {
         R.ctx.save();
         R.ctx.globalAlpha = 0.4;
-        //this.animations.animate(RemotePlayer.sprite, this.serverState.teamName, 16, 16);
+        //this.animations.animate(OtherPlayer.sprite, this.serverState.teamName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.serverState.movementState.direction === "left") {
-            RemotePlayer.sprite.flipX();
+            OtherPlayer.sprite.flipX();
         }
-        RemotePlayer.sprite.drawAnimated(
+        OtherPlayer.sprite.drawAnimated(
             Math.round(this.serverState.pos.x) + R.camera.displayPos.x,
             Math.round(this.serverState.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();

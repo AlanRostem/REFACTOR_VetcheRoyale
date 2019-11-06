@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import RemotePlayer from "./RemotePlayer.js";
+            <pre class="prettyprint source linenums"><code>import OtherPlayer from "./OtherPlayer.js;
 import R from "../../../Graphics/Renderer.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
@@ -43,7 +43,7 @@ const TILE_SIZE = 8;
  * @memberOf ClientSide
 
  */
-class UserPlayer extends RemotePlayer {
+class UserPlayer extends OtherPlayer {
     constructor(data) {
         super(data);
         this.serverState = data;
@@ -79,12 +79,12 @@ class UserPlayer extends RemotePlayer {
     t_drawGhost() {
         R.ctx.save();
         R.ctx.globalAlpha = 0.4;
-        //this.animations.animate(RemotePlayer.sprite, this.serverState.teamName, 16, 16);
+        //this.animations.animate(OtherPlayer.sprite, this.serverState.teamName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.serverState.movementState.direction === "left") {
-            RemotePlayer.sprite.flipX();
+            OtherPlayer.sprite.flipX();
         }
-        RemotePlayer.sprite.drawAnimated(
+        OtherPlayer.sprite.drawAnimated(
             Math.round(this.serverState.pos.x) + R.camera.displayPos.x,
             Math.round(this.serverState.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
@@ -272,7 +272,7 @@ export default UserPlayer;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ClientSide.html">ClientSide</a></li><li><a href="ClientSide.EntityTypeSpawner.html">EntityTypeSpawner</a></li><li><a href="ClientSide.R.html">R</a></li><li><a href="ClientSide.Scene.html">Scene</a></li></ul><h3>Classes</h3><ul><li><a href="Announcement.html">Announcement</a></li><li><a href="Camera.html">Camera</a></li><li><a href="CClient.html">CClient</a></li><li><a href="ClientSide.AnimationManager.html">AnimationManager</a></li><li><a href="ClientSide.AssetManager.html">AssetManager</a></li><li><a href="ClientSide.CEntity.html">CEntity</a></li><li><a href="ClientSide.JSONFile.html">JSONFile</a></li><li><a href="ClientSide.RemotePlayer.html">RemotePlayer</a></li><li><a href="ClientSide.SpriteSheet.html">SpriteSheet</a></li><li><a href="ClientSide.SpriteSheet.Animation.html">Animation</a></li><li><a href="ClientSide.TileSheet.html">TileSheet</a></li><li><a href="ClientSide.UserPlayer.html">UserPlayer</a></li><li><a href="CTileMap.html">CTileMap</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="TileMapManager.html">TileMapManager</a></li><li><a href="UIElement.html">UIElement</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ClientSide.html">ClientSide</a></li><li><a href="ClientSide.EntityTypeSpawner.html">EntityTypeSpawner</a></li><li><a href="ClientSide.R.html">R</a></li><li><a href="ClientSide.Scene.html">Scene</a></li></ul><h3>Classes</h3><ul><li><a href="Announcement.html">Announcement</a></li><li><a href="Camera.html">Camera</a></li><li><a href="CClient.html">CClient</a></li><li><a href="ClientSide.AnimationManager.html">AnimationManager</a></li><li><a href="ClientSide.AssetManager.html">AssetManager</a></li><li><a href="ClientSide.CEntity.html">CEntity</a></li><li><a href="ClientSide.JSONFile.html">JSONFile</a></li><li><a href="ClientSide.RemotePlayer.html">OtherPlayer</a></li><li><a href="ClientSide.SpriteSheet.html">SpriteSheet</a></li><li><a href="ClientSide.SpriteSheet.Animation.html">Animation</a></li><li><a href="ClientSide.TileSheet.html">TileSheet</a></li><li><a href="ClientSide.UserPlayer.html">UserPlayer</a></li><li><a href="CTileMap.html">CTileMap</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="TileMapManager.html">TileMapManager</a></li><li><a href="UIElement.html">UIElement</a></li></ul>
 </nav>
 
 <br class="clear">

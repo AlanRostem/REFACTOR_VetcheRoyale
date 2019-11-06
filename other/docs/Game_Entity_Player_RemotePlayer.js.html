@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Game/Entity/Player/RemotePlayer.js</title>
+    <title>JSDoc: Source: Game/Entity/Player/OtherPlayerjs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Game/Entity/Player/RemotePlayer.js</h1>
+    <h1 class="page-title">Source: Game/Entity/Player/OtherPlayer.js/h1>
 
     
 
@@ -39,7 +39,7 @@ import AssetManager from "../../../AssetManager/AssetManager.js"
  * @memberOf ClientSide
 
  */
-class RemotePlayer extends CEntity {
+class OtherPlayer extends CEntity {
     constructor(dataPack) {
         super(dataPack);
         this.animations = new AnimationManager();
@@ -57,28 +57,28 @@ class RemotePlayer extends CEntity {
     }
 
     draw() {
-        this.animations.animate(RemotePlayer.sprite, this.output.teamName, 16, 16);
+        this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.output.movementState.direction === "left") {
-            RemotePlayer.sprite.flipX();
+            OtherPlayer.sprite.flipX();
         }
-        RemotePlayer.sprite.drawAnimated(
+        OtherPlayer.sprite.drawAnimated(
             Math.round(this.output.pos.x) + R.camera.displayPos.x,
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
     }
 }
 
-RemotePlayer.sprite = new SpriteSheet("entity/player.png");
+OtherPlayer.sprite = new SpriteSheet("entity/player.png");
 
 
-RemotePlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
-RemotePlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);
-RemotePlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
-RemotePlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
-RemotePlayer.sprite.setCentralOffset(4);
+OtherPlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
+OtherPlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);
+OtherPlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
+OtherPlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
+OtherPlayer.sprite.setCentralOffset(4);
 
-export default RemotePlayer;</code></pre>
+export default OtherPlayer;</code></pre>
         </article>
     </section>
 
@@ -88,7 +88,7 @@ export default RemotePlayer;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ClientSide.html">ClientSide</a></li><li><a href="ClientSide.EntityTypeSpawner.html">EntityTypeSpawner</a></li><li><a href="ClientSide.R.html">R</a></li><li><a href="ClientSide.Scene.html">Scene</a></li></ul><h3>Classes</h3><ul><li><a href="Announcement.html">Announcement</a></li><li><a href="Camera.html">Camera</a></li><li><a href="CClient.html">CClient</a></li><li><a href="ClientSide.AnimationManager.html">AnimationManager</a></li><li><a href="ClientSide.AssetManager.html">AssetManager</a></li><li><a href="ClientSide.CEntity.html">CEntity</a></li><li><a href="ClientSide.JSONFile.html">JSONFile</a></li><li><a href="ClientSide.RemotePlayer.html">RemotePlayer</a></li><li><a href="ClientSide.SpriteSheet.html">SpriteSheet</a></li><li><a href="ClientSide.SpriteSheet.Animation.html">Animation</a></li><li><a href="ClientSide.TileSheet.html">TileSheet</a></li><li><a href="ClientSide.UserPlayer.html">UserPlayer</a></li><li><a href="CTileMap.html">CTileMap</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="TileMapManager.html">TileMapManager</a></li><li><a href="UIElement.html">UIElement</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="ClientSide.html">ClientSide</a></li><li><a href="ClientSide.EntityTypeSpawner.html">EntityTypeSpawner</a></li><li><a href="ClientSide.R.html">R</a></li><li><a href="ClientSide.Scene.html">Scene</a></li></ul><h3>Classes</h3><ul><li><a href="Announcement.html">Announcement</a></li><li><a href="Camera.html">Camera</a></li><li><a href="CClient.html">CClient</a></li><li><a href="ClientSide.AnimationManager.html">AnimationManager</a></li><li><a href="ClientSide.AssetManager.html">AssetManager</a></li><li><a href="ClientSide.CEntity.html">CEntity</a></li><li><a href="ClientSide.JSONFile.html">JSONFile</a></li><li><a href="ClientSide.RemotePlayer.html">OtherPlayer</a></li><li><a href="ClientSide.SpriteSheet.html">SpriteSheet</a></li><li><a href="ClientSide.SpriteSheet.Animation.html">Animation</a></li><li><a href="ClientSide.TileSheet.html">TileSheet</a></li><li><a href="ClientSide.UserPlayer.html">UserPlayer</a></li><li><a href="CTileMap.html">CTileMap</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="TileMapManager.html">TileMapManager</a></li><li><a href="UIElement.html">UIElement</a></li></ul>
 </nav>
 
 <br class="clear">

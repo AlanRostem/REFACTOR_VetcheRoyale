@@ -1,5 +1,5 @@
 import CEntity from "../CEntity.js";
-import RemotePlayer from "../Player/RemotePlayer.js";
+import OtherPlayer from "../Player/OtherPlayer.js";
 import UserPlayer from "../Player/UserPlayer.js";
 import CWeapon from "../Weapons/CWeapon.js";
 import CBottle from "../CBottle.js";
@@ -53,7 +53,7 @@ const EntityTypeSpawner = {
 };
 
 
-EntityTypeSpawner.createSpawner("Player", RemotePlayer);
+EntityTypeSpawner.createSpawner("Player", OtherPlayer);
 EntityTypeSpawner.createSpawner("SEntity", CEntity);
 
 EntityTypeSpawner.createSpawner("Bottle", CBottle);
