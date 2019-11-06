@@ -4,6 +4,7 @@ import Scene from "../../Game/Scene.js"
 import ONMap from "../../../../shared/code/DataStructures/CObjectNotationMap.js";
 import ServerTimeSyncer from "../Interpolation/ServerTimeSyncer.js";
 import CTimer from "../../../../shared/code/Tools/CTimer.js";
+import PacketBuffer from "./PacketBuffer.js";
 
 
 /**
@@ -40,9 +41,22 @@ class CClient {
         });
         this.latency = 0;
         this.discReasonMsg = "reason: server error";
+        this.first = true;
+
+
+        this.addServerUpdateListener("mapChange", data =>{
+            if (data)
+                if (data.gameData)
+                    if (data.gameData.mapName)
+                    Scene.currentMapName = data.gameData.mapName;
+        })
     }
 
     onServerUpdateReceived(packet) {
+        if (this.first) {
+            console.log(packet);
+            this.first = false;
+        }
         this.timeSyncer.onServerUpdate(this.latency);
         this.lastReceivedData = packet;
         for (let callback of this.serverUpdateCallbacks.array) {
@@ -157,19 +171,6 @@ class CClient {
 
         this.localTime += deltaTime;
         this.startTime = Date.now();
-        if (this.inboundPacket) {
-            if (this.inboundPacket.gameData) {
-                Scene.currentMapName = this.inboundPacket.gameData.mapName;
-            } else {
-                //if (e) entityManager.removeEntity(e.id);
-                if (this.inboundPacket.spectatorSubject) {
-                    let s = entityManager.getEntityByID(this.inboundPacket.spectatorSubject.id);
-                    if (s) {
-                        R.camera.update(s.output.pos);
-                    }
-                }
-            }
-        }
         this.inputListener.update(this);
         this.packetSendLoop.tick(Scene.deltaTime);
     }
@@ -182,7 +183,9 @@ class CClient {
         this.socket.on(eventType, callback);
     }
 
+
     defineSocketEvents() {
+
         this.on('connectClient', data => {
             this.id = data.id;
             this.disconnected = false;

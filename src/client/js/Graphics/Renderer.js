@@ -142,6 +142,7 @@ const R = {
             //img = AssetManager.getMapImage("fontShadeGreen");
 
             if (!img) return;
+            if (str === undefined) return;
             str = str.toString();
             if (shade === false) {
                 for (var i = 0; i < str.length; i++, newLetter++) {

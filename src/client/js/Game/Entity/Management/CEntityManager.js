@@ -71,6 +71,7 @@ export default class CEntityManager {
         // client player object, and spawns them here as the player
         // connects.
         client.on('initEntity', dataPack => {
+            console.log(dataPack)
             for (var id in dataPack) {
                 var entityData = dataPack[id];
                 this.spawnEntityFromDataPack(entityData, client);
@@ -106,13 +107,14 @@ export default class CEntityManager {
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
                     if (existingEntity.constructor.name === "CCKER90")
+                        if (entityData.found)
                         console.log(entityData.found);
                     entityData = PacketBuffer.createPacket(existingEntity.output, entityData);
                     existingEntity.updateFromDataPack(entityData, client);
-
                 } else {
                     console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);
                     //throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
+                    //delete dataPack.entityData[id];
                 }
             }
         });

@@ -62,6 +62,7 @@ class OtherPlayer extends CEntity {
 
         let self = this.output;
         if (self.vel.x !== 0) {
+            if (this.output.effectsData) 
             if (this.output.effectsData.KnockBackEffect) {
                 if (this.output.effectsData.KnockBackEffect.length === 0) {
                     this.setMovementState("main", "run");

@@ -23,12 +23,6 @@ class EnemyDetector extends UIElement {
     draw() {
         super.draw();
 
-        if (Scene.clientRef.inboundPacket) {
-            if (Scene.clientRef.inboundPacket.teamData.seekerSmoke) {
-                this.queryPositions(Scene.clientRef.inboundPacket.teamData.seekerSmoke);
-            }
-        }
-
         let enemies = Object.keys(this.found).length;
         let color = "Red";
 
@@ -69,7 +63,7 @@ class EnemyDetector extends UIElement {
                 this.flashTime = this.maxFlashTime;
             }
             let string = "Enemy detected: " + enemies;
-            console.log("FROM DETECTOR", this.found)
+            //console.log("FROM DETECTOR", this.found)
             R.drawText(string,
                 R.screenSize.x / 2 - string.length * 2,
                 R.screenSize.y / 2 - 16, color);

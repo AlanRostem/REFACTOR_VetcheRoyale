@@ -231,7 +231,7 @@ class Player extends GameDataLinker {
 
         this.centerData.x = this.center.x;
         this.centerData.y = this.center.y;
-
+        /*
         if (this.team)
             for (let p in this.team.players)
                 if (this.team.players[p].id !== this.id)
@@ -239,7 +239,7 @@ class Player extends GameDataLinker {
                         this.team.players[p].id, "teamMember: " + this.id, "minimap", "Blue", 0, {
                             pos: this.pos
                         }
-                    );
+                    );*/
         this.setOutboundPacketData("teamData", this.team.data);
         this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
         this.setMovementState("onPlayer", "false");

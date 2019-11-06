@@ -1,12 +1,17 @@
 const InputReceiver = require("./InputReceiver.js");
 const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
 const PacketValidator = require("./PacketValidator.js");
+const PacketBuffer = require("../PacketBuffer.js");
+
+
+
 
 // Object that represents a client connected to the server
 class Client {
     constructor(socket, clientList, server) {
         this.inboundDataCallbacks = new ONMap();
         this.outboundPacket = new ONMap();
+        this.packetBuffer = new PacketBuffer();
 
         // Object given by socket.io
         this.socket = socket;
@@ -96,8 +101,8 @@ class Client {
 
     updateDataCycle() {
         // TODO: Send data that changes only (use packet buffer)
-        this.emit("serverUpdateTick", this.outboundPacket.object);
-
+        let packet = this.packetBuffer.export(Object.keys(this.outboundPacket.object), this.outboundPacket.object);
+        this.emit("serverUpdateTick", packet);
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }
 
