@@ -8,6 +8,8 @@ import AssetManager from "../../AssetManager/AssetManager.js";
 export default class CPortal extends CEntity {
     constructor(d) {
         super(d);
+        this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.1);
+
     }
 
     onClientAdd(dataPack, client) {
@@ -38,10 +40,10 @@ export default class CPortal extends CEntity {
     draw() {
         let pos = this.getRealtimeProperty("pos");
 
-        CPortal.portalAnimation.animate("portal", CPortal.animationSpec, 10, 16);
+        CPortal.portalAnimation.animate("portal", this.animationSpec, 10, 16);
         CPortal.portalAnimation.drawAnimated(
-                pos.x + R.camera.x - 1,
-                pos.y + R.camera.y - 3, 10, 16);
+            pos.x + R.camera.x - 1,
+            pos.y + R.camera.y - 3, 10, 16);
     }
 
     update(deltaTime, client) {
@@ -53,8 +55,6 @@ export default class CPortal extends CEntity {
 
 
 AssetManager.addSpriteCreationCallback(() => {
-    CPortal.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.1);
-
     CPortal.portalAnimation = new SpriteSheet("portal");
     CPortal.portalAnimation.bind("portal", 0, 0, 40, 16);
 });

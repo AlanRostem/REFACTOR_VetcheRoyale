@@ -162,7 +162,7 @@ const Scene = {
 
     tick(time) {
         if (time > 0)
-            Scene.deltaTime = (time - Scene.lastTime) / 1000;
+            Scene.deltaTime = ((time - Scene.lastTime) / 1000).fixed(3);
 
         Scene.update();
         Scene.draw();
