@@ -1,3 +1,4 @@
+class Empty{}
 
 Object.equals = function (self, other) {
     if (typeof other === "number" && isNaN(other)) {
@@ -86,7 +87,7 @@ class PacketBuffer {
     export(values, composedEntity, buffer = this.buffer, last = true) {
         if (!Object.isJSON(composedEntity)) return composedEntity;
         if (!Object.isJSON(buffer)) return composedEntity;
-        let snapShot = {};
+        let snapShot = new Empty();
 
         for (let key of values) {
             if (buffer.hasOwnProperty(key))
