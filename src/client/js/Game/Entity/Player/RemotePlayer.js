@@ -3,6 +3,8 @@ import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js"
 import R from "../../../Graphics/Renderer.js";
 import AnimationManager from "../../../AssetManager/Classes/Graphical/AnimationManager.js";
 import AssetManager from "../../../AssetManager/AssetManager.js"
+import Scene from "../../Scene.js";
+
 
 /**
  * Other players in the game. Overrides update and draw methods of CEntity and contains sprite
@@ -28,6 +30,12 @@ class RemotePlayer extends CEntity {
             top: false,
             bottom: false,
         };
+
+        this.jumping = false;
+
+        Scene.clientRef.inputListener.addKeyMapping(32, (keyState) => {
+            this.jumping = keyState;
+        });
     }
 
     setMovementState(key, value) {
@@ -69,7 +77,8 @@ class RemotePlayer extends CEntity {
                 this.setMovementState("main", "run");
             }
         } else {
-            this.setMovementState("main", "stand");
+            if(!this.jumping) this.setMovementState("main", "stand");
+            else this.setMovementState("main", "jump")
         }
 
         if (this.checkMovementState("main", "run")) {

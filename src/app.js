@@ -8,7 +8,7 @@ var server = require('http').Server(app);
 app.use(express.static(path.join(__dirname)));
 
 
-
+ 
 // All these app.get calls send the following
 // directories to the client.
 

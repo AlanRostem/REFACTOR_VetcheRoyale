@@ -62,6 +62,9 @@ Object.copy = function (obj, oneTimeValues = []) {
     return copy;
 };
 
+class MSG {}
+
+
 class PacketBuffer {
     constructor() {
         this.buffer = {};
@@ -84,7 +87,7 @@ class PacketBuffer {
         if (!Object.isJSON(composedEntity)) return composedEntity;
         if (!Object.isJSON(buffer)) return composedEntity;
 
-        let snapShot = {};
+        let snapShot = new MSG;
 
         for (let key of values) {
             if (buffer.hasOwnProperty(key))
@@ -100,12 +103,11 @@ class PacketBuffer {
 
 PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
-    if (typeof snapShot !== "object" || (data !== undefined && data !== null)) return snapShot;
+    if (!Object.isJSON(snapShot) || data === undefined || data === null) return snapShot;
     if (Object.keys(snapShot).length === 0) return snapShot;
-    for (let key of Object.keys(snapShot)) {
-        //if(oneTimeValues.find((e)=>{ return e === key })) continue;
+    for (let key of Object.keys(snapShot))
         data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
-    }
+
     return data;
 };
 

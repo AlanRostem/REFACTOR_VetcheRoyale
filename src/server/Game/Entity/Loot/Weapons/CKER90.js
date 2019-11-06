@@ -82,7 +82,7 @@ class SeekerSmoke extends Bouncy {
     constructor(ownerID, weapon, x, y, angle) {
         super(ownerID, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
-        this.fric.x = 0.93;
+        this.fric.x = 0.89;
         this.weapon = weapon;
         this.life = 10;
         this.minSpeed = 10;
@@ -115,6 +115,7 @@ class SeekerSmoke extends Bouncy {
 
         if (Math.abs(this.vel.x | 0) <= this.minSpeed && Math.abs(this.vel.y | 0) <= this.minSpeed && this.side.bottom) {
             this.findPlayers = true;
+            this.vel.x = 0;
         }
         super.update(entityManager, deltaTime);
     }
@@ -172,8 +173,8 @@ class CKER90 extends AttackWeapon {
     }
 
     update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
         this.found = {};
+        super.update(entityManager, deltaTime);
     }
 
     fire(player, entityManager, deltaTime, angle) {
