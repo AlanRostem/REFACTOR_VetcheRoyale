@@ -30,12 +30,6 @@ class RemotePlayer extends CEntity {
             top: false,
             bottom: false,
         };
-
-        this.jumping = false;
-
-        Scene.clientRef.inputListener.addKeyMapping(32, (keyState) => {
-            this.jumping = keyState;
-        });
     }
 
     setMovementState(key, value) {

@@ -29,6 +29,12 @@ class UserPlayer extends RemotePlayer {
                 this.localSides.left = this.localSides.right = this.localSides.top = this.localSides.bottom = false;
             }
         };
+
+        this.jumping = false;
+
+        Scene.clientRef.inputListener.addKeyMapping(32, (keyState) => {
+            this.jumping = keyState;
+        });
     }
 
     t_drawGhost() {
