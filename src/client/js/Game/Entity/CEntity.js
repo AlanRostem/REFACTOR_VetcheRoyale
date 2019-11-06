@@ -156,7 +156,7 @@ class CEntity {
      * Overridable event called every frame in the game loop. Do custom drawing here.
      */
     draw() {
-        R.drawRect(this.color,
+        R.drawRect("blue",
             this.output.pos.x /*+ (this.output.vel.x * Scene.deltaTime | 0) */,
             this.output.pos.y /*+ (this.output.vel.y * Scene.deltaTime | 0) */,
             this.width, this.height, true);

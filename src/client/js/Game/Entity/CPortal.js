@@ -40,7 +40,7 @@ export default class CPortal extends CEntity {
 
         CPortal.portalAnimation.animate("portal", CPortal.animationSpec, 10, 16);
         CPortal.portalAnimation.drawAnimated(
-                pos.x + R.camera.x,
+                pos.x + R.camera.x - 1,
                 pos.y + R.camera.y - 3, 10, 16);
     }
 
@@ -53,7 +53,7 @@ export default class CPortal extends CEntity {
 
 
 AssetManager.addSpriteCreationCallback(() => {
-    CPortal.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.15);
+    CPortal.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.1);
 
     CPortal.portalAnimation = new SpriteSheet("portal");
     CPortal.portalAnimation.bind("portal", 0, 0, 40, 16);
