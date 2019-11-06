@@ -63,7 +63,7 @@ class EnemyDetector extends UIElement {
                 this.flashTime = this.maxFlashTime;
             }
             let string = "Enemy detected: " + enemies;
-            console.log("FROM DETECTOR", this.found)
+            //console.log("FROM DETECTOR", this.found)
             R.drawText(string,
                 R.screenSize.x / 2 - string.length * 2,
                 R.screenSize.y / 2 - 16, color);

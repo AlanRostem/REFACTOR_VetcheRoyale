@@ -1,3 +1,4 @@
+
 Object.equals = function (self, other) {
     if (typeof other === "number" && isNaN(other)) {
         //console.log("Object cannot equal to NaN, undefined or null!");
@@ -82,18 +83,16 @@ class PacketBuffer {
         return snapShot;
     }
 
-    export(values, composedEntity, buffer = this.buffer) {
+    export(values, composedEntity, buffer = this.buffer, last = true) {
         if (!Object.isJSON(composedEntity)) return composedEntity;
         if (!Object.isJSON(buffer)) return composedEntity;
-
         let snapShot = {};
 
         for (let key of values) {
             if (buffer.hasOwnProperty(key))
                 if (Object.equals(composedEntity[key], buffer[key])) continue;
-            snapShot[key] = this.export(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key]);
-            buffer[key] = {};
-            buffer[key] = Object.copy(composedEntity[key]);
+            snapShot[key] = this.export(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key], false);
+            if(last) this.buffer[key] = Object.copy(composedEntity[key]);
         }
         return snapShot;
     }

@@ -106,9 +106,10 @@ export default class CEntityManager {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
+                    if (existingEntity.constructor.name === "CCKER90")
+                        if (entityData.found)
+                        console.log(entityData.found);
                     entityData = PacketBuffer.createPacket(existingEntity.output, entityData);
-                    /*if (existingEntity.constructor.name === "UserPlayer")
-                        console.log(entityData.pos);*/
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {
                     console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);

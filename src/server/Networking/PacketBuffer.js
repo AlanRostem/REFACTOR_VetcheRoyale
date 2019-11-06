@@ -1,3 +1,4 @@
+
 Object.equals = function (self, other) {
     if (typeof other === "number" && isNaN(other)) {
         //console.log("Object cannot equal to NaN, undefined or null!");
@@ -46,7 +47,7 @@ Object.equals = function (self, other) {
     return true;
 };
 
-Object.isJSON = function(obj){
+Object.isJSON = function (obj) {
     return obj !== undefined && obj !== null && !(typeof obj === "number" && isNaN(obj)) && typeof obj !== "string" && typeof obj !== "number" && typeof obj !== "boolean";
 };
 
@@ -55,15 +56,14 @@ Object.copy = function (obj, oneTimeValues = []) {
     if (null == obj || "object" != typeof obj) return obj;
     var copy = new obj.constructor();
     for (var key in obj) {
-        if(oneTimeValues.find((e)=>{return e === key})) continue;
+        if (oneTimeValues.find((e) => {
+            return e === key
+        })) continue;
         if (typeof obj[key] === "object") copy[key] = Object.copy(obj[key], oneTimeValues);
         else if (obj.hasOwnProperty(key)) copy[key] = obj[key];
     }
     return copy;
 };
-
-class MSG {}
-
 
 class PacketBuffer {
     constructor() {
@@ -83,18 +83,16 @@ class PacketBuffer {
         return snapShot;
     }
 
-    export(values, composedEntity, buffer = this.buffer) {
+    export(values, composedEntity, buffer = this.buffer, last = true) {
         if (!Object.isJSON(composedEntity)) return composedEntity;
         if (!Object.isJSON(buffer)) return composedEntity;
-
-        let snapShot = new MSG;
+        let snapShot = {};
 
         for (let key of values) {
             if (buffer.hasOwnProperty(key))
                 if (Object.equals(composedEntity[key], buffer[key])) continue;
-            snapShot[key] = this.export(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key]);
-            buffer[key] = {};
-            buffer[key] = Object.copy(composedEntity[key]);
+            snapShot[key] = this.export(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key], false);
+            if(last) this.buffer[key] = Object.copy(composedEntity[key]);
         }
         return snapShot;
     }
@@ -107,7 +105,6 @@ PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
     if (Object.keys(snapShot).length === 0) return snapShot;
     for (let key of Object.keys(snapShot))
         data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
-
     return data;
 };
 
