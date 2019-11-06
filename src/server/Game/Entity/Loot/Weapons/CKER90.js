@@ -87,8 +87,8 @@ class SeekerSmoke extends Bouncy {
         this.life = 10;
         this.minSpeed = 10;
         this.smokeBounds = {
-            x: 80,
-            y: 40,
+            x: 100,
+            y: 60,
         };
         this.setQuadTreeRange(this.smokeBounds.x, this.smokeBounds.y);
         this.entityOrder = 2;
