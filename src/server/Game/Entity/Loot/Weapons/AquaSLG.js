@@ -28,7 +28,7 @@ class AOEKnockBackDamage extends AOEDamage {
 class IceBullet extends Projectile {
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
         super(ownerID, x, y, 2, 2, angle);
-        this.speed = 300;
+        this.speed = 5 * 8 * 60; // TODO: Change to 300
         this.damage = new Damage(10, ownerID);
 
         //let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
@@ -66,7 +66,9 @@ class AquaSLG extends AttackWeapon {
 
         this.modAbility = new ModAbility(0.75, 1.5);
 
-        this.configureAttackStats(2, 25, 1, 500);
+        this.configureAttackStats(2,
+            250, // TODO: Change to 25
+            1, 500);
 
         this.addDynamicSnapShotData(["secondaryUse", "superAbilitySnap"]);
 

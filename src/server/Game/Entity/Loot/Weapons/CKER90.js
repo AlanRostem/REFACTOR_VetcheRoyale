@@ -122,7 +122,7 @@ class SeekerSmoke extends Bouncy {
 
 }
 
-const SCOPED_SPEED = 478;
+const SCOPED_SPEED = 480;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 

@@ -73,19 +73,11 @@ class Physical extends Entity {
     }
 
     moveX(pixelsPerSecond, deltaTime) {
-        let deltaX = (pixelsPerSecond * deltaTime);
-        if (Math.abs(deltaX) > Tile.SIZE) {
-            deltaX = Math.sign(deltaX) * (Tile.SIZE - 1)
-        }
-        this.pos.x += deltaX;
+        this.pos.x += (pixelsPerSecond * deltaTime);
     }
 
     moveY(pixelsPerSecond, deltaTime) {
-        let deltaY = (pixelsPerSecond * deltaTime);
-        if (Math.abs(deltaY) > Tile.SIZE) {
-            deltaY = Math.sign(deltaY) * (Tile.SIZE - 1)
-        }
-        this.pos.y += deltaY;
+        this.pos.y += (pixelsPerSecond * deltaTime);
     }
 
     accelerateX(x, deltaTime) {
@@ -222,7 +214,7 @@ class Physical extends Entity {
         if (this.physicsConfig.gravity)
             if (!this.side.bottom)
                 this.accelerateY(this.acc.y, deltaTime);
-            
+
         this.resetSides();
 
         if (!this.physicsConfig.static)
@@ -245,8 +237,60 @@ class Physical extends Entity {
         }
     }
 
+    isSpeedTooHigh(deltaTime) {
+        return (
+            Math.abs(this.vel.x) * deltaTime > Tile.SIZE ||
+            Math.abs(this.vel.y) * deltaTime > Tile.SIZE
+        );
+    }
+
+    dividedPhysics(entityManager, vx, vy, deltaTime) {
+        this.old.x = this.pos.x;
+        this.old.y = this.pos.y;
+
+        if (this.physicsConfig.gravity)
+            if (!this.side.bottom)
+                this.accelerateY(this.acc.y, deltaTime);
+
+        this.resetSides();
+
+        if (!this.physicsConfig.static)
+            this.moveY(vy, deltaTime); // Adding velocity to position
+        if (this.physicsConfig.tileCollision)      // before colliding.
+            this.tileCollisionY(entityManager.tileMap, deltaTime);
+        this.customCollisionY(entityManager, entityManager.tileMap, deltaTime);
+
+        if (!this.physicsConfig.static)
+            this.moveX(vx, deltaTime); // Adding velocity to position
+        if (this.physicsConfig.tileCollision)      // before colliding.
+            this.tileCollisionX(entityManager.tileMap, deltaTime);
+        this.customCollisionX(entityManager, entityManager.tileMap, deltaTime);
+
+        this.updateMovementStates(entityManager, deltaTime);
+    }
+
+    dividedTileCollision(game, deltaTime) {
+        let atan = Math.atan2(this.vel.y, this.vel.x);
+        let xDirFactor = Math.cos(atan);
+        let yDirFactor = Math.sin(atan);
+        let nextFramePos = {
+            x: this.pos.x + this.vel.x * deltaTime,
+            y: this.pos.y + this.vel.y * deltaTime,
+        };
+        let frames = Math.ceil(Vector2D.distance(this.pos, nextFramePos) / Tile.SIZE);
+        let speed = Tile.SIZE;
+        frames *= 2; speed /= 2; // Doing this for now since speeding up with tile size might be too much
+        for (let i = 0; i < frames; i++) {
+            this.dividedPhysics(game, speed * xDirFactor, speed * yDirFactor, 1); // Passing 1 as delta time to not alter the speed.
+        }
+    }
+
     update(game, deltaTime) {
-        this.physics(game, deltaTime);
+        if (this.isSpeedTooHigh(deltaTime)) {
+            this.dividedTileCollision(game, deltaTime);
+        } else {
+            this.physics(game, deltaTime);
+        }
         super.update(game, deltaTime);
     }
 
