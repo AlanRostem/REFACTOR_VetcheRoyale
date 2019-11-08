@@ -30,7 +30,10 @@ app.get('/shared', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-   res.sendFile(path.join(__dirname + "/client/html/index.html"));
+   if (req.headers.host === "127.0.0.1:" + PORT)
+      res.sendFile(path.join(__dirname + "/monitor/monitor.html"));
+   else
+      res.sendFile(path.join(__dirname + "/client/html/index.html"));
 });
 
 PORT = process.env.PORT || 8080;
@@ -38,6 +41,7 @@ server.listen(PORT);
 
 console.log("Dome 24 online!");
 console.log("DEBUG MODE: Hosting on http://localhost:" + PORT + "/");
+console.log("DEBUG MODE: Hosting on http://127.0.0.1:" + PORT + "/");
 
 var io = require('socket.io').listen(server);
 var GameServer = require("./server/Networking/GameServer.js");
