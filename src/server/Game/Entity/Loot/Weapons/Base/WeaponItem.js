@@ -1,4 +1,5 @@
 const Loot = require("../../Loot.js");
+const Player = require("../../../Player/SPlayer.js");
 
 // Composition abstraction class for the weapon you can pick up.
 // Handles interaction and world physics.
@@ -46,7 +47,7 @@ class WeaponItem extends Loot {
                     this.updateWhenEquipped(entityManager.getEntity(this.playerID), entityManager, deltaTime);
                 } else {
                     if (entityManager.getGameRule("dropLootOnDeath")) {
-                        this.dropOnPlayerRemoval();
+                        this.dropOnPlayerRemoval(entityManager, deltaTime);
                     } else {
                         this.remove();
                     }
@@ -71,11 +72,18 @@ class WeaponItem extends Loot {
         player.setMovementState("weapon", this.weaponClass);
     }
 
+    getOwner(entityManager) {
+        if (entityManager.getEntity(this.playerID)) {
+            return entityManager.getEntity(this.playerID);
+        }
+        return WeaponItem.EMPTY_PLAYER;
+    }
+
     // Drops the weapon when the player disconnects (removed from game world)
-    dropOnPlayerRemoval() {
+    dropOnPlayerRemoval(entityManager, deltaTime) {
+        this.onDrop(this.getOwner(entityManager), entityManager, deltaTime);
         this.equippedToPlayer = false;
         this.playerID = null;
-        this.onDrop();
     }
 
     // Callback when dropping the weapon
@@ -113,5 +121,6 @@ class WeaponItem extends Loot {
 
 WeaponItem.DROP_KEY = 71;
 WeaponItem.DROP_SPEED = 200;
+WeaponItem.EMPTY_PLAYER = new Player(-1);
 
 module.exports = WeaponItem;
