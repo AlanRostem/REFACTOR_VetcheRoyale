@@ -73,11 +73,24 @@ class Physical extends Entity {
     }
 
     moveX(pixelsPerSecond, deltaTime) {
-        this.pos.x += (pixelsPerSecond * deltaTime);
+        let deltaX = (pixelsPerSecond * deltaTime);
+        if (Math.abs(this.acc.x) > 0 && Math.abs(deltaX) > Tile.SIZE) {
+            let newVX = (Tile.SIZE - Tile.SIZE / 4);
+            this.vel.x = newVX / deltaTime | 0;
+            deltaX = Math.sign(deltaX) * newVX;
+        }
+        this.pos.x += deltaX;
     }
 
     moveY(pixelsPerSecond, deltaTime) {
-        this.pos.y += (pixelsPerSecond * deltaTime);
+        let deltaY = (pixelsPerSecond * deltaTime);
+        if (Math.abs(this.acc.y) > 0 && Math.abs(deltaY) > Tile.SIZE) {
+            let newVY = (Tile.SIZE - Tile.SIZE / 4);
+            this.vel.y = newVY / deltaTime | 0;
+            console.log(this.vel.y, deltaTime)
+            deltaY = Math.sign(deltaY) * newVY;
+        }
+        this.pos.y += deltaY;
     }
 
     accelerateX(x, deltaTime) {
@@ -273,7 +286,8 @@ class Physical extends Entity {
         let atan = Math.atan2(this.vel.y, this.vel.x);
         let xDirFactor = Math.cos(atan);
         let yDirFactor = Math.sin(atan);
-        let frames = Math.ceil(Vector2D.abs(this.vel) / Tile.SIZE);
+        let vel = Vector2D.scale(this.vel, deltaTime);
+        let frames = Math.ceil(Vector2D.abs(vel) / Tile.SIZE);
         let speed = Tile.SIZE;
         for (let i = 0; i < frames; i++) {
             this.dividedPhysics(game, speed * xDirFactor, speed * yDirFactor, 1); // Passing 1 as delta time to not alter the speed.
