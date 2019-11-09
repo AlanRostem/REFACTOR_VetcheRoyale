@@ -273,15 +273,13 @@ class Physical extends Entity {
         let atan = Math.atan2(this.vel.y, this.vel.x);
         let xDirFactor = Math.cos(atan);
         let yDirFactor = Math.sin(atan);
-        let nextFramePos = {
-            x: this.pos.x + this.vel.x * deltaTime,
-            y: this.pos.y + this.vel.y * deltaTime,
-        };
-        let frames = Math.ceil(Vector2D.distance(this.pos, nextFramePos) / Tile.SIZE);
+        let frames = Math.ceil(Vector2D.abs(this.vel) / Tile.SIZE);
         let speed = Tile.SIZE;
-        frames *= 2; speed /= 2; // Doing this for now since speeding up with tile size might be too much
         for (let i = 0; i < frames; i++) {
             this.dividedPhysics(game, speed * xDirFactor, speed * yDirFactor, 1); // Passing 1 as delta time to not alter the speed.
+            if (this.hasHitTile()) {
+                break;
+            }
         }
     }
 
@@ -311,6 +309,9 @@ class Physical extends Entity {
     }
 
 
+    hasHitTile() {
+        return this.side.bottom || this.side.top || this.side.left || this.side.right;
+    }
 }
 
 module.exports = Physical;
