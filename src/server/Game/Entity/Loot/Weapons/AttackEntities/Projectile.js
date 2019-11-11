@@ -81,10 +81,11 @@ class Projectile extends Physical {
             if (entity instanceof Player) {
                 let e = entity;
                 let a = {
-                    x: this.pos.x - this.vel.x,
-                    y: this.pos.y - this.vel.y,
+                    x: this.pos.x - this.vel.x * deltaTime,
+                    y: this.pos.y - this.vel.y * deltaTime,
                 };
                 let b = this.pos;
+                console.log(b.x - a.x, b.y - a.y);
 
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                     this.onEntityCollision(e, entityManager);
