@@ -1,8 +1,6 @@
 const Admin = require("../admin/SAdmin.js");
 const ClientList = require("../../../server/Networking/ClientList.js");
 
-ADMIN_PREFIX = "admin-";
-
 class Monitor {
     constructor(io){
         this.socket = io;
