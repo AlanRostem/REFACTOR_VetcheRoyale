@@ -12,6 +12,8 @@ class Projectile extends Physical {
         super(x, y, w, h);
         this.ownerID = ownerID;
         this.shouldRemove = shouldRemove;
+        this.speed = speed;
+        this.angle = angle;
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
@@ -85,7 +87,6 @@ class Projectile extends Physical {
                     y: this.pos.y - this.vel.y * deltaTime,
                 };
                 let b = this.pos;
-                console.log(b.x - a.x, b.y - a.y);
 
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                     this.onEntityCollision(e, entityManager);
