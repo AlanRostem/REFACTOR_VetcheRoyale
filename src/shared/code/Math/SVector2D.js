@@ -23,10 +23,15 @@ class Vector2D {
         return this.x * vec.x + this.y * vec.y;
     }
 
-    scale(val) {
-        typeCheck.instance(Vector2D, vec);
-        this.x *= val;
-        this.y *= val;
+    static scale(vec, val) {
+        let u = new Vector2D(vec.x, vec.y);
+        u.x *= val;
+        u.y *= val;
+        return u;
+    }
+
+    static abs(vec) {
+        return Math.sqrt(vec.x ** 2 + vec.y ** 2)
     }
 
     static distance(a, b) {
