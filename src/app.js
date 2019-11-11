@@ -8,6 +8,7 @@ var server = require('http').Server(app);
 app.use(express.static(path.join(__dirname)));
 
 
+
  
 // All these app.get calls send the following
 // directories to the client.
@@ -34,7 +35,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-   res.sendFile(path.join(__dirname + "/admin/client/monitor/monitor.html"));
+   res.sendFile(path.join(__dirname + "/admin/client/HTML/monitor.html"));
 });
 
 app.get('/admin/Client', (req, res) => {
