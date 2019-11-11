@@ -11,7 +11,7 @@ import ConsoleCommands from "./ConsoleCommands.js";
 
 // This is the initialization entry point
 
-var client = new CClient(io());
+var client = new CClient(io("/game"));
 io = undefined; // Restricting console from using this function.
 var entityDataReceiver = new CEntityManager(client);
 

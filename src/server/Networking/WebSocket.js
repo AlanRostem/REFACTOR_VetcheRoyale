@@ -19,7 +19,7 @@ Array.prototype.remove = function() {
 // The main web socket of the server. This is a singleton class
 class WebSocket {
     constructor(socket, matchMaker, server) {
-       this.socket = socket; // Object given by socket.io
+        this.socket = socket; // Object given by socket.io
         if (!this.socket) {
             throw new Error("WebSocket class is missing an 'io' instance. The application is terminated.");
         }

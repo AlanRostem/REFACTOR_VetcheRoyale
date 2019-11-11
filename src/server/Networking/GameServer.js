@@ -2,12 +2,14 @@ const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("./Matchmaker.js");
 const Thread = require("../Multithreading/Thread.js");
 const DataBridge = require("../Multithreading/DataBridge.js");
+const Monitor = require("../../admin/Server/monitor/Monitor.js");
 
 // Class for the main server
 class GameServer {
     constructor(sio) {
         this.matchMaker = new MatchMaker();
-        this.mainSocket = new WebSocket(sio, this.matchMaker, this);
+        this.mainSocket = new WebSocket(sio.of("/game"), this.matchMaker, this);
+        this.monitor = new Monitor(sio.of("/admin"));
 
         this.tickRate = 60; // Hz (TEMPORARY)
 
