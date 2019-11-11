@@ -1,3 +1,5 @@
+const Vector2D = require("../../../../../../shared/code/Math/SVector2D");
+
 const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
@@ -11,7 +13,7 @@ class Projectile extends Physical {
         this.ownerID = ownerID;
         this.shouldRemove = shouldRemove;
         this.vel.x = Math.cos(angle) * speed;
-        this.vel.y = Math.sin(angle)* speed;
+        this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
         this.addStaticSnapShotData(["ownerID"]);
         this.setPhysicsConfiguration("gravity", false);
@@ -64,9 +66,42 @@ class Projectile extends Physical {
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+        if (this.isSpeedTooHigh(deltaTime)) {
+            let d = Vector2D.abs(this.vel) * deltaTime;
+            this.setQuadTreeRange(d, d);
+        }
         if (this.hitTile) {
             this.onTileHit(entityManager, deltaTime);
             this.hitTile = false;
+        }
+    }
+
+    forEachNearbyEntity(entity, entityManager, deltaTime) {
+        if (this.isSpeedTooHigh(deltaTime)) {
+            if (entity instanceof Player) {
+                let e = entity;
+                let a = {
+                    x: this.pos.x - this.vel.x,
+                    y: this.pos.y - this.vel.y,
+                };
+                let b = this.pos;
+
+                if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
+                    this.onEntityCollision(e, entityManager);
+                }
+
+                if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
+                    this.onEntityCollision(e, entityManager);
+                }
+
+                if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
+                    this.onEntityCollision(e, entityManager);
+                }
+
+                if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                    this.onEntityCollision(e, entityManager);
+                }
+            }
         }
     }
 

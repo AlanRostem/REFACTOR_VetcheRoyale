@@ -48,19 +48,19 @@ class ProximityEntityManager extends EntityManager {
             this.qtBounds.y = this.entRef.center.y;
         }
         this.quadTreePlacement(entityManager);
-        this.checkProximityEntities(entityManager);
+        this.checkProximityEntities(entityManager, deltaTime);
     }
 
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
-    checkProximityEntities(entityManager) {
+    checkProximityEntities(entityManager, deltaTime) {
         var entities = entityManager.quadTree.query(this.qtBounds);
         for (let e of entities) {
             if (e !== this.entRef) {
                 if (!this.exists(e.id)) {
                     this.addEntity(e, entityManager);
                 } else {
-                    this.entRef.forEachNearbyEntity(e, entityManager);
+                    this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
                     if (this.entRef.overlapEntity(e)) {
                         this.entRef.onEntityCollision(e, entityManager);
                     }
