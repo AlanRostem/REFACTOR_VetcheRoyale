@@ -71,7 +71,6 @@ export default class CEntityManager {
         // client player object, and spawns them here as the player
         // connects.
         client.on('initEntity', dataPack => {
-            console.log(dataPack)
             for (var id in dataPack) {
                 var entityData = dataPack[id];
                 this.spawnEntityFromDataPack(entityData, client);
@@ -106,8 +105,6 @@ export default class CEntityManager {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
-                    if (existingEntity.constructor.name === "UserPlayer")
-                            console.log(entityData.pos);
                     entityData = PacketBuffer.createPacket(existingEntity.output, entityData);
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {

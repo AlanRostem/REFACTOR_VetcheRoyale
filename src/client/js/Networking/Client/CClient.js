@@ -41,8 +41,6 @@ class CClient {
         });
         this.latency = 0;
         this.discReasonMsg = "reason: server error";
-        this.first = true;
-
 
         this.addServerUpdateListener("mapChange", data =>{
             if (data)
@@ -53,10 +51,7 @@ class CClient {
     }
 
     onServerUpdateReceived(packet) {
-        if (this.first) {
-            console.log(packet);
-            this.first = false;
-        }
+
         this.timeSyncer.onServerUpdate(this.latency);
         this.lastReceivedData = packet;
         for (let callback of this.serverUpdateCallbacks.array) {
