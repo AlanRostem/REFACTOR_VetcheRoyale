@@ -15,6 +15,7 @@ var user = require('./router.js')();
 app.use(bodyParser.urlencoded({
    extended: true
 }));
+
 app.use(session({
    secret:'thesecret',
    saveUninitialized:false,
