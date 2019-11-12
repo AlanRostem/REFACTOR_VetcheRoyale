@@ -4,7 +4,7 @@
   "description": "2D platformer battle royale",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "react-scripts start",
     "doc": "jsdoc -c jsdoc.conf.json",
     "build": "babel src/client/js -d src"
   },
@@ -19,8 +19,6 @@
     "jsdoc": "^3.6.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
