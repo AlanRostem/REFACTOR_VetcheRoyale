@@ -3,13 +3,14 @@ var User = require("../../../shared/res/users.json");
 var crypto = require('crypto');
 
 const secret = 'abcdefg';
+
 var hash = function (password, s = secret) {
     return crypto.createHmac('sha256', s)
         .update(password)
         .digest('hex');
 };
 
-var com = function(pws1, pws2){
+var verify = function(pws1, pws2){
   return pws1 === hash(pws2);
 };
 
@@ -29,7 +30,7 @@ module.exports = function (passport) {
             if (err) done(err);
             else {
                 if (user){
-                    if(com(user.password, password))
+                    if(verify(user.password, password))
                         done(null, user);
                     else done(null, false);
                 }

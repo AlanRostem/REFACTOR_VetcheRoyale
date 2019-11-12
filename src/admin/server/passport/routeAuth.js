@@ -8,7 +8,6 @@ var loggedin = (req, res, next)=>{
     else res.redirect("/login");
 };
 
-
 module.exports = function (passport) {
     router.post('/login', passport.authenticate('local', {
             failureRedirect: '/login',

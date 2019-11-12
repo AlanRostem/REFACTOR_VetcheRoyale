@@ -146,8 +146,6 @@ class WorldManager {
                     .receiveInputData(data.data);
             }
         });
-
-
     }
 }
 

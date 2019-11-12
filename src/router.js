@@ -9,7 +9,6 @@ module.exports = function () {
 
     router.get('/res/tileMap', (req, res) => {
         res.sendFile(path.join(__dirname + "/"));
-        console.log((__dirname + "/"))
     });
 
     router.get('/client/js/', (req, res) => {
@@ -27,5 +26,6 @@ module.exports = function () {
     router.get('/login', (req, res) => {
         res.sendFile(path.join(__dirname + "/admin/client/HTML/login.html"));
     });
+
     return router;
 };
