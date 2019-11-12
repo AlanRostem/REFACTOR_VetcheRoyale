@@ -7,7 +7,7 @@ class Monitor {
         this.adminList = new ClientList();
         this.on("connection", admin => {
             console.log("\nEstablishing connection to admin... Admin ID: [ " + admin.id + " ]");
-            let _admin = new Admin(admin);
+            let _admin = new Admin(admin, this.adminList);
             this.adminList.addClient(admin.id, _admin);
         });
 

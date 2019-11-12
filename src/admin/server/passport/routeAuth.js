@@ -7,9 +7,9 @@ var loggedin = (req, res, next)=>{
     else res.redirect("/login");
 };
 
+
 module.exports = function (passport) {
-    router.post('/login',
-        passport.authenticate('local', {
+    router.post('/login',passport.authenticate('local', {
             failureRedirect: '/login',
             successRedirect: '/admin',
     }));
@@ -20,7 +20,7 @@ module.exports = function (passport) {
 
     router.get('/logout', (req, res)=>{
         req.logout();
-        res.redirect("/");
+        res.redirect("/login");
     });
 
     return router;

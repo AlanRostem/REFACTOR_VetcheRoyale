@@ -1,7 +1,11 @@
 class SAdmin {
-    constructor(socket){
+    constructor(socket, adminList){
         this.socket = socket;
-        this.socket.id = socket.id;
+        this.id = socket.id;
+        this.socket.on("disconnect", data => {
+            adminList.removeClient(this.id);
+            console.log("Disconnected [ " + this.id + " ]");
+        });
     }
 }
 
