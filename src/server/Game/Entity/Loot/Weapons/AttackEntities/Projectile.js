@@ -67,11 +67,11 @@ class Projectile extends Physical {
     }
 
     update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
         if (this.isSpeedTooHigh(deltaTime)) {
             let d = Vector2D.abs(this.vel) * deltaTime;
             this.setQuadTreeRange(d, d);
         }
+        super.update(entityManager, deltaTime);
         if (this.hitTile) {
             this.onTileHit(entityManager, deltaTime);
             this.hitTile = false;
