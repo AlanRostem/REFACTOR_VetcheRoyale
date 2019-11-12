@@ -3,6 +3,13 @@ var express = require('express');
 var router = express.Router();
 
 module.exports = function () {
+
+    router.get('/bootstrap/dist/js', (req, res) => res.sendFile(path.join(__dirname + '../node_modules/bootstrap/dist/js'))); // redirect bootstrap JS
+    router.get('/jquery/dist/js', (req, res) => res.sendFile(path.join(__dirname + '../node_modules/jquery/dist'))); // redirect JS jQuery
+    router.get('/bootstrap/dist/css', (req, res) => res.sendFile(path.join(__dirname + '../node_modules/bootstrap/dist/css'))); // redirect CSS bootstrap
+
+    console.log(__dirname)
+
     router.get('/client/public', (req, res) => {
         res.sendFile(path.join(__dirname + "/"));
     });
