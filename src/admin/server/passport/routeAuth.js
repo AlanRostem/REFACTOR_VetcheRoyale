@@ -2,6 +2,7 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 
+
 var loggedin = (req, res, next)=>{
     if (req.isAuthenticated()) next();
     else res.redirect("/login");
@@ -9,7 +10,7 @@ var loggedin = (req, res, next)=>{
 
 
 module.exports = function (passport) {
-    router.post('/login',passport.authenticate('local', {
+    router.post('/login', passport.authenticate('local', {
             failureRedirect: '/login',
             successRedirect: '/admin',
     }));
