@@ -31,7 +31,7 @@ const EntityTypeSpawner = {
 
     /**
      * Map a class type (extends CEntity) to a constructor name of the respective server entity
-     * @param name {string} - Server entity constructor name
+     * @param name {string} - server entity constructor name
      * @param classType {Function} - Class constructor
      * @memberOf EntityTypeSpawner
      */

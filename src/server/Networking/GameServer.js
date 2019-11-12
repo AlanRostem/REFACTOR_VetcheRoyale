@@ -2,7 +2,7 @@ const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("./Matchmaker.js");
 const Thread = require("../Multithreading/Thread.js");
 const DataBridge = require("../Multithreading/DataBridge.js");
-const Monitor = require("../../admin/Server/monitor/Monitor.js");
+const Monitor = require("../../admin/server/monitor/Monitor.js");
 
 // Class for the main server
 class GameServer {

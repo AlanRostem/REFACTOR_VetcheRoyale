@@ -7,19 +7,9 @@
 <body>
 <h1>Admin</h1>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-<script type="module" src="/admin/Client/monitor/CMonitor.js"></script>
-<form action="/login" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
-    <div>
-        <input type="submit" value="Log In"/>
-    </div>
+<script type="module" src="/admin/client/monitor/CMonitor.js"></script>
+<form action="/admin/logout" method="get">
+    <input type="submit" value="Log out"/>
 </form>
 </body>
 </html>
