@@ -1,6 +1,10 @@
 {
- "admin":{
+ "1":{
    "username": "admin",
    "password": "ebd5359e500475700c6cc3dd4af89cfd0569aa31724a1bf10ed1e3019dcfdb11"
+ },
+  "2":{
+   "username": "ben",
+   "password": "1392542397501e1158418adae09d694ffb8ed833a3a5e8a017e15ba565d28c70"
  }
 }

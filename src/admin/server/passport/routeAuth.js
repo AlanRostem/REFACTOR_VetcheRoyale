@@ -9,19 +9,20 @@ var loggedin = (req, res, next)=>{
 };
 
 module.exports = function (passport) {
-    router.post('/login', passport.authenticate('local', {
+   router.post('/login', passport.authenticate('local', {
             failureRedirect: '/login',
-            successRedirect: '/admin',
-    }));
+            successRedirect: '/admin'
+   }));
 
     router.get('/', loggedin,(req, res) => {
         res.sendFile(path.join(__dirname + "../../../Client/HTML/monitor.html"));
     });
 
     router.get('/logout', (req, res)=>{
-        req.logout();
+        passport.logut(req);
         res.redirect("/login");
     });
 
     return router;
 };
+

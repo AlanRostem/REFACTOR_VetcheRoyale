@@ -15,10 +15,14 @@ var user = require('./router.js')();
 app.use(bodyParser.urlencoded({
    extended: true
 }));
+
 app.use(session({
    secret:'thesecret',
    saveUninitialized:false,
-   resave:false
+   resave:false,
+   cookie:{
+      maxAge:3600000
+   }
 }));
 
 app.use(passport.initialize());

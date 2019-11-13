@@ -3,46 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <style>
-        body {font-family: Arial, Helvetica, sans-serif; text-align: center;}
-        form {display: inline-block; text-align: left; width: 50%; border: 3px solid #f1f1f1;}
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 20px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            opacity: 0.8;
-        }
-        .container {
-            padding: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/jquery/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form action="/admin/login" method="post">
-    <h1 style="color:red;text-align:center;">!RESTRICTED AREA!</h1>
-    <div class="container">
-        <label><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required>
-
-        <label><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-
-        <button type="submit">Login</button>
-    </div>
-</form>
+<div class="col-md-4 col-md-offset-4 well">
+        <h1 style="color:red;text-align:center;">!RESTRICTED AREA!</h1>
+    <form action="/admin/login" method="post">
+        <div class="form-group">
+            <label><b>Username</b></label>
+            <input class="form-control" type="text" placeholder="Enter Username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label><b>Password</b></label>
+            <input class="form-control" type="password" placeholder="Enter Password" name="password" required>
+        </div>
+        <button class="btn-success btn-block btn-lg" type="submit">Login</button>
+    </form>
+</div>
 </body>
 </html>

@@ -73,32 +73,23 @@ class Physical extends Entity {
     }
 
     moveX(pixelsPerSecond, deltaTime) {
-        let deltaX = (pixelsPerSecond * deltaTime);
-        if (Math.abs(this.acc.x) > 0 && Math.abs(deltaX) > Tile.SIZE) {
-            let newVX = (Tile.SIZE - Tile.SIZE / 4);
-            this.vel.x = newVX / deltaTime | 0;
-            deltaX = Math.sign(deltaX) * newVX;
-        }
-        this.pos.x += deltaX;
+        this.pos.x += (pixelsPerSecond * deltaTime);
     }
 
     moveY(pixelsPerSecond, deltaTime) {
-        let deltaY = (pixelsPerSecond * deltaTime);
-        if (Math.abs(this.acc.y) > 0 && Math.abs(deltaY) > Tile.SIZE) {
-            let newVY = (Tile.SIZE - Tile.SIZE / 4);
-            this.vel.y = newVY / deltaTime | 0;
-            console.log(this.vel.y, deltaTime)
-            deltaY = Math.sign(deltaY) * newVY;
-        }
-        this.pos.y += deltaY;
+        this.pos.y += (pixelsPerSecond * deltaTime);
     }
 
     accelerateX(x, deltaTime) {
-        this.vel.x += x * deltaTime;
+        if (!this.isSpeedTooHigh(deltaTime)) {
+            this.vel.x += x * deltaTime;
+        }
     }
 
     accelerateY(y, deltaTime) {
-        this.vel.y += y * deltaTime;
+        if (!this.isSpeedTooHigh(deltaTime)) {
+            this.vel.y += y * deltaTime;
+        }
     }
 
     overlapEntity(e) {

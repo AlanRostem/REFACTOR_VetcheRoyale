@@ -122,7 +122,7 @@ class SeekerSmoke extends Bouncy {
 
 }
 
-const SCOPED_SPEED = 8 * 8 * 60; // TODO: Original: 480
+const SCOPED_SPEED = 480;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 
@@ -131,9 +131,9 @@ class CKER90 extends AttackWeapon {
         super(x, y, "C-KER .90", "rifle");
         this.dataIsScoping = false;
         this.configureAttackStats(2,
-            100, // TODO: Original: 10
+            10,
             1,
-            600); // TODO: Original: 60
+            60);
         this.modAbility = new class extends ModAbility {
             buffs(composedWeapon, entityManager, deltaTime) {
                 let player = entityManager.getEntity(composedWeapon.playerID);
