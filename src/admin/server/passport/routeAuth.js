@@ -19,6 +19,8 @@ module.exports = function (passport) {
     });
 
     router.get('/logout', (req, res)=>{
+        console.log(req.user);
+        passport.users.find(req.user).loggedin = false;
         req.logout();
         res.redirect("/login");
     });

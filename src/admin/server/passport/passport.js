@@ -1,5 +1,5 @@
-var localStrategy = require("passport-local").Strategy;
-var User = require("../../../shared/res/users.json");
+var LocalStrategy = require("passport-local").Strategy;
+var Users = require("../../../shared/res/users.json");
 var crypto = require('crypto');
 
 const secret = 'abcdefg';
@@ -10,31 +10,48 @@ var hash = function (password, s = secret) {
         .digest('hex');
 };
 
-var verify = function(pws1, pws2){
-  return pws1 === hash(pws2);
+console.log(hash("test"));
+
+var verify = function(user, pws2){
+  return user.password === hash(pws2) && !user.loggedin;
 };
 
-User.findOne = function(username, callback){
-    callback(null, this[username]);
+Users.find = function(username, callback){
+    for (let key in this)
+        if (this[key].username === username)
+            return this[key];
+    return null;
+};
+
+Users.findOne = function(username, callback){
+    let user = null;
+    for (let key in this)
+        if (this[key].username === username)
+            user = this[key];
+    callback(null, user);
 };
 
 module.exports = function (passport) {
+    passport.users = Users;
+
     passport.serializeUser((user, done)=>{
-        done(null, user);
+        done(null, user.username);
     });
     passport.deserializeUser((user, done)=>{
         done(null, user);
     });
-    passport.use(new localStrategy((username, password, done)=>{
-        User.findOne(username, (err, user)=>{
+    passport.use(new LocalStrategy((username, password, done)=>{
+        Users.findOne(username, (err, user)=>{
             if (err) done(err);
             else {
                 if (user){
-                    if(verify(user.password, password))
+                    if(verify(user, password)){
+                        user.loggedin = true;
                         done(null, user);
+                    }
                     else done(null, false);
                 }
-                else done(null,false);
+                else done(null, false);
             }
         });
     }))
