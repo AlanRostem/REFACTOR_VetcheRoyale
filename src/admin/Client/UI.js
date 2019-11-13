@@ -1,6 +1,6 @@
 const UI ={
   createTable(json, props, parent = "body"){
-      let table = $("<table id='dtBasicExample' class='table table-striped table-bordered table-sm' cellspacing='0' width='100%'/>");
+      let table = $("<table class='table table-hover' cellspacing='0' width='100%'/>");
       let thead = $("<thead/>");
       table.append(thead);
       let tr = $("<tr/>");
