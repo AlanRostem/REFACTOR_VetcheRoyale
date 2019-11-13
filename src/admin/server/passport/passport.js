@@ -10,13 +10,14 @@ var hash = function (password, s = secret) {
         .digest('hex');
 };
 
-console.log(hash("test"));
-
 var verify = function(user, pws2){
-  return user.password === hash(pws2) && !user.loggedin;
+    if (!user) return false;
+    if (user.password !== hash(pws2)) return false;
+    if (user.loggedin) return false;
+    user.loggedin = true;
+    return true;
 };
 
-Users.find = function(username, callback){
     for (let key in this)
         if (this[key].username === username)
             return this[key];
@@ -24,35 +25,37 @@ Users.find = function(username, callback){
 };
 
 Users.findOne = function(username, callback){
-    let user = null;
+    var err = null, user = null;
     for (let key in this)
         if (this[key].username === username)
-            user = this[key];
-    callback(null, user);
+                user = this[key];
+    callback(err, user);
 };
 
 module.exports = function (passport) {
     passport.users = Users;
 
+    passport.logut = (req) => {
+        passport.users.find(req.user).loggedin = false;
+        req.logout();
+    };
+
     passport.serializeUser((user, done)=>{
         done(null, user.username);
     });
+
     passport.deserializeUser((user, done)=>{
         done(null, user);
     });
+
     passport.use(new LocalStrategy((username, password, done)=>{
         Users.findOne(username, (err, user)=>{
             if (err) done(err);
-            else {
-                if (user){
-                    if(verify(user, password)){
-                        user.loggedin = true;
-                        done(null, user);
-                    }
-                    else done(null, false);
-                }
-                else done(null, false);
-            }
+            if(verify(user, password))
+                done(null, user);
+            else
+                done(null, false);
+
         });
     }))
 };
