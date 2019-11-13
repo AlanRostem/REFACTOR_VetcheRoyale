@@ -28,6 +28,11 @@ class DataSelector {
         this.selectedObject = this.selectedObject[prop];
     }
 
+    selectObjectAndDisplayProps(key, ...props) {
+        this.selectObjectFromObject(key);
+        this.selectObjectFromObject(...props);
+    }
+
     export() {
         return this.packetBuffer.export(Object.keys(this.output), this.output);
     }
