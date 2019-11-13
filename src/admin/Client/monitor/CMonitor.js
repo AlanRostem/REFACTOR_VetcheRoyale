@@ -5,11 +5,11 @@ class CMonitor {
     constructor(){
         this.admin = new CAdmin();
         UI.createTable({
-            "423423dsadas1": {id:"4", worldName: "naaaii"},
-            "423423dsadas2": {id:"42", worldName: "naaaii"},
-            "423423dsadas3": {id:"423", worldName: "naaaii"},
-            "423423dsadas4": {id:"4234", worldName: "naaaii"},
-        }, ["id", "worldName"]);
+            "1": {id:"1", worldName: "Alan"},
+            "2": {id:"2", worldName: "Karl"},
+            "3": {id:"3", worldName: "Benjamin"},
+            "4": {id:"4", worldName: "Anal"},
+        }, ["id", "worldName"], true);
 
     }
 }

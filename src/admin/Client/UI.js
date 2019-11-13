@@ -1,5 +1,5 @@
 const UI ={
-  createTable(json, props, parent = "body"){
+  createTable(json, props, clickable = false, parent = "body"){
       let table = $("<table class='table table-hover table-striped table-bordered' cellspacing='0' width='100%'/>");
       let thead = $("<thead/>");
       table.append(thead);
@@ -15,10 +15,14 @@ const UI ={
       for (let key in json){
           let tr = $("<tr/>");
           tbody.append(tr);
-          for (let pro of props){
-              let td = $("<td class='th-sm'/>").append(json[key][pro]);
-              tr.append(td);
-          }
+
+          if (clickable)
+              $(tr).click(function() {
+                  window.location = '#' + key;
+              });
+
+          for (let pro of props)
+              tr.append($("<td class='th-sm'/>").append(json[key][pro]));
       }
 
       $(parent).append(table);
