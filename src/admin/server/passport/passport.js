@@ -18,6 +18,7 @@ var verify = function(user, pws2){
     return true;
 };
 
+Users.find = function(username){
     for (let key in this)
         if (this[key].username === username)
             return this[key];
@@ -55,7 +56,6 @@ module.exports = function (passport) {
                 done(null, user);
             else
                 done(null, false);
-
         });
     }))
 };
