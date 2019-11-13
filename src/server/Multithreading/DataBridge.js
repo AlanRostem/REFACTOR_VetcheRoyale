@@ -4,7 +4,7 @@ class DataBridge {
     constructor(messagePort) {
         this.messagePort = messagePort;
         this.messagePort.on("message", this.onMessageReceived.bind(this));
-        this.events = new ONMap()
+        this.events = new ONMap();
     }
 
     addEventListener(eventName, callback) {
@@ -39,7 +39,7 @@ class DataBridge {
         this.emitMessage(clientEvent, {
             id: id,
             data: data
-        })
+        });
     }
 }
 

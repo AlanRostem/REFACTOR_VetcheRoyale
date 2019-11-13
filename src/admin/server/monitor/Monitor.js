@@ -13,7 +13,7 @@ class Monitor {
 
         this.on("message", data =>{
             console.log(data);
-        })
+        });
     }
 
     on(event, callback){

@@ -7,6 +7,7 @@ const Match = require("../../Game/World/Matches/Match/Match.js");
 const SPlayer = require("../Entity/Player/SPlayer.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
+const DataSelector = require("../../../admin/server/monitor/DataSelector.js");
 
 String.random = () => {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -46,11 +47,10 @@ class WorldManager {
 
         let battleground = new Match(this.gameWorlds, "battleground", TileMapConfigs.getMap("battleground"));
         battleground.setGameRules({
-           "infiniteAmmo": true,
+            "infiniteAmmo": true,
             "maxTeamMembers": 2
         });
         this.addWorld(battleground, "battleground");
-
     }
 
     checkQueuedPlayers() {
@@ -64,10 +64,7 @@ class WorldManager {
         }
     }
 
-    addWorld(world, id) {
-        if (!id) {
-            id = String.random();
-        }
+    addWorld(world, id = String.random()) {
         this.gameWorlds.set(id, world);
         world.id = id;
         this.lastCreatedWorldID = id;

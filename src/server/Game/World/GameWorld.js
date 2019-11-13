@@ -21,7 +21,6 @@ class GameWorld extends EntityManager {
         this.dataPacket = {};
         this.players = 0;
 
-
         this.id = name;
         this.portals = new ONMap();
         this.bridgedData = new ONMap();
@@ -29,9 +28,15 @@ class GameWorld extends EntityManager {
         this.recentlySpawnedEntities = new ONMap();
         this.spawner.spawnAll(this);
         this.debugData = {};
-
     }
 
+    get mapName() {
+        return this.tileMap.name;
+    }
+
+    get entityCount() {
+        return Object.keys(this.container).length;
+    }
 
     getGameRule(key) {
         return this.settings.getRule(key);
@@ -40,6 +45,7 @@ class GameWorld extends EntityManager {
     setGameRules(object) {
         this.settings.configure(object);
     }
+
 
 
     spawnEntity(x, y, entity) {
@@ -101,11 +107,8 @@ class GameWorld extends EntityManager {
         this.dataPacket[key] = value;
     }
 
-    queueClientData(key, value) {
-        if (!this.bridgedData.has("clients")) {
-            this.bridgedData.set("clients", {});
-        }
-        this.bridgedData.get("clients")[key] = value;
+    exportData() {
+
     }
 
     update(deltaTime, worldManager) {
