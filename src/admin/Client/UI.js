@@ -14,7 +14,7 @@ const UI ={
 
       for (let key in json){
           let tr = $("<tr/>");
-          thead.append(tr);
+          tbody.append(tr);
           for (let pro of props){
               let td = $("<td class='th-sm'/>").append(json[key][pro]);
               tr.append(td);
