@@ -4,23 +4,9 @@ import UI from "../UI.js";
 class CMonitor {
     constructor() {
         this.admin = new CAdmin();
-        let obj = {
-            id: "2",
-            worldName: "Karl",
-            data:{
-                pos:{
-                    data:{
 
-                    },
-                    x:10,
-                    y:10
-                },
-                test:"test2"
-            }
-        };
+        UI.update($("#container"));
 
-        UI.displayJson(obj,"world",$("#container"));
-        UI.displayJson(obj,"world2",$("#container"));
 
         $(".home").click(function () {
             UI.clearElement("#container");
