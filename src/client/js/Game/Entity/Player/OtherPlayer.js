@@ -4,6 +4,8 @@ import R from "../../../Graphics/Renderer.js";
 import AnimationManager from "../../../AssetManager/Classes/Graphical/AnimationManager.js";
 import AssetManager from "../../../AssetManager/AssetManager.js"
 import Scene from "../../Scene.js";
+import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
+import Timer from "../../../../../shared/code/Tools/CTimer.js";
 
 
 /**
@@ -30,6 +32,12 @@ class OtherPlayer extends CEntity {
             top: false,
             bottom: false,
         };
+        this.timer = new Timer(0.5, () => {
+            this.footStep = true;
+            this.footCount = (Math.random() * 3 | 0) + 1;
+        }, true);
+        this.jumpSound = false;
+
     }
 
     setMovementState(key, value) {
@@ -59,6 +67,7 @@ class OtherPlayer extends CEntity {
     update(deltaTime, client) {
         super.update(deltaTime, client);
         this.checkTileOverlaps(Scene.getCurrentTileMap());
+        this.timer.tick(deltaTime);
 
         let self = this.output;
         if (self.vel.x !== 0) {
@@ -124,6 +133,27 @@ class OtherPlayer extends CEntity {
         } else {
             this.wasOnSlope++;
         }
+/*
+        if (this.checkMovementState("main", "run")) {
+            if (this.footStep && !this.runSound) {
+                this.runSound = AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
+                    .updatePanPos(this.output.pos);
+                this.footStep = false;
+            }
+            this.footStep = false;
+        } else this.footStep = false;
+
+
+        if (this.checkMovementState("main", "jump")) {
+            if (!this.jumpSound) {
+                AudioPool.play("Player/jump_ascend.oggSE")
+                    .updatePanPos(this.output.pos);
+                this.jumpSound = true;
+            }
+        } else {
+            this.jumpSound = false;
+        }*/
+
     }
 
     draw() {

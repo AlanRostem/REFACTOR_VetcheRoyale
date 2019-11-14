@@ -4,6 +4,7 @@ import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js"
 import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import Scene from "../../Scene.js";
+import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
 
 
 const TILE_SIZE = 8;
@@ -29,6 +30,8 @@ class UserPlayer extends OtherPlayer {
                 this.localSides.left = this.localSides.right = this.localSides.top = this.localSides.bottom = false;
             }
         };
+
+        this.pickUpWeapon = false;
 
         this.jumping = false;
 
@@ -62,6 +65,15 @@ class UserPlayer extends OtherPlayer {
         this.weapon = Scene.entities.getEntityByID(this.output.invWeaponID);
         if (R.camera.config("followPlayer")) {
             R.camera.setCurrentFollowPos(this.getRealtimeProperty("centerData"));
+        }
+        if(this.weapon && !this.pickUpWeapon) {
+            AudioPool.play("Player/pickup_weapon.oggSE");
+            this.pickUpWeapon = true;
+        }
+
+        if(!this.weapon && this.pickUpWeapon) {
+            AudioPool.play("Player/drop.oggSE");
+            this.pickUpWeapon = false;
         }
 
         R.camera.setConfig("followPlayer", true);
