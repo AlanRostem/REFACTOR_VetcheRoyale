@@ -1,5 +1,12 @@
 const PacketBuffer = require("../../../server/Networking/PacketBuffer.js");
 
+class DataSelection {
+    constructor(object, ...selectedProps) {
+        this.object = object;
+        this.selectedProps = selectedProps;
+    }
+}
+
 class DataSelector {
     constructor(object, ...displayedProps) {
         this.selectedObject = object;
@@ -11,6 +18,24 @@ class DataSelector {
 
         this.output = {};
 
+        this.previousSelections = [];
+
+        this.update();
+    }
+
+    selectObjectAndDisplayProps(key, ...props) {
+        this.previousSelections.push(new DataSelection(this.selectedObject, ...this.displayedProps));
+        this.displayedProps = props;
+        this.selectedObject = this.selectedObject[key];
+    }
+
+    reverseSelection() {
+        let previous = this.previousSelections.pop();
+        this.selectedObject = previous.object;
+        this.displayedProps = previous.selectedProps;
+    }
+
+    update() {
         for (let key in this.selectedObject) {
             let content = this.selectedObject[key];
             this.output[key] = {};
@@ -18,19 +43,6 @@ class DataSelector {
                 this.output[key][prop] = Object.copy(content[prop]);
             }
         }
-    }
-
-    setDisplayedProperties(...args) {
-        this.displayedProps = args;
-    }
-
-    selectObjectFromObject(prop) {
-        this.selectedObject = this.selectedObject[prop];
-    }
-
-    selectObjectAndDisplayProps(key, ...props) {
-        this.selectObjectFromObject(key);
-        this.selectObjectFromObject(...props);
     }
 
     export() {
