@@ -6,7 +6,6 @@ class SAdmin {
             adminList.removeClient(this.id);
             console.log("Disconnected [ " + this.id + " ]");
         });
-        this.dataSelector = new DataSelector(this.gameWorlds.object, "id", "mapName", "players", "entityCount");
 
     }
 }

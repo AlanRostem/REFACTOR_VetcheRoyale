@@ -4,17 +4,23 @@ import UI from "../UI.js";
 class CMonitor {
     constructor() {
         this.admin = new CAdmin();
-        $("#container").append(UI.displayJson({
+        let obj = {
             id: "2",
             worldName: "Karl",
             data:{
                 pos:{
+                    data:{
+
+                    },
                     x:10,
                     y:10
                 },
                 test:"test2"
             }
-        },"world"));
+        };
+
+        UI.displayJson(obj,"world",$("#container"));
+        UI.displayJson(obj,"world2",$("#container"));
 
         $(".home").click(function () {
             UI.clearElement("#container");
@@ -33,11 +39,11 @@ class CMonitor {
         $("#players").click(function () {
             UI.clearElement("#container");
             UI.createTable({
-                "1": {id: "1", playerName: "Alan"},
-                "2": {id: "2", playerName: "Karl"},
-                "3": {id: "3", playerName: "Benjamin"},
-                "4": {id: "4", playerName: "Anal"},
-            }, ["id", "playerName"], true);
+                "1": {id: "1", playerName: "Alan", data:"dgaj"},
+                "2": {id: "2", playerName: "Karl", data:"dgaj"},
+                "3": {id: "3", playerName: "Benjamin", data:"dgaj"},
+                "4": {id: "4", playerName: "Anal", data:"dgaj"},
+            }, ["id", "playerName"], false);
 
         });
 
@@ -47,13 +53,17 @@ class CMonitor {
                 UI.clearElement("#container");
                 let iframe = $("<iframe onload='this.contentWindow.focus()' src='/'/>");
                 iframe.css({
-
                     "width":"2000",
                     "height":"1000",
                 });
                 container.append(iframe);
+
             }
+            container.children("iframe")[0].contentWindow.focus();
         });
+
+
+
     }
 }
 

@@ -4,58 +4,55 @@ Object.isJSON = function (obj) {
 
 const UI = {
     createTable(json, props, clickable = false, parent = "#container") {
-        let table = $("<table class='table table-hover table-striped table-bordered'/>");
-        let thead = $("<thead/>");
-        table.append(thead);
-        let tr = $("<tr/>");
-        thead.append(tr);
-
-        for (let pro of props)
-            tr.append($("<th class='th-sm'/>").append(pro));
-
-        let tbody = $("<tbody/>");
-        table.append(tbody);
-
-        for (let key in json) {
-            let tr = $("<tr/>");
-            tbody.append(tr);
-
-            if (clickable)
-                $(tr).click(function () {
-                    window.location = '#' + key;
+        $(parent).append([
+            $("<table/>", {"class": "table table-hover table-striped table-bordered'"}).append([
+                $("<thead/>").append($("<tr/>")).append(
+                    props.map(e => $("<th/>", {"class": "'th-sm'"}).append(e)[0])),
+                $("<tbody/>").append(Object.keys(json).map(e =>
+                    $("<tr/>", {"class": "clickable-row", "data-href": "#" + e}).append(props.map(x =>
+                        $("<td/>").append(json[e][x])[0]))))
+            ])
+        ]);
+        if (clickable)
+            jQuery(document).ready(function ($) {
+                $(".clickable-row").click(function () {
+                    window.location = $(this).data("href");
                 });
-
-            for (let pro of props)
-                tr.append($("<td class='th-sm'/>").append(json[key][pro]));
-        }
-
-        $(parent).append(table);
+            });
     },
 
+    displayJson(json, name, root, firstName = name) {
+        if (!Object.isJSON(json))
+            return root.append($("<li/>", {"class": "list-group-item"}).append("<b>" + name + "</b>: " + json));
 
-    displayJson(json, name, root = $("<ul class='list-group'/>")) {
-        if (!Object.isJSON(json)) return null;
-        let list = $("<li class='list-group-item '/>");
-        let ul = $("<ul class=''/>");
+        if (!root.is("ul")) {
+            let u = $("<ul id='" + name + "'/>");
+            root.append(u);
+            root = u;
+        }
 
-        root.append(list.append($("<span style='cursor: pointer;' class='root '/>").append(name)));
-        list.append(ul);
+        let nextRoot = $("<ul/>").css("display", "none");
 
-        $(document).ready(()=>{
-            $(".root").click(function () {
+        root.append([
+            $("<li/>", {"class": "list-group-item"}).append([
+                $("<span/>", {"class": "badge"}).css("cursor", "pointer"),
+                $("<div/>").css({"cursor":"pointer","width":"100%"}).append("<b>" + name + "</b>"),
+                nextRoot
+            ])
+        ]);
+
+        if (!Object.keys(json).length) return root;
+        for (let key in json) {
+            this.displayJson(json[key], key, nextRoot, firstName);
+        }
+
+        $(document).ready(() => {
+            root.children("li").children(".badge").append(root.children("li").find("li").length);
+            root.children("li").children("div").click(function () {
                 $(this).siblings().toggle();
             });
         });
 
-        for (let key in json){
-            if (!Object.isJSON(json[key])){
-                let li = $("<li class='list-group-item '/>");
-                ul.append(li.append(key +": "+json[key]));
-            }
-            else {
-                ul.append(this.displayJson(json[key], key, ul));
-            }
-        }
         return root;
     },
 
