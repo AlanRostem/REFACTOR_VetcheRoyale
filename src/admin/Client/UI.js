@@ -22,14 +22,14 @@ const UI = {
     },
 
     displayJson(json, name, root, firstName = name) {
-        if (!Object.isJSON(json))
-            return root.append($("<li/>", {"class": "list-group-item"}).append("<b>" + name + "</b>: " + json));
-
         if (!root.is("ul")) {
             let u = $("<ul id='" + name + "'/>");
             root.append(u);
             root = u;
         }
+
+        if (!Object.isJSON(json))
+            return root.append($("<li/>", {"class": "list-group-item"}).append("<b>" + name + "</b>: " + json));
 
         let nextRoot = $("<ul/>").css("display", "none");
 
@@ -46,7 +46,7 @@ const UI = {
             this.displayJson(json[key], key, nextRoot, firstName);
         }
 
-        $(document).ready(() => {
+        UI.addDocReady(() => {
             root.children("li").children(".badge").append(root.children("li").find("li").length);
             root.children("li").children("div").click(function () {
                 $(this).siblings().toggle();
