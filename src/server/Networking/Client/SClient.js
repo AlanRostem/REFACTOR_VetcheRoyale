@@ -3,9 +3,6 @@ const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js
 const PacketValidator = require("./PacketValidator.js");
 const PacketBuffer = require("../PacketBuffer.js");
 
-
-
-
 // Object that represents a client connected to the server
 class Client {
     constructor(socket, clientList, server) {

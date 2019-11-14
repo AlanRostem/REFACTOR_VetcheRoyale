@@ -2,12 +2,12 @@ const Admin = require("../admin/SAdmin.js");
 const ClientList = require("../../../server/Networking/ClientList.js");
 
 class Monitor {
-    constructor(io){
+    constructor(io, server){
         this.socket = io;
         this.adminList = new ClientList();
         this.on("connection", admin => {
             console.log("\nEstablishing connection to admin... Admin ID: [ " + admin.id + " ]");
-            let _admin = new Admin(admin, this.adminList);
+            let _admin = new Admin(admin, this.adminList, server);
             this.adminList.addClient(admin.id, _admin);
         });
 

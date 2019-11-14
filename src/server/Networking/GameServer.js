@@ -9,7 +9,7 @@ class GameServer {
     constructor(sio) {
         this.matchMaker = new MatchMaker();
         this.mainSocket = new WebSocket(sio.of("/game"), this.matchMaker, this);
-        this.monitor = new Monitor(sio.of("/admin"));
+        this.monitor = new Monitor(sio.of("/admin"), this);
 
         this.tickRate = 60; // Hz (TEMPORARY)
 
@@ -52,6 +52,7 @@ class GameServer {
         this.thread.run();
         this.dataBridge = new DataBridge(this.thread.worker);
         this.defineClientResponseEvents();
+        this.defineAdminResponseEvents();
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 
@@ -118,6 +119,15 @@ class GameServer {
             }
             this.mainSocket.cl.getClient(data.id).networkedUpdate(data.data, this);
             //console.log("Throwing entity out of bounds with ID:", '\x1b[36m' + id + "\x1b[0m");
+        });
+    }
+
+    defineAdminResponseEvents() {
+        this.dataBridge.addClientResponseListener("adminUpdate", data => {
+            if (!this.monitor.adminList.getClient(data.id)) {
+                return;
+            }
+            this.monitor.adminList.getClient(data.id).socket.emit("adminUpdate", data.data.object);
         });
     }
 }

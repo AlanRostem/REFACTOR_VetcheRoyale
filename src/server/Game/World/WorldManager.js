@@ -7,7 +7,7 @@ const Match = require("../../Game/World/Matches/Match/Match.js");
 const SPlayer = require("../Entity/Player/SPlayer.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
-const DataSelector = require("../../../admin/server/monitor/DataSelector.js");
+const GameSimulationAdmin = require("../../../admin/server/monitor/GameSimulationAdmin.js");
 
 String.random = () => {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -29,6 +29,7 @@ class WorldManager {
         this.dataBridge = new DataBridge(parentPort);
 
         this.defineClientResponseEvents();
+        this.defineAdminResponseEvents();
 
         this.lastCreatedWorldID = -1;
         this.deltaTime = 0;
@@ -36,6 +37,7 @@ class WorldManager {
 
         this.gameWorlds = new ONMap();
         this.playerList = new ONMap();
+        this.adminList = new ONMap();
 
         // TODO: FIX THIS HACK
 
@@ -89,6 +91,11 @@ class WorldManager {
         world.spawnPlayer(player);
     }
 
+    addAdministrator(adminID) {
+        const admin = new GameSimulationAdmin(adminID, this.gameWorlds.object);
+        this.adminList.set(adminID, admin);
+    }
+
     update() {
         if (Date.now() > 0)
             this.deltaTime = (Date.now() - this.lastTime) / 1000;
@@ -101,10 +108,15 @@ class WorldManager {
             this.deltaTime = 0;
         }
 
+        for (let admin of this.adminList.array) {
+            admin.update(this);
+        }
+
         this.checkQueuedPlayers();
         for (let worldID in this.gameWorlds.object) {
-            if (this.gameWorlds.has(worldID))
-                this.gameWorlds.get(worldID).update(this.deltaTime, this);
+            if (this.gameWorlds.has(worldID)) {
+            }
+            this.gameWorlds.get(worldID).update(this.deltaTime, this);
         }
 
         if (Date.now() > 0)
@@ -142,6 +154,20 @@ class WorldManager {
                 this.playerList.get(data.id)
                     .receiveInputData(data.data);
             }
+        });
+    }
+
+    defineAdminResponseEvents() {
+        this.dataBridge.addClientResponseListener("connectAdmin", data => {
+            this.addAdministrator(data.id);
+        });
+
+        this.dataBridge.addClientResponseListener("removeAdmin", data => {
+            this.adminList.remove(data.id);
+        });
+
+        this.dataBridge.addClientResponseListener("adminDataSelection", data => {
+           this.adminList.get(data.id).selectProp(data.prop);
         });
     }
 }
