@@ -13,6 +13,9 @@ class CElectricSphere extends CEntity {
 
         this.timer = new Timer(0.5, () => {this.drawStatic = true;}, true);
         this.timer2=  new Timer(0.75, () => {this.drawStatic = true;}, true);
+
+        this.animationSpec = new SpriteSheet.Animation(0, 7, 8, 0.07);
+
     }
 
     onClientDelete(client) {
@@ -40,7 +43,7 @@ class CElectricSphere extends CEntity {
 
         let player = this.player;
 
-        CElectricSphere.sphereAnimation.animate("SEW-9_bullet", CElectricSphere.animationSpec, 5, 5);
+        CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 5, 5);
         CElectricSphere.sphereAnimation.drawAnimated(
             pos.x + R.camera.x - 1,
             pos.y + R.camera.y - 1);
@@ -55,8 +58,6 @@ class CElectricSphere extends CEntity {
 }
 
 AssetManager.addSpriteCreationCallback(() => {
-    CElectricSphere.animationSpec = new SpriteSheet.Animation(0, 7, 8, 0.07);
-
     CElectricSphere.sphereAnimation = new SpriteSheet("SEW-9_bullet");
     CElectricSphere.sphereAnimation.bind("SEW-9_bullet", 0, 0, 40, 8);
 });
