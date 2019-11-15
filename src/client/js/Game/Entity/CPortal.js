@@ -40,10 +40,10 @@ export default class CPortal extends CEntity {
     draw() {
         let pos = this.getRealtimeProperty("pos");
 
-        CPortal.portalAnimation.animate("portal", this.animationSpec, 10, 16);
+        CPortal.portalAnimation.animate("portal", this.animationSpec, 16, 22);
         CPortal.portalAnimation.drawAnimated(
-            pos.x + R.camera.x - 1,
-            pos.y + R.camera.y - 3, 10, 16);
+            pos.x + R.camera.x - 4,
+            pos.y + R.camera.y - 6, 16, 22);
     }
 
     update(deltaTime, client) {

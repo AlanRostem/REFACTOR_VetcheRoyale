@@ -32,7 +32,7 @@ class OtherPlayer extends CEntity {
             top: false,
             bottom: false,
         };
-        this.timer = new Timer(0.5, () => {
+        this.timer = new Timer(0.4, () => {
             this.footStep = true;
             this.footCount = (Math.random() * 3 | 0) + 1;
         }, true);
@@ -133,7 +133,7 @@ class OtherPlayer extends CEntity {
         } else {
             this.wasOnSlope++;
         }
-/*
+
         if (this.checkMovementState("main", "run")) {
             if (this.footStep && !this.runSound) {
                 this.runSound = AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
@@ -146,13 +146,13 @@ class OtherPlayer extends CEntity {
 
         if (this.checkMovementState("main", "jump")) {
             if (!this.jumpSound) {
-                AudioPool.play("Player/jump_ascend.oggSE")
+                AudioPool.play("Player/jump_land.oggSE")
                     .updatePanPos(this.output.pos);
                 this.jumpSound = true;
             }
         } else {
             this.jumpSound = false;
-        }*/
+        }
 
     }
 

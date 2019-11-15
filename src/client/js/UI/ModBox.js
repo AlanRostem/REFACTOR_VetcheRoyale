@@ -82,7 +82,7 @@ export default class ModBox extends UIElement {
 
             // Foreground when ready to use mod
             if (this.canUseMod && !this.modActive)
-                R.drawRect("White",
+                R.drawRect("#FFFFFF",
                     R.WIDTH - 108,
                     R.HEIGHT - 18,
                     this.modBoxBackground.width,
@@ -91,7 +91,7 @@ export default class ModBox extends UIElement {
 
             // When the mod is active(duration)
             if (this.modActive)
-                R.drawRect("White",
+                R.drawRect("#FFFFFF",
                     R.WIDTH - 108,
                     R.HEIGHT - 6 - ((this.modBoxBackground.width * this.durationPercent / 100) | 0),
                     this.modBoxBackground.width,

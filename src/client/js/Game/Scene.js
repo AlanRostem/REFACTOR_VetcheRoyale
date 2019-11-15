@@ -155,8 +155,9 @@ const Scene = {
                 "Green");
 
         }
-        
-        R.debug(Scene.clientRef.latency + "ms");
+
+
+        R.debug(Scene.clientRef.latency + "ms" + (Scene.clientRef.latency > 100 ? " is too high :3 xD to lobby" : ""));
         R.drawDebug();
     },
 
