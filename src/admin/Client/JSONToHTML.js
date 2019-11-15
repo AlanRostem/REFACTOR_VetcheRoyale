@@ -3,7 +3,6 @@ Object.isJSON = function (obj) {
 };
 
 class JSONToHTML {
-
     update(elm, snapshot) {
         if (snapshot === undefined) return;
         if (!Object.isJSON(snapshot)) {
@@ -11,17 +10,24 @@ class JSONToHTML {
                 return this.nodeType === 3;
             }).first()[0].nodeValue = snapshot;
         }
+
         Object.keys(snapshot).forEach(e => {
             this.update(elm.children("." + e), snapshot[e]);
         });
     };
 
 
-    updateTable(parent, json, props, name) {
+    updateTable(parent, json, props, name, callback) {
         if (!parent.children("." + name).length) {
-            parent.append($("<tr/>", {"class": "clickable-row " + name, "data-href": "#" + name}).append(
+            parent.append($("<tr/>", {"class": "clickable-row " + name, "data-id": name}).append(
                 props.map(key => $("<td/>", {"class": key}).append(json[key])[0])
             ));
+            if (callback)
+            $(document).ready(()=>{
+                    parent.children("." + name).click(()=>{
+                        callback(parent.children("." + name).data("id"));
+                    });
+            });
         }
         else {
             props.forEach(key =>{
@@ -36,7 +42,7 @@ class JSONToHTML {
     };
 
 
-    createTable(json, props, name, clickable = false, parent = $("#container")) {
+    createTable(json, props, name, parent, callback = undefined) {
         if (!parent.children("#" + name).length) {
             parent.append([
                 $("<table/>", {"id": name, "class": "table table-hover table-striped table-bordered "}).append([
@@ -48,8 +54,9 @@ class JSONToHTML {
         }
 
         Object.keys(json).forEach(key => {
-            this.updateTable(parent.children("table").children("tbody"), json[key], Object.keys(json[key]), key)
+            this.updateTable(parent.children("table").children("tbody"), json[key], Object.keys(json[key]), key, callback)
         });
+
     };
 
     displayJson(json, name, root = $("<ul/>")) {
