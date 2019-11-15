@@ -1,20 +1,25 @@
 import PacketBuffer from "../../../client/js/Networking/Client/PacketBuffer.js";
 
-
 class CAdmin {
-    constructor(JSONToHTML){
+    constructor(JSONToHTML) {
         this.socket = io("/admin");
         this.packet = {};
         this.toHTML = JSONToHTML;
         this.f = true;
-
         this.socket.on("adminUpdate", data => {
             if (Object.keys(data).length > 0) {
                 this.packet = PacketBuffer.createPacket(this.packet, data);
                 this.toHTML.createTable(this.packet, ["id", "mapName", "players", "entityCount"], "worldTable");
             }
         });
+    }
 
+    selectFromTable(property) {
+        this.socket.emit("adminToServer", {
+            content: property,
+            type: "SELECT_NEW"
+        });
+        // TODO: Extra
     }
 }
 

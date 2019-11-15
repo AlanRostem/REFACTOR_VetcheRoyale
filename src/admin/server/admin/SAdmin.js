@@ -9,6 +9,10 @@ class SAdmin {
             server.dataBridge.transferClientEvent("removeAdmin", this.id, {id: this.id});
         });
 
+        this.socket.on("adminToServer", data => {
+            server.dataBridge.transferClientEvent("adminToServer", this.id, data);
+        })
+
     }
 }
 
