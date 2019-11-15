@@ -2,6 +2,7 @@ import CEntity from "../../CEntity.js";
 import OtherPlayer from "../../Player/OtherPlayer.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../../Graphics/Renderer.js";
+import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
 let enemySprite = new SpriteSheet("detectedEnemy");
 enemySprite.bind("red", 0, 0, 16 * 16, 16);
@@ -13,6 +14,8 @@ class CSeekerSmoke extends CEntity {
         super(data);
         this.smoke = {};
         this.enemiesInSmoke = {};
+        this.smokePlace = false;
+
     }
 
     update(deltaTime, client) {
@@ -24,12 +27,18 @@ class CSeekerSmoke extends CEntity {
         this.smoke.h = self.smokeBounds.y * 2;
         this.enemiesInSmoke = {};
         if (self.findPlayers) {
+            if (!this.smokePlace && (this.smokePlace = true) === true) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE")
+                .updatePanPos(this.output.pos);
+            else if(this.smokeSound) this.smokeSound.updatePanPos(this.output.pos);
             for (let entity of Scene.entityManager.container.values()) {
                 if (this.isEnemyInSmoke(entity)) {
                     this.enemiesInSmoke[entity.output.id] = entity;
                 }
             }
         }
+        if(self.taps) AudioPool.play("Weapons/cker90_superBounce.oggSE")
+            .updatePanPos(this.output.pos);
+
 
     }
 

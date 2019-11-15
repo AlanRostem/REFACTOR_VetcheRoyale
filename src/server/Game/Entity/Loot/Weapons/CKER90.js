@@ -85,6 +85,7 @@ class SeekerSmoke extends Bouncy {
         this.fric.x = 0.89;
         this.weapon = weapon;
         this.life = 10;
+        this.taps = true;
         this.minSpeed = 10;
         this.smokeBounds = {
             x: 100,
@@ -98,12 +99,19 @@ class SeekerSmoke extends Bouncy {
 
         this.addDynamicSnapShotData([
             "findPlayers",
+            "taps"
         ]);
     }
 
     update(entityManager, deltaTime) {
+        if(this.taps === true) this.taps = false;
+
         if (this.side.bottom) {
             this.vel.x *= this.fric.x;
+        }
+
+        if(this.side.top || this.side.bottom || this.side.left || this.side.right) {
+            if(!this.findPlayers) this.taps = true;
         }
 
         if (this.findPlayers) {
