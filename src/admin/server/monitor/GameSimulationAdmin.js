@@ -34,7 +34,14 @@ class GameSimulationAdmin {
     }
 
     selectProp(prop, type) {
-        this.dataSelector.selectObjectAndDisplayProps(prop, PROP_TYPE_HOLDER.get(type))
+        switch (type) {
+            case "SELECT_NEW":
+                this.dataSelector.selectObjectAndDisplayProps(prop, PROP_TYPE_HOLDER.get(type));
+                break;
+            case "GO_BACK":
+                this.dataSelector.reverseSelection();
+                break;
+        }
     }
 }
 

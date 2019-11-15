@@ -24,9 +24,11 @@ class DataSelector {
     }
 
     selectObjectAndDisplayProps(key, ...props) {
-        this.previousSelections.push(new DataSelection(this.selectedObject, ...this.displayedProps));
-        this.displayedProps = props;
-        this.selectedObject = this.selectedObject[key];
+        if (this.selectedObject[key]) {
+            this.previousSelections.push(new DataSelection(this.selectedObject, ...this.displayedProps));
+            this.displayedProps = props;
+            this.selectedObject = this.selectedObject[key];
+        }
     }
 
     reverseSelection() {

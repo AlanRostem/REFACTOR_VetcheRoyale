@@ -167,11 +167,11 @@ class WorldManager {
         });
 
         this.dataBridge.addClientResponseListener("adminDataSelection", data => {
-           this.adminList.get(data.id).selectProp(data.prop);
+
         });
 
         this.dataBridge.addClientResponseListener("adminToServer", data => {
-
+            this.adminList.get(data.id).selectProp(data.data.content.prop, data.data.content.type, data.data.messageType);
         })
     }
 }
