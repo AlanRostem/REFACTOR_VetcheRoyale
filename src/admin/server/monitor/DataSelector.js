@@ -33,8 +33,8 @@ class DataSelector {
     selectObjectAndDisplayProps(key, ...props) {
         if (this.selectedObject[key]) {
             this.previousSelections.push(new DataSelection(this.selectedObject, ...this.displayedProps));
-            this.displayedProps = props;
             this.selectedObject = this.selectedObject[key];
+            this.displayedProps = Object.keys(this.selectedObject)//props;
             this.output = {};
             this.update();
         }
