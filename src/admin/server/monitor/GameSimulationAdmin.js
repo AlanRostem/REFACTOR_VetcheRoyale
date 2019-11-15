@@ -16,8 +16,8 @@ const PROP_TYPE_HOLDER = new class extends ONMap {
 }();
 
 PROP_TYPE_HOLDER.set("World", ["id", "mapName", "players", "entityCount"]);
-PROP_TYPE_HOLDER.set("Entity", ["id", "pos", "vel"]);
-PROP_TYPE_HOLDER.set("Player", ["id", "pos", "vel", "HP"]);
+PROP_TYPE_HOLDER.set("Entity", ["id", "pos", "vel", "entityType"]);
+PROP_TYPE_HOLDER.set("Player", ["id", "pos", "vel", "entityType", "HP"]);
 
 class GameSimulationAdmin {
     constructor(id, gameWorlds) {
@@ -36,7 +36,7 @@ class GameSimulationAdmin {
     selectProp(prop, type, msgType) {
         switch (msgType) {
             case "SELECT_NEW":
-                if (type === "World") {
+                if (type === "Entity") {
                     this.dataSelector.selectObjectAndPropWithDisplay("container", prop, ...PROP_TYPE_HOLDER.get(type))
                 } else {
                     this.dataSelector.selectObjectAndDisplayProps(prop, ...PROP_TYPE_HOLDER.get(type));
