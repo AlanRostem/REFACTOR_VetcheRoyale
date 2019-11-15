@@ -33,10 +33,14 @@ class GameSimulationAdmin {
         });
     }
 
-    selectProp(prop, type) {
-        switch (type) {
+    selectProp(prop, type, msgType) {
+        switch (msgType) {
             case "SELECT_NEW":
-                this.dataSelector.selectObjectAndDisplayProps(prop, PROP_TYPE_HOLDER.get(type));
+                if (type === "World") {
+                    this.dataSelector.selectObjectAndPropWithDisplay("container", prop, ...PROP_TYPE_HOLDER.get(type))
+                } else {
+                    this.dataSelector.selectObjectAndDisplayProps(prop, ...PROP_TYPE_HOLDER.get(type));
+                }
                 break;
             case "GO_BACK":
                 this.dataSelector.reverseSelection();

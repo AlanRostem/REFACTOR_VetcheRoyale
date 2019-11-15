@@ -23,11 +23,20 @@ class DataSelector {
         this.update();
     }
 
+    selectObjectAndPropWithDisplay(specificKey, key, ...props) {
+        if (this.selectedObject[key]) {
+            this.selectedObject = this.selectedObject[key];
+            this.selectObjectAndDisplayProps(specificKey, ...props);
+        }
+    }
+
     selectObjectAndDisplayProps(key, ...props) {
         if (this.selectedObject[key]) {
             this.previousSelections.push(new DataSelection(this.selectedObject, ...this.displayedProps));
             this.displayedProps = props;
             this.selectedObject = this.selectedObject[key];
+            this.output = {};
+            this.update();
         }
     }
 
