@@ -2,9 +2,9 @@ Object.isJSON = function (obj) {
     return obj !== undefined && obj !== null && !(typeof obj === "number" && isNaN(obj)) && typeof obj !== "string" && typeof obj !== "number" && typeof obj !== "boolean";
 };
 
-const UI = {
+class JSONToHTML {
 
-    update(elm, snapshot){
+    update(elm, snapshot) {
         if (snapshot === undefined) return;
         if (!Object.isJSON(snapshot)) {
             return elm.contents().filter(function () {
@@ -12,27 +12,45 @@ const UI = {
             }).first()[0].nodeValue = snapshot;
         }
         Object.keys(snapshot).forEach(e => {
-            UI.update(elm.children("." + e), snapshot[e]);
+            this.update(elm.children("." + e), snapshot[e]);
         });
-    },
+    };
+
+
+    updateTable(parent, json, props, name) {
+        if (!parent.children("." + name).length) {
+            parent.append($("<tr/>", {"class": "clickable-row " + name, "data-href": "#" + name}).append(
+                props.map(key => $("<td/>", {"class": key}).append(json[key])[0])
+            ));
+        }
+        else {
+            props.forEach(key =>{
+                if(json[key] !== undefined){
+                    parent.children("." + name).children("." + key).contents().filter(function () {
+                        return this.nodeType === 3;
+                    }).first()[0].nodeValue = json[key];
+                }
+            });
+        }
+
+    };
+
 
     createTable(json, props, name, clickable = false, parent = $("#container")) {
-        parent.append([
-            $("<table/>", {"class": "table table-hover table-striped table-bordered "}).append([
-                $("<thead/>").append($("<tr/>")).append(
-                    props.map(e => $("<th/>", {"class": "th-sm"}).append(e)[0])),
-                $("<tbody/>", {"id": name}).append(Object.keys(json).map(e =>
-                    $("<tr/>", {"class": "clickable-row " + e, "data-href": "#" + e}).append(props.map(x =>
-                        $("<td/>", {"class": x}).append(json[e][x])[0]))))
+        if (!parent.children("#" + name).length) {
+            parent.append([
+                $("<table/>", {"id": name, "class": "table table-hover table-striped table-bordered "}).append([
+                    $("<thead/>").append($("<tr/>")).append(
+                        props.map(e => $("<th/>", {"class": "th-sm"}).append(e)[0])),
+                    $("<tbody/>")
+                ])
             ])
-        ]);
-        if (clickable)
-            jQuery(document).ready(function ($) {
-                $(".clickable-row").click(function () {
-                    window.location = $(this).data("href");
-                });
-            });
-    },
+        }
+
+        Object.keys(json).forEach(key => {
+            this.updateTable(parent.children("table").children("tbody"), json[key], Object.keys(json[key]), key)
+        });
+    };
 
     displayJson(json, name, root = $("<ul/>")) {
         if (!root.is("ul")) {
@@ -57,7 +75,7 @@ const UI = {
             ])
         ]);
 
-        UI.addDocReady(() => {
+        this.addDocReady(() => {
             root.children("li").children(".badge").last().append(nextRoot.children("li").length);
             root.children("li").children("div").last().click(function () {
                 $(this).siblings().toggle();
@@ -65,15 +83,16 @@ const UI = {
         });
 
         return root;
-    },
+    };
 
-    addDocReady(callback) {
+    static addDocReady(callback) {
         $(document).ready(callback());
-    },
+    };
 
-    clearElement(elm) {
+    static clearElement(elm) {
         $(elm).empty();
-    }
-};
+    };
 
-export default UI;
+}
+
+export default JSONToHTML;

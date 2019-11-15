@@ -1,20 +1,22 @@
 import CAdmin from "../admin/CAdmin.js";
-import UI from "../UI.js";
+import JSONToHTML from "../JSONToHTML.js";
 
 class CMonitor {
     constructor() {
-        this.admin = new CAdmin();
+        this.toHTML = new JSONToHTML();
 
-        UI.update($("#container"));
+        this.admin = new CAdmin(this.toHTML);
+
+        this.toHTML.update($("#container"));
 
 
         $(".home").click(function () {
-            UI.clearElement("#container");
+            this.toHTML.clearElement("#container");
         });
 
         $("#worlds").click(function () {
-            UI.clearElement("#container");
-            UI.createTable({
+            this.toHTML.clearElement("#container");
+            this.toHTML.createTable({
                 "1": {id: "1", worldName: "Alan", data:undefined},
                 "2": {id: "2", worldName: "Karl", data:{pos:{x:10,y:10}}},
                 "3": {id: "3", worldName: "Benjamin", data:null},
@@ -23,8 +25,8 @@ class CMonitor {
         });
 
         $("#players").click(function () {
-            UI.clearElement("#container");
-            UI.createTable({
+            this.toHTML.clearElement("#container");
+            this.toHTML.createTable({
                 "1": {id: "1", playerName: "Alan", data:"dgaj"},
                 "2": {id: "2", playerName: "Karl", data:"dgaj"},
                 "3": {id: "3", playerName: "Benjamin", data:"dgaj"},
@@ -36,7 +38,7 @@ class CMonitor {
         $("#game").click(function () {
             let container = $("#container");
             if (!$("#container iframe").length){
-                UI.clearElement("#container");
+                this.toHTML.clearElement("#container");
                 let iframe = $("<iframe onload='this.contentWindow.focus()' src='/'/>");
                 iframe.css({
                     "width":"2000",
