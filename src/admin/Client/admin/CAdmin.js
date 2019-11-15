@@ -18,15 +18,18 @@ class CAdmin {
         });
     }
 
-    selectFromTable(property) {
+    goBack() {
+        this.selectFromTable(null, null, "GO_BACK");
+    }
+
+    selectFromTable(property, type ="World", msgType = "SELECT_NEW") {
         this.socket.emit("adminToServer", {
             content: {
                 prop: property,
-                type: "World"
+                type: type
             },
-            messageType: "SELECT_NEW"
+            messageType: msgType
         });
-        // TODO: Extra
     }
 }
 
