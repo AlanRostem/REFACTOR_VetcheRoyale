@@ -8,11 +8,14 @@ class CAdmin {
         this.f = true;
 
         this.socket.on("adminUpdate", data => {
+            console.log(data);
             if (Object.keys(data).length > 0) {
                 this.packet = PacketBuffer.createPacket(this.packet, data);
                 let t_forWorld = ["id", "mapName", "players", "entityCount"];
-                this.toHTML.createTable(this.packet, t_forWorld, "worldTable", $("#container"), (id) => {
-                    this.selectFromTable(id)
+                //createTable(parent, name, json, props, callback = undefined) {
+                this.toHTML.createTable("container", "worldTable", this.packet, t_forWorld, (id) => {
+                    this.toHTML.clearElement("container");
+                    this.selectFromTable(id);
                 });
             }
         });
@@ -22,7 +25,7 @@ class CAdmin {
         this.selectFromTable(null, null, "GO_BACK");
     }
 
-    selectFromTable(property, type ="World", msgType = "SELECT_NEW") {
+    selectFromTable(property, type = "World", msgType = "SELECT_NEW") {
         this.socket.emit("adminToServer", {
             content: {
                 prop: property,

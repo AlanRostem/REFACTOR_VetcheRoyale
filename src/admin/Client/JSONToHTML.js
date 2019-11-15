@@ -92,12 +92,12 @@ class JSONToHTML {
         return root;
     };
 
-    static addDocReady(callback) {
+     addDocReady(callback) {
         $(document).ready(callback());
     };
 
-    static clearElement(elm) {
-        $(elm).empty();
+     clearElement(elm) {
+        $("#" + elm).empty();
     };
 
 }
