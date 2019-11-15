@@ -23,15 +23,14 @@ class JSONToHTML {
                 props.map(key => $("<td/>", {"class": key}).append(json[key])[0])
             ));
             if (callback)
-            $(document).ready(()=>{
-                    parent.children("." + name).click(()=>{
+                $(document).ready(() => {
+                    parent.children("." + name).click(() => {
                         callback(parent.children("." + name).data("id"));
                     });
-            });
-        }
-        else {
-            props.forEach(key =>{
-                if(json[key] !== undefined){
+                });
+        } else {
+            props.forEach(key => {
+                if (json[key] !== undefined) {
                     parent.children("." + name).children("." + key).contents().filter(function () {
                         return this.nodeType === 3;
                     }).first()[0].nodeValue = json[key];
@@ -42,7 +41,8 @@ class JSONToHTML {
     };
 
 
-    createTable(json, props, name, parent, callback = undefined) {
+    createTable(parent, name, json, props, callback = undefined) {
+        parent = $("#" + parent);
         if (!parent.children("#" + name).length) {
             parent.append([
                 $("<table/>", {"id": name, "class": "table table-hover table-striped table-bordered "}).append([
