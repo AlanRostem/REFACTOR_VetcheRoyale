@@ -47,14 +47,14 @@ class JSONToHTML {
             parent.append([
                 $("<table/>", {"id": name, "class": "table table-hover table-striped table-bordered "}).append([
                     $("<thead/>").append($("<tr/>")).append(
-                        props.map(e => $("<th/>", {"class": "th-sm"}).append(e)[0])),
+                        props.map(key => $("<th/>", {"class": "th-sm"}).append(key).css({"font-size":"20px"})[0])),
                     $("<tbody/>")
                 ])
             ])
         }
 
         Object.keys(json).forEach(key => {
-            this.updateTable(parent.children("table").children("tbody"), json[key], Object.keys(json[key]), key, callback)
+            this.updateTable(parent.children("table").children("tbody"), json[key], props, key, callback)
         });
 
     };
