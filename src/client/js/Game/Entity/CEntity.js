@@ -152,6 +152,31 @@ class CEntity {
         }
     }
 
+    get topLeft() {
+        return this.output.pos
+    }
+
+    get topRight() {
+        return {
+            x: this.output.pos.x + this.width,
+            y: this.output.pos.y
+        };
+    }
+
+    get bottomLeft() {
+        return {
+            x: this.output.pos.x,
+            y: this.output.pos.y + this.height
+        };
+    }
+
+    get bottomRight() {
+        return {
+            x: this.output.pos.x + this.width,
+            y: this.output.pos.y + this.height
+        };
+    }
+
     /**
      * Overridable event called every frame in the game loop. Do custom drawing here.
      */

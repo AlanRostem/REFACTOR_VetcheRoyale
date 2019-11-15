@@ -5,9 +5,9 @@ import Vector2D from "../../../../../shared/code/Math/CVector2D.js";
 import {vectorLinearInterpolation} from "../../../../../shared/code/Math/CCustomMath.js";
 import Scene from "../../Scene.js";
 import AudioPool from "../../../AssetManager/Classes/Audio/AudioPool.js";
-
-
-const TILE_SIZE = 8;
+import CLoot from "../CLoot.js";
+import CONMap from "../../../../../shared/code/DataStructures/CObjectNotationMap.js";
+import CHitScanner from "./CHitScanner.js";
 
 
 /**
@@ -33,6 +33,9 @@ class UserPlayer extends OtherPlayer {
 
         this.pickUpWeapon = false;
 
+        this.itemScanner = new CHitScanner({}, false);
+        this.itemsNearby = new CONMap();
+
         this.jumping = false;
 
         Scene.clientRef.inputListener.addKeyMapping(32, (keyState) => {
@@ -57,6 +60,36 @@ class UserPlayer extends OtherPlayer {
 
     draw() {
         super.draw();
+        //   R.drawLine(this.output.pos.x, this.output.pos.y, this.itemScanner.end.x, this.itemScanner.end.y, "White", 1, true);
+    }
+
+    checkClosestItems() {
+        for (var pair of Scene.entityManager.container) {
+            let entity = pair[1];
+            if (entity instanceof CLoot) {
+                let entCenter = new Vector2D(entity.output.pos.x + entity.width / 2, entity.output.pos.y + entity.height / 2);
+                let distance = Vector2D.distance(this.output.centerData, entCenter);
+                if (entity.canPickUp(this) && distance < entity.PICK_UP_RANGE) {
+                    if (entity.overlapLocalPlayer(Scene.clientRef)) {
+                        this.itemsNearby.set(entity.output.id, distance);
+                        break;
+                    }
+                    this.itemScanner.scan(this.output.centerData, entCenter, Scene.getCurrentTileMap());
+                    if (CHitScanner.intersectsEntity(this.output.centerData, this.itemScanner.end, entity)) {
+                        this.itemsNearby.set(entity.output.id, distance);
+                    }
+                }
+            }
+        }
+
+        let closest = Math.min(...this.itemsNearby.array);
+        for (let id in this.itemsNearby.object) {
+            if (this.itemsNearby.get(id) === closest) {
+                Scene.entityManager.getEntityByID(id).isClose = true;
+                break;
+            }
+        }
+        this.itemsNearby.clear();
     }
 
     update(deltaTime, client, currentMap) {
@@ -66,17 +99,19 @@ class UserPlayer extends OtherPlayer {
         if (R.camera.config("followPlayer")) {
             R.camera.setCurrentFollowPos(this.getRealtimeProperty("centerData"));
         }
-        if(this.weapon && !this.pickUpWeapon) {
+        if (this.weapon && !this.pickUpWeapon) {
             AudioPool.play("Player/pickup_weapon.oggSE");
             this.pickUpWeapon = true;
         }
 
-        if(!this.weapon && this.pickUpWeapon) {
+        if (!this.weapon && this.pickUpWeapon) {
             AudioPool.play("Player/drop.oggSE");
             this.pickUpWeapon = false;
         }
 
         R.camera.setConfig("followPlayer", true);
+
+        this.checkClosestItems();
     }
 }
 

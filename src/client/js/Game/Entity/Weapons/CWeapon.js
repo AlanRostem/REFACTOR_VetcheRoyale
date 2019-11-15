@@ -1,9 +1,9 @@
-import CEntity from "../CEntity.js";
+import CLoot from "../CLoot.js";
 import SpriteSheet from "../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../Graphics/Renderer.js";
 import AssetManager from "../../../AssetManager/AssetManager.js";
 
-export default class CWeapon extends CEntity {
+export default class CWeapon extends CLoot {
     constructor(data, iconID) {
         super(data);
         this.iconID = iconID;
@@ -27,26 +27,43 @@ export default class CWeapon extends CEntity {
             this.onDrop(client, deltaTime);
         }
 
-
     }
 
     draw() {
         if (!this.getRealtimeProperty("equippedToPlayer")) {
-            let name = this.getRealtimeProperty("displayName") + "_world";
-            let pos = this.getRealtimeProperty("pos");
-            let h = this.getRealtimeProperty("height");
+            if (!this.isClose) {
+                let name = this.getRealtimeProperty("displayName") + "_world";
+                let pos = this.getRealtimeProperty("pos");
 
-            R.drawCroppedImage(
-                AssetManager.getMapImage(name),
-                0,
-                0,
-                16,
-                8,
-                pos.x - 4 + R.camera.x,
-                pos.y - 2 + R.camera.y,
-                16,
-                8
-            );
+                R.drawCroppedImage(
+                    AssetManager.getMapImage(name),
+                    0,
+                    0,
+                    16,
+                    8,
+                    pos.x - 4 + R.camera.x,
+                    pos.y - 2 + R.camera.y,
+                    16,
+                    8
+                );
+            } else {
+                let name = this.getRealtimeProperty("displayName") + "_world_selected";
+                let pos = this.getRealtimeProperty("pos");
+
+                R.drawText("[E]", pos.x - 3, pos.y + 9, "White", true);
+                R.drawCroppedImage(
+                    AssetManager.getMapImage(name),
+                    0,
+                    0,
+                    18,
+                    10,
+                    pos.x - 4 + R.camera.x,
+                    pos.y - 3 + R.camera.y,
+                    18,
+                    10
+                );
+            }
         }
+
     }
 }

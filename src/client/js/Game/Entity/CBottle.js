@@ -1,15 +1,11 @@
-import CEntity from "./CEntity.js";
+import CLoot from "./CLoot.js";
 import R from "../../Graphics/Renderer.js";
 
-export default class CBottle extends CEntity {
+export default class CBottle extends CLoot {
     draw() {
         let pos = this.getRealtimeProperty("pos");
-        CEntity.defaultSprite.drawStill(this.getRealtimeProperty("type"),
+       /* CEntity.defaultSprite.drawStill(this.getRealtimeProperty("type"),
             pos.x + R.camera.x,
-            pos.y + R.camera.y, 8, 8);
+            pos.y + R.camera.y, 8, 8);*/
     }
 };
-
-CEntity.defaultSprite.bind("ammo", 0, 0, 8, 8);
-CEntity.defaultSprite.bind("charge", 8, 0, 8, 8);
-CEntity.defaultSprite.bind("health", 16, 0, 8, 8);

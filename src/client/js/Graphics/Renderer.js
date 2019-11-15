@@ -132,21 +132,19 @@ const R = {
          * @param useCamera {boolean} - Determines if the text should be a part of the camera viewport
          * @param boundary {number} - Newline margin
          */
-        drawText(str, x, y, color = "White", useCamera = false, boundary = this.screenSize.x, shade = true) {
+        drawText(str, x, y, color = "White", useCamera = false, boundary = 320, shade = true) {
 
             shade = true;
             var img = AssetManager.getMapImage("font" + (shade ? "Shade" : "") + color);
             var newLine = 0;
             var newLetter = 0;
 
-            //img = AssetManager.getMapImage("fontShadeGreen");
-
             if (!img) return;
             if (str === undefined) return;
             str = str.toString();
             if (shade === false) {
                 for (var i = 0; i < str.length; i++, newLetter++) {
-                    if (x + newLetter * 5 > boundary) {
+                    if (newLetter * 5 > boundary) {
                         newLetter = 0;
                         newLine++;
                     }
@@ -166,7 +164,7 @@ const R = {
                 }
             } else {
                 for (var j = 0; j < str.length; j++, newLetter++) {
-                    if (x + newLetter * 5 > boundary) {
+                    if (newLetter * 5 > boundary) {
                         newLetter = 0;
                         newLine++;
                     }

@@ -106,8 +106,7 @@ export default class CEntityManager {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
-                    if (existingEntity.constructor.name === "UserPlayer")
-                            console.log(entityData.pos);
+
                     entityData = PacketBuffer.createPacket(existingEntity.output, entityData);
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {
