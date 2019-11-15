@@ -12,7 +12,7 @@ class DataSelector {
         this.selectedObject = object;
 
         // The properties per object within the selected object
-        this.displayedProps = displayedProps;
+        this.displayedProps = Object.keys(this.selectedObject)//displayedProps;
 
         this.packetBuffer = new PacketBuffer();
 
