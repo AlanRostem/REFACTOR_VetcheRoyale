@@ -10,7 +10,6 @@ class CAdmin {
 
         this.socket.on("adminUpdate", data => {
             if (Object.keys(data).length > 0) {
-                console.log(data);
                 this.packet = PacketBuffer.createPacket(this.packet, data);
                 let t_forWorld = ["id", "mapName", "players", "entityCount"];
                 this.toHTML.createTable("container", "worldTable", this.currentType, this.packet, t_forWorld, (id, type) => {
