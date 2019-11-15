@@ -17,15 +17,15 @@ class JSONToHTML {
     };
 
 
-    updateTable(parent, json, props, name, callback) {
+    updateTable(parent, json, props, name, type,callback) {
         if (!parent.children("." + name).length) {
-            parent.append($("<tr/>", {"class": "clickable-row " + name, "data-id": name}).append(
+            parent.append($("<tr/>", {"class": "clickable-row " + name}).append(
                 props.map(key => $("<td/>", {"class": key}).append(json[key])[0])
             ));
             if (callback)
                 $(document).ready(() => {
                     parent.children("." + name).click(() => {
-                        callback(parent.children("." + name).data("id"));
+                        callback(name, type);
                     });
                 });
         } else {
@@ -41,7 +41,7 @@ class JSONToHTML {
     };
 
 
-    createTable(parent, name, json, props, callback = undefined) {
+    createTable(parent, name, type,json, props, callback = undefined) {
         parent = $("#" + parent);
         if (!parent.children("#" + name).length) {
             parent.append([
@@ -54,7 +54,7 @@ class JSONToHTML {
         }
 
         Object.keys(json).forEach(key => {
-            this.updateTable(parent.children("table").children("tbody"), json[key], props, key, callback)
+            this.updateTable(parent.children("table").children("tbody"), json[key], props, key, type,callback)
         });
 
     };
