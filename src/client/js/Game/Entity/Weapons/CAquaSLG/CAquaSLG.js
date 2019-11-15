@@ -92,6 +92,6 @@ AssetManager.addSpriteCreationCallback(() => {
     CAquaSLG.waterAnimation.bind("AquaWaterStart", 0, 0, 24, 6);
 
     EffectManager.configureEffect("AquaWaterEnd", 0, 24, 6, 6, 4, 0.07);
-    EffectManager.configureEffect("SteamBubble", 0, 34, 128, 128, 8, 0.05);
+    EffectManager.configureEffect("SteamBubble", 0, 34, 128, 128, 8, 0.15);
 
 });

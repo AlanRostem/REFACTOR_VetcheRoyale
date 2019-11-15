@@ -7,7 +7,6 @@ export default class CWeapon extends CEntity {
     constructor(data, iconID) {
         super(data);
         this.iconID = iconID;
-
     }
 
     onFire(client, deltaTime) {
@@ -27,6 +26,8 @@ export default class CWeapon extends CEntity {
         if (this.getRealtimeProperty("dropped")) {
             this.onDrop(client, deltaTime);
         }
+
+
     }
 
     draw() {
