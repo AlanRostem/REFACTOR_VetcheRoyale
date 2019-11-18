@@ -7,6 +7,7 @@ export default class CWeapon extends CLoot {
     constructor(data, iconID) {
         super(data);
         this.iconID = iconID;
+        this.hasPressedReloadKey = false;
     }
 
     onFire(client, deltaTime) {
@@ -14,6 +15,10 @@ export default class CWeapon extends CLoot {
     }
 
     onDrop(client, deltaTime) {
+
+    }
+
+    onReloadAction(client, deltaTime) {
 
     }
 

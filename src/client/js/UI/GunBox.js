@@ -36,12 +36,19 @@ export default class GunBox extends UIElement {
                 if (this.iconName !== this.oldName) {
                     this.gunAnimation.img = AssetManager.getMapImage(this.iconName);
                     this.oldName = this.iconName;
-
                 }
                 this.hasWeapon = true;
                 this.playerAmmo = client.player.output.invAmmo;
                 this.loadedAmmo = gun.output.currentAmmo;
                 this.isReloading = gun.output.reloading;
+                if (this.isReloading) {
+                    if (!gun.hasPressedReloadKey) {
+                        gun.onReloadAction(client, deltaTime);
+                        gun.hasPressedReloadKey = true;
+                    }
+                } else {
+                    gun.hasPressedReloadKey = false;
+                }
             } else {
                 this.hasWeapon = false;
             }
