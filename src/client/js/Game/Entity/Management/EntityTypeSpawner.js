@@ -16,6 +16,7 @@ import CMicroMissile from "../Weapons/CBIGMotorizer/CMicroMissile.js";
 import CAquaSLG from "../Weapons/CAquaSLG/CAquaSLG.js";
 import CIceBullet from "../Weapons/CAquaSLG/CIceBullet.js";
 import CSeekerSmoke from "../Weapons/CCKER90/CSeekerSmoke.js";
+import CATBullet from "../Weapons/CCKER90/CATBullet.js";
 
 
 /**
@@ -74,6 +75,7 @@ EntityTypeSpawner.createSpawner("ElectricSphere", CElectricSphere);
 EntityTypeSpawner.createSpawner("KineticBomb", CKineticBomb);
 EntityTypeSpawner.createSpawner("MicroMissile", CMicroMissile);
 EntityTypeSpawner.createSpawner("IceBullet", CIceBullet);
+EntityTypeSpawner.createSpawner("ATBullet", CATBullet);
 EntityTypeSpawner.createSpawner("SeekerSmoke", CSeekerSmoke);
 
 export default EntityTypeSpawner;
