@@ -13,26 +13,21 @@ class HTMLCreator {
         this.currentTypeIndex = 0;
         this.f = true;
 
-        this.keys = [];
-
-        this.data = [
-            {
-                id: 'afajgjca14bj',
-                mapName: 'TestMap',
-                players: 1,
-                entityCount: 10
-            }
-        ];
-
-
-
 
         this.monitor.addUpdateCallback((data) => {
-            if (data.keys) {
-                this.addDocReady(() => {
-                    this.createTable("container", "WorldTable", Object.values(data.data), Object.values(data.keys));
-                });
-            }
+            if (Object.keys(data).length)
+                if (data.keys) {
+                    this.addDocReady(() => {
+                        this.createTable("container", "WorldTable",
+                            Object.values(data.data), Object.values(data.keys),
+                            (id) => {
+                                this.currentTypeIndex++;
+                                this.selectFromTable(id, this.currentType);
+                            });
+                    });
+                } else {
+                    this.updateTable("WorldTable", data.data)
+                }
         });
     }
 
@@ -46,35 +41,70 @@ class HTMLCreator {
         });
     }
 
+    get currentType() {
+        return this.types[this.currentTypeIndex];
+    }
+
 
     createTable(parent, name, json, props, callback = undefined) {
         parent = $("#" + parent);
-        parent.empty();
-        parent.append(
-            $("<table/>", {"id": name, "class": "table table-hover table-striped table-bordered "}).dataTable({
+        parent.empty().append($("<table/>", {
+            "id": name,
+            "class": "table table-hover table-striped table-bordered"
+        }).css("width", "100%"));
+
+        this.addDocReady(() => {
+            var table = $("#" + name).dataTable({
                 "data": json,
 
                 "columns": props.map(key => {
-                    return {"title": key, "data": key}
+                    return {"title": key, "data": key, "defaultContent": ""}
                 }),
 
                 "createdRow": function (row, data, index) {
-                    $(row).attr('id', data.id).attr('data-id', data.id);
+                    $(row).attr('id', data.id);
+                    if (callback)
+                        $(row).click(() => {
+                            callback(data.id)
+                        })
                 },
 
                 "columnDefs": [{
                     "targets": '_all',
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('class', Object.keys(rowData)[col]);
+                        if (Object.isJSON(cellData)) {
+                            $(td).empty();
+                            $(td).append(Object.keys(cellData).map(key =>
+                                $("<span/>", {"class": key}).append(key + ": " + cellData[key] + " ")
+                            ))
+                        }
                     }
                 }]
+            });
 
-            })
-        );
-
+        });
 
     }
 
+
+    updateTable(name, json) {
+        let parent = $("#" + name + " tbody");
+        Object.keys(json).forEach(id => {
+            let row = parent.children("#" + $.escapeSelector(id));
+            if (row.length)
+                Object.keys(json[id]).forEach(key => {
+                    let cell = row.children("." + key);
+                    if (Object.isJSON(json[id][key]))
+                        Object.keys(json[id][key]).forEach(prop => {
+                         cell.children("." + prop).empty().append(prop + ": " + json[id][key][prop] + " ")
+                        });
+                    else
+                        cell.empty().append(json[id][key]);
+
+                })
+        })
+    }
 
     /*
     updateText(elm, json) {

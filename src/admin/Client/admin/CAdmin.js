@@ -26,6 +26,10 @@ class CAdmin {
 
     }
 
+    emit(event, data){
+        this.socket.emit(event, data)
+    }
+
     on(event, callback) {
         this.socket.on(event, callback)
     }
@@ -38,9 +42,7 @@ class CAdmin {
         return this.currentTypeIndex = idx;
     }
 
-    get currentType() {
-        return this.types[this.currentTypeIndex];
-    }
+
 
     goBack() {
         this.selectFromTable(null, null, "GO_BACK");
