@@ -17,7 +17,6 @@ class EntityManager {
             this.tileMap = gameMap;
             this.gameClock = new GameClock(0);
             this.entitiesQueuedToDelete = [];
-            this.remainingRemovedEntities = [];
 
             // Create a singular quad tree with the size of
             // the whole tile map.
