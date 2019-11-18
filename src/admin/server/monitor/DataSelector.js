@@ -16,7 +16,7 @@ class DataSelector {
 
         this.packetBuffer = new PacketBuffer();
 
-        this.output = {};
+        this.output = {keys:this.displayedProps, data:{}};
 
         this.previousSelections = [];
 
@@ -35,7 +35,8 @@ class DataSelector {
             this.previousSelections.push(new DataSelection(this.selectedObject, ...this.displayedProps));
             this.displayedProps = props;
             this.selectedObject = this.selectedObject[key];
-            this.output = {};
+            this.output = {keys:this.displayedProps, data:{}};
+            this.packetBuffer.clear();
             this.update();
         }
     }
@@ -49,9 +50,9 @@ class DataSelector {
     update() {
         for (let key in this.selectedObject) {
             let content = this.selectedObject[key];
-            this.output[key] = {};
+            this.output["data"][key] = {};
             for (let prop of this.displayedProps) {
-                this.output[key][prop] = Object.copy(content[prop]);
+                this.output["data"][key][prop] = Object.copy(content[prop]);
             }
         }
     }

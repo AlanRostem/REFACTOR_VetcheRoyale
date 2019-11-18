@@ -9,6 +9,7 @@ class Monitor {
             console.log("\nEstablishing connection to admin... Admin ID: [ " + admin.id + " ]");
             let _admin = new Admin(admin, this.adminList, server);
             this.adminList.addClient(admin.id, _admin);
+
         });
 
         this.on("message", data =>{
@@ -20,8 +21,8 @@ class Monitor {
         this.socket.on(event, callback);
     }
 
-    emit(event, callback){
-        this.socket.emit(event, callback);
+    emit(event, data){
+        this.socket.emit(event, data);
     }
 }
 module.exports = Monitor;

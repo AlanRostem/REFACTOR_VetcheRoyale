@@ -71,6 +71,10 @@ class PacketBuffer {
         this.buffer = {};
     }
 
+    clear(){
+        this.buffer = new Empty();
+    }
+
     exportInitValues(values, composedEntity) {
         let snapShot = {};
         for (let key of values) {
