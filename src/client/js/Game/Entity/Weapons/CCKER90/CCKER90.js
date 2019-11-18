@@ -29,6 +29,11 @@ class CCKER90 extends CWeapon {
         super.onFire(client, deltaTime);
     }
 
+    onReloadAction(client, deltaTime) {
+        super.onReloadAction(client, deltaTime);
+        AudioPool.play("Weapons/cker90_reload.oggSE");
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         if (this.getRealtimeProperty("playerID") !== client.id) return;
