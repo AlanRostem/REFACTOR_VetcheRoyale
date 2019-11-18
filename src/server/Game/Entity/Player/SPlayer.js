@@ -74,6 +74,10 @@ class Player extends GameDataLinker {
                 let entity = this.entitiesInProximity.getEntity(id);
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
+                    if (entity.overlapEntity(this)) {
+                        this.itemsNearby.set(entity.id, distance);
+                        break;
+                    }
                     if (entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
                         this.itemScanner.scan(this.center, entity.center, game, game.tileMap);
                         if (HitScanner.intersectsEntity(this.center, this.itemScanner.end, entity)) {

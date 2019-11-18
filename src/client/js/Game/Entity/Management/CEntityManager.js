@@ -57,8 +57,9 @@ export default class CEntityManager {
         return this.container.get(id);
     }
 
-    removeEntity(id) {
-        this.container.get(id).onClientDelete(this.clientRef);
+    removeEntity(id, removalData) {
+        console.log(removalData)
+        this.container.get(id).onClientDelete(this.clientRef, removalData);
         this.container.delete(id);
     }
 
@@ -78,10 +79,11 @@ export default class CEntityManager {
             }
         });
 
-        client.on('removeEntity', id => {
+        client.on('removeEntity', data => {
+            let id = data.id;
             if (this.existsOnClient(id)) {
                 if (id !== client.id) {
-                    this.removeEntity(id);
+                    this.removeEntity(id, data.removalData);
                 }
             } else {
                 console.warn("Attempted to remove a non existent entity. Something's wrong here...")

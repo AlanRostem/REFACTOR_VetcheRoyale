@@ -14,7 +14,15 @@ class ProximityEntityManager extends EntityManager {
             // actual entity check range would be a 320*2 by 160*2
             // rectangle around the entity.
             320, 160);
-        this.shouldFollowEntity = true;
+        this._shouldFollowEntity = true;
+    }
+
+    get shouldFollowEntity() {
+        return this._shouldFollowEntity;
+    }
+
+    set shouldFollowEntity(val) {
+        this._shouldFollowEntity = val;
     }
 
     toggleFollowEntity() {
