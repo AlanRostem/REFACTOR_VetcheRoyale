@@ -37,10 +37,6 @@ class SEntity {
         return this.homeWorldID;
     }
 
-    get removalData() {
-        return this.snapShotGenerator.removalData;
-    }
-
     setEntityOrder(int) {
         this.entityOrder = int;
     }

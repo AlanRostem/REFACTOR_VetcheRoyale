@@ -17,6 +17,7 @@ class EntityManager {
             this.tileMap = gameMap;
             this.gameClock = new GameClock(0);
             this.entitiesQueuedToDelete = [];
+            this.remainingRemovedEntities = [];
 
             // Create a singular quad tree with the size of
             // the whole tile map.
@@ -48,6 +49,7 @@ class EntityManager {
             delete this.container[this.entitiesQueuedToDelete[i]];
             this.entitiesQueuedToDelete.splice(i);
         }
+        // TODO: Update each "entitiesInProximity" and other emit related shit for each player here in a separate loop
     }
 
     // Regenerates data packs every frame for every entity
@@ -62,9 +64,9 @@ class EntityManager {
     }
 
     updateEntities(deltaTime) {
-        for (var id in this.container) {
+        for (let id in this.container) {
             if (this.exists(id)) {
-                var entity = this.container[id];
+                let entity = this.container[id];
                 if (entity.toRemove) {
                     this.removeEntity(entity.id);
                     continue;
