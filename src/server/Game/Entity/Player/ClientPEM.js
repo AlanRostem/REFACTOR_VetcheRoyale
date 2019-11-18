@@ -25,11 +25,16 @@ class ClientPEM extends ProximityEntityManager {
 
     removeEntity(id) {
         super.removeEntity(id);
+        let e = this.dataBox[id];
         delete this.dataBox[id];
 
         //console.log("Removing entity:", id);
 
-        this.entRef.emit("removeEntity", id);
+        let data = {id: id, removalData: e};
+        if (e === undefined) {
+            console.log(e) // TODO Remove console log
+        }
+        this.entRef.emit("removeEntity", data);
         this.spectators.onRemoveEntity(id);
     }
 
@@ -55,16 +60,16 @@ class ClientPEM extends ProximityEntityManager {
         for (let id in this.container) {
             if (Object.keys(this.container[id].getDataPack()).length)
                 this.dataBox[id] = this.container[id].getDataPack();
-                let e = this.container[id];
-                // Removes entities out of bounds. Suboptimal location to do this.
-                if (e.toRemove) {
-                    this.removeEntity(id);
-                    continue;
-                }
+            let e = this.container[id];
+            // Removes entities out of bounds. Suboptimal location to do this.
+            if (e.toRemove) {
+                this.removeEntity(id);
+                continue;
+            }
 
-                if (!this.qtBounds.myContains(e)) {
-                    this.throwOutOfBounds(e.id);
-                }
+            if (!this.qtBounds.myContains(e)) {
+                this.throwOutOfBounds(e.id);
+            }
 
         }
         if (Object.keys(this.entRef.getDataPack()).length) {

@@ -135,8 +135,9 @@ class CEntity {
     /**
      * Overridable event called when the entity is removed on the server.
      * @param client {CClient} - Reference to the end user object
+     * @param data
      */
-    onClientDelete(client) {
+    onClientDelete(client, data) {
 
     }
 

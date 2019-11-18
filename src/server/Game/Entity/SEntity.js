@@ -37,6 +37,10 @@ class SEntity {
         return this.homeWorldID;
     }
 
+    get removalData() {
+        return this.snapShotGenerator.removalData;
+    }
+
     setEntityOrder(int) {
         this.entityOrder = int;
     }
@@ -96,6 +100,7 @@ class SEntity {
 
     remove() {
         this.removed = true;
+        this.onRemoved();
     }
 
     // Getters and setters
@@ -142,6 +147,10 @@ class SEntity {
             x: this.pos.x + this.width / 2,
             y: this.pos.y + this.height / 2
         }
+    }
+
+    onRemoved() {
+
     }
 }
 

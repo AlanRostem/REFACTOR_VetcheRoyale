@@ -43,7 +43,7 @@ class EntityManager {
         this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime);
-        for (var i = 0; i < this.entitiesQueuedToDelete.length; i++) {
+        for (let i = 0; i < this.entitiesQueuedToDelete.length; i++) {
             this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
             delete this.container[this.entitiesQueuedToDelete[i]];
             this.entitiesQueuedToDelete.splice(i);
@@ -53,9 +53,9 @@ class EntityManager {
     // Regenerates data packs every frame for every entity
     // in the container.
     refreshEntityDataPacks(deltaTime) {
-        for (var id in this.container) {
+        for (let id in this.container) {
             if (this.exists(id)) {
-                var entity = this.container[id];
+                let entity = this.container[id];
                 entity.updateDataPack(this, deltaTime);
             }
         }

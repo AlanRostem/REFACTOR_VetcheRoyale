@@ -117,4 +117,5 @@ class SnapShotGenerator{
 
 }
 
+
 module.exports = SnapShotGenerator;
