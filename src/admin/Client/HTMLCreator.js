@@ -11,7 +11,6 @@ class HTMLCreator {
         this.types = ["World", "Entity", "Player"];
         this.keys = [];
         this.currentTypeIndex = 0;
-        this.f = true;
 
 
         this.monitor.addUpdateCallback((data) => {
@@ -22,6 +21,7 @@ class HTMLCreator {
                             Object.values(data.data), Object.values(data.keys),
                             (id) => {
                                 this.currentTypeIndex++;
+                                console.log(this.currentType, true)
                                 this.selectFromTable(id, this.currentType);
                             });
                     });
@@ -89,21 +89,23 @@ class HTMLCreator {
 
 
     updateTable(name, json) {
-        let parent = $("#" + name + " tbody");
-        Object.keys(json).forEach(id => {
-            let row = parent.children("#" + $.escapeSelector(id));
-            if (row.length)
-                Object.keys(json[id]).forEach(key => {
-                    let cell = row.children("." + key);
-                    if (Object.isJSON(json[id][key]))
-                        Object.keys(json[id][key]).forEach(prop => {
-                         cell.children("." + prop).empty().append(prop + ": " + json[id][key][prop] + " ")
-                        });
-                    else
-                        cell.empty().append(json[id][key]);
+        let table = $("#" + name).DataTable();
 
-                })
-        })
+        Object.keys(json).forEach(id => {
+            let row = table.row("#" + $.escapeSelector(id)).data();
+            if (row) {
+                Object.keys(json[id]).forEach(key => {
+                    row[key] = json[id][key]
+                });
+                //row.draw(false);
+            } else {
+                table.row.add(
+                    json[id]
+                ).draw(false);
+            }
+
+            console.log(row);
+        });
     }
 
     /*
