@@ -57,6 +57,6 @@ class Loot extends Interactable {
 }
 
 Loot.AIR_FRICTION = 0.9;
-Loot.PICK_UP_RANGE = Tile.SIZE * 6;
+Loot.PICK_UP_RANGE = Tile.SIZE * 2;
 
 module.exports = Loot;

@@ -40,6 +40,8 @@ export default class CPortal extends CEntity {
     draw() {
         let pos = this.getRealtimeProperty("pos");
 
+        //TODO: Show control of [E] When at portal
+       // R.drawText("[E]", pos.x - 4, pos.y - 14, "White", true);
         CPortal.portalAnimation.animate("portal", this.animationSpec, 16, 22);
         CPortal.portalAnimation.drawAnimated(
             pos.x + R.camera.x - 4,

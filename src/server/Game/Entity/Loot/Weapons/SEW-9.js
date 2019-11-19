@@ -32,6 +32,9 @@ class ElectricSphere extends Projectile {
     }
 
     detonate(entityManager) {
+        if (this.getOwner(entityManager)) {
+            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+        }
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);

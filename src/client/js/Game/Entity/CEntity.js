@@ -135,8 +135,9 @@ class CEntity {
     /**
      * Overridable event called when the entity is removed on the server.
      * @param client {CClient} - Reference to the end user object
+     * @param data
      */
-    onClientDelete(client) {
+    onClientDelete(client, data) {
 
     }
 
@@ -150,6 +151,31 @@ class CEntity {
                 && this.output.pos.x + this.width > e.output.pos.x
                 && this.output.pos.x < (e.output.pos.x + e.width);
         }
+    }
+
+    get topLeft() {
+        return this.output.pos
+    }
+
+    get topRight() {
+        return {
+            x: this.output.pos.x + this.width,
+            y: this.output.pos.y
+        };
+    }
+
+    get bottomLeft() {
+        return {
+            x: this.output.pos.x,
+            y: this.output.pos.y + this.height
+        };
+    }
+
+    get bottomRight() {
+        return {
+            x: this.output.pos.x + this.width,
+            y: this.output.pos.y + this.height
+        };
     }
 
     /**
