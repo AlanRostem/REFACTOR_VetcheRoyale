@@ -70,7 +70,7 @@ class OtherPlayer extends CEntity {
         this.timer.tick(deltaTime);
 
         let self = this.output;
-        if (self.vel.x !== 0) {
+        if (self.vel.x !== 0 && self.vel.x !== undefined) {
             if (this.output.effectsData)
                 if (this.output.effectsData.KnockBackEffect) {
                     if (this.output.effectsData.KnockBackEffect.length === 0) {
