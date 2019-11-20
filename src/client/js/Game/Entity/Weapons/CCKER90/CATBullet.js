@@ -19,9 +19,15 @@ class CATBullet extends CEntity {
         this.counter = 0;
 
         this.hit = false;
+        this.alreadyHit = false;
 
         this.animationSpec = new SpriteSheet.Animation(0, 4, 5, 0.07);
 
+    }
+
+    onClientAdd(dataPack, client) {
+        super.onClientAdd(dataPack, client);
+        this.alreadyHit = this.output.vel.x === 0 && this.output.vel.y === 0;
     }
 
     onClientDelete(client) {
@@ -34,7 +40,7 @@ class CATBullet extends CEntity {
     update(deltaTime, client) {
         super.update(deltaTime, client);
 
-        if (!this.bulletSound) {
+        if (!this.bulletSound && !this.alreadyHit) {
             this.bulletSound = AudioPool.play("Weapons/cker90_shoot.oggSE");
 
         } else if (this.output.vel.x !== 0) {
@@ -47,14 +53,16 @@ class CATBullet extends CEntity {
         if (this.output.vel.y < 0) this.Ydirection = false;
 
         if (this.output.vel.x === 0 && this.output.vel.y === 0) {
-            if (!this.hit) {
+            if (!this.hit && !this.alreadyHit) {
                 this.hit = true;
                 AudioPool.play("Weapons/cker90_bullet_hit.oggSE");
                 EffectManager.createEffect(this.output.pos.x - 4, this.output.pos.y - 4, "ATBulletHit", 0);
             }
 
             this.newPos = new Vector2D(this.output.pos.x + this.spdX * this.counter * (this.Xdirection ? 1 : -1), this.output.pos.y + this.spdY * this.counter * (this.Ydirection ? 1 : -1));
-            this.bulletSound.updatePanPos(this.newPos);
+            if (!this.alreadyHit) {
+                this.bulletSound.updatePanPos(this.newPos);
+            }
             this.counter++;
         }
 
@@ -64,7 +72,7 @@ class CATBullet extends CEntity {
     draw() {
         super.draw();
 
-        if (this.hit) {
+        if (this.hit || this.alreadyHit) {
             CATBullet.sphereAnimation.animate("C-KER .90_bullet_search", this.animationSpec, 2, 2);
             CATBullet.sphereAnimation.drawAnimated(
                 this.output.pos.x + R.camera.x,
