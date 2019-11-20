@@ -103,6 +103,6 @@ AssetManager.addSpriteCreationCallback(() => {
     CATBullet.sphereAnimation = new SpriteSheet("C-KER .90_bullet_search");
     CATBullet.sphereAnimation.bind("C-KER .90_bullet_search", 0, 0, 10, 2);
 
-    EffectManager.configureEffect("ATBulletHit", 0, 34, 10, 10, 8, 0.06);
+    EffectManager.configureEffect("ATBulletHit", 36, 20, 10, 10, 8, 0.06);
 
 });

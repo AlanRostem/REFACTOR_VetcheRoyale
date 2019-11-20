@@ -38,6 +38,6 @@ class CKineticBomb extends CEntity {
     }
 }
 
-EffectManager.configureEffect("kineticBombExpl", 0, 0, 24, 24, 6, explSpeed);
+EffectManager.configureEffect("kineticBombExpl", 0, 0, 24, 20, 6, explSpeed);
 
 export default CKineticBomb;
