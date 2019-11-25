@@ -8,6 +8,8 @@ export default class CWeapon extends CLoot {
         super(data);
         this.iconID = iconID;
         this.hasPressedReloadKey = false;
+        this.hasUsedMod = false;
+        this.hasUsedSuper = false;
     }
 
     onFire(client, deltaTime) {
@@ -22,6 +24,15 @@ export default class CWeapon extends CLoot {
 
     }
 
+    onModAbilityActivate(client, deltaTime) {
+
+    }
+
+    // TODO: Make this work xD
+    onSuperAbilityActivate(client, deltaTime) {
+
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         if (this.getRealtimeProperty("firing") && this.getRealtimeProperty("equippedToPlayer")) {
@@ -32,6 +43,14 @@ export default class CWeapon extends CLoot {
             this.onDrop(client, deltaTime);
         }
 
+        if (this.output.modAbilityData.active) {
+            if (!this.hasUsedMod) {
+                this.onModAbilityActivate(client, deltaTime);
+                this.hasUsedMod = true;
+            }
+        } else {
+            this.hasUsedMod = false;
+        }
     }
 
     draw() {

@@ -47,7 +47,7 @@ class WorldManager {
         let battleground = new Match(this.gameWorlds, "battleground", TileMapConfigs.getMap("battleground"));
         battleground.setGameRules({
            "infiniteAmmo": true,
-            "maxTeamMembers": 2
+            "maxTeamMembers": 1
         });
         this.addWorld(battleground, "battleground");
 

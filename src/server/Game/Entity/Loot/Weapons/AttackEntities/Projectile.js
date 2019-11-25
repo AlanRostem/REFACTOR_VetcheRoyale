@@ -70,8 +70,8 @@ class Projectile extends Physical {
     }
 
     update(entityManager, deltaTime) {
-        if (this.isSpeedTooHigh(deltaTime)) {
-            let d = Vector2D.abs(this.vel) * deltaTime;
+        let d = Vector2D.abs(this.vel) * deltaTime * 2;
+        if (d > 0) {
             this.setQuadTreeRange(d, d);
         }
         super.update(entityManager, deltaTime);
@@ -82,31 +82,36 @@ class Projectile extends Physical {
     }
 
     forEachNearbyEntity(entity, entityManager, deltaTime) {
-        if (this.isSpeedTooHigh(deltaTime)) {
-            if (entity instanceof Alive) {
-                let e = entity;
-                let a = {
-                    x: this.pos.x - this.vel.x * deltaTime,
-                    y: this.pos.y - this.vel.y * deltaTime,
-                };
-                let b = this.pos;
+        if (entity instanceof Alive) {
+            let e = entity;
+            let p = 0;
+            let a = {
+                x: this.pos.x - this.vel.x * deltaTime,
+                y: this.pos.y - this.vel.y * deltaTime,
+            };
+            let b = this.pos;
 
-                if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                    this.onEntityCollision(e, entityManager);
-                }
-
-                if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
-                    this.onEntityCollision(e, entityManager);
-                }
-
-                if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
-                    this.onEntityCollision(e, entityManager);
-                }
-
-                if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                    this.onEntityCollision(e, entityManager);
-                }
+            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
             }
+
+            if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
+            }
+
+            if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
+            }
+
+            if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
+            }
+
+            if (p) console.log("haha:", e.id);
         }
     }
 
