@@ -4,7 +4,6 @@ class Thread {
     constructor(workerData, source) {
         this.workerData = workerData;
         this.source = source;
-        console.log("Started a thread! CPU count: " + require('os').cpus().length)
     }
 
     onGetMessage(message) {
