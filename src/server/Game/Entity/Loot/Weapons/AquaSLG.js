@@ -5,7 +5,7 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Tile = require("../../../TileBased/Tile.js");
-const Player = require("../../Player/SPlayer.js");
+const Alive = require("../../Traits/Alive.js");
 
 
 class AOEKnockBackDamage extends AOEDamage {
@@ -16,7 +16,7 @@ class AOEKnockBackDamage extends AOEDamage {
 
     inflict(entity, entityManager, a) {
         super.inflict(entity, entityManager, a);
-        if (entity instanceof Player) {
+        if (entity instanceof Alive) {
             entity.applyEffect(new KnockBackEffect(entity.id,
                 -Math.cos(a) * this.knockBackSpeed,
                 -Math.sin(a) * this.knockBackSpeed / 2, 0.9), entityManager);
@@ -66,8 +66,7 @@ class AquaSLG extends AttackWeapon {
 
         this.modAbility = new ModAbility(0.75, 1.5);
 
-        //TODO: 25 on ammo
-        this.configureAttackStats(2, 250, 1, 500);
+        this.configureAttackStats(2, 25, 1, 500);
 
         this.addDynamicSnapShotData(["secondaryUse", "superAbilitySnap"]);
 
@@ -113,19 +112,6 @@ class AquaSLG extends AttackWeapon {
         };
     }
 
-    update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
-
-    }
-
-
-    updateWhenEquipped(player, entityManager, deltaTime) {
-        super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (entityManager.getEntity(this.playerID)) {
-            let player = this.getOwner(entityManager);
-        }
-    }
-
     onSuperBuffs(entityManager, deltaTime) {
         super.onSuperBuffs(entityManager, deltaTime);
     }
@@ -139,7 +125,6 @@ class AquaSLG extends AttackWeapon {
         super.onDrop(player, entityManager, deltaTime);
         this.secondaryFire = false;
     }
-
 }
 
 

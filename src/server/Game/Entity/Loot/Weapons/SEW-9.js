@@ -5,7 +5,7 @@ const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 const SEntity = require("../../SEntity.js");
-const Player = require("../../Player/SPlayer.js");
+const Alive = require("../../Traits/Alive.js");
 
 
 // Projectile fired by the SEW-9 weapon
@@ -82,7 +82,7 @@ class SuperDamage extends SEntity {
 
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
-        if (entity instanceof Player) {
+        if (entity instanceof Alive) {
             if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
                 this.damage.inflict(entity, entityManager);
             }

@@ -8,6 +8,7 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Player = require("../../Player/SPlayer.js");
+const Alive = require("../../Traits/Alive.js");
 
 // Applies a knock back effect to players hit by the
 // area of effect damage.
@@ -19,7 +20,7 @@ class AOEKnockBackDamage extends AOEDamage {
 
     inflict(entity, entityManager, a) {
         super.inflict(entity, entityManager, a);
-        if (entity instanceof Player) {
+        if (entity instanceof Alive) {
             entity.applyEffect(new KnockBackEffect(entity.id,
                 -Math.cos(a) * this.knockBackSpeed,
                 -Math.sin(a) * this.knockBackSpeed / 2, 0.9), entityManager);

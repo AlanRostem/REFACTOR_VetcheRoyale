@@ -31,9 +31,6 @@ class ClientPEM extends ProximityEntityManager {
         //console.log("Removing entity:", id);
 
         let data = {id: id, removalData: e};
-        if (e === undefined) {
-            console.log(e) // TODO Remove console log
-        }
         this.entRef.emit("removeEntity", data);
         this.spectators.onRemoveEntity(id);
     }

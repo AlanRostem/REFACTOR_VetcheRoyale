@@ -58,7 +58,6 @@ export default class CEntityManager {
     }
 
     removeEntity(id, removalData) {
-        console.log(removalData)
         this.container.get(id).onClientDelete(this.clientRef, removalData);
         this.container.delete(id);
     }

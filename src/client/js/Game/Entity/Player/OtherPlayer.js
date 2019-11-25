@@ -70,7 +70,7 @@ class OtherPlayer extends CEntity {
         this.timer.tick(deltaTime);
 
         let self = this.output;
-        if (self.vel.x !== 0) {
+        if (self.vel.x !== 0 && self.vel.x !== undefined) {
             if (this.output.effectsData)
                 if (this.output.effectsData.KnockBackEffect) {
                     if (this.output.effectsData.KnockBackEffect.length === 0) {
@@ -135,9 +135,9 @@ class OtherPlayer extends CEntity {
         }
 
         if (this.checkMovementState("main", "run")) {
-            if (this.footStep && !this.runSound) {
-                this.runSound = AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
-                    .updatePanPos(this.output.pos);
+            if (this.footStep) {
+                AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
+                .updatePanPos(this.output.pos);
                 this.footStep = false;
             }
             this.footStep = false;

@@ -27,8 +27,7 @@ class CSeekerSmoke extends CEntity {
         this.smoke.h = self.smokeBounds.y * 2;
         this.enemiesInSmoke = {};
         if (self.findPlayers) {
-            if (!this.smokePlace && (this.smokePlace = true) === true) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE")
-                .updatePanPos(this.output.pos);
+            if (!this.smokePlace && (this.smokePlace = true) === true) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE");
             else if(this.smokeSound) this.smokeSound.updatePanPos(this.output.pos);
             for (let entity of Scene.entityManager.container.values()) {
                 if (this.isEnemyInSmoke(entity)) {

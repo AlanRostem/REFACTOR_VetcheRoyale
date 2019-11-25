@@ -2,6 +2,7 @@ const Vector2D = require("../../../../../../shared/code/Math/SVector2D");
 
 const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
+const Alive = require("../../../Traits/Alive.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
 const TileCollider = require("../../../../TileBased/TileCollider.js");
 const Tile = require("../../../../TileBased/Tile.js");
@@ -69,8 +70,8 @@ class Projectile extends Physical {
     }
 
     update(entityManager, deltaTime) {
-        if (this.isSpeedTooHigh(deltaTime)) {
-            let d = Vector2D.abs(this.vel) * deltaTime;
+        let d = Vector2D.abs(this.vel) * deltaTime * 2;
+        if (d > 0) {
             this.setQuadTreeRange(d, d);
         }
         super.update(entityManager, deltaTime);
@@ -81,31 +82,36 @@ class Projectile extends Physical {
     }
 
     forEachNearbyEntity(entity, entityManager, deltaTime) {
-        if (this.isSpeedTooHigh(deltaTime)) {
-            if (entity instanceof Player) {
-                let e = entity;
-                let a = {
-                    x: this.pos.x - this.vel.x * deltaTime,
-                    y: this.pos.y - this.vel.y * deltaTime,
-                };
-                let b = this.pos;
+        if (entity instanceof Alive) {
+            let e = entity;
+            let p = 0;
+            let a = {
+                x: this.pos.x - this.vel.x * deltaTime,
+                y: this.pos.y - this.vel.y * deltaTime,
+            };
+            let b = this.pos;
 
-                if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                    this.onEntityCollision(e, entityManager);
-                }
-
-                if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
-                    this.onEntityCollision(e, entityManager);
-                }
-
-                if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
-                    this.onEntityCollision(e, entityManager);
-                }
-
-                if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                    this.onEntityCollision(e, entityManager);
-                }
+            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
             }
+
+            if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
+            }
+
+            if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
+            }
+
+            if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                this.onEntityCollision(e, entityManager);
+                p = 1
+            }
+
+            if (p) console.log("haha:", e.id);
         }
     }
 
@@ -113,7 +119,7 @@ class Projectile extends Physical {
     // who fired it.
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
-        if (entity instanceof Player) {
+        if (entity instanceof Alive) {
             if (!entity.team) return; // TODO: FIX HACK
             if (!entity.team.hasEntity(this.ownerID)) {
                 this.onPlayerHit(entity, entityManager);

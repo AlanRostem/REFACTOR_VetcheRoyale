@@ -10,7 +10,7 @@ class Match extends GameWorld{
             "lootLife": 2,
             "pvp": true,
             "maxPlayers": 24,
-            "maxTeamMembers": 6,
+            "maxTeamMembers": 3,
             "dropLootOnDeath": true,
         });
         this.spawnEntity(

@@ -30,9 +30,9 @@ export default class CAquaSLG extends CWeapon {
         if (this.player) {
             this.waterDrawY = this.player.output.pos.y + this.player.output.height - 2;
             this.waterDrawX = this.player.output.pos.x;
-            this.secondaryUse = this.getRealtimeProperty("secondaryUse");
-            this.superAbility = this.getRealtimeProperty("superAbilitySnap");
         }
+        this.secondaryUse = this.getRealtimeProperty("secondaryUse");
+        this.superAbility = this.getRealtimeProperty("superAbilitySnap");
 
         if (this.effect) {
             this.effect.updatePos(this.waterDrawX, this.waterDrawY);
