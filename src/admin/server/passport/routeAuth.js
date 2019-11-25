@@ -15,7 +15,7 @@ module.exports = function (passport) {
    }));
 
     router.get('/', loggedin,(req, res) => {
-        res.sendFile(path.join(__dirname + "../../../Client/HTML/monitor.html"));
+        res.sendFile(path.join(__dirname + "../../../client/HTML/monitor.html"));
     });
 
     router.get('/logout', (req, res)=>{
