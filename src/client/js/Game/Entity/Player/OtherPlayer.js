@@ -135,8 +135,9 @@ class OtherPlayer extends CEntity {
         }
 
         if (this.checkMovementState("main", "run")) {
-            if (this.footStep && !this.runSound) {
-                this.runSound = AudioPool.play("Player/footStep_" + this.footCount + ".oggSE");
+            if (this.footStep) {
+                AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
+                .updatePanPos(this.output.pos);
                 this.footStep = false;
             }
             this.footStep = false;
