@@ -62,7 +62,7 @@ class Projectile extends Physical {
 
     // Callback when hitting a player (non-teammates)
     onPlayerHit(player, entityManager) {
-        // Test
+
     }
 
     getOwner(entityManager) {
