@@ -20,8 +20,7 @@ export default class CAquaSLG extends CWeapon {
 
     onFire(client, deltaTime) {
         super.onFire(client, deltaTime);
-        this.bulletSound = AudioPool.play("Weapons/aquaslg_s.oggSE")
-            .updatePanPos(this.output.pos);
+        AudioPool.play("Weapons/aquaslg_s.oggSE").updatePanPos(this.output.pos);
     }
 
     update(deltaTime, client) {

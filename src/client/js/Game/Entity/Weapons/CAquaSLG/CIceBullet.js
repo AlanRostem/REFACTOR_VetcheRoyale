@@ -16,8 +16,8 @@ class CIceBullet extends CEntity {
         super.onClientDelete(client, data);
         //this.output.pos = data.pos;
         EffectManager.createEffect(this.output.pos.x, this.output.pos.y, "IceBulletHit", 0);
-        this.hitSound = AudioPool.play("Weapons/aquaslg_bullet_hit.oggSE")
-            .updatePanPos(this.output.pos);
+        this.hitSound = AudioPool.play("Weapons/aquaslg_bullet_hit.oggSE");
+        this.hitSound.updatePanPos(this.output.pos);
     }
 
     update(deltaTime, client) {
