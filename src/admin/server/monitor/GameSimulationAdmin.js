@@ -16,7 +16,7 @@ const PROP_TYPE_HOLDER = new class extends ONMap {
 }();
 
 PROP_TYPE_HOLDER.set("World", ["id", "mapName", "players", "entityCount"]);
-PROP_TYPE_HOLDER.set("Entity", ["id", "pos", "vel", "entityType"]);
+PROP_TYPE_HOLDER.set("Entity", ["id", "pos", "vel", "entityType", "toRemove"]);
 PROP_TYPE_HOLDER.set("Player", ["id", "pos", "vel", "entityType", "HP"]);
 
 class GameSimulationAdmin {

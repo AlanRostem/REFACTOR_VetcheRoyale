@@ -1,6 +1,4 @@
-import PacketBuffer from "../../client/js/Networking/Client/PacketBuffer.js";
-
-Object.isJSON = function(obj) {
+Object.isJSON = function (obj) {
     return obj !== undefined && obj !== null && !(typeof obj === "number" && isNaN(obj)) && typeof obj !== "string" && typeof obj !== "number" && typeof obj !== "boolean";
 };
 
@@ -12,16 +10,16 @@ class HTMLCreator {
         this.currentTypeIndex = 0;
 
         this.monitor.addUpdateCallback((data) => {
-
             if (Object.keys(data).length) {
                 if (data.keys)
                     this.addDocReady(() => {
                         this.createTable("container", "WorldTable",
                             Object.values(data.data), Object.values(data.keys),
                             (id) => {
-                                this.currentTypeIndex++;
-                                console.log(this.currentType, true);
-                                this.selectFromTable(id, this.currentType);
+                                if (this.currentTypeIndex < 1) {
+                                    this.currentTypeIndex++;
+                                    this.selectFromTable(id, this.currentType);
+                                }
                             });
                     });
                 else
@@ -53,20 +51,18 @@ class HTMLCreator {
         }).css("width", "100%"));
 
         this.addDocReady(() => {
-            var table = $("#" + name).dataTable({
+            $("#" + name).dataTable({
                 "data": json,
-
                 "columns": props.map(key => {
                     return {
                         "title": key,
                         "data": key,
                         "defaultContent": "",
-                        "render": function(data, type, row) {
+                        "render": function (data, type, row) {
                             if (Object.isJSON(data)) {
                                 let value = "";
-                                Object.keys(data).forEach(prop => {
-                                    value += prop + ": " + data[prop] + " ";
-                                });
+                                for (let key in data)
+                                    value += key + ": " + data[key] + " ";
                                 return value;
                             }
                             return data;
@@ -74,7 +70,7 @@ class HTMLCreator {
                     }
                 }),
 
-                "createdRow": function(row, data, index) {
+                "createdRow": function (row, data, index) {
                     $(row).attr('id', data.id);
                     if (callback)
                         $(row).click(() => {
@@ -84,7 +80,7 @@ class HTMLCreator {
 
                 "columnDefs": [{
                     "targets": '_all',
-                    "createdCell": function(td, cellData, rowData, row, col) {
+                    "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('class', Object.keys(rowData)[col]);
                     }
                 }]
@@ -93,7 +89,6 @@ class HTMLCreator {
         });
 
     }
-
 
     updateTable(name, json) {
         let table = $("#" + name).DataTable();
