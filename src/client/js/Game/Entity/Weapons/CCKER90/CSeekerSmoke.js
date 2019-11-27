@@ -16,7 +16,7 @@ class CSeekerSmoke extends CEntity {
         this.smoke = {};
         this.enemiesInSmoke = {};
         this.smokePlace = false;
-        this.canPlaySound = false;
+        this.canPlaySound = true;
         this.timer = new Timer(0.1, () => {this.canPlaySound = true;}, true);
 
     }
