@@ -7,6 +7,7 @@ const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
+const WormHoleEffect = require("../../../Mechanics/Effect/WormHoleEffect.js");
 const Player = require("../../Player/SPlayer.js");
 const Alive = require("../../Traits/Alive.js");
 
@@ -103,7 +104,13 @@ class KE_6H extends AttackWeapon {
             composedWeapon.canFire = false;
             this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
+            let entities = this.getOwner(entityManager).entitiesInProximity.container;
+            for (let id in entities) {
+                let e = entities[id];
+                if (e instanceof Player) {
 
+                }
+            }
         };
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager) => {
@@ -121,20 +128,12 @@ class KE_6H extends AttackWeapon {
         super.update(entityManager, deltaTime);
     }
 
-    updateWhenEquipped(player, entityManager, deltaTime) {
-        super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (this.roamingBombs.length === 0) {
-            this.canUseMod = false;
-        }
-    }
-
     fire(player, entityManager, deltaTime, angle) {
         let bomb = entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(this, player.id, this.id, 0, 0,
                 angle, entityManager));
         this.roamingBombs.set(bomb.id, 1);
     }
-
 }
 
 

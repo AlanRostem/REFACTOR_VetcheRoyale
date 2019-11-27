@@ -9,7 +9,7 @@ class GameServer {
         this.matchMaker = new MatchMaker();
         this.mainSocket = new WebSocket(sio, this.matchMaker, this);
 
-        this.tickRate = 60; // Hz (TEMPORARY)
+        this.tickRate = 64; // Hz (TEMPORARY)
 
         this.thread = new Thread({
             tickRate: this.tickRate
