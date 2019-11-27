@@ -33,6 +33,8 @@ class CClient {
             this.addMouseEmitter(mouseButton);
         });
 
+        this.inputListener.addKeyMapping(80, s => Scene.debugPause = s);
+
         // Establishes a full connection using a promise.
         // The server is then notified of a proper connection.
         new Promise(resolve => {
@@ -53,6 +55,9 @@ class CClient {
     }
 
     onServerUpdateReceived(packet) {
+        if (Scene.debugPause) {
+            return;
+        }
         if (this.first) {
             console.log(packet);
             this.first = false;

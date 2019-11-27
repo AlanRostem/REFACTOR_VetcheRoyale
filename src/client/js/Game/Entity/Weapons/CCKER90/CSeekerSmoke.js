@@ -3,12 +3,14 @@ import OtherPlayer from "../../Player/OtherPlayer.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../../Graphics/Renderer.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
+import CProjectile from "../../CProjectile.js";
+
 
 let enemySprite = new SpriteSheet("detectedEnemy");
 enemySprite.bind("red", 0, 0, 16 * 16, 16);
 enemySprite.setCentralOffset(4);
 
-class CSeekerSmoke extends CEntity {
+class CSeekerSmoke extends CProjectile {
 
     constructor(data) {
         super(data);

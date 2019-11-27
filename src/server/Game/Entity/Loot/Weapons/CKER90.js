@@ -48,7 +48,8 @@ class ATBullet extends Projectile {
         }
     }
 
-    forEachNearbyEntity(entity, entityManager) {
+    forEachNearbyEntity(entity, entityManager, deltaTime) {
+        super.forEachNearbyEntity(entity, entityManager, deltaTime);
         if (this.weapon) {
             if (entity.constructor.name === "Player") {
                 if (entity.id !== this.weapon.playerID && !this.getOwner(entityManager).isTeammate(entity)) {

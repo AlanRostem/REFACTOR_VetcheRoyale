@@ -4,8 +4,9 @@ import R from "../../../../Graphics/Renderer.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
 import EffectManager from "../../../../Graphics/EffectManager.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
+import CProjectile from "../../CProjectile.js";
 
-class CIceBullet extends CEntity {
+class CIceBullet extends CProjectile {
 
     constructor(data) {
         super(data);

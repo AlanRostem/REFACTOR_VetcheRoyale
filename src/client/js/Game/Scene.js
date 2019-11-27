@@ -32,6 +32,7 @@ const Scene = {
     entityManager: null,
     eventManager: null,
     clientRef: null,
+    debugPause: false,
 
 
     /**
@@ -103,7 +104,7 @@ const Scene = {
      * @memberOf Scene
      */
     update() {
-        if (AssetManager.done()) {
+        if (AssetManager.done() && !Scene.debugPause) {
             Scene.clientRef.update(Scene.entityManager, Scene.deltaTime);
             if (!Scene.clientRef.isReady()) return;
             Scene.eventManager.update(Scene.clientRef, Scene.deltaTime);

@@ -6,11 +6,12 @@ import EffectManager from "../../../../Graphics/EffectManager.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 import Vector2D from "../../../../../../shared/code/Math/CVector2D.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
+import CProjectile from "../../CProjectile.js";
 
-class CATBullet extends CEntity {
+class CATBullet extends CProjectile {
 
     constructor(data) {
-        super(data);
+        super(data, "red");
         this.bulletSound = false;
         this.Xdirection = false;
         this.Ydirection = false;
