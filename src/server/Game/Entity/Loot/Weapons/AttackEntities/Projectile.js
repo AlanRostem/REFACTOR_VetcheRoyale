@@ -92,18 +92,22 @@ class Projectile extends Physical {
 
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                 this.onEntityCollision(e, entityManager);
+                return;
             }
 
             if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
                 this.onEntityCollision(e, entityManager);
+                return;
             }
 
             if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
                 this.onEntityCollision(e, entityManager);
+                return;
             }
 
             if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
                 this.onEntityCollision(e, entityManager);
+                return;
             }
 
         }

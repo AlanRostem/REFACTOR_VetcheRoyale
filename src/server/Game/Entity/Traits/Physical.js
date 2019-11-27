@@ -92,6 +92,14 @@ class Physical extends Entity {
         }
     }
 
+    decelerateX(x, deltaTime) {
+        this.vel.x -= this.fric.x * this.vel.x * deltaTime;
+    }
+
+    decelerateY(y, deltaTime) {
+        this.vel.y -= this.fric.y * this.vel.y * deltaTime;
+    }
+
     overlapEntity(e) {
         return this.pos.y + this.height > e.pos.y
             && this.pos.y < (e.pos.y + e.height)
@@ -221,6 +229,7 @@ class Physical extends Entity {
 
         this.resetSides();
 
+
         if (!this.physicsConfig.static)
             this.moveY(this.vel.y, deltaTime); // Adding velocity to position
         if (this.physicsConfig.tileCollision)      // before colliding.
@@ -232,6 +241,9 @@ class Physical extends Entity {
         if (this.physicsConfig.tileCollision)      // before colliding.
             this.tileCollisionX(entityManager.tileMap, deltaTime);
         this.customCollisionX(entityManager, entityManager.tileMap, deltaTime);
+
+        this.decelerateX(this.fric.x, deltaTime);
+        this.decelerateY(this.fric.y, deltaTime);
 
         this.updateMovementStates(entityManager, deltaTime);
 
