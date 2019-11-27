@@ -3,6 +3,7 @@ import OtherPlayer from "../../Player/OtherPlayer.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import R from "../../../../Graphics/Renderer.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
+import Timer from "../../../../../../shared/code/Tools/CTimer.js";
 
 let enemySprite = new SpriteSheet("detectedEnemy");
 enemySprite.bind("red", 0, 0, 16 * 16, 16);
@@ -15,6 +16,8 @@ class CSeekerSmoke extends CEntity {
         this.smoke = {};
         this.enemiesInSmoke = {};
         this.smokePlace = false;
+        this.canPlaySound = false;
+        this.timer = new Timer(0.1, () => {this.canPlaySound = true;}, true);
 
     }
 
@@ -27,7 +30,7 @@ class CSeekerSmoke extends CEntity {
         this.smoke.h = self.smokeBounds.y * 2;
         this.enemiesInSmoke = {};
         if (self.findPlayers) {
-            if (!this.smokePlace && (this.smokePlace = true) === true) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE");
+            if (!this.smokePlace && (this.smokePlace = true)) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE");
             else if(this.smokeSound) this.smokeSound.updatePanPos(this.output.pos);
             for (let entity of Scene.entityManager.container.values()) {
                 if (this.isEnemyInSmoke(entity)) {
@@ -35,8 +38,9 @@ class CSeekerSmoke extends CEntity {
                 }
             }
         }
-        if(self.taps) AudioPool.play("Weapons/cker90_superBounce.oggSE")
-            .updatePanPos(this.output.pos);
+
+        this.timer.tick(deltaTime);
+        if(self.taps && this.canPlaySound && !(this.canPlaySound = false)) AudioPool.play("Weapons/cker90_superBounce.oggSE").updatePanPos(this.output.pos);
 
 
     }
