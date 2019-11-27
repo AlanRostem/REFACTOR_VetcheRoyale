@@ -20,8 +20,7 @@ export default class CAquaSLG extends CWeapon {
 
     onFire(client, deltaTime) {
         super.onFire(client, deltaTime);
-        this.bulletSound = AudioPool.play("Weapons/aquaslg_s.oggSE")
-            .updatePanPos(this.output.pos);
+        AudioPool.play("Weapons/aquaslg_s.oggSE").updatePanPos(this.output.pos);
     }
 
     update(deltaTime, client) {
@@ -47,8 +46,7 @@ export default class CAquaSLG extends CWeapon {
         if (this.placeHolderSuper && !this.superAbility) this.placeHolderSuper = false;
 
         if (!this.placeHolderSuper && this.superAbility) {
-            this.superSound = AudioPool.play("Weapons/aquaslg_super.oggSE")
-                .updatePanPos(this.output.pos);
+            AudioPool.play("Weapons/aquaslg_super.oggSE").updatePanPos(this.output.pos);
             this.effect2 = EffectManager.createEffect(this.player.output.pos.x - 64, this.player.output.pos.y + this.player.output.height - 64, "SteamBubble", 0);
             this.placeHolderSuper = true;
         }
@@ -92,6 +90,6 @@ AssetManager.addSpriteCreationCallback(() => {
     CAquaSLG.waterAnimation.bind("AquaWaterStart", 0, 0, 24, 6);
 
     EffectManager.configureEffect("AquaWaterEnd", 0, 24, 6, 6, 4, 0.07);
-    EffectManager.configureEffect("SteamBubble", 0, 34, 128, 128, 8, 0.15);
+    EffectManager.configureEffect("SteamBubble", 0, 34, 128, 128, 8, 0.07);
 
 });
