@@ -4,10 +4,12 @@ import R from "../../../../Graphics/Renderer.js";
 import EffectManager from "../../../../Graphics/EffectManager.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
+import CProjectile from "../../CProjectile.js";
+
 
 let explSpeed = 0.05;
 
-class CKineticBomb extends CEntity {
+class CKineticBomb extends CProjectile {
 
     onClientSpawn(dataPack, client) {
         super.onClientSpawn(dataPack, client);

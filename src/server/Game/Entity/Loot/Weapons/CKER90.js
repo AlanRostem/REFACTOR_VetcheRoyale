@@ -48,7 +48,8 @@ class ATBullet extends Projectile {
         }
     }
 
-    forEachNearbyEntity(entity, entityManager) {
+    forEachNearbyEntity(entity, entityManager, deltaTime) {
+        super.forEachNearbyEntity(entity, entityManager, deltaTime);
         if (this.weapon) {
             if (entity.constructor.name === "Player") {
                 if (entity.id !== this.weapon.playerID && !this.getOwner(entityManager).isTeammate(entity)) {
@@ -78,11 +79,12 @@ class ATBullet extends Projectile {
     }
 }
 
+SEEKER_SMOKE_FRICTION = 1.7;
+
 class SeekerSmoke extends Bouncy {
     constructor(ownerID, weapon, x, y, angle) {
         super(ownerID, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
-        this.fric.x = 0.89;
         this.weapon = weapon;
         this.life = 10;
         this.taps = true;
@@ -107,7 +109,7 @@ class SeekerSmoke extends Bouncy {
         if(this.taps === true) this.taps = false;
 
         if (this.side.bottom) {
-            this.vel.x *= this.fric.x;
+            this.fric.x = SEEKER_SMOKE_FRICTION;
         }
 
         if(this.side.top || this.side.bottom || this.side.left || this.side.right) {
@@ -130,7 +132,7 @@ class SeekerSmoke extends Bouncy {
 
 }
 
-const SCOPED_SPEED = 480;
+const SCOPED_SPEED = 5  * 60; //480;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 

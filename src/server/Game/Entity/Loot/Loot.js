@@ -8,6 +8,7 @@ class Loot extends Interactable {
         this.lifeTime = lifeTime;
         this.maxLifeTime = lifeTime;
         this.acc.y = 500;
+        this.fric.x = Loot.AIR_FRICTION;
         this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
 
@@ -37,9 +38,6 @@ class Loot extends Interactable {
         if (this.lifeTime <= 0) {
             this.remove();
         }
-        if (!this.side.bottom) {
-            this.vel.x *= Loot.AIR_FRICTION;
-        }
         super.update(entityManager, deltaTime);
     }
 
@@ -56,7 +54,7 @@ class Loot extends Interactable {
     }
 }
 
-Loot.AIR_FRICTION = 0.9;
+Loot.AIR_FRICTION = 3;
 Loot.PICK_UP_RANGE = Tile.SIZE * 2;
 
 module.exports = Loot;

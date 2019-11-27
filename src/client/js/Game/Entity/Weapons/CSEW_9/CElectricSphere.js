@@ -5,14 +5,20 @@ import R from "../../../../Graphics/Renderer.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Timer from "../../../../../../shared/code/Tools/CTimer.js"
+import CProjectile from "../../CProjectile.js";
 
-class CElectricSphere extends CEntity {
+
+class CElectricSphere extends CProjectile {
 
     constructor(data) {
         super(data);
 
-        this.timer = new Timer(0.5, () => {this.drawStatic = true;}, true);
-        this.timer2=  new Timer(0.75, () => {this.drawStatic = true;}, true);
+        this.timer = new Timer(0.5, () => {
+            this.drawStatic = true;
+        }, true);
+        this.timer2 = new Timer(0.75, () => {
+            this.drawStatic = true;
+        }, true);
 
         this.animationSpec = new SpriteSheet.Animation(0, 7, 8, 0.07);
 
@@ -50,7 +56,7 @@ class CElectricSphere extends CEntity {
 
         if (!player) return;
 
-        if(this.drawStatic) {
+        if (this.drawStatic) {
             lightningToPlayer(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, this.output.pos.x, this.output.pos.y, "White", 1, true);
             this.drawStatic = false;
         }

@@ -178,6 +178,13 @@ class CEntity {
         };
     }
 
+    get center() {
+        return {
+            x: this.output.pos.x + this.width / 2,
+            y: this.output.pos.y + this.height / 2,
+        }
+    }
+
     /**
      * Overridable event called every frame in the game loop. Do custom drawing here.
      */

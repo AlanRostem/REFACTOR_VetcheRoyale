@@ -84,34 +84,32 @@ class Projectile extends Physical {
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         if (entity instanceof Alive) {
             let e = entity;
-            let p = 0;
             let a = {
-                x: this.pos.x - this.vel.x * deltaTime,
-                y: this.pos.y - this.vel.y * deltaTime,
+                x: this.center.x - this.vel.x * deltaTime,
+                y: this.center.y - this.vel.y * deltaTime,
             };
-            let b = this.pos;
+            let b = this.center;
 
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                 this.onEntityCollision(e, entityManager);
-                p = 1
+                return;
             }
 
             if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
                 this.onEntityCollision(e, entityManager);
-                p = 1
+                return;
             }
 
             if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
                 this.onEntityCollision(e, entityManager);
-                p = 1
+                return;
             }
 
             if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
                 this.onEntityCollision(e, entityManager);
-                p = 1
+                return;
             }
 
-            if (p) console.log("haha:", e.id);
         }
     }
 
