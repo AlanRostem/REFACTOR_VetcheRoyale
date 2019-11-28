@@ -6,20 +6,9 @@ class CAdmin {
         this.socket = io("/admin");
         this.callbacks = [];
 
-
-
-
         this.socket.on("adminUpdate", data => {
 
             this.callbacks.forEach(e => e(data));
-
-            /*
-                this.toHTML.createTable("container", "worldTable", this.currentType, this.packet, this.currentType(), (id, type) => {
-                    this.toHTML.clearElement("container");
-                    this.selectFromTable(id, type);
-                    this.packet = {};
-                });
-            */
 
         });
 

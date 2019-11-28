@@ -1,14 +1,10 @@
 import CAdmin from "../admin/CAdmin.js";
-import HTMLCreator from "../HTMLCreator.js";
+import HTMLCreator from "../HTML/HTMLCreator.js";
 
 class CMonitor {
     constructor() {
         this.admin = new CAdmin(this);
         this.HTMLCreator = new HTMLCreator(this);
-    }
-
-    setHTMLData(data){
-        this.HTMLCreator.jsondata = data;
     }
 
     addUpdateCallback(callback){
@@ -18,7 +14,6 @@ class CMonitor {
     emit(event, packet) {
         this.admin.emit(event, packet);
     }
-
 }
 
 

@@ -4,6 +4,7 @@ const Thread = require("../Multithreading/Thread.js");
 const DataBridge = require("../Multithreading/DataBridge.js");
 const Monitor = require("../../admin/server/monitor/Monitor.js");
 
+
 // Class for the main server
 class GameServer {
     constructor(sio) {
@@ -37,6 +38,7 @@ class GameServer {
         }
 
         this.matchMaker.update(this);
+        this.monitor.update(this.deltaTime);
 
         if (Date.now() > 0)
             this.lastTime = Date.now();

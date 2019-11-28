@@ -1,31 +1,9 @@
-Object.isJSON = function (obj) {
-    return obj !== undefined && obj !== null && !(typeof obj === "number" && isNaN(obj)) && typeof obj !== "string" && typeof obj !== "number" && typeof obj !== "boolean";
-};
-
-class HTMLCreator {
+class Table {
     constructor(monitor) {
         this.monitor = monitor;
         this.types = ["World", "Entity", "Player"];
         this.keys = [];
         this.currentTypeIndex = 0;
-
-        this.monitor.addUpdateCallback((data) => {
-            if (Object.keys(data).length) {
-                if (data.keys)
-                    this.addDocReady(() => {
-                        this.createTable("container", "WorldTable",
-                            Object.values(data.data), Object.values(data.keys),
-                            (id) => {
-                                if (this.currentTypeIndex < 1) {
-                                    this.currentTypeIndex++;
-                                    this.selectFromTable(id, this.currentType);
-                                }
-                            });
-                    });
-                else
-                    this.updateTable("WorldTable", data.data);
-            }
-        });
     }
 
     selectFromTable(property, type = "World", msgType = "SELECT_NEW") {
@@ -41,7 +19,6 @@ class HTMLCreator {
     get currentType() {
         return this.types[this.currentTypeIndex];
     }
-
 
     createTable(parent, name, json, props, callback = undefined) {
         parent = $("#" + parent);
@@ -92,18 +69,18 @@ class HTMLCreator {
 
     updateTable(name, json) {
         let table = $("#" + name).DataTable();
-
         Object.keys(json).forEach(id => {
             let row = table.row("#" + $.escapeSelector(id));
             let rowData = row.data();
-            if (rowData) {
+            if (json[id].toRemove) row.remove();
+            else if (rowData) {
                 Object.keys(json[id]).forEach(key => {
                     if (Object.isJSON(rowData[key]))
                         Object.keys(json[id][key]).forEach(prop => {
-                            rowData[key][prop] = json[id][key][prop]
+                            rowData[key][prop] = json[id][key][prop];
                         });
                     else
-                        rowData[key] = json[id][key]
+                        rowData[key] = json[id][key];
                 });
                 row.invalidate();
             } else {
@@ -111,15 +88,34 @@ class HTMLCreator {
                     json[id]
                 );
             }
+
             table.draw(false);
         });
     }
-
 
     addDocReady(callback) {
         $(document).ready(callback());
     };
 
+    update(data) {
+        if (Object.keys(data).length) {
+            if (data.keys)
+                this.addDocReady(() => {
+                    this.createTable("container", "WorldTable",
+                        Object.values(data.data), Object.values(data.keys),
+                        (id) => {
+                            if (this.currentTypeIndex < 1) {
+                                this.currentTypeIndex++;
+                                this.selectFromTable(id, this.currentType);
+                            }
+                        });
+                });
+            else
+                this.addDocReady(() => {
+                    this.updateTable("WorldTable", data.data);
+                })
+        }
+    }
 }
 
-export default HTMLCreator;
+export default Table;

@@ -13,16 +13,17 @@ var auth = require('./admin/server/passport/routeAuth.js')(passport);
 var user = require('./router.js')();
 
 app.use(bodyParser.urlencoded({
-   extended: true
+    extended: true
 }));
 
 app.use(session({
-   secret:'thesecret',
-   saveUninitialized:false,
-   resave:false,
-   cookie:{
-      maxAge:3600000
-   }
+    secret: 'thesecret',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 3600000,
+        //secure: true
+    }
 }));
 
 app.use(passport.initialize());
@@ -48,10 +49,10 @@ var gameServer = new GameServer(io);
 gameServer.start();
 
 process.stdin.on("data", (data) => {
-   try {
-      let object = eval(data.toString());
-      console.log(object);
-   } catch (e) {
-      console.log(e.name + ":", e.message);
-   }
+    try {
+        let object = eval(data.toString());
+        console.log(object);
+    } catch (e) {
+        console.log(e.name + ":", e.message);
+    }
 });

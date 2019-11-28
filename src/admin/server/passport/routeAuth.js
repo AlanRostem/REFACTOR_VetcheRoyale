@@ -19,7 +19,7 @@ module.exports = function (passport) {
     });
 
     router.get('/logout', (req, res)=>{
-        passport.logut(req);
+        passport.logout(req);
         res.redirect("/login");
     });
 

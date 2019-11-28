@@ -1,5 +1,7 @@
 const Admin = require("../admin/SAdmin.js");
 const ClientList = require("../../../server/Networking/ClientList.js");
+var sessionManager = require("../passport/sessionManager.js");
+
 
 class Monitor {
     constructor(io, server){
@@ -9,12 +11,15 @@ class Monitor {
             console.log("\nEstablishing connection to admin... Admin ID: [ " + admin.id + " ]");
             let _admin = new Admin(admin, this.adminList, server);
             this.adminList.addClient(admin.id, _admin);
-
         });
 
         this.on("message", data =>{
             console.log(data);
         });
+    }
+
+    update(deltatime){
+        sessionManager.update(deltatime)
     }
 
     on(event, callback){
