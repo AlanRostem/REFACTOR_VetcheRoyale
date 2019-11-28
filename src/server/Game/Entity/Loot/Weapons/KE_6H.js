@@ -6,6 +6,7 @@ const Bouncy = require("./AttackEntities/Bouncy.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
+const AOEWormHoleScanner = require("../../../Mechanics/Scanners/AOEWormHoleScanner.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const WormHoleEffect = require("../../../Mechanics/Effect/WormHoleEffect.js");
 const Player = require("../../Player/SPlayer.js");
@@ -98,22 +99,18 @@ class KE_6H extends AttackWeapon {
         this.followPoint.radius = 2;
         this.roamingBombs = new ONMap();
         this.configureAttackStats(2.5, 8, 1, 100);
+
         this.modAbility.configureStats(Infinity, 4);
-        this.modAbility.onActivation = (composedWeapon, entityManager) => {
+        this.modAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon.canFire = false;
             this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
-            let entities = this.getOwner(entityManager).entitiesInProximity.container;
-            for (let id in entities) {
-                let e = entities[id];
-                if (e instanceof Player) {
-
-                }
-            }
+            new AOEWormHoleScanner(this.playerID, 8 * 2, this.followPoint, 2, 350, this.getOwner(entityManager).team.players)
+                .areaScan(this.followPoint, entityManager);
         };
 
-        this.modAbility.onDeactivation = (composedWeapon, entityManager) => {
+        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
             composedWeapon.kineticImplosion = false;
             composedWeapon.canFire = true;
         };
@@ -121,7 +118,8 @@ class KE_6H extends AttackWeapon {
             if (weapon.roamingBombs.length <= 0) {
                 weapon.modAbility.deActivate(weapon, game, deltaTime);
             }
-        }
+        };
+
     }
 
     update(entityManager, deltaTime) {

@@ -27,6 +27,9 @@ class AOELOSScanner extends HitScanner {
             var a = originPos;
             var b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
             if (this.entityExceptions.hasOwnProperty(e.id)) continue;
+            if (e.constructor.name === "Player") {
+                console.log(e.id, Object.keys(this.entityExceptions));
+            }
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
