@@ -204,4 +204,9 @@ class CKER90 extends AttackWeapon {
     }
 }
 
+
+/*
+C-KER .90_reload_start,512,512,480,28
+C-KER .90_reload_end,512,540,480,28
+*/
 module.exports = CKER90;
