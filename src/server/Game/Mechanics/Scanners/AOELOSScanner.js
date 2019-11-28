@@ -16,25 +16,22 @@ class AOELOSScanner extends HitScanner {
         this.qtRange.x = originPos.x;
         this.qtRange.y = originPos.y;
 
-        var entities = entityManager.quadTree.query(this.qtRange);
-        for (var e of entities) {
-            var angle = Math.atan2(
+        let entities = entityManager.quadTree.query(this.qtRange);
+        for (let e of entities) {
+            let angle = Math.atan2(
                 e.center.y - originPos.y,
                 e.center.x - originPos.x);
-            var rangePos = new Vector2D(
+            let rangePos = new Vector2D(
                 originPos.x + this.radius * Math.cos(angle),
                 originPos.y + this.radius * Math.sin(angle));
-            var a = originPos;
-            var b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
-            if (this.entityExceptions.hasOwnProperty(e.id)) continue;
-            if (e.constructor.name === "Player") {
-                console.log(e.id, Object.keys(this.entityExceptions));
-            }
+            let a = originPos;
+            let b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
+            if (!this.entityExceptions.hasOwnProperty(e.id))
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
                 Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                var ang = Math.atan2(a.y - b.y, a.x - b.x);
+                let ang = Math.atan2(a.y - b.y, a.x - b.x);
                 this.onEntityHit(e, entityManager, ang);
             }
         }

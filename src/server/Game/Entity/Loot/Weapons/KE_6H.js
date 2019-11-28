@@ -106,7 +106,7 @@ class KE_6H extends AttackWeapon {
             composedWeapon.canFire = false;
             this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
-            new AOEWormHoleScanner(this.playerID, 8 * 2, this.followPoint, 2, 350, this.getOwner(entityManager).team.players)
+            new AOEWormHoleScanner(this.playerID, 8 * 6, this.followPoint, .2, 350, this.getOwner(entityManager).team.players)
                 .areaScan(this.followPoint, entityManager);
         };
 

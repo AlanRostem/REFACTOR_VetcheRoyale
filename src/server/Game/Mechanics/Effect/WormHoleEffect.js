@@ -12,7 +12,6 @@ class WormHoleEffect extends Effect {
     onAppliedToEntity(entity, entityManager, deltaTime) {
         super.onAppliedToEntity(entity, entityManager, deltaTime);
         entity.setMovementState("canMove", false);
-        //console.log("Applied to:", entity.id) // TODO: rm
     }
 
     onDone(entity, entityManager, deltaTime) {

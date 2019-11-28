@@ -14,7 +14,7 @@ class AOEWormHoleScanner extends AOELOSScanner {
     onEntityHit(entity, entityManager, angle) {
         super.onEntityHit(entity, entityManager, angle);
         if (entity instanceof Affectable) {
-            entity.applyEffect(new WormHoleEffect(this.ownerID, this.radius, this.duration, this.pos, this.speed))
+            entity.applyEffect(new WormHoleEffect(entity.id, this.radius, this.duration, this.pos, this.speed))
         }
     }
 }
