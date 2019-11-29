@@ -5,6 +5,8 @@ import R from "../../../../Graphics/Renderer.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 import CProjectile from "../../CProjectile.js";
 import Timer from "../../../../../../shared/code/Tools/CTimer.js";
+import AssetManager from "../../../../AssetManager/AssetManager.js";
+import Vector2D from "../../../../../../shared/code/Math/CVector2D.js";
 
 let enemySprite = new SpriteSheet("detectedEnemy");
 enemySprite.bind("red", 0, 0, 16 * 16, 16);
@@ -18,7 +20,11 @@ class CSeekerSmoke extends CProjectile {
         this.enemiesInSmoke = {};
         this.smokePlace = false;
         this.canPlaySound = true;
-        this.timer = new Timer(0.1, () => {this.canPlaySound = true;}, true);
+        this.timer = new Timer(0.1, () => {
+            this.canPlaySound = true;
+        }, true);
+
+        this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.09);
 
     }
 
@@ -32,7 +38,7 @@ class CSeekerSmoke extends CProjectile {
         this.enemiesInSmoke = {};
         if (self.findPlayers) {
             if (!this.smokePlace && (this.smokePlace = true)) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE");
-            else if(this.smokeSound) this.smokeSound.updatePanPos(this.output.pos);
+            else if (this.smokeSound) this.smokeSound.updatePanPos(this.output.pos);
             for (let entity of Scene.entityManager.container.values()) {
                 if (this.isEnemyInSmoke(entity)) {
                     this.enemiesInSmoke[entity.output.id] = entity;
@@ -41,8 +47,17 @@ class CSeekerSmoke extends CProjectile {
         }
 
         this.timer.tick(deltaTime);
-        if(self.taps && this.canPlaySound && !(this.canPlaySound = false)) AudioPool.play("Weapons/cker90_superBounce.oggSE").updatePanPos(this.output.pos);
+        if (self.taps && this.canPlaySound && !(this.canPlaySound = false)) AudioPool.play("Weapons/cker90_superBounce.oggSE").updatePanPos(this.output.pos);
 
+
+        /* if(this.animationSpec.currentCol === this.animationSpec.endCol) {
+             this.smokeUpdateCells = true;
+
+             this.visitSmoke = new Array(12);
+             for (var f = 0; f < 12; f++) this.visitSmoke[f] = new Array(20).fill(0);
+             this.countSmoke = 12 * 20;
+         }
+         else this.smokeUpdateCells = false;*/
 
     }
 
@@ -61,10 +76,33 @@ class CSeekerSmoke extends CProjectile {
     }
 
     draw() {
-        super.draw();
+        //super.draw();
         let self = this.output;
+
+        R.drawCroppedImage(
+            AssetManager.getMapImage("C-KER .90_smokeGrenade"),
+            0,
+            0,
+            4,
+            6,
+            this.output.pos.x,
+            this.output.pos.y,
+            4,
+            6, true);
+
         if (self.findPlayers) {
-            R.drawRect("gray", this.smoke.x, this.smoke.y, this.smoke.w, this.smoke.h, true);
+
+            CSeekerSmoke.smokeAnimation.animate("C-KER .90_smokeAnimation", this.animationSpec, 216, 136);
+
+            CSeekerSmoke.smokeAnimation.drawAnimated(
+                this.smoke.x - 8 + R.camera.x,
+                this.smoke.y - 8 + R.camera.y
+            );
+
+           // R.drawRect("red", this.smoke.x, this.smoke.y, this.smoke.w, this.smoke.h, true);
+
+
+
             if (Scene.clientRef.isReady()) {
                 if (this.isTeammate(Scene.clientRef.player)) {
                     for (let id in this.enemiesInSmoke) {
@@ -86,3 +124,57 @@ class CSeekerSmoke extends CProjectile {
 }
 
 export default CSeekerSmoke;
+
+AssetManager.addSpriteCreationCallback(() => {
+
+    let canvas = document.createElement("canvas");
+
+    canvas.width = 216 * 4;
+    canvas.height = 136;
+
+    let ctx = canvas.getContext('2d');
+
+    let drawSmoke = new Array(12 * 20);
+    for (let d = 0; d < drawSmoke.length; d++) drawSmoke[d] = new Vector2D(0, 0);
+
+    for (let frames = 0; frames < 4; frames++) {
+
+        let visitSmoke = new Array(12);
+        for (let i = 0; i < 12; i++) visitSmoke[i] = new Array(20).fill(0);
+
+        let countSmoke = 12 * 20;
+        let counter = 0;
+
+        if(!frames) {
+            while (countSmoke) {
+
+                let i = Math.random() * 12 | 0;
+                let j = Math.random() * 20 | 0;
+
+                if (!visitSmoke[i][j]) {
+                    visitSmoke[i][j] = 1;
+                    countSmoke--;
+                    drawSmoke[counter].x = j;
+                    drawSmoke[counter].y = i;
+                    counter++;
+                }
+            }
+        }
+
+        for (var i = 0; i < drawSmoke.length; i++) {
+            ctx.drawImage(
+                AssetManager.getMapImage("C-KER .90_smokeEffect"),
+                frames * 26, 0, 26, 26,
+                drawSmoke[i].x * 10 + frames * 216,
+                drawSmoke[i].y * 10,
+                26, 26
+            );
+        }
+    }
+
+    AssetManager.setMapImage("C-KER .90_smokeAnimation", canvas);
+
+    CSeekerSmoke.smokeAnimation = new SpriteSheet("C-KER .90_smokeAnimation");
+    CSeekerSmoke.smokeAnimation.bind("C-KER .90_smokeAnimation", 0, 0, 216, 136);
+
+});
