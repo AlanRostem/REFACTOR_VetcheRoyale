@@ -33,6 +33,7 @@ class CSeekerSmoke extends CProjectile {
         this.addSmokeParticle = false;
 
         this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.09);
+        this.animationSpecGrenade = new SpriteSheet.Animation(0, 5, 6, 0.1);
 
     }
 
@@ -88,6 +89,13 @@ class CSeekerSmoke extends CProjectile {
         //super.draw();
         let self = this.output;
 
+        CSeekerSmoke.grenadeAnimation.animate("C-KER .90_smokeGrenadeAnimation", this.animationSpecGrenade, 6, 6);
+
+        CSeekerSmoke.grenadeAnimation.drawAnimated(
+            this.output.pos.x + R.camera.x,
+            this.output.pos.y + R.camera.y
+        );
+/*
         R.drawCroppedImage(
             AssetManager.getMapImage("C-KER .90_smokeGrenade"),
             0,
@@ -97,7 +105,7 @@ class CSeekerSmoke extends CProjectile {
             this.output.pos.x,
             this.output.pos.y,
             4,
-            6, true);
+            6, true);*/
 
         if(this.addSmokeParticle && !self.findPlayers && !(this.addSmokeParticle = false) && (Math.abs(this.output.vel.y )> 20 || Math.abs(this.output.vel.x )> 20)) {
             EffectManager.createEffect(this.output.pos.x, this.output.pos.y, "CKERSmokeParticle", 0);
@@ -189,6 +197,9 @@ AssetManager.addSpriteCreationCallback(() => {
 
     CSeekerSmoke.smokeAnimation = new SpriteSheet("C-KER .90_smokeAnimation");
     CSeekerSmoke.smokeAnimation.bind("C-KER .90_smokeAnimation", 0, 0, 216, 136);
+
+    CSeekerSmoke.grenadeAnimation = new SpriteSheet("C-KER .90_smokeGrenadeAnimation");
+    CSeekerSmoke.grenadeAnimation.bind("C-KER .90_smokeGrenadeAnimation", 0, 0, 6, 6);
 
 
     EffectManager.configureEffect("CKERSmokeParticle", 144, 0, 5, 5, 6, 0.08);
