@@ -62,7 +62,6 @@ class KineticBomb extends Bouncy {
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);
-        this.weapon.roamingBombs.remove(this.id);
         this.remove();
     }
 
@@ -97,10 +96,9 @@ class KE_6H extends AttackWeapon {
         super(x, y, "KE-6H", 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
-        this.roamingBombs = new ONMap();
         this.configureAttackStats(2.5, 8, 1, 100);
 
-        this.modAbility.configureStats(Infinity, 4);
+        this.modAbility.configureStats(.2, 4);
         this.modAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon.canFire = false;
@@ -114,11 +112,6 @@ class KE_6H extends AttackWeapon {
             composedWeapon.kineticImplosion = false;
             composedWeapon.canFire = true;
         };
-        this.modAbility.buffs = (weapon, game, deltaTime) => {
-            if (weapon.roamingBombs.length <= 0) {
-                weapon.modAbility.deActivate(weapon, game, deltaTime);
-            }
-        };
 
     }
 
@@ -130,7 +123,6 @@ class KE_6H extends AttackWeapon {
         let bomb = entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(this, player.id, this.id, 0, 0,
                 angle, entityManager));
-        this.roamingBombs.set(bomb.id, 1);
     }
 }
 
