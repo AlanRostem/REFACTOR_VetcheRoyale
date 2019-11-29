@@ -12,6 +12,7 @@ class Damage {
     }
 
     inflict(entity, entityManager, args = {}) {
+        //console.log(entity.constructor.name);
         if (entity instanceof Alive) {
             if (entityManager.getGameRule("pvp")) {
                 if (!entity.dead) {

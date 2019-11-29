@@ -18,6 +18,7 @@ class Projectile extends Physical {
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
+        this._alreadyCollided = false;
 
         this.addStaticSnapShotData(["ownerID"]);
 
@@ -35,6 +36,14 @@ class Projectile extends Physical {
         super.onLeftCollision(tile);
         if (this.shouldRemove) this.remove();
         this.hitTile = true;
+    }
+
+    set alreadyCollided(v) {
+        this._alreadyCollided = v;
+    }
+
+    get alreadyCollided() {
+        return this._alreadyCollided;
     }
 
     onBottomCollision(tile) {
@@ -124,9 +133,12 @@ class Projectile extends Physical {
         if (entity instanceof Alive) {
             if (!entity.team) return; // TODO: FIX HACK
             if (!entity.team.hasEntity(this.ownerID)) {
-                this.onPlayerHit(entity, entityManager);
-                if (this.shouldRemove) {
-                    this.remove();
+                if (this.alreadyCollided === false) { // TODO: Find out why this if doesn't work having it on top of: if (entity instanceof Alive) {
+                    this.onPlayerHit(entity, entityManager);
+                    if (this.shouldRemove) {
+                        this.remove();
+                    }
+                    this.alreadyCollided = true;
                 }
             }
         }

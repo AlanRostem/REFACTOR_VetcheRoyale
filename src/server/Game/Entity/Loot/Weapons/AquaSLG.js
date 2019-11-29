@@ -2,27 +2,8 @@ const AttackWeapon = require("./Base/AttackWeapon.js");
 const ModAbility = require("./Base/ModAbility.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
-const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
-const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
 const Tile = require("../../../TileBased/Tile.js");
-const Alive = require("../../Traits/Alive.js");
-
-
-class AOEKnockBackDamage extends AOEDamage {
-    constructor(ownerID, x, y, radius, knockBackSpeed, value, exceptions) {
-        super(ownerID, x, y, radius, value, exceptions);
-        this.knockBackSpeed = knockBackSpeed;
-    }
-
-    inflict(entity, entityManager, a) {
-        super.inflict(entity, entityManager, a);
-        if (entity instanceof Alive) {
-            entity.applyEffect(new KnockBackEffect(entity.id,
-                -Math.cos(a) * this.knockBackSpeed,
-                -Math.sin(a) * this.knockBackSpeed / 2, 0.9), entityManager);
-        }
-    }
-}
+const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage.js");
 
 // Projectile fired by the AquaSLG
 class IceBullet extends Projectile {
@@ -44,13 +25,6 @@ class IceBullet extends Projectile {
     onPlayerHit(player, entityManager) {
         this.damage.inflict(player, entityManager);
         this.remove();
-    }
-
-    update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
-        if (this.getOwner(entityManager)) {
-
-        }
     }
 }
 
@@ -99,10 +73,7 @@ class AquaSLG extends AttackWeapon {
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
-            let exceptions = {};
-            for (let key in entityManager.getEntity(this.getOwner(entityManager).id).team.players) {
-                exceptions[key] = entityManager.getEntity(this.getOwner(entityManager).id).team.players[key];
-            }
+            let exceptions = this.getOwner(entityManager).team.players;
             this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
             this.areaDmg.applyAreaOfEffect(entityManager);
         };

@@ -28,7 +28,7 @@ class QuadTree {
         }
 
         for (let e of this.entities) {
-            if (range.myContains(e)) {
+            if (range.myContains(e) && !found.includes(e)) { // TODO: Optimize
                 found.push(e);
             }
         }

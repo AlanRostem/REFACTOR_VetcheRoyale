@@ -3,26 +3,9 @@ const AttackWeapon = require("./Base/AttackWeapon.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
 const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
-const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const AOEWormHoleScanner = require("../../../Mechanics/Scanners/AOEWormHoleScanner.js");
-const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
-const Alive = require("../../Traits/Alive.js");
+const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage.js");
 
-// Applies a knock back effect to players hit by the
-// area of effect damage.
-class AOEKnockBackDamage extends AOEDamage {
-    constructor(ownerID, x, y, radius, knockBackSpeed, value, exceptions) {
-        super(ownerID, x, y, radius, value, exceptions);
-        this.knockBackSpeed = knockBackSpeed;
-    }
-
-    onInflict(entity, entityManager, a) {
-        super.inflict(entity, entityManager, a);
-        entity.applyEffect(new KnockBackEffect(entity.id,
-            -Math.cos(a.angle) * this.knockBackSpeed,
-            -Math.sin(a.angle) * this.knockBackSpeed / 2, 0.9), entityManager);
-    }
-}
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
