@@ -46,7 +46,7 @@ class EntityManager {
         for (let i = 0; i < this.entitiesQueuedToDelete.length; i++) {
             this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
             delete this.container[this.entitiesQueuedToDelete[i]];
-            this.entitiesQueuedToDelete.splice(i);
+            this.entitiesQueuedToDelete.splice(i, 1);
         }
         // TODO: Update each "entitiesInProximity" and other emit related shit for each player here in a separate loop
     }

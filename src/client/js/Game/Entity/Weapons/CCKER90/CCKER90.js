@@ -5,6 +5,8 @@ import UI from "../../../../UI/UI.js";
 import Vector2D from "../../../../../../shared/code/Math/CVector2D.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 import CTimer from "../../../../../../shared/code/Tools/CTimer.js";
+import EffectManager from "../../../../Graphics/EffectManager.js";
+import AssetManager from "../../../../AssetManager/AssetManager.js";
 
 class CCKER90 extends CWeapon {
     constructor(props) {
@@ -62,3 +64,11 @@ class CCKER90 extends CWeapon {
 }
 
 export default CCKER90;
+
+
+AssetManager.addSpriteCreationCallback(() => {
+
+    EffectManager.configureEffect("C-KER .90_reload_start", 0, 30, 4, 4, 4, 0.05);
+    EffectManager.configureEffect("C-KER .90_reload_end", 0, 30, 4, 4, 4, 0.05);
+
+});
