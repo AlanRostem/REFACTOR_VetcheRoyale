@@ -53,7 +53,7 @@ class SnapShotGenerator{
     removeDynamicSnapshotData(key) {
         delete this.snapShot[key];
         let i = this.dynamicValues.indexOf(key);
-        this.dynamicValues.splice(i);
+        this.dynamicValues.splice(i, 1);
     }
 
     setStaticSnapshotData(key, value) {

@@ -99,7 +99,7 @@ class CSeekerSmoke extends CProjectile {
             4,
             6, true);
 
-        if(this.addSmokeParticle && !self.findPlayers && !(this.addSmokeParticle = false) && Math.abs(this.output.vel.y )> 20) {
+        if(this.addSmokeParticle && !self.findPlayers && !(this.addSmokeParticle = false) && (Math.abs(this.output.vel.y )> 20 || Math.abs(this.output.vel.x )> 20)) {
             EffectManager.createEffect(this.output.pos.x, this.output.pos.y, "CKERSmokeParticle", 0);
         }
 

@@ -74,7 +74,7 @@ class EntityManager {
         for (var i = 0; i &lt; this.entitiesQueuedToDelete.length; i++) {
             this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
             delete this.container[this.entitiesQueuedToDelete[i]];
-            this.entitiesQueuedToDelete.splice(i);
+            this.entitiesQueuedToDelete.splice(i, 1);
         }
     }
 

@@ -29,7 +29,7 @@ export default class ObjectNotationMap {
 
     remove(key) {
         this._count--;
-        this._arrayContainer.splice(this._arrayContainer.indexOf(this._jsonContainer[key]));
+        this._arrayContainer.splice(this._arrayContainer.indexOf(this._jsonContainer[key]), 1);
         delete this._jsonContainer[key];
     }
 
