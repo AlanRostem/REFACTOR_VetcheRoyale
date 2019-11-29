@@ -75,10 +75,10 @@ class Projectile extends Physical {
     }
 
     getOwner(entityManager) {
-        if (entityManager.getEntity(this.playerID)) {
-            return entityManager.getEntity(this.playerID);
+        if (entityManager.getEntity(this.ownerID)) {
+            return entityManager.getEntity(this.ownerID);
         }
-        console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name).stack);
+        console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name + "because id was " + this.ownerID).stack);
         return WeaponItem.EMPTY_PLAYER;
     }
 
