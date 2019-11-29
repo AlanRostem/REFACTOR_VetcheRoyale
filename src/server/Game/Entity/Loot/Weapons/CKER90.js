@@ -106,14 +106,14 @@ class SeekerSmoke extends Bouncy {
     }
 
     update(entityManager, deltaTime) {
-        if(this.taps === true) this.taps = false;
+        if (this.taps === true) this.taps = false;
 
         if (this.side.bottom) {
             this.fric.x = SEEKER_SMOKE_FRICTION;
         }
 
-        if(this.side.top || this.side.bottom || this.side.left || this.side.right) {
-            if(!this.findPlayers) this.taps = true;
+        if (this.side.top || this.side.bottom || this.side.left || this.side.right) {
+            if (!this.findPlayers) this.taps = true;
         }
 
         if (this.findPlayers) {

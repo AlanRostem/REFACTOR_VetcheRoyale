@@ -65,6 +65,11 @@ class KineticBomb extends Bouncy {
         this.remove();
     }
 
+    onRemoved() {
+        super.onRemoved();
+        this.weapon.roamingBombs.remove(this.id);
+    }
+
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
@@ -91,6 +96,8 @@ class KineticBomb extends Bouncy {
     }
 }
 
+const RETRACTION_SCANNER = new AOEWormHoleScanner(null, 8 * 6, null, .2, 350, null);
+
 class KE_6H extends AttackWeapon {
     constructor(x, y) {
         super(x, y, "KE-6H", 0, 0, 0);
@@ -104,8 +111,10 @@ class KE_6H extends AttackWeapon {
             composedWeapon.canFire = false;
             this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
             this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
-            new AOEWormHoleScanner(this.playerID, 8 * 6, this.followPoint, .2, 350, this.getOwner(entityManager).team.players)
-                .areaScan(this.followPoint, entityManager);
+            RETRACTION_SCANNER.ownerID = this.playerID;
+            RETRACTION_SCANNER.pos = this.followPoint;
+            RETRACTION_SCANNER.entityExceptions = this.getOwner(entityManager).team.players;
+            RETRACTION_SCANNER.areaScan(this.followPoint, entityManager);
         };
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {

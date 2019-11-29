@@ -1,11 +1,11 @@
 const Vector2D = require("../../../../../../shared/code/Math/SVector2D");
-
 const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Alive = require("../../../Traits/Alive.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
 const TileCollider = require("../../../../TileBased/TileCollider.js");
 const Tile = require("../../../../TileBased/Tile.js");
+const WeaponItem = require("../Base/WeaponItem.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
@@ -66,7 +66,11 @@ class Projectile extends Physical {
     }
 
     getOwner(entityManager) {
-        return entityManager.getEntity(this.ownerID);
+        if (entityManager.getEntity(this.playerID)) {
+            return entityManager.getEntity(this.playerID);
+        }
+        console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name).stack);
+        return WeaponItem.EMPTY_PLAYER;
     }
 
     update(entityManager, deltaTime) {
