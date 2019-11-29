@@ -8,10 +8,16 @@ import Timer from "../../../../../../shared/code/Tools/CTimer.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
 import Vector2D from "../../../../../../shared/code/Math/CVector2D.js";
 import EffectManager from "../../../../Graphics/EffectManager.js";
+import UserPlayer from "../../Player/UserPlayer.js";
 
 let enemySprite = new SpriteSheet("detectedEnemy");
-enemySprite.bind("red", 0, 0, 16 * 16, 16);
+enemySprite.bind("red", 0, 0, 16 * 7, 16);
 enemySprite.setCentralOffset(4);
+
+
+let teamSprite = new SpriteSheet("detectedTeam");
+teamSprite.bind("white", 0, 0, 16 * 7, 16);
+teamSprite.setCentralOffset(4);
 
 class CSeekerSmoke extends CProjectile {
 
@@ -19,6 +25,7 @@ class CSeekerSmoke extends CProjectile {
         super(data);
         this.smoke = {};
         this.enemiesInSmoke = {};
+        this.teammatesInSmoke = {};
         this.smokePlace = false;
         this.canPlaySound = true;
         this.timer = new Timer(0.1, () => {
@@ -45,12 +52,20 @@ class CSeekerSmoke extends CProjectile {
         this.smoke.w = self.smokeBounds.x * 2;
         this.smoke.h = self.smokeBounds.y * 2;
         this.enemiesInSmoke = {};
+        this.teammatesInSmoke = {};
         if (self.findPlayers) {
             if (!this.smokePlace && (this.smokePlace = true)) this.smokeSound = AudioPool.play("Weapons/cker90_super.oggSE");
             else if (this.smokeSound) this.smokeSound.updatePanPos(this.output.pos);
+
             for (let entity of Scene.entityManager.container.values()) {
                 if (this.isEnemyInSmoke(entity)) {
                     this.enemiesInSmoke[entity.output.id] = entity;
+                }
+            }
+
+            for (let entity of Scene.entityManager.container.values()) {
+                if (this.isTeammateInSmoke(entity)) {
+                    this.teammatesInSmoke[entity.output.id] = entity;
                 }
             }
         }
@@ -99,6 +114,14 @@ class CSeekerSmoke extends CProjectile {
             && player.output.pos.x + player.width > this.smoke.x
             && player.output.pos.x < (this.smoke.x + this.smoke.w)
             && !this.isTeammate(player) && player instanceof OtherPlayer;
+    }
+
+    isTeammateInSmoke(player) {
+        return player.output.pos.y + player.height > this.smoke.y
+            && player.output.pos.y < (this.smoke.y + this.smoke.h)
+            && player.output.pos.x + player.width > this.smoke.x
+            && player.output.pos.x < (this.smoke.x + this.smoke.w)
+            && this.isTeammate(player)/* && player instanceof UserPlayer*/;
     }
 
     draw() {
@@ -152,6 +175,19 @@ class CSeekerSmoke extends CProjectile {
                         enemySprite.drawAnimated(
                             Math.round(enemy.output.pos.x) + R.camera.displayPos.x,
                             Math.round(enemy.output.pos.y) + R.camera.displayPos.y);
+                        SpriteSheet.end();
+                    }
+
+                    for (let id in this.teammatesInSmoke) {
+                        let team = this.teammatesInSmoke[id];
+                        teamSprite.animateFrom("white", team.animations.getCurrentAnim(), 16, 16);
+                        SpriteSheet.beginChanges();
+                        if (team.movementState.direction === "left") {
+                            teamSprite.flipX();
+                        }
+                        teamSprite.drawAnimated(
+                            Math.round(team.output.pos.x) + R.camera.displayPos.x,
+                            Math.round(team.output.pos.y) + R.camera.displayPos.y);
                         SpriteSheet.end();
                     }
                 }
