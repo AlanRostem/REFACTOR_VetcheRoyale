@@ -1,4 +1,4 @@
-const Interactable = require("../../Traits/Interactable.js");
+const StaticInteractable = require("../../Traits/Interactable/StaticInteractable.js");
 const LootRNG = require("../LootRNG.js");
 
 /**
@@ -8,7 +8,7 @@ const LootRNG = require("../LootRNG.js");
  * @see LootRNG
  * @see Loot
  */
-class LootCrate extends Interactable {
+class LootCrate extends StaticInteractable {
     static STATIC_SNAPSHOT_TEMPLATE = [
         "level"
     ];
