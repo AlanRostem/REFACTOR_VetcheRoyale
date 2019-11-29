@@ -7,6 +7,7 @@ import CProjectile from "../../CProjectile.js";
 import Timer from "../../../../../../shared/code/Tools/CTimer.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
 import Vector2D from "../../../../../../shared/code/Math/CVector2D.js";
+import EffectManager from "../../../../Graphics/EffectManager.js";
 
 let enemySprite = new SpriteSheet("detectedEnemy");
 enemySprite.bind("red", 0, 0, 16 * 16, 16);
@@ -23,6 +24,13 @@ class CSeekerSmoke extends CProjectile {
         this.timer = new Timer(0.1, () => {
             this.canPlaySound = true;
         }, true);
+
+        this.timer2 = new Timer(0.15, () => {
+            this.addSmokeParticle = true;
+        }, true);
+
+
+        this.addSmokeParticle = false;
 
         this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.09);
 
@@ -47,6 +55,7 @@ class CSeekerSmoke extends CProjectile {
         }
 
         this.timer.tick(deltaTime);
+        this.timer2.tick(deltaTime);
         if (self.taps && this.canPlaySound && !(this.canPlaySound = false)) AudioPool.play("Weapons/cker90_superBounce.oggSE").updatePanPos(this.output.pos);
 
 
@@ -89,6 +98,10 @@ class CSeekerSmoke extends CProjectile {
             this.output.pos.y,
             4,
             6, true);
+
+        if(this.addSmokeParticle && !self.findPlayers && !(this.addSmokeParticle = false) && Math.abs(this.output.vel.y )> 20) {
+            EffectManager.createEffect(this.output.pos.x, this.output.pos.y, "CKERSmokeParticle", 0);
+        }
 
         if (self.findPlayers) {
 
@@ -176,5 +189,8 @@ AssetManager.addSpriteCreationCallback(() => {
 
     CSeekerSmoke.smokeAnimation = new SpriteSheet("C-KER .90_smokeAnimation");
     CSeekerSmoke.smokeAnimation.bind("C-KER .90_smokeAnimation", 0, 0, 216, 136);
+
+
+    EffectManager.configureEffect("CKERSmokeParticle", 144, 0, 5, 5, 6, 0.08);
 
 });
