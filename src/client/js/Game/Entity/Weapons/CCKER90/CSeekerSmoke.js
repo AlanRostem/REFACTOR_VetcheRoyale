@@ -26,14 +26,6 @@ class CSeekerSmoke extends CProjectile {
 
         this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.09);
 
-        this.visitSmoke = new Array(12);
-        for (var i = 0; i < 12; i++) this.visitSmoke[i] = new Array(20).fill(0);
-
-        this.countSmoke = 12 * 20;
-        this.smokeUpdateCells = true;
-
-        this.drawSmoke = new Array(12*20);
-        for(var d = 0; d<this.drawSmoke.length; d++) this.drawSmoke[d] = new Vector2D(0,0);
     }
 
     update(deltaTime, client) {
@@ -57,32 +49,15 @@ class CSeekerSmoke extends CProjectile {
         this.timer.tick(deltaTime);
         if (self.taps && this.canPlaySound && !(this.canPlaySound = false)) AudioPool.play("Weapons/cker90_superBounce.oggSE").updatePanPos(this.output.pos);
 
-        CSeekerSmoke.smokeAnimation.animate("C-KER .90_smokeEffect", this.animationSpec, 26, 26);
 
-        var counter = 0;
+        /* if(this.animationSpec.currentCol === this.animationSpec.endCol) {
+             this.smokeUpdateCells = true;
 
-        while (this.countSmoke && this.smokeUpdateCells && !(this.animationSpec.currentCol === this.animationSpec.endCol)) {
-
-            var i = Math.random() * 12 | 0;
-            var j = Math.random() * 20 | 0;
-
-            if (!this.visitSmoke[i][j]) {
-                this.visitSmoke[i][j] = 1;
-                this.countSmoke--;
-                this.drawSmoke[counter].x = j;
-                this.drawSmoke[counter].y = i;
-                counter++;
-            }
-        }
-
-       /* if(this.animationSpec.currentCol === this.animationSpec.endCol) {
-            this.smokeUpdateCells = true;
-
-            this.visitSmoke = new Array(12);
-            for (var f = 0; f < 12; f++) this.visitSmoke[f] = new Array(20).fill(0);
-            this.countSmoke = 12 * 20;
-        }
-        else this.smokeUpdateCells = false;*/
+             this.visitSmoke = new Array(12);
+             for (var f = 0; f < 12; f++) this.visitSmoke[f] = new Array(20).fill(0);
+             this.countSmoke = 12 * 20;
+         }
+         else this.smokeUpdateCells = false;*/
 
     }
 
@@ -116,15 +91,17 @@ class CSeekerSmoke extends CProjectile {
             6, true);
 
         if (self.findPlayers) {
-            //  R.drawRect("gray", this.smoke.x, this.smoke.y, this.smoke.w, this.smoke.h, true);
+
+            CSeekerSmoke.smokeAnimation.animate("C-KER .90_smokeAnimation", this.animationSpec, 216, 136);
+
+            CSeekerSmoke.smokeAnimation.drawAnimated(
+                this.smoke.x - 8 + R.camera.x,
+                this.smoke.y - 8 + R.camera.y
+            );
+
+           // R.drawRect("red", this.smoke.x, this.smoke.y, this.smoke.w, this.smoke.h, true);
 
 
-
-            for(var i = 0; i<this.drawSmoke.length; i++) {
-                CSeekerSmoke.smokeAnimation.drawAnimated(
-                    this.smoke.x + this.drawSmoke[i].x * 10 - 8 + R.camera.x,
-                    this.smoke.y + this.drawSmoke[i].y * 10 - 8 + R.camera.y);
-            }
 
             if (Scene.clientRef.isReady()) {
                 if (this.isTeammate(Scene.clientRef.player)) {
@@ -149,6 +126,55 @@ class CSeekerSmoke extends CProjectile {
 export default CSeekerSmoke;
 
 AssetManager.addSpriteCreationCallback(() => {
-    CSeekerSmoke.smokeAnimation = new SpriteSheet("C-KER .90_smokeEffect");
-    CSeekerSmoke.smokeAnimation.bind("C-KER .90_smokeEffect", 0, 0, 104, 26);
+
+    let canvas = document.createElement("canvas");
+
+    canvas.width = 216 * 4;
+    canvas.height = 136;
+
+    let ctx = canvas.getContext('2d');
+
+    let drawSmoke = new Array(12 * 20);
+    for (let d = 0; d < drawSmoke.length; d++) drawSmoke[d] = new Vector2D(0, 0);
+
+    for (let frames = 0; frames < 4; frames++) {
+
+        let visitSmoke = new Array(12);
+        for (let i = 0; i < 12; i++) visitSmoke[i] = new Array(20).fill(0);
+
+        let countSmoke = 12 * 20;
+        let counter = 0;
+
+        if(!frames) {
+            while (countSmoke) {
+
+                let i = Math.random() * 12 | 0;
+                let j = Math.random() * 20 | 0;
+
+                if (!visitSmoke[i][j]) {
+                    visitSmoke[i][j] = 1;
+                    countSmoke--;
+                    drawSmoke[counter].x = j;
+                    drawSmoke[counter].y = i;
+                    counter++;
+                }
+            }
+        }
+
+        for (var i = 0; i < drawSmoke.length; i++) {
+            ctx.drawImage(
+                AssetManager.getMapImage("C-KER .90_smokeEffect"),
+                frames * 26, 0, 26, 26,
+                drawSmoke[i].x * 10 + frames * 216,
+                drawSmoke[i].y * 10,
+                26, 26
+            );
+        }
+    }
+
+    AssetManager.setMapImage("C-KER .90_smokeAnimation", canvas);
+
+    CSeekerSmoke.smokeAnimation = new SpriteSheet("C-KER .90_smokeAnimation");
+    CSeekerSmoke.smokeAnimation.bind("C-KER .90_smokeAnimation", 0, 0, 216, 136);
+
 });
