@@ -58,11 +58,6 @@ class UserPlayer extends OtherPlayer {
         R.ctx.restore();
     }
 
-    draw() {
-        super.draw();
-        //   R.drawLine(this.output.pos.x, this.output.pos.y, this.itemScanner.end.x, this.itemScanner.end.y, "White", 1, true);
-    }
-
     checkClosestItems() {
         for (var pair of Scene.entityManager.container) {
             let entity = pair[1];
@@ -92,6 +87,10 @@ class UserPlayer extends OtherPlayer {
         this.itemsNearby.clear();
     }
 
+    hasWeapon() {
+        return !!this.weapon;
+    }
+
     update(deltaTime, client, currentMap) {
         super.update(deltaTime, client);
         this.currentMap = currentMap;
@@ -110,8 +109,9 @@ class UserPlayer extends OtherPlayer {
         }
 
         R.camera.setConfig("followPlayer", true);
-
-        this.checkClosestItems();
+        if (!this.hasWeapon()) {
+            this.checkClosestItems();
+        }
     }
 }
 
