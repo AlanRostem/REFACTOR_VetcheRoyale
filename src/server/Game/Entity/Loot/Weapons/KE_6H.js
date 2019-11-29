@@ -65,11 +65,6 @@ class KineticBomb extends Bouncy {
         this.remove();
     }
 
-    onRemoved() {
-        super.onRemoved();
-        this.weapon.roamingBombs.remove(this.id);
-    }
-
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
