@@ -1,6 +1,4 @@
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
-const ONMap = require("../../../../../shared/code/DataStructures/SObjectNotationMap.js");
-
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const Bouncy = require("./AttackEntities/Bouncy.js");
 const Tile = require("../../../TileBased/Tile.js");
@@ -8,8 +6,6 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEDamage = require("../../../Mechanics/Damage/AOEDamage.js");
 const AOEWormHoleScanner = require("../../../Mechanics/Scanners/AOEWormHoleScanner.js");
 const KnockBackEffect = require("../../../Mechanics/Effect/KnockBackEffect.js");
-const WormHoleEffect = require("../../../Mechanics/Effect/WormHoleEffect.js");
-const Player = require("../../Player/SPlayer.js");
 const Alive = require("../../Traits/Alive.js");
 
 // Applies a knock back effect to players hit by the
@@ -20,13 +16,11 @@ class AOEKnockBackDamage extends AOEDamage {
         this.knockBackSpeed = knockBackSpeed;
     }
 
-    inflict(entity, entityManager, a) {
+    onInflict(entity, entityManager, a) {
         super.inflict(entity, entityManager, a);
-        if (entity instanceof Alive) {
-            entity.applyEffect(new KnockBackEffect(entity.id,
-                -Math.cos(a) * this.knockBackSpeed,
-                -Math.sin(a) * this.knockBackSpeed / 2, 0.9), entityManager);
-        }
+        entity.applyEffect(new KnockBackEffect(entity.id,
+            -Math.cos(a.angle) * this.knockBackSpeed,
+            -Math.sin(a.angle) * this.knockBackSpeed / 2, 0.9), entityManager);
     }
 }
 
@@ -91,7 +85,7 @@ class KineticBomb extends Bouncy {
     }
 }
 
-const RETRACTION_SCANNER = new AOEWormHoleScanner(null, 8 * 6, null, .2, 350, null);
+const RETRACTION_SCANNER = new AOEWormHoleScanner(null, Tile.SIZE * 6, null, .2, 350, null);
 
 class KE_6H extends AttackWeapon {
     constructor(x, y) {
@@ -119,12 +113,8 @@ class KE_6H extends AttackWeapon {
 
     }
 
-    update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
-    }
-
     fire(player, entityManager, deltaTime, angle) {
-        let bomb = entityManager.spawnEntity(this.center.x, this.center.y,
+        entityManager.spawnEntity(this.center.x, this.center.y,
             new KineticBomb(this, player.id, this.id, 0, 0,
                 angle, entityManager));
     }
