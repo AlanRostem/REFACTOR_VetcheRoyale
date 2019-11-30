@@ -1,11 +1,9 @@
 const Vector2D = require("../../../../../../shared/code/Math/SVector2D");
 const Physical = require("../../../Traits/Physical.js");
-const Player = require("../../../Player/SPlayer.js");
 const Alive = require("../../../Traits/Alive.js");
-const Damage = require("../../../../Mechanics/Damage/Damage.js");
 const TileCollider = require("../../../../TileBased/TileCollider.js");
-const Tile = require("../../../../TileBased/Tile.js");
 const WeaponItem = require("../Base/WeaponItem.js");
+const HitScanner = require("../../../../Mechanics/Scanners/HitScanner.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
@@ -18,7 +16,7 @@ class Projectile extends Physical {
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
-        this._alreadyCollided = false;
+        this.alreadyCollided = false;
 
         this.addStaticSnapShotData(["ownerID"]);
 
@@ -36,14 +34,6 @@ class Projectile extends Physical {
         super.onLeftCollision(tile);
         if (this.shouldRemove) this.remove();
         this.hitTile = true;
-    }
-
-    set alreadyCollided(v) {
-        this._alreadyCollided = v;
-    }
-
-    get alreadyCollided() {
-        return this._alreadyCollided;
     }
 
     onBottomCollision(tile) {
@@ -96,31 +86,11 @@ class Projectile extends Physical {
 
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         if (entity instanceof Alive) {
-            let e = entity;
-            let a = {
+            if (HitScanner.intersectsEntity({
                 x: this.center.x - this.vel.x * deltaTime,
                 y: this.center.y - this.vel.y * deltaTime,
-            };
-            let b = this.center;
-
-            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                this.onEntityCollision(e, entityManager);
-                return;
-            }
-
-            if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
-                this.onEntityCollision(e, entityManager);
-                return;
-            }
-
-            if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
-                this.onEntityCollision(e, entityManager);
-                return;
-            }
-
-            if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                this.onEntityCollision(e, entityManager);
-                return;
+            }, this.center, entity)) {
+                this.onEntityCollision(entity, entityManager);
             }
 
         }
