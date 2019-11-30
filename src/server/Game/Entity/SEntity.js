@@ -1,5 +1,4 @@
 const Vector2D = require("../../../shared/code/Math/SVector2D");
-const typeCheck = require("../../../shared/code/Debugging/StypeCheck.js");
 const SnapShotGenerator = require("./Management/SnapShotGenerator.js");
 const ProximityEntityManager = require("./Management/ProximityEntityManager.js");
 
