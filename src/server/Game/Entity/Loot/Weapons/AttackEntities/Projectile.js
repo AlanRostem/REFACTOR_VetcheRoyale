@@ -7,6 +7,10 @@ const HitScanner = require("../../../../Mechanics/Scanners/HitScanner.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
+    static _ = (() => {
+        Projectile.addStaticValues("ownerID");
+    })();
+
     constructor(ownerID, x, y, w, h, angle, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
         this.ownerID = ownerID;
@@ -17,8 +21,6 @@ class Projectile extends Physical {
         this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
         this.alreadyCollided = false;
-
-        this.addStaticSnapShotData(["ownerID"]);
 
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);

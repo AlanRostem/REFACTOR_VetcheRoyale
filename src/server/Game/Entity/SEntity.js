@@ -1,9 +1,45 @@
 const Vector2D = require("../../../shared/code/Math/SVector2D");
 const SnapShotGenerator = require("./Management/SnapShotGenerator.js");
+const SnapShotTemplate = require("./Management/SnapShotTemplate.js");
 const ProximityEntityManager = require("./Management/ProximityEntityManager.js");
 
 // Base class of dynamic objects in the game world.
 class SEntity {
+    static SNAPSHOT_TEMPLATE = new SnapShotTemplate(SEntity);
+    static _ = (() => {
+        SEntity.SNAPSHOT_TEMPLATE.addStaticValues(
+            "id",
+            "width",
+            "height",
+        );
+        SEntity.SNAPSHOT_TEMPLATE.addDynamicValues(
+            "pos",
+            "removed",
+            "color",
+            "entityType",
+            "entityOrder");
+    })();
+
+    static validateSnapShotDerivation() {
+        if (this.SNAPSHOT_TEMPLATE.currentConstructor !== this.name) {
+            let superStatic = this.SNAPSHOT_TEMPLATE.referenceTemplate;
+            let superDynamic = this.SNAPSHOT_TEMPLATE.dynamicTemplate;
+            this.SNAPSHOT_TEMPLATE = new SnapShotTemplate(this);
+            this.SNAPSHOT_TEMPLATE.addStaticValues(...superStatic);
+            this.SNAPSHOT_TEMPLATE.addDynamicValues(...superDynamic);
+        }
+    }
+
+    static addStaticValues(...values) {
+        this.validateSnapShotDerivation();
+        this.SNAPSHOT_TEMPLATE.addStaticValues(...values);
+    }
+
+    static addDynamicValues(...values) {
+        this.validateSnapShotDerivation();
+        this.SNAPSHOT_TEMPLATE.addDynamicValues(...values);
+    }
+
     constructor(x, y, width, height, id) {
         this.pos = new Vector2D(x, y);
         this.width = width;
@@ -15,20 +51,7 @@ class SEntity {
         this.color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
         this.homeWorldID = -1;
         this.entityOrder = 0;
-        this.snapShotGenerator = new SnapShotGenerator(this,
-        [
-            "id",
-            "width",
-            "height",
-        ],
-        [
-            "pos",
-            "removed",
-            "color",
-            "entityType",
-            "entityOrder"
-        ]);
-
+        this.snapShotGenerator = new SnapShotGenerator(this);
         this.entitiesInProximity = new ProximityEntityManager(this);
     }
 
@@ -49,20 +72,12 @@ class SEntity {
         this.entitiesInProximity.qtBounds.h = y;
     }
 
-    setStaticSnapshotData(key, value) {
-        this.snapShotGenerator.setStaticSnapshotData(key, value);
-    }
-
     setWorld(game) {
         this.homeWorldID = game.id;
     }
 
-    addDynamicSnapShotData(array) {
-        this.snapShotGenerator.addDynamicValues(this, array);
-    }
-
     addStaticSnapShotData(array) {
-        this.snapShotGenerator.addStaticValues(this, array);
+
     }
 
     initFromEntityManager(entityManager) {

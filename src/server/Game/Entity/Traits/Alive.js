@@ -2,6 +2,10 @@ const Affectable = require("./Affectable.js");
 
 // Entity with HP and regenerative abilities.
 class Alive extends Affectable {
+    static _ = (() => {
+        Alive.addDynamicValues("isAlive");
+    })();
+
     constructor(x, y, w, h, HP = 100, regen = false, regenPerTick = 1, regenSpeed = 0.2, regenCoolDown = 10, id) {
         super(x, y, w, h, id);
 
@@ -10,9 +14,6 @@ class Alive extends Affectable {
         this.isAlive = true;
         this.killed = false;
         this.killer = null; // Player who killed this entity
-        this.addDynamicSnapShotData([
-           "isAlive"
-        ]);
         this.shouldRegen = regen;
         if (regen) {
             this.regenPerTick = regenPerTick;

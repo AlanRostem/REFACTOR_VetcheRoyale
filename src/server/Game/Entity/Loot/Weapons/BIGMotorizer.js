@@ -98,9 +98,6 @@ class BIGMotorizer extends AttackWeapon {
             }
         };
         this.thunderPulseRange = 40 * 8;
-        this.addDynamicSnapShotData([
-            "thunderPulsePos"
-        ]);
     }
 
     onModActivation(entityManager, deltaTime) {

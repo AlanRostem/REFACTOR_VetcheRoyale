@@ -10,6 +10,10 @@ const Alive = require("../../Traits/Alive.js");
 
 // Projectile fired by the SEW-9 weapon
 class ElectricSphere extends Projectile {
+    static _ = (() => {
+        ElectricSphere.addDynamicValues("secondary")
+    })();
+
     constructor(ownerID, weaponID, x, y, angle, entityManager) {
         super(ownerID, x, y, 3, 3, angle, 0);
         this.radius = 3;
@@ -17,7 +21,6 @@ class ElectricSphere extends Projectile {
         this.velVal = 5;
         this.weapon = null;
         this.secondary = false;
-        this.addDynamicSnapShotData(["secondary"]);
 
         this.areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this.radius, 10,
             entityManager.getEntity(ownerID).team.players);
@@ -92,6 +95,10 @@ class SuperDamage extends SEntity {
 }
 
 class SEW_9 extends AttackWeapon {
+    static _ = (() => {
+        SEW_9.addDynamicValues("misPos", "secondaryFire", "superAbilitySnap", "isShooting");
+    })();
+
     constructor(x, y) {
         super(x, y, "SEW-9", 0, 0, 0);
         this.misRef = null;
@@ -107,8 +114,6 @@ class SEW_9 extends AttackWeapon {
         this.isShooting = false;
 
         this.configureAttackStats(1.5, 5, 1, 100);
-
-        this.addDynamicSnapShotData(["misPos", "secondaryFire", "superAbilitySnap", "isShooting"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
             if(!this.primaryFire) {

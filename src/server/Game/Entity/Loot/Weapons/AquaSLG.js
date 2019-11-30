@@ -29,6 +29,11 @@ class IceBullet extends Projectile {
 }
 
 class AquaSLG extends AttackWeapon {
+
+    static _ = (() => {
+        AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
+    })();
+
     constructor(x, y) {
         super(x, y, "AquaSLG", 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
@@ -41,8 +46,6 @@ class AquaSLG extends AttackWeapon {
         this.modAbility = new ModAbility(0.75, 1.5);
 
         this.configureAttackStats(2, 25, 1, 500);
-
-        this.addDynamicSnapShotData(["secondaryUse", "superAbilitySnap"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
             let player = this.getOwner(entityManager);

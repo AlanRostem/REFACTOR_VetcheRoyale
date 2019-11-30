@@ -5,6 +5,10 @@ const Bottle = require("./Bottle.js");
  * the player's weapon.
  */
 class Charge extends Bottle {
+    static _ = (() => {
+        Charge.addStaticValues("type", "amount");
+    })();
+
     /**
      * @param x {number} Position in the world
      * @param y {number} Position in the world
@@ -14,13 +18,10 @@ class Charge extends Bottle {
         super(x, y);
         this.amount = amount;
         this.type = "charge";
-        this.addStaticSnapShotData([
-            "type",
-            "amount"
-        ]);
     }
 
-    /**
+    /**"type",
+     "count"
      * Can only pick up when the player has a weapon.
      * This is checked in the LOS-AOE loot scanner.
      * @param player {Player} Given player that want to pick this item up

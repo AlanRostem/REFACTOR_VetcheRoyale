@@ -79,6 +79,7 @@ export default class CWeapon extends CLoot {
                     AssetManager.getMapImage(name),
                     0,
                     0,
+
                     AssetManager.getMapImage(name).width,
                     AssetManager.getMapImage(name).height,
                     pos.x - 4 + R.camera.x,

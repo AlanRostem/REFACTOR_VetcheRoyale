@@ -82,6 +82,14 @@ class ATBullet extends Projectile {
 SEEKER_SMOKE_FRICTION = 1.7;
 
 class SeekerSmoke extends Bouncy {
+    static _ = (() => {
+        SeekerSmoke.addStaticValues("smokeBounds");
+        SeekerSmoke.addDynamicValues(
+            "findPlayers",
+            "taps"
+        );
+    })();
+
     constructor(ownerID, weapon, x, y, angle) {
         super(ownerID, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
@@ -95,14 +103,6 @@ class SeekerSmoke extends Bouncy {
         };
         this.setQuadTreeRange(this.smokeBounds.x, this.smokeBounds.y);
         this.entityOrder = 2;
-        this.addStaticSnapShotData([
-            "smokeBounds",
-        ]);
-
-        this.addDynamicSnapShotData([
-            "findPlayers",
-            "taps"
-        ]);
     }
 
     update(entityManager, deltaTime) {
@@ -136,6 +136,12 @@ const NORMAL_SPEED = 350;
 const ARC = 60;
 
 class CKER90 extends AttackWeapon {
+    static _ = (() => {
+        CKER90.addDynamicValues(
+            "dataIsScoping",
+            "found")
+    })();
+
     constructor(x, y) {
         super(x, y, "C-KER .90", "rifle");
         this.dataIsScoping = false;
@@ -177,10 +183,6 @@ class CKER90 extends AttackWeapon {
         }(0, 100, 100);
 
         this.found = {};
-        this.addDynamicSnapShotData([
-            "dataIsScoping",
-            "found"
-        ]);
         this.entityType = "AttackWeapon";
     }
 

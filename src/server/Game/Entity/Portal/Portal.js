@@ -5,18 +5,16 @@ const SGameEvent = require("../../World/Matches/SGameEvent.js");
 // Teleports players to a given position. Can also be linked to
 // another portal.
 class Portal extends StaticInteractable {
+    static _ = (() => {
+        Portal.addStaticValues(   "frameColor", "pairData");
+    })();
+
     constructor(x, y, args) {
         super(x, y, 10, 16);
         this.portalTileID = args.id;
         this.frameColor = args.frameColor;
         this.pairData = null;
         this.pair = null;
-
-        this.addStaticSnapShotData([
-            "frameColor",
-            "pairData"
-        ]);
-
         this.maxTeleportCooldown = 1; // Seconds
         this.recentlyTeleportedPlayers = new ONMap();
     }

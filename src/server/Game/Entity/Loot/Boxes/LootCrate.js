@@ -9,9 +9,9 @@ const LootRNG = require("../LootRNG.js");
  * @see Loot
  */
 class LootCrate extends StaticInteractable {
-    static STATIC_SNAPSHOT_TEMPLATE = [
-        "level"
-    ];
+    static _ = (() => {
+        LootCrate.addStaticValues("level");
+    })();
 
     static DROP_SPEED = 200;
 
@@ -31,7 +31,6 @@ class LootCrate extends StaticInteractable {
         this.physicsConfig.gravity = false;
         this.physicsConfig.tileCollision = false;
         this.acc.y = 500;
-        this.addStaticSnapShotData(LootCrate.STATIC_SNAPSHOT_TEMPLATE);
     }
 
     /**

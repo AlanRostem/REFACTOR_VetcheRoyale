@@ -4,6 +4,18 @@ const Player = require("../../../Player/SPlayer.js");
 // Composition abstraction class for the weapon you can pick up.
 // Handles interaction and world physics.
 class WeaponItem extends Loot {
+    static _ = (() => {
+        WeaponItem.addDynamicValues(
+            "equippedToPlayer",
+            "playerID",
+            "dropped",
+        );
+        WeaponItem.addStaticValues(
+            "displayName",
+            "weaponClass"
+        );
+    })();
+
     constructor(x, y, displayName, weaponClass = "pistol") {
         super(x, y, false);
         this.equippedToPlayer = false;
@@ -14,17 +26,6 @@ class WeaponItem extends Loot {
 
         // All possible weapon classes:
         // pistol, rifle
-
-        this.addStaticSnapShotData([
-            "displayName",
-            "weaponClass",
-        ]);
-
-        this.addDynamicSnapShotData([
-            "equippedToPlayer",
-            "playerID",
-            "dropped",
-        ]);
     }
 
     // Can pick up when the player does not have a weapon.

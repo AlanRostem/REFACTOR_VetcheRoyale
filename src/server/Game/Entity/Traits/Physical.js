@@ -7,6 +7,10 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 
 // Entity with tile tileCollision and movement.
 class Physical extends Entity {
+    static _ = (() => {
+        Physical.addDynamicValues("vel");
+    })();
+
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
         this.old = new Vector2D(x, y);
@@ -21,9 +25,6 @@ class Physical extends Entity {
             top: false,
             bottom: false,
         };
-        this.addDynamicSnapShotData([
-            "vel",
-        ]);
 
         this.physicsConfig = {
             tileCollision: true, // Tile tileCollision

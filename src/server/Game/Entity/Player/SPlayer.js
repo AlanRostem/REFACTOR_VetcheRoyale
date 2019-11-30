@@ -11,6 +11,19 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
+    static _ = (() => {
+        Player.addDynamicValues(
+            "teamName",
+            "centerData",
+            "hp",
+            "invAmmo",
+            "invWeaponID",
+            "statData",
+            "side",
+            "teamID"
+        );
+    })();
+
     constructor(clientID, worldMgr) {
         super(0, 0, 6, 12, 100, true, worldMgr, clientID);
         // MISC VAR INITS
@@ -34,18 +47,6 @@ class Player extends GameDataLinker {
         this.addMovementListener("tile", "slope", () => 0);
         this.addMovementListener("canMove", true);
         this.addMovementListener("onPlayer", "false");
-
-        // INIT FUNCTIONS:
-        this.addDynamicSnapShotData([
-            "teamName",
-            "centerData",
-            "hp",
-            "invAmmo",
-            "invWeaponID",
-            "statData",
-            "side",
-            "teamID"
-        ]);
 
         this.setEntityOrder(1);
 
