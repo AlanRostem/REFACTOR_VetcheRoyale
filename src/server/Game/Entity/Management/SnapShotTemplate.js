@@ -13,7 +13,6 @@ class SnapShotTemplate {
         for (let key of referenceValues) {
             this.referenceTemplate.push(key)
         }
-        console.log(this.currentConstructor, this.referenceTemplate)
     }
 
     // Map an array of strings with existing properties of the entity
