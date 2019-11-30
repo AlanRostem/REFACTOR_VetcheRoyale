@@ -28,23 +28,7 @@ class SnapShotGenerator{
 
         this.snapShot.init.entityType = composedEntity.constructor.name;
 
-        for (let key of composedEntity.constructor.SNAPSHOT_TEMPLATE.referenceTemplate) {
-            /*
-            if (!composedEntity.hasOwnProperty(key)) {
-                throw new Error(composedEntity.constructor.name +
-                    " does not have property " + key + " in reference values.");
-            }
-             */
-            this.snapShot.init[key] = composedEntity[key];
-        }
-
         for (let key of this.dynamicValues) {
-            /*
-            if (!composedEntity.hasOwnProperty(key)) {
-                throw new Error(composedEntity.constructor.name +
-                    " does not have property " + key + " in dynamic values.");
-            }
-             */
             this.snapShot.dynamic[key] = composedEntity[key];
         }
     }
@@ -68,6 +52,9 @@ class SnapShotGenerator{
     }
 
     exportInitValues() {
+        for (let key of this.composedEntity.constructor.SNAPSHOT_TEMPLATE.referenceTemplate) {
+            this.snapShot.init[key] = this.composedEntity[key];
+        }
         this.snapShot.dynamic = this.packetBuffer.exportInitValues(this.dynamicValues, this.composedEntity);
         return this.snapShot;
     }
@@ -75,7 +62,6 @@ class SnapShotGenerator{
     export() {
         return this.snapShot.dynamic;
     }
-
 }
 
 
