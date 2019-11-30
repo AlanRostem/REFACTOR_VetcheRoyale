@@ -5,7 +5,7 @@ const PacketBuffer = require("../../../Networking/PacketBuffer");
 // Class that composes all data pack
 // exporting for every entity in the game.
 
-class SnapShotGenerator{
+class SnapShotGenerator {
     // The 2 last parameters are arrays with strings of the
     // entity's specified properties.
     constructor(composedEntity) {

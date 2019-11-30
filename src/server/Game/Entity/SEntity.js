@@ -76,10 +76,6 @@ class SEntity {
         this.homeWorldID = game.id;
     }
 
-    addStaticSnapShotData(array) {
-
-    }
-
     initFromEntityManager(entityManager) {
 
     }
