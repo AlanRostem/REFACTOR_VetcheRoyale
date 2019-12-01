@@ -43,12 +43,6 @@ class Bouncy extends Projectile {
             this.vel.y = this.vy;
         }
     }
-
-    onTileHit(entityManager, deltaTime) {
-        super.onTileHit(entityManager, deltaTime);
-    }
-
-
 }
 
 module.exports = Bouncy;
