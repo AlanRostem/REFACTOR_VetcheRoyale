@@ -20,8 +20,7 @@ class Charge extends Bottle {
         this.type = "charge";
     }
 
-    /**"type",
-     "count"
+    /**
      * Can only pick up when the player has a weapon.
      * This is checked in the LOS-AOE loot scanner.
      * @param player {Player} Given player that want to pick this item up

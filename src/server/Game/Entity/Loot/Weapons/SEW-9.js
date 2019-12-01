@@ -14,29 +14,29 @@ class ElectricSphere extends Projectile {
         ElectricSphere.addDynamicValues("secondary")
     })();
 
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 3, 3, angle, 0);
+    constructor(owner, weaponID, x, y, angle, entityManager) {
+        super(owner, x, y, 3, 3, angle, 0);
         this.radius = 3;
         this.maxSpeed = 200;
         this.velVal = 5;
         this.weapon = null;
         this.secondary = false;
 
-        this.areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this.radius, 10,
-            entityManager.getEntity(ownerID).team.players);
+        this.areaDmg = new AOEDamage(owner.id, x, y, Tile.SIZE * this.radius, 10,
+            owner.team.players);
     }
 
     onTileHit(entityManager, deltaTime) {
         this.detonate(entityManager);
     }
 
-    onPlayerHit(player, entityManager) {
+    onEnemyHit(player, entityManager) {
         this.detonate(entityManager);
     }
 
     detonate(entityManager) {
-        if (this.getOwner(entityManager)) {
-            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+        if (this.getOwner()) {
+            this.getOwner().entitiesInProximity.shouldFollowEntity = true;
         }
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
@@ -49,10 +49,10 @@ class ElectricSphere extends Projectile {
         super.update(entityManager, deltaTime);
 
 
-        if (this.getOwner(entityManager)) {
-            let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
+        if (this.getOwner()) {
+            let atan2 = Math.atan2(this.getOwner().input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
-            let length = Vector2D.distance(this.getOwner(entityManager).input.mouseData.world, this.pos);
+            let length = Vector2D.distance(this.getOwner().input.mouseData.world, this.pos);
 
             this.vel.x = Math.cos(atan2) * length * this.velVal;
             this.vel.y = Math.sin(atan2) * length * this.velVal;
@@ -120,7 +120,7 @@ class SEW_9 extends AttackWeapon {
                 this.currentAmmo--;
                 this.isShooting = true;
                 entityManager.spawnEntity(this.center.x, this.center.y,
-                    this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
+                    this.misRef = new ElectricSphere(this.getOwner(entityManager), this.id, 0, 0,
                         0, entityManager));
                 this.misRef.weapon = this;
                 this.misRef.secondary = true;
@@ -195,7 +195,7 @@ class SEW_9 extends AttackWeapon {
             this.isShooting = true;
             this.misRef =
                 entityManager.spawnEntity(this.center.x, this.center.y,
-                    new ElectricSphere(player.id, this.id, 0, 0,
+                    new ElectricSphere(player, this.id, 0, 0,
                         angle, entityManager));
             this.misRef.weapon = this;
             this.primaryFire = true;

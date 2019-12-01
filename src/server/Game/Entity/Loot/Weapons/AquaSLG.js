@@ -7,10 +7,9 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 
 // Projectile fired by the AquaSLG
 class IceBullet extends Projectile {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 2, 2, angle);
-        this.speed = 5  * 60; // TODO: 300
-        this.damage = new Damage(10, ownerID);
+    constructor(owner, x, y, angle) {
+        super(owner, x, y, 2, 2, angle, 300);
+        this.damage = new Damage(10, owner.id);
 
         //let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
@@ -22,7 +21,7 @@ class IceBullet extends Projectile {
         this.remove();
     }
 
-    onPlayerHit(player, entityManager) {
+    onEnemyHit(player, entityManager) {
         this.damage.inflict(player, entityManager);
         this.remove();
     }
@@ -48,7 +47,7 @@ class AquaSLG extends AttackWeapon {
         this.configureAttackStats(2, 25, 1, 500);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
-            let player = this.getOwner(entityManager);
+            let player = this.getOwner();
             //if(player.vel.y >= 0) player.vel.y = 0;
             player.vel.y = 0;
             this.secondaryUse = true;
@@ -59,7 +58,7 @@ class AquaSLG extends AttackWeapon {
         };
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-            let player = this.getOwner(entityManager);
+            let player = this.getOwner();
             if (player.input.heldDownMapping("modAbility")) {
                 player.accelerateY(-6400, deltaTime);
 
@@ -76,8 +75,8 @@ class AquaSLG extends AttackWeapon {
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
-            let exceptions = this.getOwner(entityManager).team.players;
-            this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
+            let exceptions = this.getOwner().team.players;
+            this.areaDmg = new AOEKnockBackDamage(this.getOwner().id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
             this.areaDmg.applyAreaOfEffect(entityManager);
         };
 
@@ -92,7 +91,7 @@ class AquaSLG extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new IceBullet(player.id, this.id, 0, 0, angle, entityManager));
+            new IceBullet(player, 0, 0, angle));
     }
 
     onDrop(player, entityManager, deltaTime) {

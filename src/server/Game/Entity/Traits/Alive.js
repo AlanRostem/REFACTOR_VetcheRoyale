@@ -14,6 +14,7 @@ class Alive extends Affectable {
         this.isAlive = true;
         this.killed = false;
         this.killer = null; // Player who killed this entity
+        this.team = null;
         this.shouldRegen = regen;
         if (regen) {
             this.regenPerTick = regenPerTick;
@@ -92,6 +93,31 @@ class Alive extends Affectable {
 
     onDead(entityManager, deltaTime) {
         // Event handling here
+    }
+
+    setTeam(team) {
+        this.team = team;
+        this.teamName = team.name;
+    }
+
+    isTeammate(alive) {
+        if (alive instanceof Alive) {
+            if (alive.team && this.team) {
+                return alive.team.name === this.team.name;
+            }
+        }
+        return false;
+    }
+
+    remove() {
+        super.remove();
+        if (this.team) {
+            this.team.removePlayer(this);
+        }
+    }
+
+    hasTeam() {
+        return this.team !== null;
     }
 }
 

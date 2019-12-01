@@ -7,9 +7,9 @@ const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
 
 class ATBullet extends Projectile {
-    constructor(oID, wID, x, y, speed, arc, angle) {
-        super(oID, x, y, 2, 2, angle, speed, arc, false);
-        this.damage = new Damage(50, oID);
+    constructor(owner, wID, x, y, speed, arc, angle) {
+        super(owner, x, y, 2, 2, angle, speed, arc, false);
+        this.damage = new Damage(50, owner.id);
         this.seek = false;
         this.lifeTime = 10;
         this.wID = wID;
@@ -29,7 +29,7 @@ class ATBullet extends Projectile {
             if (this.lifeTime <= 0) {
                 this.remove();
             }
-            let owner = this.getOwner(entityManager);
+            let owner = this.getOwner();
             if (owner) {
                 if (owner.inventory.weapon) {
                     if (owner.inventory.weapon.id === this.wID) {
@@ -52,14 +52,14 @@ class ATBullet extends Projectile {
         super.forEachNearbyEntity(entity, entityManager, deltaTime);
         if (this.weapon) {
             if (entity.constructor.name === "Player") {
-                if (entity.id !== this.weapon.playerID && !this.getOwner(entityManager).isTeammate(entity)) {
+                if (entity.id !== this.weapon.playerID && !this.getOwner().isTeammate(entity)) {
                     this.weapon.found[entity.id] = entity.center;
                 }
             }
         }
     }
 
-    onPlayerHit(entity, entityManager) {
+    onEnemyHit(entity, entityManager) {
         if (!this.seek) {
             this.damage.inflict(entity, entityManager);
         }
@@ -90,8 +90,8 @@ class SeekerSmoke extends Bouncy {
         );
     })();
 
-    constructor(ownerID, weapon, x, y, angle) {
-        super(ownerID, x, y, 4, 6, angle, 185, 200, 0.5);
+    constructor(owner, weapon, x, y, angle) {
+        super(owner, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
         this.weapon = weapon;
         this.life = 10;
@@ -174,7 +174,7 @@ class CKER90 extends AttackWeapon {
                     composedWeapon.pos.x,
                     composedWeapon.pos.y,
                     new SeekerSmoke(
-                        composedWeapon.playerID,
+                        composedWeapon.getOwner(entityManager),
                         composedWeapon,
                         0, 0,
                         angle
@@ -193,7 +193,7 @@ class CKER90 extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.pos.x, this.pos.y,
-            new ATBullet(this.playerID, this.id, this.pos.x, this.pos.y,
+            new ATBullet(player, this.id, this.pos.x, this.pos.y,
                 this.dataIsScoping ? SCOPED_SPEED : NORMAL_SPEED,
                 this.dataIsScoping ? 0 : ARC,
                 angle));

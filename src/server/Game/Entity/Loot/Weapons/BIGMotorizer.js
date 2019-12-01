@@ -7,8 +7,8 @@ const Affectable = require("../../../Entity/Traits/Affectable.js");
 const vm = require("../../../../../shared/code/Math/SCustomMath.js");
 
 class MicroMissile extends Projectile {
-    constructor(ownerID, x, y, angle, entityManager, harmonic = true, left = false) {
-        super(ownerID, x, y, 2, 2, angle, 150);
+    constructor(owner, x, y, angle, entityManager, harmonic = true, left = false) {
+        super(owner, x, y, 2, 2, angle, 150);
         this.trajectoryAngle = angle;
 
         this.speed = 220;
@@ -52,8 +52,8 @@ class MicroMissile extends Projectile {
         this.dealDamage(entityManager);
     }
 
-    onPlayerHit(player, entityManager) {
-        super.onPlayerHit(player, entityManager);
+    onEnemyHit(player, entityManager) {
+        super.onEnemyHit(player, entityManager);
         this.dealDamage(entityManager);
 
     }
@@ -126,7 +126,7 @@ class BIGMotorizer extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new MicroMissile(player.id, 0, 0,
+            new MicroMissile(player, 0, 0,
                 angle, entityManager, this.upgradeStage < 3,
         player.checkMovementState("direction", "left")));
     }

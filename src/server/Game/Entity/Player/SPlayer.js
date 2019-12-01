@@ -101,17 +101,12 @@ class Player extends GameDataLinker {
         }
     }
 
-    setTeam(team) {
-        this.team = team;
-        this.teamName = team.name;
-    }
-
     // Performs one way team tileCollision.
     forEachNearbyEntity(entity, entityManager) {
         if (this.team) {
             if (entity instanceof Player) {
                 if (this.isTeammate(entity)) {
-                    var p = entity;
+                    let p = entity;
                     if (this.overlapEntity(p) && !p.jumping) {
                         if (this.pos.y + this.height > p.pos.y) {
                             if (this.old.y + this.height <= p.pos.y) {
@@ -125,22 +120,6 @@ class Player extends GameDataLinker {
                     }
                 }
             }
-        }
-    }
-
-    isTeammate(player) {
-        if (player instanceof Player) {
-            if (player.team && this.team) {
-                return player.team.name === this.team.name;
-            }
-        }
-        return false;
-    }
-
-    remove() {
-        super.remove();
-        if (this.team) {
-            this.team.removePlayer(this);
         }
     }
 
