@@ -136,15 +136,13 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.hasTeam()) return; // TODO: FIX HACK
-            if (!entity.team.hasEntity(this.ownerID)) {
-                if (this.alreadyCollided === false) { // TODO: Find out why this if doesn't work having it on top of: if (entity instanceof Alive) {
-                    this.onEnemyHit(entity, entityManager);
-                    if (this.shouldRemove) {
-                        this.remove();
-                    }
-                    this.alreadyCollided = true;
+            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID)) return;
+            if (this.alreadyCollided === false) {
+                this.onEnemyHit(entity, entityManager);
+                if (this.shouldRemove) {
+                    this.remove();
                 }
+                this.alreadyCollided = true;
             }
         }
     }
