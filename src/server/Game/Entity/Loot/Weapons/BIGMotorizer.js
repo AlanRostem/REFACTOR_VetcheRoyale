@@ -20,7 +20,7 @@ class MicroMissile extends Projectile {
 
         this.harmonic = harmonic;
         this.facingLeft = left;
-        this.exceptions = entityManager.getEntity(this.ownerID).team.players;
+        this.exceptions = owner.team.players;
     }
 
     update(entityManager, deltaTime) {
@@ -92,7 +92,7 @@ class BIGMotorizer extends AttackWeapon {
         this.thunderPulse = new HitScanner([]);
         this.thunderPulse.onEntityHit = (entity, game, angle) => {
             if (entity instanceof Affectable) {
-                if (!entity.isTeammate(game.getEntity(this.playerID))) {
+                if (!entity.isTeammate(this.getOwner())) {
                     entity.applyEffect(new StunEffect(entity.id), game);
                 }
             }
@@ -138,8 +138,8 @@ class BIGMotorizer extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (entityManager.getEntity(this.playerID)) {
-            this.fireAngle = entityManager.getEntity(this.playerID).input.mouseData.angleCenter;
+        if (this.hasOwner()) {
+            this.fireAngle = this.getOwner().input.mouseData.angleCenter;
         }
     }
 

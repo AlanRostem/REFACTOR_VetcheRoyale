@@ -47,7 +47,7 @@ class AquaSLG extends AttackWeapon {
         this.configureAttackStats(2, 25, 1, 500);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
-            let player = this.getOwner();
+            let player = this.getOwner(entityManager);
             //if(player.vel.y >= 0) player.vel.y = 0;
             player.vel.y = 0;
             this.secondaryUse = true;
@@ -58,7 +58,7 @@ class AquaSLG extends AttackWeapon {
         };
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-            let player = this.getOwner();
+            let player = this.getOwner(entityManager);
             if (player.input.heldDownMapping("modAbility")) {
                 player.accelerateY(-6400, deltaTime);
 
@@ -75,8 +75,8 @@ class AquaSLG extends AttackWeapon {
 
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
-            let exceptions = this.getOwner().team.players;
-            this.areaDmg = new AOEKnockBackDamage(this.getOwner().id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
+            let exceptions = this.getOwner(entityManager).team.players;
+            this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
             this.areaDmg.applyAreaOfEffect(entityManager);
         };
 

@@ -20,6 +20,7 @@ class WeaponItem extends Loot {
         super(x, y, false);
         this.equippedToPlayer = false;
         this.playerID = null;
+        this.player = null;
         this.displayName = displayName;
         this.weaponClass = weaponClass;
         this.dropped = false;
@@ -44,8 +45,8 @@ class WeaponItem extends Loot {
                 // If the player disconnects (or is removed from game world)
                 // the weapon is dropped. Otherwise we call methods for when
                 // it is equipped.
-                if (entityManager.getEntity(this.playerID)) {
-                    this.updateWhenEquipped(entityManager.getEntity(this.playerID), entityManager, deltaTime);
+                if (this.player) {
+                    this.updateWhenEquipped(this.player, entityManager, deltaTime);
                 } else {
                     if (entityManager.getGameRule("dropLootOnDeath")) {
                         this.dropOnPlayerRemoval(entityManager, deltaTime);
@@ -70,14 +71,20 @@ class WeaponItem extends Loot {
     equip(player) {
         this.equippedToPlayer = true;
         this.playerID = player.id;
+        this.player = player;
         player.setMovementState("weapon", this.weaponClass);
     }
 
-    getOwner(entityManager) {
-        if (entityManager.getEntity(this.playerID)) {
-            return entityManager.getEntity(this.playerID);
+    getOwner() {
+        if (this.player) {
+            return this.player;
         }
+        console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name + " because id was " + this.playerID).stack);
         return WeaponItem.EMPTY_PLAYER;
+    }
+
+    hasOwner() {
+        return !!this.player;
     }
 
     // Drops the weapon when the player disconnects (removed from game world)
@@ -85,6 +92,7 @@ class WeaponItem extends Loot {
         this.onDrop(this.getOwner(entityManager), entityManager, deltaTime);
         this.equippedToPlayer = false;
         this.playerID = null;
+        this.player = null;
     }
 
     // Callback when dropping the weapon
@@ -101,6 +109,7 @@ class WeaponItem extends Loot {
             player.setMovementState("weapon", "none");
             this.equippedToPlayer = false;
             this.playerID = null;
+            this.player = null;
             this.vel.x = WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter;
             this.vel.y = WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter;
             this.onDrop(player, entityManager, deltaTime);

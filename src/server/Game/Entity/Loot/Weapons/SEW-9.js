@@ -45,6 +45,8 @@ class ElectricSphere extends Projectile {
         this.remove();
     }
 
+
+
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
@@ -156,7 +158,7 @@ class SEW_9 extends AttackWeapon {
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
             entityManager.spawnEntity(this.center.x, this.center.y,
-                this.damageBox = new SuperDamage(this.x, this.y, 100, entityManager.getEntity(this.playerID).height, this.playerID)
+                this.damageBox = new SuperDamage(this.x, this.y, 100, this.getOwner().height, this.playerID)
             );
         };
 
@@ -167,9 +169,8 @@ class SEW_9 extends AttackWeapon {
         };
     }
 
-    update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
-
+    updateWhenEquipped(player, entityManager, deltaTime) {
+        super.updateWhenEquipped(player, entityManager, deltaTime);
         this.canUseMod = this.canFire = this.currentAmmo > 0;
 
         this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
@@ -181,9 +182,7 @@ class SEW_9 extends AttackWeapon {
             else this.isShooting = false;
         }
 
-        let player = entityManager.getEntity(this.playerID);
         if (player) player.setMovementState("canMove", this.canMove);
-
     }
 
     onSuperBuffs(entityManager, deltaTime) {
