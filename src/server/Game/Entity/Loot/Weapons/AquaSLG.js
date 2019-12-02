@@ -76,7 +76,7 @@ class AquaSLG extends AttackWeapon {
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
             let exceptions = this.getOwner(entityManager).team.players;
-            this.areaDmg = new AOEKnockBackDamage(this.getOwner(entityManager).id, this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
+            this.areaDmg = new AOEKnockBackDamage(this.getOwner(), this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
             this.areaDmg.applyAreaOfEffect(entityManager);
         };
 
