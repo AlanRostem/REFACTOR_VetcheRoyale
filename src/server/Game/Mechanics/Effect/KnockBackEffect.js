@@ -3,8 +3,8 @@ const Effect = require("./Effect.js");
 // Performs a knock back effect on an entity. It adds friction and
 // a certain velocity to the entity. 
 class KnockBackEffect extends Effect {
-    constructor(id, speedX, speedY, friction = 0.95, negationSpeed = 0, tolerance = 30) {
-        super(id);
+    constructor(ae, speedX, speedY, friction = 0.95, negationSpeed = 0, tolerance = 30) {
+        super(ae);
         this.friction = friction;
         this.accel = negationSpeed;
         this.sx = speedX;

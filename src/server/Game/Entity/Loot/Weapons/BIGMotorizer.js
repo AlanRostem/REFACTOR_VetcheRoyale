@@ -66,8 +66,8 @@ class MicroMissile extends Projectile {
 }
 
 class StunEffect extends Effect {
-    constructor(id) {
-        super(id, 3);
+    constructor(ae) {
+        super(ae, 3);
     }
 
     effects(entity, entityManager, deltaTime) {
@@ -93,7 +93,7 @@ class BIGMotorizer extends AttackWeapon {
         this.thunderPulse.onEntityHit = (entity, game, angle) => {
             if (entity instanceof Affectable) {
                 if (!entity.isTeammate(this.getOwner())) {
-                    entity.applyEffect(new StunEffect(entity.id), game);
+                    entity.applyEffect(new StunEffect(entity), game);
                 }
             }
         };

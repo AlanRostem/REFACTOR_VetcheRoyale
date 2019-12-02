@@ -10,7 +10,7 @@ class AOEKnockBackDamage extends AOEDamage {
     }
 
     onInflict(entity, entityManager, a) {
-        entity.applyEffect(new KnockBackEffect(entity.id,
+        entity.applyEffect(new KnockBackEffect(entity,
             -Math.cos(a.angle) * this.knockBackSpeed,
             -Math.sin(a.angle) * this.knockBackSpeed / 2, 0.9), entityManager);
     }
