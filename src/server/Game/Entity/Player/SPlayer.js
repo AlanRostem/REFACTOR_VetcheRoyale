@@ -72,7 +72,7 @@ class Player extends GameDataLinker {
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
             for (let id in this.entitiesInProximity.container) {
-                let entity = this.entitiesInProximity.getEntity(id);
+                let entity = this.entitiesInProximity.getEntity(id); // TODO: Remove after its array
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
                     if (entity.overlapEntity(this)) {
@@ -90,7 +90,7 @@ class Player extends GameDataLinker {
 
             let closest = Math.min(...this.itemsNearby.array);
             for (let id in this.itemsNearby.object) {
-                let loot = game.getEntity(id);
+                let loot = game.getEntity(id); // TODO: Remove after its array
                 if (loot) {
                     if (this.itemsNearby.get(loot.id) === closest) {
                         loot.onPlayerInteraction(this, game);

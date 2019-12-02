@@ -59,7 +59,7 @@ class MicroMissile extends Projectile {
     }
 
     dealDamage(entityManager) {
-        new AOEDamage(this.ownerID, this.center.x, this.center.y, 8, 17, this.exceptions)
+        new AOEDamage(this.getOwner(), this.center.x, this.center.y, 8, 17, this.exceptions)
             .applyAreaOfEffect(entityManager);
     }
 

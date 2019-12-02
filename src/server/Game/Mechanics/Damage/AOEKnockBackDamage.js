@@ -4,8 +4,8 @@ const KnockBackEffect = require("../Effect/KnockBackEffect.js");
 // Applies a knock back effect to players hit by the
 // area of effect damage.
 class AOEKnockBackDamage extends AOEDamage {
-    constructor(ownerID, x, y, radius, knockBackSpeed, value, exceptions) {
-        super(ownerID, x, y, radius, value, exceptions);
+    constructor(owner, x, y, radius, knockBackSpeed, value, exceptions) {
+        super(owner, x, y, radius, value, exceptions);
         this.knockBackSpeed = knockBackSpeed;
     }
 

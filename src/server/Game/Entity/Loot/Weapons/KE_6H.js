@@ -13,7 +13,7 @@ class KineticBomb extends Bouncy {
         super(owner, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
         this.weaponID = weaponID;
-        this.directHitDmg = new Damage(8, owner.id);
+        this.directHitDmg = new Damage(8, owner);
 
         let exceptions = {};
         for (let key in owner.team.players) {
@@ -22,7 +22,7 @@ class KineticBomb extends Bouncy {
         delete exceptions[owner.id];
         this.weapon = weaponRef;
 
-        this.areaDmg = new AOEKnockBackDamage(owner.id, x, y, Tile.SIZE * 3, 300, 15, exceptions);
+        this.areaDmg = new AOEKnockBackDamage(owner, x, y, Tile.SIZE * 3, 300, 15, exceptions);
     }
 
     onTileHit(entityManager, deltaTime) {

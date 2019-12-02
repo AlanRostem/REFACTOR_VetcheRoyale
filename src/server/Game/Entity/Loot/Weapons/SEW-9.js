@@ -22,7 +22,7 @@ class ElectricSphere extends Projectile {
         this.weapon = null;
         this.secondary = false;
 
-        this.areaDmg = new AOEDamage(owner.id, x, y, Tile.SIZE * this.radius, 10,
+        this.areaDmg = new AOEDamage(owner, x, y, Tile.SIZE * this.radius, 10,
             owner.team.players);
     }
 
@@ -68,15 +68,15 @@ class ElectricSphere extends Projectile {
 }
 
 class SuperDamage extends SEntity {
-    constructor(x, y, w, h, playerID) {
+    constructor(x, y, w, h, player) {
         super(x, y, w, h);
-        this.damage = new Damage(1, playerID);
+        this.damage = new Damage(1, player);
 
     }
 
     update(game, deltaTime) {
         super.update(game, deltaTime);
-        let player = game.getEntity(this.damage.playerID);
+        let player = this.damage.player;
         if (player) {
             this.pos.x = player.x;
             this.pos.y = player.y;
@@ -88,7 +88,7 @@ class SuperDamage extends SEntity {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
+            if (!entity.isTeammate(this.damage.player)) {
                 this.damage.inflict(entity, entityManager);
             }
         }
@@ -158,7 +158,7 @@ class SEW_9 extends AttackWeapon {
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
             entityManager.spawnEntity(this.center.x, this.center.y,
-                this.damageBox = new SuperDamage(this.x, this.y, 100, this.getOwner().height, this.playerID)
+                this.damageBox = new SuperDamage(this.x, this.y, 100, this.getOwner().height, this.getOwner())
             );
         };
 

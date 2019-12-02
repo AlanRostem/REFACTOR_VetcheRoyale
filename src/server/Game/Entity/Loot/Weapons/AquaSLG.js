@@ -9,7 +9,7 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 class IceBullet extends Projectile {
     constructor(owner, x, y, angle) {
         super(owner, x, y, 2, 2, angle, 300);
-        this.damage = new Damage(10, owner.id);
+        this.damage = new Damage(10, owner);
 
         //let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 

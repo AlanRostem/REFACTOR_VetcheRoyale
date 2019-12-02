@@ -2,9 +2,9 @@ const Alive = require("../../Entity/Traits/Alive.js");
 
 // Composition class for objects that deal damage.
 class Damage {
-    constructor(value, playerID) {
+    constructor(value, player) {
         this.value = value;
-        this.playerID = playerID;
+        this.player = player;
     }
 
     onInflict(entity, game, args) {
@@ -22,7 +22,7 @@ class Damage {
                     return;
                 }
             }
-            let player = entityManager.getEntity(this.playerID);
+            let player = this.player;
             if (entity.constructor.name === "Player") {
                 if (player.isTeammate(entity)) {
                     return;
