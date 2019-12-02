@@ -25,7 +25,7 @@ Fusion .238
 Description: Corrosive tactical pistol.
 Ammo Capacity: 14
 Primary Attack: Uranium chunks: Fast radioactive bullets.
-Mod: Rad-overload: Enemies in line of sight attack slower and get slowed down.
+Mod: Rad-guardian: Enemies in line of sight attack slower and get slowed down.
 Super: Tactical corrosion: Projectile that weakens a targets damage and health.
 
 |||||Level 2 weapons|||||
@@ -88,7 +88,7 @@ of the game or in loot drops where combat is inevitable.
 Hadron Railgun
 Description: Hadron particle cannon
 Ammo Capacity: 15
-Primary Attack: Hadron wave: Laser shot with proportional damage to charge time. Let go of trigger to fire.
+Primary Attack: Hadron wave: Laser shot with proportional damage to charge time. Let go of trigger to fire. Leaves a trail that damages enemies.
 Mod: Brute shot: Constant beam with explosion effect at the end.
 Super: Quantum core: Huge powerful constant beam.
 
