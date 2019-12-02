@@ -151,7 +151,7 @@ class CKER90 extends AttackWeapon {
             60);
         this.modAbility = new class extends ModAbility {
             buffs(composedWeapon, entityManager, deltaTime) {
-                let player = entityManager.getEntity(composedWeapon.playerID);
+                let player = composedWeapon.getOwner();
                 if (player) {
                     composedWeapon.dataIsScoping = player.input.heldDownMapping("modAbility");
                 }

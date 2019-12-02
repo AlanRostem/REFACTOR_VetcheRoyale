@@ -49,10 +49,10 @@ class KineticBomb extends Bouncy {
             this.detonate(entityManager);
         }
 
-        if (!entityManager.getEntity(this.weaponID)) return;
-        if (entityManager.getEntity(this.weaponID).kineticImplosion) {
+        if (!this.weapon) return;
+        if (this.weapon.kineticImplosion) {
             this.followPoint = true;
-            this.point = entityManager.getEntity(this.weaponID).followPoint;
+            this.point = this.weapon.followPoint;
             this.hits = 1;
         }
 
