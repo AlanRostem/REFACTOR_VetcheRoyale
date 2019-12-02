@@ -136,7 +136,7 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID)) return;
+            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID) ) return;
             if (this.alreadyCollided === false) {
                 this.onEnemyHit(entity, entityManager);
                 if (this.shouldRemove) {
