@@ -52,7 +52,7 @@ class ElectricSphere extends Projectile {
 
 
         if (this.getOwner()) {
-            let atan2 = Math.atan2(this.getOwner().input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
+            let atan2 = Math.atan2(this.getOwner().input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner().input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
             let length = Vector2D.distance(this.getOwner().input.mouseData.world, this.pos);
 
@@ -122,12 +122,12 @@ class SEW_9 extends AttackWeapon {
                 this.currentAmmo--;
                 this.isShooting = true;
                 entityManager.spawnEntity(this.center.x, this.center.y,
-                    this.misRef = new ElectricSphere(this.getOwner(entityManager), this.id, 0, 0,
+                    this.misRef = new ElectricSphere(this.getOwner(), this.id, 0, 0,
                         0, entityManager));
                 this.misRef.weapon = this;
                 this.misRef.secondary = true;
                 this.secondaryFire = true;
-                this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = false;
+                this.getOwner().entitiesInProximity.shouldFollowEntity = false;
             }
         };
 
@@ -139,8 +139,8 @@ class SEW_9 extends AttackWeapon {
             this.canMove = true;
 
             this.isShooting = false;
-            if (this.getOwner(entityManager))
-                this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+            if (this.getOwner())
+                this.getOwner().entitiesInProximity.shouldFollowEntity = true;
             if (composedWeapon) this.misRef.detonate(entityManager);
         };
 
@@ -148,7 +148,7 @@ class SEW_9 extends AttackWeapon {
             this.canMove = false;
             this.isShooting = true;
             if (this.misRef) {
-                this.getOwner(entityManager).entitiesInProximity.follow(
+                this.getOwner().entitiesInProximity.follow(
                     this.misRef.x,
                     this.misRef.y
                 );

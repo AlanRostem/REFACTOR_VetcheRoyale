@@ -81,11 +81,11 @@ class KE_6H extends AttackWeapon {
         this.modAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon.canFire = false;
-            this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
-            this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
+            this.followPoint.x = this.getOwner().input.mouseData.world.x;
+            this.followPoint.y = this.getOwner().input.mouseData.world.y;
             RETRACTION_SCANNER.ownerID = this.playerID;
             RETRACTION_SCANNER.pos = this.followPoint;
-            RETRACTION_SCANNER.entityExceptions = this.getOwner(entityManager).team.players;
+            RETRACTION_SCANNER.entityExceptions = this.getOwner().team.players;
             RETRACTION_SCANNER.areaScan(this.followPoint, entityManager);
         };
 

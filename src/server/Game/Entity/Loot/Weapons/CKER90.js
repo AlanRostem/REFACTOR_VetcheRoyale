@@ -165,7 +165,7 @@ class CKER90 extends AttackWeapon {
         let _this = this;
         this.superAbility = new class extends SuperAbility {
             onActivation(composedWeapon, entityManager, deltaTime) {
-                let player = _this.getOwner(entityManager);
+                let player = _this.getOwner();
                 let angle = 0;
                 if (player) {
                     angle = player.input.mouseData.angleCenter;
@@ -174,7 +174,7 @@ class CKER90 extends AttackWeapon {
                     composedWeapon.pos.x,
                     composedWeapon.pos.y,
                     new SeekerSmoke(
-                        composedWeapon.getOwner(entityManager),
+                        composedWeapon.getOwner(),
                         composedWeapon,
                         0, 0,
                         angle
