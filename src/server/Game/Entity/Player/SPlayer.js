@@ -11,6 +11,19 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
+    static _ = (() => {
+        Player.addDynamicValues(
+            "teamName",
+            "centerData",
+            "hp",
+            "invAmmo",
+            "invWeaponID",
+            "statData",
+            "side",
+            "teamID"
+        );
+    })();
+
     constructor(clientID, worldMgr) {
         super(0, 0, 6, 12, 100, true, worldMgr, clientID);
         // MISC VAR INITS
@@ -34,18 +47,6 @@ class Player extends GameDataLinker {
         this.addMovementListener("tile", "slope", () => 0);
         this.addMovementListener("canMove", true);
         this.addMovementListener("onPlayer", "false");
-
-        // INIT FUNCTIONS:
-        this.addDynamicSnapShotData([
-            "teamName",
-            "centerData",
-            "hp",
-            "invAmmo",
-            "invWeaponID",
-            "statData",
-            "side",
-            "teamID"
-        ]);
 
         this.setEntityOrder(1);
 
@@ -71,7 +72,7 @@ class Player extends GameDataLinker {
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
             for (let id in this.entitiesInProximity.container) {
-                let entity = this.entitiesInProximity.getEntity(id);
+                let entity = this.entitiesInProximity.getEntity(id); // TODO: Remove after its array
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
                     if (entity.overlapEntity(this)) {
@@ -89,7 +90,7 @@ class Player extends GameDataLinker {
 
             let closest = Math.min(...this.itemsNearby.array);
             for (let id in this.itemsNearby.object) {
-                let loot = game.getEntity(id);
+                let loot = game.getEntity(id); // TODO: Remove after its array
                 if (loot) {
                     if (this.itemsNearby.get(loot.id) === closest) {
                         loot.onPlayerInteraction(this, game);
@@ -100,17 +101,12 @@ class Player extends GameDataLinker {
         }
     }
 
-    setTeam(team) {
-        this.team = team;
-        this.teamName = team.name;
-    }
-
     // Performs one way team tileCollision.
     forEachNearbyEntity(entity, entityManager) {
         if (this.team) {
             if (entity instanceof Player) {
                 if (this.isTeammate(entity)) {
-                    var p = entity;
+                    let p = entity;
                     if (this.overlapEntity(p) && !p.jumping) {
                         if (this.pos.y + this.height > p.pos.y) {
                             if (this.old.y + this.height <= p.pos.y) {
@@ -124,22 +120,6 @@ class Player extends GameDataLinker {
                     }
                 }
             }
-        }
-    }
-
-    isTeammate(player) {
-        if (player instanceof Player) {
-            if (player.team && this.team) {
-                return player.team.name === this.team.name;
-            }
-        }
-        return false;
-    }
-
-    remove() {
-        super.remove();
-        if (this.team) {
-            this.team.removePlayer(this);
         }
     }
 

@@ -4,6 +4,10 @@ const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
 
 class Interlux extends AttackWeapon {
+    static _ = (() => {
+        Interlux.addDynamicValues("secondaryFire", "superAbilitySnap", "lines");
+    })();
+
     constructor(x, y) {
         super(x, y, "Interlux", 0, 0, 0);
 
@@ -20,8 +24,6 @@ class Interlux extends AttackWeapon {
         this.superAbilitySnap = false;
 
         this.configureAttackStats(1.5, 400, 1, 500);
-
-        this.addDynamicSnapShotData(["secondaryFire", "superAbilitySnap", "lines"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
 
@@ -55,8 +57,8 @@ class Interlux extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (entityManager.getEntity(this.playerID)) {
-            this.aimAngle = this.getOwner(entityManager).input.mouseData.angleCenter;
+        if (this.getOwner()) {
+            this.aimAngle = this.getOwner().input.mouseData.angleCenter;
         }
 
     }

@@ -9,20 +9,20 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
-    constructor(weaponRef, ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 2, 2, angle, 120, 0);
+    constructor(weaponRef, owner, weaponID, x, y, angle, entityManager) {
+        super(owner, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
         this.weaponID = weaponID;
-        this.directHitDmg = new Damage(8, ownerID);
+        this.directHitDmg = new Damage(8, owner);
 
-        var exceptions = {};
-        for (let key in entityManager.getEntity(ownerID).team.players) {
-            exceptions[key] = entityManager.getEntity(ownerID).team.players[key];
+        let exceptions = {};
+        for (let key in owner.team.players) {
+            exceptions[key] = owner.team.players[key];
         }
-        delete exceptions[ownerID];
+        delete exceptions[owner.id];
         this.weapon = weaponRef;
 
-        this.areaDmg = new AOEKnockBackDamage(ownerID, x, y, Tile.SIZE * 3, 300, 15, exceptions);
+        this.areaDmg = new AOEKnockBackDamage(owner, x, y, Tile.SIZE * 3, 300, 15, exceptions);
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -30,7 +30,7 @@ class KineticBomb extends Bouncy {
         this.hits--;
     }
 
-    onPlayerHit(player, entityManager) {
+    onEnemyHit(player, entityManager) {
         this.directHitDmg.inflict(player, entityManager);
         this.detonate(entityManager);
     }
@@ -49,10 +49,10 @@ class KineticBomb extends Bouncy {
             this.detonate(entityManager);
         }
 
-        if (!entityManager.getEntity(this.weaponID)) return;
-        if (entityManager.getEntity(this.weaponID).kineticImplosion) {
+        if (!this.weapon) return;
+        if (this.weapon.kineticImplosion) {
             this.followPoint = true;
-            this.point = entityManager.getEntity(this.weaponID).followPoint;
+            this.point = this.weapon.followPoint;
             this.hits = 1;
         }
 
@@ -81,11 +81,11 @@ class KE_6H extends AttackWeapon {
         this.modAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             composedWeapon.kineticImplosion = true;
             composedWeapon.canFire = false;
-            this.followPoint.x = this.getOwner(entityManager).input.mouseData.world.x;
-            this.followPoint.y = this.getOwner(entityManager).input.mouseData.world.y;
+            this.followPoint.x = this.getOwner().input.mouseData.world.x;
+            this.followPoint.y = this.getOwner().input.mouseData.world.y;
             RETRACTION_SCANNER.ownerID = this.playerID;
             RETRACTION_SCANNER.pos = this.followPoint;
-            RETRACTION_SCANNER.entityExceptions = this.getOwner(entityManager).team.players;
+            RETRACTION_SCANNER.entityExceptions = this.getOwner().team.players;
             RETRACTION_SCANNER.areaScan(this.followPoint, entityManager);
         };
 
@@ -98,7 +98,7 @@ class KE_6H extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new KineticBomb(this, player.id, this.id, 0, 0,
+            new KineticBomb(this, player, this.id, 0, 0,
                 angle, entityManager));
     }
 }

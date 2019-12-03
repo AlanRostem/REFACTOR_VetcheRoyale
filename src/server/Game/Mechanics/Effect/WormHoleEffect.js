@@ -2,8 +2,8 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const Effect = require("./Effect.js");
 
 class WormHoleEffect extends Effect {
-    constructor(id, length, duration, pos, pullbackSpeed) {
-        super(id, duration);
+    constructor(ae, length, duration, pos, pullbackSpeed) {
+        super(ae, duration);
         this.pullbackSpeed = pullbackSpeed;
         this.pos = pos;
         this.length = length;

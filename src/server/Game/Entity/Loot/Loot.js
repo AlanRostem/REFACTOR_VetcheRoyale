@@ -1,7 +1,7 @@
-const Interactable = require("../Traits/Interactable.js");
+const PhysicalInteractable = require("../Traits/Interactable/PhysicalInteractable.js");
 const Tile = require("../../TileBased/Tile.js");
 
-class Loot extends Interactable {
+class Loot extends PhysicalInteractable {
     constructor(x, y, shouldRemove = false, lifeTime = 6 * 60) {
         super(x, y, 4, 6); // All loot hit boxes should be of this size
         this.shouldRemove = shouldRemove;

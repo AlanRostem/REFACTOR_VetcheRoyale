@@ -36,8 +36,8 @@ class ModAbility {
         };
 
         if (this.isResourceMeter) {
-            let player = composedWeapon.getOwner(entityManager);
-            if (player) {
+            if (composedWeapon.hasOwner()) {
+                let player = composedWeapon.getOwner();
                 if (!this.onCoolDown) {
                     if (player.input.heldDownMapping("modAbility") && this.active) {
                         if (!this.justConsumed) {

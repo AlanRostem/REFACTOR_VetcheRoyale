@@ -1,26 +1,46 @@
 const Vector2D = require("../../../../../../shared/code/Math/SVector2D");
 const Physical = require("../../../Traits/Physical.js");
-const Player = require("../../../Player/SPlayer.js");
 const Alive = require("../../../Traits/Alive.js");
-const Damage = require("../../../../Mechanics/Damage/Damage.js");
 const TileCollider = require("../../../../TileBased/TileCollider.js");
-const Tile = require("../../../../TileBased/Tile.js");
 const WeaponItem = require("../Base/WeaponItem.js");
+const HitScanner = require("../../../../Mechanics/Scanners/HitScanner.js");
+const Player = require("../../../Player/SPlayer.js");
 
-// Moving damaging object.
+/**
+ * A moving damaging object. Entities of instance Alive are damaged in
+ * different ways if the object hs collision with it
+ * @see Alive
+ */
 class Projectile extends Physical {
-    constructor(ownerID, x, y, w, h, angle, speed, arc = 0, shouldRemove = true) {
+    static _ = (() => {
+        Projectile.addStaticValues("ownerID");
+    })();
+
+    /**
+     * @param owner {Player} The entity that projectile belongs to
+     * @param x {number} Position in the world
+     * @param y {number} Position in the world
+     * @param w {number} Collision bounds
+     * @param h {number} Collision bounds
+     * @param angle {number} The initial angle it was launched at. The projectile moves at this angle
+     * @param {number} speed The speed constant
+     * @param {number} arc Gravity constant
+     * @param {boolean} shouldRemove Boolean value determining whether or not the projectile should disappear upon impact
+     */
+    constructor(owner, x, y, w, h, angle, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
-        this.ownerID = ownerID;
+        this.owner = owner;
+        if (!owner.team) {
+            console.log(new Error(this.constructor.name + " has an owner without a team! The owner is " + owner.id).stack)
+        }
+        this.ownerID = owner.id;
         this.shouldRemove = shouldRemove;
         this.speed = speed;
         this.angle = angle;
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
-        this._alreadyCollided = false;
-
-        this.addStaticSnapShotData(["ownerID"]);
+        this.alreadyCollided = false;
 
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
@@ -36,14 +56,6 @@ class Projectile extends Physical {
         super.onLeftCollision(tile);
         if (this.shouldRemove) this.remove();
         this.hitTile = true;
-    }
-
-    set alreadyCollided(v) {
-        this._alreadyCollided = v;
-    }
-
-    get alreadyCollided() {
-        return this._alreadyCollided;
     }
 
     onBottomCollision(tile) {
@@ -64,19 +76,32 @@ class Projectile extends Physical {
         this.hitTile = true;
     }
 
-    // Callback when hitting a tile
-    onTileHit(entityManager, deltaTime) {
+    /**
+     * Callback when hitting a tile on the map
+     * @param world {GameWorld} Given world the projectile was spawned in
+     * @param deltaTime {number} Time in seconds between each server tick
+     */
+    onTileHit(world, deltaTime) {
 
     }
 
-    // Callback when hitting a player (non-teammates)
-    onPlayerHit(player, entityManager) {
+    /**
+     * Callback when hitting an enemy (non-teammates)
+     * @param world {GameWorld} Given world the projectile was spawned in
+     * @param enemy {Alive} The entity that was hit
+     */
+    onEnemyHit(enemy, world) {
 
     }
 
-    getOwner(entityManager) {
-        if (entityManager.getEntity(this.ownerID)) {
-            return entityManager.getEntity(this.ownerID);
+    /**
+     * Get the owner of this projectile. Returns a constant object EMPTY_PLAYER which corresponds to
+     * a player object with no particular values in order to prevent errors if the owner ID was incorrect.
+     * @returns {Player}
+     */
+    getOwner() {
+        if (this.owner) {
+            return this.owner;
         }
         console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name + "because id was " + this.ownerID).stack);
         return WeaponItem.EMPTY_PLAYER;
@@ -96,31 +121,11 @@ class Projectile extends Physical {
 
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         if (entity instanceof Alive) {
-            let e = entity;
-            let a = {
+            if (HitScanner.intersectsEntity({
                 x: this.center.x - this.vel.x * deltaTime,
                 y: this.center.y - this.vel.y * deltaTime,
-            };
-            let b = this.center;
-
-            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                this.onEntityCollision(e, entityManager);
-                return;
-            }
-
-            if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
-                this.onEntityCollision(e, entityManager);
-                return;
-            }
-
-            if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
-                this.onEntityCollision(e, entityManager);
-                return;
-            }
-
-            if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                this.onEntityCollision(e, entityManager);
-                return;
+            }, this.center, entity)) {
+                this.onEntityCollision(entity, entityManager);
             }
 
         }
@@ -131,15 +136,13 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.team) return; // TODO: FIX HACK
-            if (!entity.team.hasEntity(this.ownerID)) {
-                if (this.alreadyCollided === false) { // TODO: Find out why this if doesn't work having it on top of: if (entity instanceof Alive) {
-                    this.onPlayerHit(entity, entityManager);
-                    if (this.shouldRemove) {
-                        this.remove();
-                    }
-                    this.alreadyCollided = true;
+            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID) ) return;
+            if (this.alreadyCollided === false) {
+                this.onEnemyHit(entity, entityManager);
+                if (this.shouldRemove) {
+                    this.remove();
                 }
+                this.alreadyCollided = true;
             }
         }
     }

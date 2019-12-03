@@ -1,6 +1,4 @@
 const Projectile = require("./Projectile.js");
-const TileCollider = require("../../../../TileBased/TileCollider.js");
-const Tile = require("../../../../TileBased/Tile.js");
 // A bouncy projectile. Requires to be manually removed in overridden class.
 class Bouncy extends Projectile {
     constructor(ownerID, x, y, w, h, angle, speed, arc, bounceFactor = 1) {
@@ -45,12 +43,6 @@ class Bouncy extends Projectile {
             this.vel.y = this.vy;
         }
     }
-
-    onTileHit(entityManager, deltaTime) {
-        super.onTileHit(entityManager, deltaTime);
-    }
-
-
 }
 
 module.exports = Bouncy;

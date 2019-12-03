@@ -7,8 +7,8 @@ const Affectable = require("../../../Entity/Traits/Affectable.js");
 const vm = require("../../../../../shared/code/Math/SCustomMath.js");
 
 class MicroMissile extends Projectile {
-    constructor(ownerID, x, y, angle, entityManager, harmonic = true, left = false) {
-        super(ownerID, x, y, 2, 2, angle, 150);
+    constructor(owner, x, y, angle, entityManager, harmonic = true, left = false) {
+        super(owner, x, y, 2, 2, angle, 150);
         this.trajectoryAngle = angle;
 
         this.speed = 220;
@@ -20,7 +20,7 @@ class MicroMissile extends Projectile {
 
         this.harmonic = harmonic;
         this.facingLeft = left;
-        this.exceptions = entityManager.getEntity(this.ownerID).team.players;
+        this.exceptions = owner.team.players;
     }
 
     update(entityManager, deltaTime) {
@@ -52,22 +52,22 @@ class MicroMissile extends Projectile {
         this.dealDamage(entityManager);
     }
 
-    onPlayerHit(player, entityManager) {
-        super.onPlayerHit(player, entityManager);
+    onEnemyHit(player, entityManager) {
+        super.onEnemyHit(player, entityManager);
         this.dealDamage(entityManager);
 
     }
 
     dealDamage(entityManager) {
-        new AOEDamage(this.ownerID, this.center.x, this.center.y, 8, 17, this.exceptions)
+        new AOEDamage(this.getOwner(), this.center.x, this.center.y, 8, 17, this.exceptions)
             .applyAreaOfEffect(entityManager);
     }
 
 }
 
 class StunEffect extends Effect {
-    constructor(id) {
-        super(id, 3);
+    constructor(ae) {
+        super(ae, 3);
     }
 
     effects(entity, entityManager, deltaTime) {
@@ -92,15 +92,12 @@ class BIGMotorizer extends AttackWeapon {
         this.thunderPulse = new HitScanner([]);
         this.thunderPulse.onEntityHit = (entity, game, angle) => {
             if (entity instanceof Affectable) {
-                if (!entity.isTeammate(game.getEntity(this.playerID))) {
-                    entity.applyEffect(new StunEffect(entity.id), game);
+                if (!entity.isTeammate(this.getOwner())) {
+                    entity.applyEffect(new StunEffect(entity), game);
                 }
             }
         };
         this.thunderPulseRange = 40 * 8;
-        this.addDynamicSnapShotData([
-            "thunderPulsePos"
-        ]);
     }
 
     onModActivation(entityManager, deltaTime) {
@@ -129,7 +126,7 @@ class BIGMotorizer extends AttackWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new MicroMissile(player.id, 0, 0,
+            new MicroMissile(player, 0, 0,
                 angle, entityManager, this.upgradeStage < 3,
         player.checkMovementState("direction", "left")));
     }
@@ -141,8 +138,8 @@ class BIGMotorizer extends AttackWeapon {
 
     updateWhenEquipped(player, entityManager, deltaTime) {
         super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (entityManager.getEntity(this.playerID)) {
-            this.fireAngle = entityManager.getEntity(this.playerID).input.mouseData.angleCenter;
+        if (this.hasOwner()) {
+            this.fireAngle = this.getOwner().input.mouseData.angleCenter;
         }
     }
 
