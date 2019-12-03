@@ -41,7 +41,8 @@ class WorldManager {
 
         // TODO: FIX THIS HACK
 
-
+        let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
+        this.addWorld(match, "match");
 
         let playground = new PlayGround(this.gameWorlds);
         this.addWorld(playground, "playground");
@@ -54,8 +55,7 @@ class WorldManager {
         this.addWorld(battleground, "battleground");
 
 
-        let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
-        this.addWorld(match, "match");
+
     }
 
     checkQueuedPlayers() {
