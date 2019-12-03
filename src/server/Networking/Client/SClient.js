@@ -57,6 +57,7 @@ class Client {
                 server.dataBridge.transferClientEvent("clientConnectCallback", this.id, {
                     id: this.id,
                 });
+
             }
         });
 
@@ -87,6 +88,7 @@ class Client {
     networkedUpdate(data, server) {
         this.inputReceiver.update(this, server);
         this.playerObjData = data;
+
         this.setOutboundPacketData("entityData", this.playerObjData.entities);
         this.setOutboundPacketData("gameData", this.playerObjData.gameData);
         this.setOutboundPacketData("teamData", this.playerObjData.teamData);

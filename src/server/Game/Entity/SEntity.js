@@ -100,8 +100,6 @@ class SEntity {
     }
 
     updateDataPack(entityManager, deltaTime) {
-        this.snapShotGenerator.update(entityManager, this, deltaTime);
-
     }
 
     remove() {

@@ -200,7 +200,7 @@ class CClient {
         });
 
         this.on('serverUpdateTick', packet => {
-            //console.log(packet.entityData)
+            console.log(packet.entityData)
             this.onServerUpdateReceived(packet);
         });
 

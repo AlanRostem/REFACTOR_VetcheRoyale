@@ -1,9 +1,11 @@
 const ProximityEntityManager = require("../Management/ProximityEntityManager.js");
 const SpectatorManager = require("./SpectatorManager.js");
+const PacketBuffer = require("../../../Networking/PacketBuffer.js");
 
 // Entity manager that iterates over quad-tree-queried
 // entities in proximity and creates data packs sent to
 // the client.
+
 class ClientPEM extends ProximityEntityManager {
     constructor(player) {
         super(player);
@@ -76,7 +78,8 @@ class ClientPEM extends ProximityEntityManager {
             if (Object.keys(this.entRef.inventory.weapon.getDataPack()).length)
                 this.dataBox[this.entRef.inventory.weapon.id] = this.entRef.inventory.weapon.getDataPack();
 
-        return this.dataBox;
+
+        return this.dataBox
     }
 
     update(entityManager, deltaTime) {

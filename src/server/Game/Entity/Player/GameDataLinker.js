@@ -11,7 +11,6 @@ class GameDataLinker extends Alive {
     constructor(x, y, w, h, HP, regenCoolDown, worldMgr, clientID) {
         super(x, y, w, h, HP, true, 1, .2, regenCoolDown, clientID);
         this._gameData = {};
-        this.packetBuffer = new PacketBuffer;
 
         this.entitiesInProximity = new ClientPEM(this);
         this.worldMgrRef = worldMgr;
@@ -40,7 +39,7 @@ class GameDataLinker extends Alive {
     initFromEntityManager(entityManager) {
         super.initFromEntityManager(entityManager);
         this.entitiesInProximity.initProximityEntityData(entityManager);
-        this.emit("initEntity", this.entitiesInProximity.exportInitDataPack())
+        this.emit("initEntity", this.entitiesInProximity.exportInitDataPack());
     }
 
     set gameData(value) {
@@ -58,7 +57,7 @@ class GameDataLinker extends Alive {
         this.gameData.debugData = entityManager.debugData;
         for (let key in entityManager.dataPacket)
             this.gameData[key] = entityManager.dataPacket[key];
-        this.gameData = this.packetBuffer.exportSnapshot(Object.keys(this.gameData), this._gameData);
+        //this.gameData = this.packetBuffer.exportSnapshot(Object.keys(this.gameData), this._gameData);
     }
 
     update(entityManager, deltaTime) {

@@ -17,7 +17,6 @@ class SnapShotGenerator {
         // require to be manually updated
         this.dynamicValues = composedEntity.constructor.SNAPSHOT_TEMPLATE.dynamicTemplate;
 
-        this.packetBuffer = new PacketBuffer;
 
         this.snapShot = {
             init: {},
@@ -47,19 +46,16 @@ class SnapShotGenerator {
         this.snapShot[key] = value;
     }
 
-    update(entityManager, composedEntity, deltaTime) {
-        //this.snapShot.deltaTime = deltaTime;
-        //this.snapShot.serverTimeStamp = Date.now();
-
-        this.snapShot.dynamic = this.packetBuffer.exportSnapshot(this.dynamicValues, composedEntity);
-
-    }
 
     exportInitValues() {
         for (let key of this.composedEntity.constructor.SNAPSHOT_TEMPLATE.referenceTemplate) {
             this.snapShot.init[key] = this.composedEntity[key];
         }
-        this.snapShot.dynamic = this.packetBuffer.exportInitValues(this.dynamicValues, this.composedEntity);
+
+        for (let key of this.dynamicValues) {
+            this.snapShot.dynamic[key] = this.composedEntity[key];
+        }
+
         return this.snapShot;
     }
 

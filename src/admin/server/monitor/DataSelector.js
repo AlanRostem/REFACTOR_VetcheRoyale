@@ -14,7 +14,6 @@ class DataSelector {
         // The properties per object within the selected object
         this.displayedProps = displayedProps;
 
-        this.packetBuffer = new PacketBuffer();
 
         this.output = {keys:this.displayedProps, data:{}};
 
