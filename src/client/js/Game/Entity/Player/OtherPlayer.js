@@ -38,6 +38,8 @@ class OtherPlayer extends CEntity {
         }, true);
         this.jumpSound = false;
 
+        this.schema.vel = {x: "number", y: "number"};
+
     }
 
     setMovementState(key, value) {
@@ -137,7 +139,7 @@ class OtherPlayer extends CEntity {
         if (this.checkMovementState("main", "run")) {
             if (this.footStep) {
                 AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
-                .updatePanPos(this.output.pos);
+                    .updatePanPos(this.output.pos);
                 this.footStep = false;
             }
             this.footStep = false;

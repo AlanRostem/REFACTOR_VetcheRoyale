@@ -28,6 +28,8 @@ class CEntity {
             this.output[key] = this.consts[key];
         }
 
+        this.schema = {pos: {x: "number", y: "number"}, id: "string"};
+
         /**
          * Packet buffer tuning the entity data
          * @type {EntitySnapshotBuffer}

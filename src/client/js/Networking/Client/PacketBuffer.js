@@ -1,4 +1,5 @@
-class Empty{}
+class Empty {
+}
 
 Object.equals = function (self, other) {
     if (typeof other === "number" && isNaN(other)) {
@@ -71,7 +72,7 @@ class PacketBuffer {
         this.buffer = {};
     }
 
-    clear(){
+    clear() {
         this.buffer = new Empty();
     }
 
@@ -97,18 +98,24 @@ class PacketBuffer {
             if (buffer.hasOwnProperty(key))
                 if (Object.equals(composedEntity[key], buffer[key])) continue;
             snapShot[key] = this.exportSnapshot(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key], false);
-            if(last) this.buffer[key] = Object.copy(composedEntity[key]);
+            if (last) this.buffer[key] = Object.copy(composedEntity[key]);
         }
         return snapShot;
     }
 }
 
-PacketBuffer.validate = function(validObj, obj){
-    for(let key in validObj){
-        if(Object.isJSON(validObj[key]))
-            PacketBuffer.validate(validObj[key], obj[key]);
-        else if(typeof obj[key] !== validObj[key])
-            console.error("expected typeof '" + validObj[key]+ "' value was: '" + typeof obj[key]+ "'");
+PacketBuffer.validate = function (validObj, obj) {
+    if (!Object.isJSON(validObj) || !Object.isJSON(obj)) {
+        if (typeof obj !== validObj)
+            console.error("expected typeof '" + validObj + "' value was: '" + typeof obj + "'");
+        return;
+    }
+
+    for (let key in validObj) {
+        if (Object.isJSON(validObj[key]))
+            PacketBuffer.validate(validObj[key], obj[key])
+        else if (typeof obj[key] !== validObj[key])
+            console.error("expected typeof '" + validObj[key] + "' value was: '" + typeof obj[key] + "'");
     }
 };
 

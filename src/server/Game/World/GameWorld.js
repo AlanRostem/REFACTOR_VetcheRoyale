@@ -119,11 +119,6 @@ class GameWorld extends EntityManager {
         this.dataPacket.playerCount = this.playerCount;
         this.eventManager.update(this, deltaTime);
         this.recentlySpawnedEntities.clear();
-
-        if (this.playerCount !== this.precount) {
-            console.log(this.playerCount);
-            this.precount = this.playerCount;
-        }
     }
 }
 

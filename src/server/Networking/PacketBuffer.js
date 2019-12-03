@@ -103,12 +103,18 @@ class PacketBuffer {
     }
 }
 
-PacketBuffer.validate = function(validObj, obj){
-    for(let key in validObj){
-        if(Object.isJSON(validObj[key]))
+PacketBuffer.validate = function(validObj, obj) {
+    if (!Object.isJSON(validObj) || !Object.isJSON(obj)) {
+        if (typeof obj !== validObj)
+            console.error("expected typeof '" + validObj + "' value was: '" + typeof obj + "'");
+        return;
+    }
+
+    for (let key in validObj) {
+        if (Object.isJSON(validObj[key]))
             PacketBuffer.validate(validObj[key], obj[key])
-        else if(typeof obj[key] !== validObj[key])
-            console.error("expected typeof '" + validObj[key]+ "' value was: '" + typeof obj[key]+ "'");
+        else if (typeof obj[key] !== validObj[key])
+            console.error("expected typeof '" + validObj[key] + "' value was: '" + typeof obj[key] + "'");
     }
 };
 
