@@ -50,7 +50,7 @@ class InputReceiver {
         if (this.serverRef) {
             for (let key in input) {
             }
-            this.inputDataToPlayer = PacketBuffer.createPacket(this.inputDataToPlayer, input);
+            this.inputDataToPlayer = PacketBuffer.mergeSnapshot(this.inputDataToPlayer, input);
 
             //console.log(this.p.keyStates, input.keyStates);
 

@@ -58,7 +58,7 @@ class GameDataLinker extends Alive {
         this.gameData.debugData = entityManager.debugData;
         for (let key in entityManager.dataPacket)
             this.gameData[key] = entityManager.dataPacket[key];
-        this.gameData = this.packetBuffer.export(Object.keys(this.gameData), this._gameData);
+        this.gameData = this.packetBuffer.exportSnapshot(Object.keys(this.gameData), this._gameData);
     }
 
     update(entityManager, deltaTime) {

@@ -88,7 +88,7 @@ class PacketBuffer {
         return snapShot;
     }
 
-    export(values, composedEntity, buffer = this.buffer, last = true) {
+    exportSnapshot(values, composedEntity, buffer = this.buffer, last = true) {
         if (!Object.isJSON(composedEntity)) return composedEntity;
         if (!Object.isJSON(buffer)) return composedEntity;
         let snapShot = new Empty();
@@ -96,20 +96,28 @@ class PacketBuffer {
         for (let key of values) {
             if (buffer.hasOwnProperty(key))
                 if (Object.equals(composedEntity[key], buffer[key])) continue;
-            snapShot[key] = this.export(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key], false);
+            snapShot[key] = this.exportSnapshot(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key], false);
             if(last) this.buffer[key] = Object.copy(composedEntity[key]);
         }
         return snapShot;
     }
 }
 
+PacketBuffer.validate = function(validObj, obj){
+    for(let key in validObj){
+        if(Object.isJSON(validObj[key]))
+            PacketBuffer.validate(validObj[key], obj[key])
+        else if(typeof obj[key] !== validObj[key])
+            console.error("expected typeof '" + validObj[key]+ "' value was: '" + typeof obj[key]+ "'");
+    }
+};
 
-PacketBuffer.createPacket = function (packet, snapShot, oneTimeValues = []) {
+PacketBuffer.mergeSnapshot = function (packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
     if (!Object.isJSON(snapShot) || data === undefined || data === null) return snapShot;
     if (Object.keys(snapShot).length === 0) return snapShot;
     for (let key of Object.keys(snapShot))
-        data[key] = this.createPacket(data[key], snapShot[key], oneTimeValues);
+        data[key] = this.mergeSnapshot(data[key], snapShot[key], oneTimeValues);
     return data;
 };
 

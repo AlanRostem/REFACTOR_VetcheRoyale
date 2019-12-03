@@ -20,6 +20,7 @@ class Team {
     update() {
         this.data = this.dataQueue;
         this.dataQueue = {};
+
     }
 
     sendData(key, value) {

@@ -4,7 +4,7 @@ import Vector2D from "../../../shared/code/Math/CVector2D.js";
 import AssetManager from "../AssetManager/AssetManager.js";
 
 export default class Stats extends UIElement {
-    constructor() {
+    constructor(client) {
         super("stats", 0, 0, 32, 32);
         AssetManager.addSpriteCreationCallback(() => {
             this.stats = AssetManager.getMapImage("stats");
@@ -14,6 +14,13 @@ export default class Stats extends UIElement {
 
         this.killCount = 0;
         this.playersAlive = 0;
+
+        client.addServerUpdateListener("updateEntity", dataPack => {
+            if (dataPack)
+                if (dataPack.gameData)
+                    if (dataPack.gameData.playerCount)
+                        this.playersAlive = dataPack.gameData.playerCount;
+        });
     }
 
     update(deltaTime, client, entityList) {

@@ -106,7 +106,8 @@ export default class CEntityManager {
                 var entityData = dataPack.entityData[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
-                    entityData = PacketBuffer.createPacket(existingEntity.output, entityData);
+                    entityData = PacketBuffer.mergeSnapshot(existingEntity.output, entityData);
+                    PacketBuffer.validate({pos:{x: "number", y:"number"}, id:"string"}, entityData);
                     existingEntity.updateFromDataPack(entityData, client);
                 } else {
                     console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);

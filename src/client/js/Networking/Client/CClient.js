@@ -44,21 +44,17 @@ class CClient {
         this.latency = 0;
         this.discReasonMsg = "reason: server error";
 
-        this.addServerUpdateListener("mapChange", data =>{
+        this.addServerUpdateListener("gameData", data =>{
             if (data)
                 if (data.gameData)
                     if (data.gameData.mapName)
-                    Scene.currentMapName = data.gameData.mapName;
-        })
+                        Scene.currentMapName = data.gameData.mapName;
+        });
     }
 
     onServerUpdateReceived(packet) {
         if (Scene.debugPause) {
             return;
-        }
-        if (this.first) {
-            console.log(packet);
-            this.first = false;
         }
 
         this.timeSyncer.onServerUpdate(this.latency);
@@ -204,6 +200,7 @@ class CClient {
         });
 
         this.on('serverUpdateTick', packet => {
+            //console.log(packet.entityData)
             this.onServerUpdateReceived(packet);
         });
 

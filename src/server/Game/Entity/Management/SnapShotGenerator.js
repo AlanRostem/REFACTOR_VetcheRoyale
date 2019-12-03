@@ -102,7 +102,7 @@ class SnapShotGenerator{
         //this.snapShot.deltaTime = deltaTime;
         //this.snapShot.serverTimeStamp = Date.now();
 
-        this.snapShot.dynamic = this.packetBuffer.export(this.dynamicValues, composedEntity);
+        this.snapShot.dynamic = this.packetBuffer.exportSnapshot(this.dynamicValues, composedEntity);
 
     }
 

@@ -6,6 +6,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
  class InputListener {
     constructor(client) {
 
+        this.packetBuffer = new PacketBuffer;
+
         // Holds the current state of the key (up or down).
         this.keyStates = {};
         this.localKeys = {};
@@ -23,7 +25,6 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             sinCenter: 0,
         };
 
-        this.buffer = [];
         this.pendingInputs = [];
         this.sequence = 0;
 
@@ -37,9 +38,8 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         };
         this.objectInputKeys = ["keyStates", "mouseData", "mouseStates", "sequence", "pressTime"];
 
-        client.emit("InputData", input);
+        client.emit("InputData", this.packetBuffer.exportSnapshot(this.objectInputKeys, input));
 
-        this.packetBuffer = new PacketBuffer;
     }
 
     update(client) {
@@ -62,7 +62,7 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
         };
 
         //TODO::fix mouse package
-        let packet = this.packetBuffer.export(this.objectInputKeys, input);
+        let packet = this.packetBuffer.exportSnapshot(this.objectInputKeys, input);
         if (Object.keys(packet).length > 0)
         {
             client.emit("InputData", packet);

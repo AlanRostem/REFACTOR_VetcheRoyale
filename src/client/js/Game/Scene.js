@@ -66,7 +66,7 @@ const Scene = {
                 UI.append(new HPBar());
                 UI.append(new GunBox());
                 UI.append(new ModBox());
-                UI.append(new Stats());
+                UI.append(new Stats(Scene.clientRef));
                 UI.append(new EnemyDetector());
                 UI.append(new CrossHair()); // Remember to keep this at the bottom
             });

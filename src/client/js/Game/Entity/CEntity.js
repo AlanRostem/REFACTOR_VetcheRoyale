@@ -32,6 +32,7 @@ class CEntity {
          * Packet buffer tuning the entity data
          * @type {EntitySnapshotBuffer}
          */
+
         this.dataBuffer = new EntitySnapshotBuffer(initDataPack);
 
         this.color = "white";//this.output.color;

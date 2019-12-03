@@ -58,7 +58,7 @@ class DataSelector {
     }
 
     export() {
-        return this.packetBuffer.export(Object.keys(this.output), this.output);
+        return this.packetBuffer.exportSnapshot(Object.keys(this.output), this.output);
     }
 }
 

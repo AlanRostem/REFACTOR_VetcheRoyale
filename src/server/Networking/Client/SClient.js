@@ -98,7 +98,7 @@ class Client {
 
     updateDataCycle() {
         // TODO: Send data that changes only (use packet buffer)
-        let packet = this.packetBuffer.export(Object.keys(this.outboundPacket.object), this.outboundPacket.object);
+        let packet = this.packetBuffer.exportSnapshot(Object.keys(this.outboundPacket.object), this.outboundPacket.object);
         this.emit("serverUpdateTick", packet);
         this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
     }
