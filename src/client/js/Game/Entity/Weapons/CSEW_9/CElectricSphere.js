@@ -6,6 +6,7 @@ import AssetManager from "../../../../AssetManager/AssetManager.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Timer from "../../../../../../shared/code/Tools/CTimer.js"
 import CProjectile from "../../CProjectile.js";
+import EffectManager from "../../../../Graphics/EffectManager.js";
 
 
 class CElectricSphere extends CProjectile {
@@ -41,6 +42,7 @@ class CElectricSphere extends CProjectile {
         if (!this.getRealtimeProperty("secondary")) return;
         R.camera.setConfig("followPlayer", false);
         R.camera.setCurrentFollowPos(this.output.pos);
+
     }
 
     draw() {
@@ -49,23 +51,33 @@ class CElectricSphere extends CProjectile {
 
         let player = this.player;
 
-        CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 5, 5);
-        CElectricSphere.sphereAnimation.drawAnimated(
-            pos.x + R.camera.x - 1,
-            pos.y + R.camera.y - 1);
+        /* CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 5, 5);
+         CElectricSphere.sphereAnimation.drawAnimated(
+             pos.x + R.camera.x - 1,
+             pos.y + R.camera.y - 1);*/
+
+        R.drawCroppedImage(AssetManager.getMapImage("SEW-9_bullet"),
+            0, 0,
+            5, 5,
+            pos.x - 1, pos.y - 1,
+            5, 5, true);
 
         if (!player) return;
 
         if (this.drawStatic) {
             lightningToPlayer(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, this.output.pos.x, this.output.pos.y, "White", 1, true);
+            EffectManager.createEffect(pos.x - 4, pos.y - 4, "Sew9sphereElec1", 0);
             this.drawStatic = false;
         }
     }
 }
 
 AssetManager.addSpriteCreationCallback(() => {
-    CElectricSphere.sphereAnimation = new SpriteSheet("SEW-9_bullet");
-    CElectricSphere.sphereAnimation.bind("SEW-9_bullet", 0, 0, 40, 8);
+    /*CElectricSphere.sphereAnimation = new SpriteSheet("SEW-9_bullet");
+    CElectricSphere.sphereAnimation.bind("SEW-9_bullet", 0, 0, 40, 8);*/
+
+    EffectManager.configureEffect("Sew9sphereElec1", 228, 0, 11, 11, 4, 0.05);
+
 });
 
 
