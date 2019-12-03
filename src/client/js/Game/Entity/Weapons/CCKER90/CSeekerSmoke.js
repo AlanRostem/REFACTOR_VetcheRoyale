@@ -40,7 +40,7 @@ class CSeekerSmoke extends CProjectile {
         this.addSmokeParticle = false;
 
         this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.09);
-        this.animationSpecGrenade = new SpriteSheet.Animation(0, 5, 6, 0.1);
+        this.animationSpecGrenade = new SpriteSheet.Animation(0, 7, 8, 0.1);
 
     }
 
