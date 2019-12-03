@@ -28,7 +28,7 @@ class QuadTree {
         }
 
         for (let e of this.entities) {
-            if (range.myContains(e)) {
+            if (range.myContains(e) && !found.includes(e)) { // TODO: Optimize
                 found.push(e);
             }
         }
@@ -108,7 +108,7 @@ class QuadTree {
     // its subdivisions.
     remove(entity) {
         if (this.entities.indexOf(entity) !== -1) {
-            this.entities.splice(this.entities.indexOf(entity));
+            this.entities.splice(this.entities.indexOf(entity), 1);
             if (this.divided) {
                 this.northeast.remove(entity);
                 this.northwest.remove(entity);

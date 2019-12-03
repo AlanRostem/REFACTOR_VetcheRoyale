@@ -100,7 +100,7 @@ export default class EntitySnapshotBuffer {
     }
 
     remove(i) {
-        this.buffer.splice(i);
+        this.buffer.splice(i, 1);
     }
 
 

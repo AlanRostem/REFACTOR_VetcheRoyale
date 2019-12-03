@@ -6,6 +6,8 @@ const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 // is within the correct radius and casts a line toward the entity
 // that collides with the map geometry. The line has to intersect
 // the entity to do the events.
+let i = 0;
+
 class AOELOSScanner extends HitScanner {
     constructor(radius, exceptions = {}, tileCollision = true) {
         super(exceptions, false, tileCollision);
@@ -15,23 +17,23 @@ class AOELOSScanner extends HitScanner {
     areaScan(originPos, entityManager) {
         this.qtRange.x = originPos.x;
         this.qtRange.y = originPos.y;
+        let entities = entityManager.quadTree.query(this.qtRange);
+        for (let e of entities) {
+            if (this.entityExceptions.hasOwnProperty(e.id)) continue;
 
-        var entities = entityManager.quadTree.query(this.qtRange);
-        for (var e of entities) {
-            var angle = Math.atan2(
+            let angle = Math.atan2(
                 e.center.y - originPos.y,
                 e.center.x - originPos.x);
-            var rangePos = new Vector2D(
+            let rangePos = new Vector2D(
                 originPos.x + this.radius * Math.cos(angle),
                 originPos.y + this.radius * Math.sin(angle));
-            var a = originPos;
-            var b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
-            if (this.entityExceptions.hasOwnProperty(e.id)) continue;
+            let a = originPos;
+            let b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
             if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
                 Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
                 Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
                 Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                var ang = Math.atan2(a.y - b.y, a.x - b.x);
+                let ang = Math.atan2(a.y - b.y, a.x - b.x);
                 this.onEntityHit(e, entityManager, ang);
             }
         }

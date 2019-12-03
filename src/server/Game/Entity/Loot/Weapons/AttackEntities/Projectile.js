@@ -1,11 +1,11 @@
 const Vector2D = require("../../../../../../shared/code/Math/SVector2D");
-
 const Physical = require("../../../Traits/Physical.js");
 const Player = require("../../../Player/SPlayer.js");
 const Alive = require("../../../Traits/Alive.js");
 const Damage = require("../../../../Mechanics/Damage/Damage.js");
 const TileCollider = require("../../../../TileBased/TileCollider.js");
 const Tile = require("../../../../TileBased/Tile.js");
+const WeaponItem = require("../Base/WeaponItem.js");
 
 // Moving damaging object.
 class Projectile extends Physical {
@@ -18,6 +18,7 @@ class Projectile extends Physical {
         this.vel.x = Math.cos(angle) * speed;
         this.vel.y = Math.sin(angle) * speed;
         this.hitTile = false;
+        this._alreadyCollided = false;
 
         this.addStaticSnapShotData(["ownerID"]);
 
@@ -35,6 +36,14 @@ class Projectile extends Physical {
         super.onLeftCollision(tile);
         if (this.shouldRemove) this.remove();
         this.hitTile = true;
+    }
+
+    set alreadyCollided(v) {
+        this._alreadyCollided = v;
+    }
+
+    get alreadyCollided() {
+        return this._alreadyCollided;
     }
 
     onBottomCollision(tile) {
@@ -66,7 +75,11 @@ class Projectile extends Physical {
     }
 
     getOwner(entityManager) {
-        return entityManager.getEntity(this.ownerID);
+        if (entityManager.getEntity(this.ownerID)) {
+            return entityManager.getEntity(this.ownerID);
+        }
+        console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name + "because id was " + this.ownerID).stack);
+        return WeaponItem.EMPTY_PLAYER;
     }
 
     update(entityManager, deltaTime) {
@@ -120,9 +133,12 @@ class Projectile extends Physical {
         if (entity instanceof Alive) {
             if (!entity.team) return; // TODO: FIX HACK
             if (!entity.team.hasEntity(this.ownerID)) {
-                this.onPlayerHit(entity, entityManager);
-                if (this.shouldRemove) {
-                    this.remove();
+                if (this.alreadyCollided === false) { // TODO: Find out why this if doesn't work having it on top of: if (entity instanceof Alive) {
+                    this.onPlayerHit(entity, entityManager);
+                    if (this.shouldRemove) {
+                        this.remove();
+                    }
+                    this.alreadyCollided = true;
                 }
             }
         }

@@ -30,7 +30,7 @@ class EffectManager {
             draw(deltaTime) {
                 if (!this.endOnSpriteAnim) {
                     this.duration -= deltaTime;
-                    this.remove = this.duration <= 0;
+                    this.remove = (this.duration <= 0);
                 } else {
                     this.remove = this.anim.currentCol === this.anim.framesPerRow - 1;
                 }
@@ -55,7 +55,7 @@ class EffectManager {
         for (let effect of this.effects) {
             effect.draw(deltaTime);
             if (effect.remove) {
-                this.effects.splice(this.effects.indexOf(effect));
+               this.effects.splice(this.effects.indexOf(effect), 1);
             }
         }
     }

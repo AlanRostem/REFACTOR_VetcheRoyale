@@ -10,7 +10,7 @@ class AOEDamage extends Damage {
         this.pos = new Vector2D(x, y);
         this.scanner = new AOELOSScanner(radius, exceptions);
         this.scanner.onEntityHit = (entity, entityManager, angle) => {
-            this.inflict(entity, entityManager, angle);
+            this.inflict(entity, entityManager, {angle: angle});
         }
     }
 
