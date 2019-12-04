@@ -74,7 +74,7 @@ class ProximityEntityManager extends EntityManager {
                         this.entRef.onEntityCollision(e, entityManager);
                     }
                     if (e.toRemove || !this.qtBounds.myContains(e)) {
-                        this.removeEntity(e.id);
+                        this.removeEntity(e);
                     }
                 }
             }
