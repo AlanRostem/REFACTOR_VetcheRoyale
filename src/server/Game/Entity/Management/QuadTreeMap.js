@@ -8,7 +8,7 @@ const Rect = require("./QTRect.js");
 class QuadTreeMap {
     constructor(rect) {
         this.boundary = rect;
-        this.entities = new Map(); // TODO: Allocate for maximum size
+        this.entities = new Set(); // TODO: Allocate for maximum size
         //this.entities.length = QuadTreeMap.MAX_ENTITIES;
         this.divided = false;
     }
@@ -22,15 +22,15 @@ class QuadTreeMap {
     }
 
     // Range is a bounding rectangle (QTRect)
-    query(range, found = new Map()) {
+    query(range, found = new Set()) {
 
         if (!range.intersects(this.boundary)) {
             return found;
         }
 
-        for (let e of this.entities.values()) { // TODO: Optimize
-            if (range.myContains(e) && !found.has(e.id)) {
-                found.set(e.id, e);
+        for (let e of this.entities) { // TODO: Optimize
+            if (range.myContains(e) && !found.has(e)) {
+                found.add(e);
             }
         }
 
@@ -69,18 +69,18 @@ class QuadTreeMap {
     // We subdivide if we reach the max count.
     insert(entity) {
         if (!this.boundary.myContains(entity)) {
-            if (this.entities.has(entity.id)) {
+            if (this.entities.has(entity)) {
                 this.remove(entity);
             }
             return false;
         }
 
-        if (this.entities.has(entity.id)) {
+        if (this.entities.has(entity)) {
             return false;
         }
 
         if (this.entities.size < QuadTreeMap.MAX_ENTITIES) {
-            this.entities.set(entity.id, entity);
+            this.entities.add(entity);
             return true;
         } else {
             if (!this.divided) {
@@ -112,8 +112,8 @@ class QuadTreeMap {
         if (entity === undefined || entity === null) {
             return console.log(new Error("Entity removal at QuadTreeMap failed. Given value was " + entity));
         }
-        if (this.entities.has(entity.id)) {
-            this.entities.delete(entity.id);
+        if (this.entities.has(entity)) {
+            this.entities.delete(entity);
             if (this.divided) {
                 this.northeast.remove(entity);
                 this.northwest.remove(entity);
