@@ -64,18 +64,21 @@ class ProximityEntityManager extends EntityManager {
     // bounding rectangle.
     checkProximityEntities(entityManager, deltaTime) {
         let entities = entityManager.quadTree.query(this.qtBounds);
-        this.container = entities;
         for (let e of entities) {
             if (e !== this.entRef) {
-                this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
-                if (this.entRef.overlapEntity(e)) {
-                    this.entRef.onEntityCollision(e, entityManager);
-                }
-                if (e.toRemove || !this.qtBounds.myContains(e)) {
-                    this.removeEntity(e);
+                if (!this.container.has(e)) {
+                    this.addEntity(e, entityManager);
+                } else {
+                    this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
+                    if (this.entRef.overlapEntity(e)) {
+                        this.entRef.onEntityCollision(e, entityManager);
+                    }
+                    if (e.toRemove || !this.qtBounds.myContains(e)) {
+                        this.removeEntity(e.id);
+                    }
                 }
             }
-        }
+            }
     }
 
     // Called when player spawns in the world

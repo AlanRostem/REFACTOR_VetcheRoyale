@@ -24,7 +24,7 @@ class ClientPEM extends ProximityEntityManager {
     }
 
     removeEntity(entity) {
-        super.removeEntity(entity.id);
+        super.removeEntity(entity);
         let e = this.dataBox[entity.id];
         delete this.dataBox[entity.id];
 
@@ -42,7 +42,7 @@ class ClientPEM extends ProximityEntityManager {
 
     exportInitDataPack() {
         for (let entity of this.container) {
-            this.dataBox[entity.id] = this.container[entity.id].getInitDataPack();
+            this.dataBox[entity.id] = entity.getInitDataPack();
         }
         this.dataBox[this.entRef.id] = this.entRef.getInitDataPack();
         return this.dataBox;
@@ -51,7 +51,6 @@ class ClientPEM extends ProximityEntityManager {
     exportDataPack() {
         this.dataBox = {};
         for (let e of this.container) {
-            let e = this.container[e.id];
             this.dataBox[e.id] = e.getDataPack();
             // Removes entities out of bounds. Suboptimal location to do this.
             if (e.toRemove) {
