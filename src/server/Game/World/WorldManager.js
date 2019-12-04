@@ -41,7 +41,7 @@ class WorldManager {
         let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(match, "match");
         for (let i = 0; i < 1000; i++) {
-            //match.spawnEntity(Math.random() * match.tileMap.w * 8, Math.random() * match.tileMap.h * 8, new KE_6h(0, 0));
+            match.spawnEntity(Math.random() * match.tileMap.w * 8, Math.random() * match.tileMap.h * 8, new KE_6h(0, 0));
         }
 
         let playground = new PlayGround(this.gameWorlds);

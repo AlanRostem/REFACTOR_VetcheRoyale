@@ -87,6 +87,7 @@ class Player extends GameDataLinker {
                 }
             }
 
+            // TODO: Optimize
             this.itemsNearby.array.sort(function (a, b) {
                 if (a.distance > b.distance) {
                     return -1;
