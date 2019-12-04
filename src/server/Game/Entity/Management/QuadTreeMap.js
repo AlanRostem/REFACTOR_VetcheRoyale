@@ -64,7 +64,6 @@ class QuadTreeMap {
         this.divided = true;
     }
 
-    // TODO: Maybe store the ID in the QuadTreeMap instead.
     // Places a reference to an entity in the container.
     // We subdivide if we reach the max count.
     insert(entity) {

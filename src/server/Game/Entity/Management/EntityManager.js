@@ -66,7 +66,9 @@ class EntityManager {
                 this.removeEntity(i);
                 continue;
             }
-            entity.update(this, deltaTime);
+            if (entity.constructor.name === "Player")
+                entity.update(this, deltaTime);
+            else entity.entitiesInProximity.update(this, deltaTime);
         }
     }
 
