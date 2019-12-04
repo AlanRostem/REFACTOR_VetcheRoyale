@@ -3,9 +3,8 @@ const GameClock = require("../../Entity/Management/GameClock.js");
 const QuadTree = require("./QuadTree.js");
 const Rect = require("./QTRect.js");
 
-// Updates entities and manages proximity queries in the quad tree
 /**
- *
+ * Updates entities and manages proximity queries in the quad tree
  */
 class EntityManager {
     constructor(globalManager = false, gameMap) {

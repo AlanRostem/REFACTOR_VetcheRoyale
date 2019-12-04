@@ -1,15 +1,10 @@
 const EntityManager = require("../Entity/Management/EntityManager.js");
 const TeamManager = require("./TeamManager.js");
-const Tile = require("../TileBased/Tile.js");
-const ClientList = require("../../Networking/ClientList.js");
-const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
 const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
-const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
 const GameRules = require("./GameRules.js");
 const EventManager = require("./Matches/SEventManager.js");
-const PacketBuffer = require("../../Networking/PacketBuffer.js");
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
