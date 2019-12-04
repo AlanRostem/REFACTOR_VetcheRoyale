@@ -198,6 +198,19 @@ class Physical extends Entity {
         this.pos.y = tile.y - this.height;
     }
 
+    onXSideCollision(tile) {
+
+    }
+
+    onYSideCollision(tile) {
+
+    }
+
+    onBottomSlopeCollision(tile) {
+        this.vel.y = 0;
+        this.vel.x = 0;
+    }
+
     onEntityCollision(entity, entityManager) {
         EntityCollider.applyCollisionsEffects(this, entity, entityManager);
     }
