@@ -5,10 +5,11 @@ const Rect = require("./QTRect.js");
 // Data structure that reduces the amount of iterations
 // an entity has to perform in order to check for interactions
 // such as tileCollision.
-class QuadTree {
+class QuadTreeMap {
     constructor(rect) {
         this.boundary = rect;
-        this.entities = [];
+        this.entities = new Map(); // TODO: Allocate for maximum size
+        //this.entities.length = QuadTreeMap.MAX_ENTITIES;
         this.divided = false;
     }
 
@@ -21,17 +22,18 @@ class QuadTree {
     }
 
     // Range is a bounding rectangle (QTRect)
-    query(range, found = []) {
+    query(range, found = new Map()) {
 
         if (!range.intersects(this.boundary)) {
             return found;
         }
 
-        for (let e of this.entities) {
-            if (range.myContains(e) && !found.includes(e)) { // TODO: Optimize
-                found.push(e);
+        for (let e of this.entities.values()) { // TODO: Optimize
+            if (range.myContains(e) && !found.has(e.id)) {
+                found.set(e.id, e);
             }
         }
+
         if (this.divided) {
             this.northwest.query(range, found);
             this.northeast.query(range, found);
@@ -51,34 +53,34 @@ class QuadTree {
         let h = this.boundary.h / 2;
 
         let ne = new Rect(x + w, y - h, w, h);
-        this.northeast = new QuadTree(ne);
+        this.northeast = new QuadTreeMap(ne);
         let nw = new Rect(x - w, y - h, w, h);
-        this.northwest = new QuadTree(nw);
+        this.northwest = new QuadTreeMap(nw);
         let se = new Rect(x + w, y + h, w, h);
-        this.southeast = new QuadTree(se);
+        this.southeast = new QuadTreeMap(se);
         let sw = new Rect(x - w, y + h, w, h);
-        this.southwest = new QuadTree(sw);
+        this.southwest = new QuadTreeMap(sw);
 
         this.divided = true;
     }
 
-    // TODO: Maybe store the ID in the QuadTree instead.
+    // TODO: Maybe store the ID in the QuadTreeMap instead.
     // Places a reference to an entity in the container.
     // We subdivide if we reach the max count.
     insert(entity) {
         if (!this.boundary.myContains(entity)) {
-            if (this.entities.indexOf(entity) !== -1) {
+            if (this.entities.has(entity.id)) {
                 this.remove(entity);
             }
             return false;
         }
 
-        if (this.entities.indexOf(entity) !== -1) {
+        if (this.entities.has(entity.id)) {
             return false;
         }
 
-        if (this.entities.length < QuadTree.MAX_ENTITIES) {
-            this.entities.push(entity);
+        if (this.entities.size < QuadTreeMap.MAX_ENTITIES) {
+            this.entities.set(entity.id, entity);
             return true;
         } else {
             if (!this.divided) {
@@ -107,8 +109,11 @@ class QuadTree {
     // Recursively removes an entity from the quad tree and
     // its subdivisions.
     remove(entity) {
-        if (this.entities.indexOf(entity) !== -1) {
-            this.entities.splice(this.entities.indexOf(entity), 1);
+        if (entity === undefined || entity === null) {
+            return console.log(new Error("Entity removal at QuadTreeMap failed. Given value was " + entity));
+        }
+        if (this.entities.has(entity.id)) {
+            this.entities.delete(entity.id);
             if (this.divided) {
                 this.northeast.remove(entity);
                 this.northwest.remove(entity);
@@ -131,15 +136,15 @@ class QuadTree {
     }
 
     clear() {
-        delete this.northeast;
-        delete this.northwest;
-        delete this.southwest;
-        delete this.southeast;
+        this.northeast = null;
+        this.northwest = null;
+        this.southwest = null;
+        this.southeast = null;
         this.divided = false;
     }
 
     get length() {
-        return this.entities.length;
+        return this.entities.size;
     }
 
     get bounds() {
@@ -148,10 +153,10 @@ class QuadTree {
 
 }
 
-QuadTree.MAX_ENTITIES = 10;
-QuadTree.MAX_LEVEL = 5;
-QuadTree.MAX_NODE_COUNT = 4;
-QuadTree.UNBOUND = -1;
+QuadTreeMap.MAX_ENTITIES = 10;
+QuadTreeMap.MAX_LEVEL = 5;
+QuadTreeMap.MAX_NODE_COUNT = 4;
+QuadTreeMap.UNBOUND = -1;
 
 
-module.exports = QuadTree;
+module.exports = QuadTreeMap;

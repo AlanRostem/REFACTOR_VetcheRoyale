@@ -104,7 +104,7 @@ class HitScanner {
 
     scanEntities(entityManager, a, b) {
         if (this.shouldScanEntities) {
-            var entities = entityManager.quadTree.query(this.qtRange);
+            var entities = entityManager.quadTree.query(this.qtRange).values();
             for (var e of entities) {
                 if (this.entityExceptions.hasOwnProperty(e.id)) continue;
                 if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {

@@ -1,6 +1,6 @@
 const Tile = require("../../TileBased/Tile.js");
 const GameClock = require("../../Entity/Management/GameClock.js");
-const QuadTree = require("./QuadTree.js");
+const QuadTree = require("./QuadTreeMap.js");
 const Rect = require("./QTRect.js");
 
 /**

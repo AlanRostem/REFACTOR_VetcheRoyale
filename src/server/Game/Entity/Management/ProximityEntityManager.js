@@ -62,7 +62,7 @@ class ProximityEntityManager extends EntityManager {
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
     checkProximityEntities(entityManager, deltaTime) {
-        var entities = entityManager.quadTree.query(this.qtBounds);
+        var entities = entityManager.quadTree.query(this.qtBounds).values();
         for (let e of entities) {
             if (e !== this.entRef) {
                 if (!this.exists(e.id)) {
@@ -82,10 +82,10 @@ class ProximityEntityManager extends EntityManager {
 
     // Called when player spawns in the world
     initProximityEntityData(entityManager) {
-        var entities = entityManager.quadTree.query(this.qtBounds);
+        var entities = entityManager.quadTree.query(this.qtBounds).values();
         for (var e of entities) {
             if (e !== this.entRef && this.qtBounds.contains(e)) {
-                this.addEntity(e);
+                this.addEntity(e, entityManager);
             }
         }
     }

@@ -17,7 +17,7 @@ class AOELOSScanner extends HitScanner {
     areaScan(originPos, entityManager) {
         this.qtRange.x = originPos.x;
         this.qtRange.y = originPos.y;
-        let entities = entityManager.quadTree.query(this.qtRange);
+        let entities = entityManager.quadTree.query(this.qtRange).values();
         for (let e of entities) {
             if (this.entityExceptions.hasOwnProperty(e.id)) continue;
 
