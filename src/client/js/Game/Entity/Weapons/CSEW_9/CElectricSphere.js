@@ -15,10 +15,7 @@ class CElectricSphere extends CProjectile {
         super(data);
 
         this.timer = new Timer(0.5, () => {
-            this.drawStatic = true;
-        }, true);
-        this.timer2 = new Timer(0.75, () => {
-            this.drawStatic = true;
+            if(((Math.random() * 2) | 0)) this.drawStatic = true;
         }, true);
 
         this.animationSpec = new SpriteSheet.Animation(0, 7, 8, 0.07);
@@ -34,7 +31,7 @@ class CElectricSphere extends CProjectile {
         super.update(deltaTime, client);
 
         this.timer.tick(deltaTime);
-        this.timer2.tick(deltaTime);
+       // this.timer2.tick(deltaTime);
 
         this.player = Scene.entityManager.getEntityByID(this.output.ownerID);
 
@@ -67,6 +64,7 @@ class CElectricSphere extends CProjectile {
         if (this.drawStatic) {
             lightningToPlayer(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, this.output.pos.x, this.output.pos.y, "White", 1, true);
             EffectManager.createEffect(pos.x - 4, pos.y - 4, "Sew9sphereElec1", 0);
+            AudioPool.play("Weapons/sew-9_shock.oggSE", pos);
             this.drawStatic = false;
         }
     }
