@@ -8,6 +8,7 @@ const EventManager = require("./Matches/SEventManager.js");
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
+    playerMap = new Map();
     constructor(name, gameMap) {
         super(true, gameMap);
         this.settings = new GameRules();
@@ -79,6 +80,7 @@ class GameWorld extends EntityManager {
         this.teamManager.addPlayer(player, this);
         this.spawner.spawnSpecificAtPos(105, player, this);
         this.players++;
+        this.playerMap.set(player.id, player);
 
        /* this.eventManager.addGlobal(
             "Welcome", "announcement", "Green", 0, {
@@ -88,7 +90,8 @@ class GameWorld extends EntityManager {
     }
 
     removePlayer(id) {
-        this.removeEntity(id);
+        let i = this.playerMap.get(id).index;
+        this.removeEntity(i);
         this.players--;
     }
 

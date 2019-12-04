@@ -8,7 +8,7 @@ const Rect = require("./QTRect.js");
  */
 class EntityManager {
     constructor(globalManager = false, gameMap) {
-        this.container = {};
+        this.container = [];
 
         // If true it will be used as a global entity manager
         // for a game world. Otherwise it might have other use cases.
@@ -41,47 +41,39 @@ class EntityManager {
     update(deltaTime) {
         this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
-        this.refreshEntityDataPacks(deltaTime);
+        this.refreshEntityDataPacks(deltaTime); // TODO: Determine if this is a performance caveat
         for (let i = 0; i < this.entitiesQueuedToDelete.length; i++) {
             this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
-            delete this.container[this.entitiesQueuedToDelete[i]];
+            this.container.splice(this.entitiesQueuedToDelete[i], 1);
             this.entitiesQueuedToDelete.splice(i, 1);
         }
-        // TODO: Update each "entitiesInProximity" and other emit related shit for each player here in a separate loop
     }
 
     // Regenerates data packs every frame for every entity
     // in the container.
     refreshEntityDataPacks(deltaTime) {
-        for (let id in this.container) {
-            if (this.exists(id)) {
-                let entity = this.container[id];
-                entity.updateDataPack(this, deltaTime);
-            }
+        for (let entity of this.container) {
+            entity.updateDataPack(this, deltaTime);
         }
     }
 
     updateEntities(deltaTime) {
-        for (let id in this.container) {
-            if (this.exists(id)) {
-                let entity = this.container[id];
-                if (entity.toRemove) {
-                    this.removeEntity(entity.id);
-                    continue;
-                }
-                entity.update(this, deltaTime);
+        for (let i = 0; i < this.container.length; i++) {
+            let entity = this.container[i];
+            entity.index = i;
+            if (entity.toRemove) {
+                //this.container.splice(i, 1);
+                this.removeEntity(i);
+                continue;
             }
+            entity.update(this, deltaTime);
         }
-    }
-
-    exists(id) {
-        return this.container.hasOwnProperty(id);
     }
 
     // Spawns an existing (or new) entity into the game world
     // on a given position.
     spawnEntity(x, y, entity) {
-        this.container[entity.id] = entity;
+        this.container.push(entity);
         entity.initFromEntityManager(this);
         entity.pos.x = x;
         entity.pos.y = y;
@@ -90,15 +82,15 @@ class EntityManager {
         return entity;
     }
 
-    getEntity(id) {
-        return this.container[id];
+    getEntity(i) {
+        return this.container[i];
     }
 
     // Assigns the entity as removed and queues
     // it to deletion.
-    removeEntity(id) {
-        this.getEntity(id).remove();
-        this.entitiesQueuedToDelete.push(id);
+    removeEntity(i) {
+        this.getEntity(i).remove();
+        this.entitiesQueuedToDelete.push(i);
     }
 }
 
