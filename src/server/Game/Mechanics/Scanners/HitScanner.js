@@ -1,5 +1,5 @@
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
-const QTRect = require("../../Entity/Management/QTRect.js");
+const QTRect = require("../../Entity/Management/CentralRect.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 
 // Scan line that collides with map geometry or entities (can be set however you like).

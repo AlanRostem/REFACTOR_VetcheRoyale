@@ -58,7 +58,7 @@ class ClientPEM extends ProximityEntityManager {
                 continue;
             }
 
-            if (!this.qtBounds.myContains(e)) {
+            if (!this.qtBounds.containsAABB(e)) {
                 this.throwOutOfBounds(e);
             }
 

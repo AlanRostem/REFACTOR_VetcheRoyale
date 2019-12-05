@@ -1,7 +1,7 @@
 const Tile = require("../../TileBased/Tile.js");
 const GameClock = require("../../Entity/Management/GameClock.js");
-const QuadTree = require("./QuadTreeMap.js");
-const Rect = require("./QTRect.js");
+const QuadTree = require("./QuadTree.js");
+const Rect = require("./CentralRect.js");
 
 /**
  * Updates entities and manages proximity queries in the quad tree
@@ -80,7 +80,7 @@ class EntityManager {
         entity.pos.x = x;
         entity.pos.y = y;
 
-        this.qt.insert(entity);
+        this.qt.update(entity);
         return entity;
     }
 

@@ -1,5 +1,5 @@
 const EntityManager = require("./EntityManager.js");
-const Rect = require("./QTRect.js");
+const Rect = require("./CentralRect.js");
 
 // Composition class for entities which handles
 // all entities in proximity using the global
@@ -46,7 +46,7 @@ class ProximityEntityManager extends EntityManager {
     }
 
     quadTreePlacement(entityManager) {
-        entityManager.quadTree.insert(this.entRef);
+        entityManager.quadTree.update(this.entRef);
     }
 
     // Binds the quad tree range bounding rect to
@@ -63,28 +63,32 @@ class ProximityEntityManager extends EntityManager {
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
     checkProximityEntities(entityManager, deltaTime) {
-        let entities = entityManager.quadTree.query(this.qtBounds);
-        for (let e of entities) {
-            if (e !== this.entRef) {
-                if (!this.container.has(e)) {
-                    this.addEntity(e, entityManager);
-                } else {
-                    this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
-                    if (this.entRef.overlapEntity(e)) {
-                        this.entRef.onEntityCollision(e, entityManager);
-                    }
-                    if (e.toRemove || !this.qtBounds.myContains(e)) {
-                        this.removeEntity(e);
-                    }
-                }
+        entityManager.quadTree.traverse(this.entRef, entityManager, deltaTime);
+    }
+
+    proximityEntityTraversal(e, entityManager, deltaTime) {
+        if (!this.container.has(e)) {
+            this.addEntity(e, entityManager);
+        } else {
+            this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
+            if (this.entRef.overlapEntity(e)) {
+                this.entRef.onEntityCollision(e, entityManager);
             }
+            if (e.toRemove || !this.qtBounds.containsAABB(e)) {
+                this.removeEntity(e);
             }
+        }
     }
 
     // Called when player spawns in the world
     initProximityEntityData(entityManager) {
-        var entities = entityManager.quadTree.query(this.qtBounds);
-        this.container = entities;
+
+        this.container = new Set();
+        entityManager.quadTree.forBoundary(this.qtBounds, e => {
+            if (e !== this.entRef) {
+                this.container.add(e);
+            }
+        });
         /*for (let e of entities) {
             if (e !== this.entRef && this.qtBounds.contains(e)) {
                 this.addEntity(e, entityManager);
