@@ -85,7 +85,7 @@ class QuadTree {
 
     remove(entity) {
         if (entity === undefined || entity === null) {
-            return console.log(new Error("Entity removal at QuadTree failed. Given value was " + entity));
+            return console.log(new Error("Entity removal at QuadTree failed. Given value was " + entity).stack);
         }
         if (this.entities.has(entity)) {
             this.entities.delete(entity);

@@ -17,9 +17,8 @@ class AOELOSScanner extends HitScanner {
     areaScan(originPos, entityManager) {
         this.qtRange.x = originPos.x;
         this.qtRange.y = originPos.y;
-        let entities = entityManager.quadTree.query(this.qtRange).values();
-        for (let e of entities) {
-            if (this.entityExceptions.hasOwnProperty(e.id)) continue;
+        entityManager.quadTree.forBoundary(this.qtRange, e => {
+            if (this.entityExceptions.hasOwnProperty(e.id)) return;
 
             let angle = Math.atan2(
                 e.center.y - originPos.y,
@@ -36,7 +35,7 @@ class AOELOSScanner extends HitScanner {
                 let ang = Math.atan2(a.y - b.y, a.x - b.x);
                 this.onEntityHit(e, entityManager, ang);
             }
-        }
+        });
     }
 }
 
