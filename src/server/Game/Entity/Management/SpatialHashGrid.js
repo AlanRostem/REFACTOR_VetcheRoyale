@@ -1,6 +1,7 @@
 /**
  * Grid data structure that stores AABB's in cells at their respective locations.
- * It is used to reduce the collision lookup time complexity. Each cell is a hash set.
+ * It is used to reduce the collision lookup time complexity. Each cell is a hash set
+ * and are created when an entity appears in a space where a cell doesn't exist.
  */
 class SpatialHashGrid {
     // TODO: Remove this class when development is complete
@@ -79,7 +80,7 @@ class SpatialHashGrid {
 
     /**
      * Inserts an entity to a cell in the grid based on its cartesian coordinates
-     * @param {Entity} entity Given entity to be inserted.
+     * @param {SEntity} entity Given entity to be inserted.
      */
     insert(entity) {
         let cx = this.cellifyX(entity.pos.x);
@@ -114,6 +115,14 @@ class SpatialHashGrid {
         }
     }
 
+    /**
+     * Specific method for entities. Updates the cell position of the given entity and calls
+     * the composed ProximityEntityManager.proximityCellTraversal method.
+     * @param entity {SEntity}
+     * @param entityManager {GameWorld}
+     * @param deltaTime {float}
+     * @see ProximityEntityManager
+     */
     update(entity, entityManager, deltaTime) {
         let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.width / 2);
         let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);
@@ -134,6 +143,10 @@ class SpatialHashGrid {
         }
     }
 
+    /**
+     * Removes an entity if present at its respective cell location.
+     * @param entity {SEntity} Given entity to be removed.
+     */
     remove(entity) {
         if (!entity) {
             console.log(new Error("Caught: Entity was undefined.").stack);
@@ -146,8 +159,9 @@ class SpatialHashGrid {
             let get = this.cellContainer.get(index);
             get.delete(entity);
         } else {
-            console.log("Excessive deletion from entity:", entity.constructor.name);
-            // Extra check to see if the entity might be in surrounding cells
+            // Extra check to see if the entity might be in surrounding cells. Numerous testing
+            // has proved this check is never performed, but due to paranoia it has been implemented.
+            console.log("Excessive entity deletion at SpatialHashGrid. Entity:", entity.constructor.name);
             let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.width / 2);
             let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);
             let xLen = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.entitiesInProximity.collisionBoundary.bounds.x);
