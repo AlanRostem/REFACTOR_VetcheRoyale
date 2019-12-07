@@ -10,14 +10,11 @@ class ProximityEntityManager extends EntityManager {
         super(false);
         this.entRef = entity;
         this.container = new Set();
-        this.collisionBoundary = new Rect(entity.center.x, entity.center.y,
-            // These rectangle bounds start from the center, so the
-            // actual entity check range would be a 320*2 by 160*2
-            // rectangle around the entity.
-            640, 320);
+        this.collisionBoundary = new Rect(entity.center.x, entity.center.y, entity.width * 3, entity.height * 3);
         this._shouldFollowEntity = true;
     }
 
+    // TODO: Remove getters and setters
     get shouldFollowEntity() {
         return this._shouldFollowEntity;
     }

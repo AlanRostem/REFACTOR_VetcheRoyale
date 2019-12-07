@@ -126,7 +126,7 @@ class SpatialHashGrid {
                 if (this.cellContainer.has(index)) {
                     let cell = this.cellContainer.get(index);
                     entity.entitiesInProximity.proximityCellTraversal(cell, entityManager, deltaTime);
-                    if (entityIdx !== index && cell.has(entity)) {
+                    if (entityIdx !== index) {
                         cell.delete(entity);
                     }
                 }
@@ -147,8 +147,10 @@ class SpatialHashGrid {
         let cy = this.cellifyY(entity.pos.y);
         let index = this.indexAt(cx, cy);
         if (this.cellContainer.has(index)) {
-            let get = this.cellContainer.get(index);
-            get.delete(entity);
+            if (!this.cellContainer.get(index).has(entity)) {
+                console.log("SpatialHashGrid: Attempted to delete "+ entity.constructor.name +" that didn't exist at " + cx + "," + cy);
+            }
+            this.cellContainer.get(index).delete(entity);
         } else {
             // Extra check to see if the entity might be in surrounding cells. Numerous testing
             // has proved this check is never performed, but due to paranoia it has been implemented.

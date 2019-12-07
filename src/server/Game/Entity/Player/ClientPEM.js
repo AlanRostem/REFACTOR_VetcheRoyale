@@ -5,12 +5,14 @@ const SpectatorManager = require("./SpectatorManager.js");
 // entities in proximity and creates data packs sent to
 // the client.
 class ClientPEM extends ProximityEntityManager {
+    static COLLISION_BOUNDARY_X = 640;
+    static COLLISION_BOUNDARY_Y = 320;
     constructor(player) {
         super(player);
         this.dataBox = {};
         this.spectators = new SpectatorManager(player);
-        this.collisionBoundary.bounds.x = 128;
-        this.collisionBoundary.bounds.y = 128;
+        this.collisionBoundary.bounds.x = 128; ClientPEM.COLLISION_BOUNDARY_X;
+        this.collisionBoundary.bounds.y = 128; ClientPEM.COLLISION_BOUNDARY_Y;
     }
 
     addEntity(entity, game) {
