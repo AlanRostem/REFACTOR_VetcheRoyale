@@ -17,6 +17,7 @@ class AOELOSScanner extends HitScanner {
     areaScan(originPos, entityManager) {
         this.rangeBoundary.pos.x = originPos.x;
         this.rangeBoundary.pos.y = originPos.y;
+        // TODO: Avoid creating function every execution
         entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
             for (let e of cell) {
                 if (this.entityExceptions.hasOwnProperty(e.id)) continue;
