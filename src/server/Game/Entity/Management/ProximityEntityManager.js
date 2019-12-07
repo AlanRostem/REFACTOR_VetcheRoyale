@@ -68,7 +68,8 @@ class ProximityEntityManager extends EntityManager {
     proximityCellTraversal(cell, entityManager, deltaTime) {
         for (let e of cell) {
             if (!this.container.has(e)) {
-                this.addEntity(e, entityManager);
+                if (this.collisionBoundary.containsEntity(e))
+                    this.addEntity(e, entityManager);
             } else {
                 this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
                 if (this.entRef.overlapEntity(e)) {
