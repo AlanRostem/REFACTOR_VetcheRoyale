@@ -11,8 +11,8 @@ class ClientPEM extends ProximityEntityManager {
         super(player);
         this.dataBox = {};
         this.spectators = new SpectatorManager(player);
-        this.collisionBoundary.bounds.x = 128; ClientPEM.COLLISION_BOUNDARY_X;
-        this.collisionBoundary.bounds.y = 128; ClientPEM.COLLISION_BOUNDARY_Y;
+        this.collisionBoundary.bounds.x = ClientPEM.COLLISION_BOUNDARY_X;
+        this.collisionBoundary.bounds.y = ClientPEM.COLLISION_BOUNDARY_Y;
     }
 
     addEntity(entity, game) {
