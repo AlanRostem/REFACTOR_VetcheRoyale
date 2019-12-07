@@ -1,5 +1,5 @@
 const EntityManager = require("./EntityManager.js");
-const Rect = require("./CentralRect.js");
+const Rect = require("./CollisionBoundary.js");
 
 // Composition class for entities which handles
 // all entities in proximity using the global
@@ -10,11 +10,11 @@ class ProximityEntityManager extends EntityManager {
         super(false);
         this.entRef = entity;
         this.container = new Set();
-        this.qtBounds = new Rect(entity.center.x, entity.center.y,
+        this.collisionBoundary = new Rect(entity.center.x, entity.center.y,
             // These rectangle bounds start from the center, so the
             // actual entity check range would be a 320*2 by 160*2
             // rectangle around the entity.
-            320, 160);
+            640, 320);
         this._shouldFollowEntity = true;
     }
 
@@ -32,8 +32,8 @@ class ProximityEntityManager extends EntityManager {
 
     follow(x, y) {
         if (!this.shouldFollowEntity) {
-            this.qtBounds.x = x;
-            this.qtBounds.y = y;
+            this.collisionBoundary.x = x;
+            this.collisionBoundary.y = y;
         }
     }
 
@@ -45,56 +45,50 @@ class ProximityEntityManager extends EntityManager {
         this.container.delete(entity);
     }
 
-    quadTreePlacement(entityManager) {
-        entityManager.quadTree.update(this.entRef);
+    cellSpacePlacement(entityManager, deltaTime) {
+        entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
     }
 
     // Binds the quad tree range bounding rect to
     // the entity's center and does interaction checks.
     update(entityManager, deltaTime) {
         if (this.shouldFollowEntity) {
-            this.qtBounds.x = this.entRef.center.x;
-            this.qtBounds.y = this.entRef.center.y;
+            this.collisionBoundary.update(this.entRef);
         }
-        this.quadTreePlacement(entityManager);
+        this.cellSpacePlacement(entityManager, deltaTime);
         this.checkProximityEntities(entityManager, deltaTime);
     }
 
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
     checkProximityEntities(entityManager, deltaTime) {
-        entityManager.quadTree.traverse(this.entRef, entityManager, deltaTime);
+        entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
     }
 
-    proximityEntityTraversal(e, entityManager, deltaTime) {
-        if (!this.container.has(e)) {
-            this.addEntity(e, entityManager);
-        } else {
-            this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
-            if (this.entRef.overlapEntity(e)) {
-                this.entRef.onEntityCollision(e, entityManager);
-            }
-            if (e.toRemove || !this.qtBounds.containsAABB(e)) {
-                this.removeEntity(e);
+    proximityCellTraversal(cell, entityManager, deltaTime) {
+        for (let e of cell) {
+            if (!this.container.has(e)) {
+                this.addEntity(e, entityManager);
+            } else {
+                this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
+                if (this.entRef.overlapEntity(e)) {
+                    this.entRef.onEntityCollision(e, entityManager);
+                }
+                if (e.toRemove || !this.collisionBoundary.containsEntity(e)) { // TODO: Remove entity when it is out of bounds
+                    this.removeEntity(e);
+                }
             }
         }
     }
 
     // Called when player spawns in the world
     initProximityEntityData(entityManager) {
-
-        this.container = new Set();
-        entityManager.quadTree.forBoundary(this.qtBounds, e => {
-            if (e !== this.entRef) {
-                this.container.add(e);
-            }
+        entityManager.cellSpace.iterate(this.collisionBoundary, cell => {
+            for (let e of cell)
+                if (e !== this.entRef) {
+                    this.container.add(e);
+                }
         });
-        /*for (let e of entities) {
-            if (e !== this.entRef && this.qtBounds.contains(e)) {
-                this.addEntity(e, entityManager);
-            }
-        }
-         */
     }
 }
 

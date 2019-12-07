@@ -15,9 +15,9 @@ class AOELOSScanner extends HitScanner {
     }
 
     areaScan(originPos, entityManager) {
-        this.qtRange.x = originPos.x;
-        this.qtRange.y = originPos.y;
-        entityManager.quadTree.forBoundary(this.qtRange, e => {
+        this.rangeBoundary.x = originPos.x;
+        this.rangeBoundary.y = originPos.y;
+        entityManager.cellSpace.iterate(this.rangeBoundary, e => {
             if (this.entityExceptions.hasOwnProperty(e.id)) return;
 
             let angle = Math.atan2(

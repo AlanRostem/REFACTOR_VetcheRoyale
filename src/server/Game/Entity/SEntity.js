@@ -68,8 +68,8 @@ class SEntity {
     // should have the least amount of iteration depending on
     // their size in the world.
     setQuadTreeRange(x, y) {
-        this.entitiesInProximity.qtBounds.w = x;
-        this.entitiesInProximity.qtBounds.h = y;
+        this.entitiesInProximity.collisionBoundary.w = x;
+        this.entitiesInProximity.collisionBoundary.h = y;
     }
 
     setWorld(game) {

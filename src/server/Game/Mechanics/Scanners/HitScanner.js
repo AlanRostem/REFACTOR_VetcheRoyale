@@ -1,5 +1,5 @@
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
-const QTRect = require("../../Entity/Management/CentralRect.js");
+const QTRect = require("../../Entity/Management/CollisionBoundary.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 
 // Scan line that collides with map geometry or entities (can be set however you like).
@@ -9,7 +9,7 @@ class HitScanner {
         this.scanTiles = tileCollision;
         this.stopAtEntity = true;
         this.stopAtTile = true;
-        this.qtRange = new QTRect(0, 0, 360, 160);
+        this.rangeBoundary = new QTRect(0, 0, 360, 160);
         this.end = new Vector2D(0, 0);
         this.entityExceptions = entityIDExclusions;
     }
@@ -104,42 +104,43 @@ class HitScanner {
 
     scanEntities(entityManager, a, b) {
         if (this.shouldScanEntities) {
-            var entities = entityManager.quadTree.query(this.qtRange).values();
-            for (var e of entities) {
-                if (this.entityExceptions.hasOwnProperty(e.id)) continue;
-                if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
-                    if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
-                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                    this.onEntityHit(e, entityManager, ang);
-                }
+            entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
+                for (let e of cell) {
+                    if (this.entityExceptions.hasOwnProperty(e.id)) continue;
+                    if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
+                        if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
+                        let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                        this.onEntityHit(e, entityManager, ang);
+                    }
 
-                if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
-                    if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.topRight));
-                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                    this.onEntityHit(e, entityManager, ang);
-                }
+                    if (Vector2D.intersect(a, b, e.topLeft, e.topRight)) {
+                        if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.topRight));
+                        let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                        this.onEntityHit(e, entityManager, ang);
+                    }
 
-                if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
-                    if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topRight, e.bottomRight));
-                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                    this.onEntityHit(e, entityManager, ang);
-                }
+                    if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
+                        if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topRight, e.bottomRight));
+                        let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                        this.onEntityHit(e, entityManager, ang);
+                    }
 
-                if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                    if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.bottomLeft, e.bottomRight));
-                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                    this.onEntityHit(e, entityManager, ang);
+                    if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                        if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.bottomLeft, e.bottomRight));
+                        let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                        this.onEntityHit(e, entityManager, ang);
+                    }
                 }
-            }
+            });
         }
     }
 
     scan(originPos, endPos, entityManager, tileMap) {
-        var a = originPos;
-        this.qtRange.x = a.x;
-        this.qtRange.y = a.y;
+        let a = originPos;
+        this.rangeBoundary.x = a.x;
+        this.rangeBoundary.y = a.y;
 
-        var b = this.end;
+        let b = this.end;
         b.x = endPos.x;
         b.y = endPos.y;
 

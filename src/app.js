@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
    res.sendFile(path.join(__dirname + "/client/html/index.html"));
 });
 
-PORT = process.env.PORT || 3000;
+PORT = process.env.PORT || 8080;
 server.listen(PORT);
 
 console.log("Dome 24 online!");

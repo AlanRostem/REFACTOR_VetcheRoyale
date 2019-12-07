@@ -1,10 +1,10 @@
 const Tile = require("../../TileBased/Tile.js");
 const GameClock = require("../../Entity/Management/GameClock.js");
-const QuadTree = require("./QuadTree.js");
-const Rect = require("./CentralRect.js");
+const SpatialHashGrid = require("./SpatialHashGrid.js");
+const Rect = require("./CollisionBoundary.js");
 
 /**
- * Updates entities and manages proximity queries in the quad tree
+ * Updates entities and manages proximity queries in the spatial hash grid
  */
 class EntityManager {
     constructor(globalManager = false, gameMap) {
@@ -17,19 +17,13 @@ class EntityManager {
             this.gameClock = new GameClock(0);
             this.entitiesQueuedToDelete = [];
 
-            // Create a singular quad tree with the size of
+            // Create a singular spatial hash grid with the size of
             // the whole tile map.
-            this.qt = new QuadTree(new Rect(
-                this.tileMap.w * Tile.SIZE / 2,
-                this.tileMap.h * Tile.SIZE / 2,
-                this.tileMap.w * Tile.SIZE / 2,
-                this.tileMap.h * Tile.SIZE / 2,
-            ));
-        }
-    }
+            this.cellSpace = new SpatialHashGrid(
+                this.tileMap.w * Tile.SIZE,
+                this.tileMap.h * Tile.SIZE, 32, 32);
 
-    get quadTree() {
-        return this.qt;
+        }
     }
 
     get timeStamp() {
@@ -43,7 +37,7 @@ class EntityManager {
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime); // TODO: Determine if this is a performance caveat
         for (let i = 0; i < this.entitiesQueuedToDelete.length; i++) {
-            this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
+            this.cellSpace.remove(this.container[this.entitiesQueuedToDelete[i]]);
             this.container.splice(this.entitiesQueuedToDelete[i], 1);
             this.entitiesQueuedToDelete.splice(i, 1);
         }
@@ -78,7 +72,7 @@ class EntityManager {
         entity.pos.x = x;
         entity.pos.y = y;
 
-        this.qt.update(entity);
+        this.cellSpace.insert(entity);
         return entity;
     }
 
