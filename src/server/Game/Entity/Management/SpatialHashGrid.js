@@ -108,8 +108,7 @@ class SpatialHashGrid {
             for (let y = cy; y <= yLen; y++) {
                 let index = this.indexAt(x, y);
                 if (this.cellContainer.has(index)) {
-                    let cell = this.cellContainer.get(index);
-                    callback(cell);
+                    callback(this.cellContainer.get(index));
                 }
             }
         }
@@ -147,6 +146,7 @@ class SpatialHashGrid {
             let get = this.cellContainer.get(index);
             get.delete(entity);
         } else {
+            console.log("Excessive deletion from entity:", entity.constructor.name);
             // Extra check to see if the entity might be in surrounding cells
             let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.width / 2);
             let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);

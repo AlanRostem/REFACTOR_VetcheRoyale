@@ -50,6 +50,29 @@ class ClientPEM extends ProximityEntityManager {
         return this.dataBox;
     }
 
+    proximityCellTraversal(cell, entityManager, deltaTime) {
+        for (let e of cell) {
+            if (e === this.entRef) continue;
+            if (!this.container.has(e)) {
+                if (this.collisionBoundary.containsEntity(e)) {
+                    this.addEntity(e, entityManager);
+                }
+            } else {
+                this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
+                if (this.entRef.overlapEntity(e)) {
+                    this.entRef.onEntityCollision(e, entityManager);
+                }
+                if (e.toRemove) {
+                    continue;
+                }
+
+                if (!this.collisionBoundary.containsEntity(e)) {
+                    this.throwOutOfBounds(e);
+                }
+            }
+        }
+    }
+
     exportDataPack() {
         this.dataBox = {};
         for (let e of this.container) {
@@ -57,11 +80,6 @@ class ClientPEM extends ProximityEntityManager {
             // Removes entities out of bounds. Suboptimal location to do this.
             if (e.toRemove) {
                 this.removeEntity(e);
-                continue;
-            }
-
-            if (!this.collisionBoundary.containsEntity(e)) {
-                this.throwOutOfBounds(e);
             }
         }
         if (Object.keys(this.entRef.getDataPack()).length) {
