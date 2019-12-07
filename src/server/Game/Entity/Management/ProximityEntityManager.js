@@ -10,7 +10,10 @@ class ProximityEntityManager extends EntityManager {
         super(false);
         this.entRef = entity;
         this.container = new Set();
-        this.collisionBoundary = new Rect(entity.center.x, entity.center.y, entity.width * 3, entity.height * 3);
+        this.collisionBoundary = new Rect(entity.center.x, entity.center.y,
+            32 + entity.width, 32 + entity.height // TODO: Optimize the choice of values
+            //entity.width * 3, entity.height * 3
+        );
         this._shouldFollowEntity = true;
     }
 
