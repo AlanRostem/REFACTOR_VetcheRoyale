@@ -48,6 +48,16 @@ class ProximityEntityManager extends EntityManager {
     cellSpacePlacement(entityManager, deltaTime) {
         entityManager.cellSpace.insert(this.entRef);
         entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
+        if (this.entitySpeedIsTooHigh(entityManager, deltaTime)) {
+            // TODO: Perform extra updates per frame if an entity goes too fast
+        }
+    }
+
+    entitySpeedIsTooHigh(entityManager, deltaTime) {
+        return (
+            Math.abs(this.entRef.vel.x) * deltaTime > entityManager.cellSpace.cellWidth ||
+            Math.abs(this.entRef.vel.y) * deltaTime > entityManager.cellSpace.cellHeight
+        );
     }
 
     // Binds the quad tree range bounding rect to
@@ -94,6 +104,8 @@ class ProximityEntityManager extends EntityManager {
                 }
         });
     }
+
+
 }
 
 module.exports = ProximityEntityManager;
