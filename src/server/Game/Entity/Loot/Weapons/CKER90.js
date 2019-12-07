@@ -36,7 +36,7 @@ class ATBullet extends Projectile {
                         if (owner.inventory.weapon.dataIsScoping) {
                             this.findPlayers = true;
                             this.weapon = owner.inventory.weapon;
-                            this.setQuadTreeRange(5 * 8, 5 * 8);
+                            this.setCollisionRange(5 * 8, 5 * 8);
                         } else {
                             this.findPlayers = false;
                         }
@@ -101,7 +101,7 @@ class SeekerSmoke extends Bouncy {
             x: 100,
             y: 60,
         };
-        this.setQuadTreeRange(this.smokeBounds.x, this.smokeBounds.y);
+        this.setCollisionRange(this.smokeBounds.x, this.smokeBounds.y);
         this.entityOrder = 2;
     }
 

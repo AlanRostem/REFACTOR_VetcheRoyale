@@ -64,10 +64,10 @@ class SEntity {
     }
 
     // Configure the maximum range the entity checks for other
-    // entities in the quad tree. Entities such as projectiles
+    // entities in the world. Entities such as projectiles
     // should have the least amount of iteration depending on
     // their size in the world.
-    setQuadTreeRange(x, y) {
+    setCollisionRange(x, y) {
         this.entitiesInProximity.collisionBoundary.w = x;
         this.entitiesInProximity.collisionBoundary.h = y;
     }

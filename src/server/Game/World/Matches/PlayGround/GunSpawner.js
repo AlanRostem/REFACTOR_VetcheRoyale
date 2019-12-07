@@ -40,7 +40,7 @@ const GUN_LIST = {
 class GunSpawner extends Entity {
     constructor(x, y, args) {
         super(x, y, Tile.SIZE, Tile.SIZE);
-        this.setQuadTreeRange(this.width, this.height);
+        this.setCollisionRange(this.width, this.height);
 
         this.gunID = args.id - START_TILE;
         this.currentTickTime = 0;

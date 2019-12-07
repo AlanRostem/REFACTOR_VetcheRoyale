@@ -9,7 +9,7 @@ class Loot extends PhysicalInteractable {
         this.maxLifeTime = lifeTime;
         this.acc.y = 500;
         this.fric.x = Loot.AIR_FRICTION;
-        this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
+        this.setCollisionRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
 
     // Return true based on some data of the player

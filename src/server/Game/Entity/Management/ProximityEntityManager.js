@@ -3,7 +3,7 @@ const Rect = require("./CollisionBoundary.js");
 
 // Composition class for entities which handles
 // all entities in proximity using the global
-// quad tree.
+// entity storage per game world.
 
 class ProximityEntityManager extends EntityManager {
     constructor(entity) {

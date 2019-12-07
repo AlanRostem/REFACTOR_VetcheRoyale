@@ -45,7 +45,7 @@ class Projectile extends Physical {
         this.setPhysicsConfiguration("gravity", false);
         this.setPhysicsConfiguration("pixelatePos", false);
         this.setCollisionResponseID("Projectile");
-        this.setQuadTreeRange(w * 2, h * 2);
+        this.setCollisionRange(w * 2, h * 2);
         if (arc) {
             this.acc.y = arc; // Gravity for the projectile
             this.setPhysicsConfiguration("gravity", true);
@@ -110,7 +110,7 @@ class Projectile extends Physical {
     update(entityManager, deltaTime) {
         let d = Vector2D.abs(this.vel) * deltaTime * 2;
         if (d > 0) {
-            this.setQuadTreeRange(d, d);
+            this.setCollisionRange(d, d);
         }
         super.update(entityManager, deltaTime);
         if (this.hitTile) {
