@@ -46,6 +46,7 @@ class ProximityEntityManager extends EntityManager {
     }
 
     cellSpacePlacement(entityManager, deltaTime) {
+        entityManager.cellSpace.insert(this.entRef);
         entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
     }
 
@@ -67,15 +68,17 @@ class ProximityEntityManager extends EntityManager {
 
     proximityCellTraversal(cell, entityManager, deltaTime) {
         for (let e of cell) {
+            if (e === this.entRef) continue;
             if (!this.container.has(e)) {
-                if (this.collisionBoundary.containsEntity(e))
+                if (this.collisionBoundary.containsEntity(e)) {
                     this.addEntity(e, entityManager);
+                }
             } else {
                 this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
                 if (this.entRef.overlapEntity(e)) {
                     this.entRef.onEntityCollision(e, entityManager);
                 }
-                if (e.toRemove || !this.collisionBoundary.containsEntity(e)) { // TODO: Remove entity when it is out of bounds
+                if (e.toRemove || !this.collisionBoundary.containsEntity(e)) {
                     this.removeEntity(e);
                 }
             }

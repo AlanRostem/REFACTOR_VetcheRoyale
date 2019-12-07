@@ -127,7 +127,7 @@ class SpatialHashGrid {
                 if (this.cellContainer.has(index)) {
                     let cell = this.cellContainer.get(index);
                     entity.entitiesInProximity.proximityCellTraversal(cell, entityManager, deltaTime);
-                    if (entityIdx !== index) {
+                    if (entityIdx !== index && cell.has(entity)) {
                         cell.delete(entity);
                     }
                 }

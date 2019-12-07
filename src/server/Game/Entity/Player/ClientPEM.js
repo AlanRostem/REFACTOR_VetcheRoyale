@@ -9,6 +9,8 @@ class ClientPEM extends ProximityEntityManager {
         super(player);
         this.dataBox = {};
         this.spectators = new SpectatorManager(player);
+        this.collisionBoundary.bounds.x = 128;
+        this.collisionBoundary.bounds.y = 128;
     }
 
     addEntity(entity, game) {
@@ -26,7 +28,7 @@ class ClientPEM extends ProximityEntityManager {
     removeEntity(entity) {
         super.removeEntity(entity);
         let e = this.dataBox[entity.id];
-        this.dataBox[entity.id] = undefined;
+        delete this.dataBox[entity.id];
 
         //console.log("Removing entity:", id);
 
