@@ -4,15 +4,6 @@
  * and are created when an entity appears in a space where a cell doesn't exist.
  */
 class SpatialHashGrid {
-    // TODO: Remove this class when development is complete
-    static Cell = class extends Set {
-        constructor(cx, cy) {
-            super();
-            this.cx = cx;
-            this.cy = cy;
-        }
-    };
-
     /**
      * @param spaceWidth {int} Horizontal boundary of the entire space
      * @param spaceHeight {int} Vertical boundary of the entire space
@@ -87,7 +78,7 @@ class SpatialHashGrid {
         let cy = this.cellifyY(entity.pos.y);
         let index = this.indexAt(cx, cy);
         if (!this.cellContainer.has(index)) {
-            let cell = new SpatialHashGrid.Cell(cx, cy, index);
+            let cell = new Set();
             this.cellContainer.set(index, cell);
             cell.add(entity);
         } else {
