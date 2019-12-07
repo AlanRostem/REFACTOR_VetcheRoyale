@@ -32,8 +32,8 @@ class ProximityEntityManager extends EntityManager {
 
     follow(x, y) {
         if (!this.shouldFollowEntity) {
-            this.collisionBoundary.x = x;
-            this.collisionBoundary.y = y;
+            this.collisionBoundary.pos.x = x - this.collisionBoundary.bounds.x / 2;
+            this.collisionBoundary.pos.y = y - this.collisionBoundary.bounds.y / 2;
         }
     }
 

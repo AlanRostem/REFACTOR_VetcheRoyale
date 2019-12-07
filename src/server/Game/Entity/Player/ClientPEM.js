@@ -26,7 +26,7 @@ class ClientPEM extends ProximityEntityManager {
     removeEntity(entity) {
         super.removeEntity(entity);
         let e = this.dataBox[entity.id];
-        delete this.dataBox[entity.id];
+        this.dataBox[entity.id] = undefined;
 
         //console.log("Removing entity:", id);
 

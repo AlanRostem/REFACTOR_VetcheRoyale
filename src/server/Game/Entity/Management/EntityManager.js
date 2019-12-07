@@ -21,7 +21,7 @@ class EntityManager {
             // the whole tile map.
             this.cellSpace = new SpatialHashGrid(
                 this.tileMap.w * Tile.SIZE,
-                this.tileMap.h * Tile.SIZE, 32, 32);
+                this.tileMap.h * Tile.SIZE, 64, 64);
 
         }
     }
@@ -36,11 +36,6 @@ class EntityManager {
         this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
         this.refreshEntityDataPacks(deltaTime); // TODO: Determine if this is a performance caveat
-        for (let i = 0; i < this.entitiesQueuedToDelete.length; i++) {
-            this.cellSpace.remove(this.container[this.entitiesQueuedToDelete[i]]);
-            this.container.splice(this.entitiesQueuedToDelete[i], 1);
-            this.entitiesQueuedToDelete.splice(i, 1);
-        }
     }
 
     // Regenerates data packs every frame for every entity
@@ -55,12 +50,11 @@ class EntityManager {
         for (let i = 0; i < this.container.length; i++) {
             let entity = this.container[i];
             entity.index = i;
+            entity.update(this, deltaTime);
             if (entity.toRemove) {
                 //this.container.splice(i, 1);
                 this.removeEntity(i);
-                continue;
             }
-            entity.update(this, deltaTime);
         }
     }
 
@@ -84,7 +78,8 @@ class EntityManager {
     // it to deletion.
     removeEntity(i) {
         this.getEntity(i).remove();
-        this.entitiesQueuedToDelete.push(i);
+        this.cellSpace.remove(this.getEntity(i));
+        this.container.splice(i, 1);
     }
 }
 

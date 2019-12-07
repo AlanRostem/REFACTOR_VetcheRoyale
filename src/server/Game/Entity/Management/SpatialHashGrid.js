@@ -96,7 +96,7 @@ class SpatialHashGrid {
 
     /**
      * Iterate through all cells within the collision boundary for a given entity and perform custom operations.
-     * @param entity {Entity} AABB to be checked for
+     * @param boundary {CollisionBoundary} AABB to be checked for
      * @param callback {function} Function called for each cell iteration
      */
     iterate(boundary, callback) {
@@ -116,8 +116,8 @@ class SpatialHashGrid {
     }
 
     update(entity, entityManager, deltaTime) {
-        let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x);
-        let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y);
+        let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.width / 2);
+        let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);
         let xLen = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.entitiesInProximity.collisionBoundary.bounds.x);
         let yLen = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.entitiesInProximity.collisionBoundary.bounds.y);
         let entityIdx = this.indexAt(this.cellifyX(entity.pos.x), this.cellifyY(entity.pos.y));
@@ -137,7 +137,7 @@ class SpatialHashGrid {
 
     remove(entity) {
         if (!entity) {
-            console.log(new Error("Caught: Entity was undefined."));
+            console.log(new Error("Caught: Entity was undefined.").stack);
             return;
         }
         let cx = this.cellifyX(entity.pos.x);
@@ -146,6 +146,20 @@ class SpatialHashGrid {
         if (this.cellContainer.has(index)) {
             let get = this.cellContainer.get(index);
             get.delete(entity);
+        } else {
+            // Extra check to see if the entity might be in surrounding cells
+            let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.width / 2);
+            let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);
+            let xLen = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.entitiesInProximity.collisionBoundary.bounds.x);
+            let yLen = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.entitiesInProximity.collisionBoundary.bounds.y);
+            for (let x = cx; x <= xLen; x++) {
+                for (let y = cy; y <= yLen; y++) {
+                    let index = this.indexAt(x, y);
+                    if (this.cellContainer.has(index)) {
+                        this.cellContainer.get(index).delete(entity);
+                    }
+                }
+            }
         }
     }
 }
