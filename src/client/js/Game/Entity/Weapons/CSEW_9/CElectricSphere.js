@@ -45,8 +45,8 @@ class CElectricSphere extends CProjectile {
     update(deltaTime, client) {
         super.update(deltaTime, client);
 
-        this.dirX = (this.output.vel.x > 20 ? 1 : -1);
-        this.dirY = (this.output.vel.y > 20 ? 1 : -1);
+        this.dirX = (this.output.vel.x > 60 ? 1 : -1);
+        this.dirY = (this.output.vel.y > 60 ? 1 : -1);
 
         if (this.dirX !== this.pdirX) {
             this.pdirX = this.dirX;
