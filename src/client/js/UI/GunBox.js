@@ -16,6 +16,11 @@ export default class GunBox extends UIElement {
 
             this.gunAnimation = new SpriteSheet("SEW-9");
             this.gunAnimation.bind("gunStandby", 0, 0, 60 * 7, 26);
+
+            this.animationBG = new SpriteSheet.Animation(0, 5, 6, 0.1);
+
+            this.gunBoxBackgroundAnimation = new SpriteSheet("gunBoxBackgroundAnimation");
+            this.gunBoxBackgroundAnimation.bind("gunBoxBackgroundAnimation", 0, 0, 60, 28);
         });
 
         this.playerAmmo = 0;
@@ -76,7 +81,7 @@ export default class GunBox extends UIElement {
                 this.gunBoxFrame.height
             );
 
-            // Gunbox Background
+          /*  // Gunbox Background
             R.drawCroppedImage(
                 this.gunBoxBackground,
                 0,
@@ -87,7 +92,19 @@ export default class GunBox extends UIElement {
                 R.HEIGHT - 34,
                 this.gunBoxBackground.width,
                 this.gunBoxBackground.height
-            );
+            );*/
+
+
+            this.gunBoxBackgroundAnimation.animate("gunBoxBackgroundAnimation", this.animationBG, this.gunBoxBackground.width, this.gunBoxBackground.height);
+            this.gunBoxBackgroundAnimation.drawCroppedAnimated(
+                0,
+                0,
+                this.gunBoxBackground.width,
+                this.gunBoxBackground.height,
+                R.WIDTH - 90,
+                R.HEIGHT - 34,
+                this.gunBoxBackground.width,
+                this.gunBoxBackground.height);
 
             // Gun inside box
             this.gunAnimation.animate("gunStandby", this.animationSpec, this.gunBoxBackground.width, this.gunBoxBackground.height);
