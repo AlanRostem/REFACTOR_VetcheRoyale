@@ -98,8 +98,9 @@ class PacketBuffer {
             if (buffer.hasOwnProperty(key))
                 if (Object.equals(composedEntity[key], buffer[key])) continue;
             snapShot[key] = this.exportSnapshot(Object.isJSON(composedEntity[key]) ? Object.keys(composedEntity[key]) : [], composedEntity[key], buffer[key], false);
-            if (last) this.buffer[key] = Object.copy(composedEntity[key]);
         }
+        if (last) this.buffer = Object.copy(composedEntity);
+
         return snapShot;
     }
 }
