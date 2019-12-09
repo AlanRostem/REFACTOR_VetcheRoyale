@@ -54,6 +54,7 @@ class ProximityEntityManager extends EntityManager {
     }
 
     entitySpeedIsTooHigh(entityManager, deltaTime) {
+        if (this.entRef.vel)
         return (
             Math.abs(this.entRef.vel.x) * deltaTime > entityManager.cellSpace.cellWidth ||
             Math.abs(this.entRef.vel.y) * deltaTime > entityManager.cellSpace.cellHeight
