@@ -50,12 +50,14 @@ const TileCollider = {
                         if (entity.vel.x > 0) {
                             if (entity.pos.x + entity.width > tile.x && entity.old.x + entity.width <= tile.x) {
                                 entity.onRightCollision(tile);
+                                entity.onXSideCollision(tile);
                                 entity.side.right = true;
                             }
                         }
                         if (entity.vel.x < 0) {
                             if (entity.pos.x < tile.x + Tile.SIZE && entity.old.x >= tile.x + Tile.SIZE) {
                                 entity.onLeftCollision(tile);
+                                entity.onXSideCollision(tile);
                                 entity.side.left = true;
                             }
                         }
@@ -66,12 +68,14 @@ const TileCollider = {
                         if (entity.vel.y > 0) {
                             if (entity.pos.y + entity.height > tile.y && entity.old.y + entity.height <= tile.y) {
                                 entity.onBottomCollision(tile);
+                                entity.onYSideCollision(tile);
                                 entity.side.bottom = true;
                             }
                         }
                         if (entity.vel.y < 0) {
                             if (entity.pos.y < tile.y + Tile.SIZE && entity.old.y >= tile.y + Tile.SIZE) {
                                 entity.onTopCollision(tile);
+                                entity.onYSideCollision(tile);
                                 entity.side.top = true;
                             }
                         }
@@ -85,6 +89,7 @@ const TileCollider = {
                     if (entity.overlapTile(tile)) {
                         if (entity.pos.y + entity.height > tile.y && entity.old.y + entity.height <= tile.y) {
                             entity.onBottomCollision(tile);
+                            entity.onYSideCollision(tile);
                             entity.side.bottom = true;
                         }
                     }
@@ -102,15 +107,15 @@ const TileCollider = {
                         let steppingPosY = -1 * eLeftToSlopeRightDiff + tile.y + Tile.SIZE;
 
                         if (eLeftToSlopeRightDiff > Tile.SIZE) {
-                            entity.vel.y = 0;
-                            entity.vel.x = 0;
                             entity.pos.y = tile.y - entity.height;
                             entity.side.bottom = true;
+                            entity.onBottomSlopeCollision(tile);
+                            entity.onYSideCollision(tile);
                         } else if (entity.pos.y + entity.height > steppingPosY) {
-                            entity.vel.y = 0;
-                            entity.vel.x = 0;
                             entity.pos.y = steppingPosY - entity.height;
                             entity.side.bottom = true;
+                            entity.onBottomSlopeCollision(tile);
+                            entity.onYSideCollision(tile);
                         }
                     }
                 },
@@ -127,15 +132,15 @@ const TileCollider = {
                         let steppingPosY = -1 * eRightToSlopeLeftDiff + tile.y + Tile.SIZE;
 
                         if (eRightToSlopeLeftDiff > Tile.SIZE) {
-                            entity.vel.y = 0;
-                            entity.vel.x = 0;
                             entity.pos.y = tile.y - entity.height;
                             entity.side.bottom = true;
+                            entity.onBottomSlopeCollision(tile);
+                            entity.onYSideCollision(tile);
                         } else if (entity.pos.y + entity.height > steppingPosY) {
-                            entity.vel.y = 0;
-                            entity.vel.x = 0;
                             entity.pos.y = steppingPosY - entity.height;
                             entity.side.bottom = true;
+                            entity.onBottomSlopeCollision(tile);
+                            entity.onYSideCollision(tile);
                         }
                     }
 

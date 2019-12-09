@@ -25,7 +25,7 @@ class CClient {
         this.packetSendLoop = new CTimer(1, () => 0);
 
 
-        [32, 83, 68, 65, 87, 69, 70, 71, 82, 81].forEach(keyCode => {
+        [32, 83, 68, 65, 87, 69, 70, 71, 82, 81, 84].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
         });
 

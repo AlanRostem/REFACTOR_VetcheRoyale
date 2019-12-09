@@ -6,7 +6,7 @@ export default class CrossHair extends UIElement {
     constructor(id = "crosshair") {
         super(id, 0, 0, 1, 1);
         this.gap = 5;
-        this.color = "lime";
+        this.color = "#38C817";
     }
 
     update(deltaTime, client, entityList) {
