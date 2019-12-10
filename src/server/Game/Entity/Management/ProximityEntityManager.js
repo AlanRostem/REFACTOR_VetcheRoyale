@@ -49,11 +49,6 @@ class ProximityEntityManager extends EntityManager {
         entityManager.cellSpace.updateCellPosition(this.entRef);
     }
 
-    // Performs interactions with entities that intersect the range
-    // bounding rectangle.
-    checkProximityEntities(entityManager, deltaTime) {
-    }
-
     proximityCellTraversal(cell, entityManager, deltaTime) {
         for (let e of cell) {
             if (e === this.entRef) continue;
@@ -82,8 +77,6 @@ class ProximityEntityManager extends EntityManager {
                 }
         });
     }
-
-
 }
 
 module.exports = ProximityEntityManager;
