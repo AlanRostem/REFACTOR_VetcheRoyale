@@ -20,7 +20,12 @@ export default class CSEW_9 extends CWeapon {
 
     onReloadAction(client, deltaTime) {
         super.onReloadAction(client, deltaTime);
-        AudioPool.play("Weapons/sew-9_reload.oggSE");
+        this.reloadSnd = AudioPool.play("Weapons/sew-9_reload.oggSE");
+    }
+
+    onDrop(client, deltaTime) {
+        super.onDrop(client, deltaTime);
+        if(this.reloadSnd) this.reloadSnd.stop();
     }
 
     update(deltaTime, client) {

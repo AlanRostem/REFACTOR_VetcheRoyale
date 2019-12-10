@@ -19,7 +19,12 @@ export default class CFirewall extends CWeapon {
 
     onReloadAction(client, deltaTime) {
         super.onReloadAction(client, deltaTime);
-        AudioPool.play("Weapons/firewall_reload.oggSE");
+        this.reloadSnd = AudioPool.play("Weapons/firewall_reload.oggSE");
+    }
+
+    onDrop(client, deltaTime) {
+        super.onDrop(client, deltaTime);
+        if(this.reloadSnd) this.reloadSnd.stop();
     }
 
     update(deltaTime, client) {

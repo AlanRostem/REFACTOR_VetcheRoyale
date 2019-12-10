@@ -8,7 +8,12 @@ export default class CKE_6H extends CWeapon {
     }
     onReloadAction(client, deltaTime) {
         super.onReloadAction(client, deltaTime);
-        AudioPool.play("Weapons/ke-6h_r.oggSE");
+        this.reloadSnd = AudioPool.play("Weapons/ke-6h_r.oggSE");
+    }
+
+    onDrop(client, deltaTime) {
+        super.onDrop(client, deltaTime);
+        if(this.reloadSnd) this.reloadSnd.stop();
     }
 
     onModAbilityActivate(client, deltaTime) {
