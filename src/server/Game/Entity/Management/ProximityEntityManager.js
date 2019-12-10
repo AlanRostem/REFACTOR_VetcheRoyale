@@ -14,16 +14,7 @@ class ProximityEntityManager extends EntityManager {
             32 + entity.width, 32 + entity.height // TODO: Optimize the choice of values
             //entity.width * 3, entity.height * 3
         );
-        this._shouldFollowEntity = true;
-    }
-
-    // TODO: Remove getters and setters
-    get shouldFollowEntity() {
-        return this._shouldFollowEntity;
-    }
-
-    set shouldFollowEntity(val) {
-        this._shouldFollowEntity = val;
+        this.shouldFollowEntity = true;
     }
 
     toggleFollowEntity() {
@@ -49,16 +40,20 @@ class ProximityEntityManager extends EntityManager {
         entityManager.cellSpace.insert(this.entRef);
         entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
         if (this.entitySpeedIsTooHigh(entityManager, deltaTime)) {
-            // TODO: Perform extra updates per frame if an entity goes too fast
+            console.log("Too fast!", this.entRef.constructor.name);
         }
     }
 
     entitySpeedIsTooHigh(entityManager, deltaTime) {
         if (this.entRef.vel)
-        return (
-            Math.abs(this.entRef.vel.x) * deltaTime > entityManager.cellSpace.cellWidth ||
-            Math.abs(this.entRef.vel.y) * deltaTime > entityManager.cellSpace.cellHeight
-        );
+            return (
+                Math.round(Math.abs(this.entRef.vel.x) * deltaTime) >= entityManager.cellSpace.cellWidth ||
+                Math.round(Math.abs(this.entRef.vel.y) * deltaTime) >= entityManager.cellSpace.cellHeight
+            );
+    }
+
+    updateCellPositionAcrossSpeed(entityManager, deltaTime) {
+
     }
 
     // Binds the quad tree range bounding rect to
