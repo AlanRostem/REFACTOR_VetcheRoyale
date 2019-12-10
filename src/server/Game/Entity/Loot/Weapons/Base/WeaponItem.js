@@ -46,6 +46,7 @@ class WeaponItem extends Loot {
                 // the weapon is dropped. Otherwise we call methods for when
                 // it is equipped.
                 if (this.player) {
+                    this.entitiesInProximity.update(entityManager, deltaTime);
                     this.updateWhenEquipped(this.player, entityManager, deltaTime);
                 } else {
                     if (entityManager.getGameRule("dropLootOnDeath")) {
