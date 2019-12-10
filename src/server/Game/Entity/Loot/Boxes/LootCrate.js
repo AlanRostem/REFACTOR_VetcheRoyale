@@ -28,9 +28,6 @@ class LootCrate extends StaticInteractable {
         this.level = level;
         this.capacity = capacity;
         this.levelGuarantee = levelGuarantee;
-        this.physicsConfig.gravity = false;
-        this.physicsConfig.tileCollision = false;
-        this.acc.y = 500;
     }
 
     /**
