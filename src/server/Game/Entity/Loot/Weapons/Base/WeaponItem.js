@@ -45,7 +45,7 @@ class WeaponItem extends Loot {
                 // If the player disconnects (or is removed from game world)
                 // the weapon is dropped. Otherwise we call methods for when
                 // it is equipped.
-                if (this.player) {
+                if (!this.player.toRemove) {
                     this.updateWhenEquipped(this.player, entityManager, deltaTime);
                 } else {
                     if (entityManager.getGameRule("dropLootOnDeath")) {
@@ -93,6 +93,7 @@ class WeaponItem extends Loot {
         this.equippedToPlayer = false;
         this.playerID = null;
         this.player = null;
+        console.log(true)
     }
 
     // Callback when dropping the weapon
@@ -109,10 +110,6 @@ class WeaponItem extends Loot {
             player.setMovementState("weapon", "none");
             this.equippedToPlayer = false;
             this.playerID = null;
-            this.cast(
-                WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter,
-                WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter
-            );
             this.onDrop(player, entityManager, deltaTime);
             this.dropped = true;
         }

@@ -87,9 +87,9 @@ class GameWorld extends EntityManager {
 
     spawnPlayer(player) {
         //this.clients.addClient(player.id, player);
+        this.players++;
         this.teamManager.addPlayer(player, this);
         this.spawner.spawnSpecificAtPos(105, player, this);
-        this.players++;
 
        /* this.eventManager.addGlobal(
             "Welcome", "announcement", "Green", 0, {

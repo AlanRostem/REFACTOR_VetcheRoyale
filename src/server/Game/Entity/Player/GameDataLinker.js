@@ -32,7 +32,6 @@ class GameDataLinker extends Alive {
 
     retrieveGameData(game) {
         this.setOutboundPacketData("gameData", this.gameData);
-        //
     }
 
     // Sends the initial data pack to the client.
@@ -53,11 +52,9 @@ class GameDataLinker extends Alive {
     updateGameData(entityManager) {
         //this.gameData.mapName = entityManager.tileMap.name;
         //this.gameData.playerCount = entityManager.playerCount;
-        this.gameData.test = "test";
         this.gameData.debugData = entityManager.debugData;
         for (let key in entityManager.dataPacket)
             this.gameData[key] = entityManager.dataPacket[key];
-        //this.gameData = this.packetBuffer.exportSnapshot(Object.keys(this.gameData), this._gameData);
     }
 
     update(entityManager, deltaTime) {

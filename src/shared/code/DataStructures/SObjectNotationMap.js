@@ -6,6 +6,7 @@ class ObjectNotationMap {
     constructor(allocation = Infinity) {
         this._jsonContainer = {};
         this._arrayContainer = [];
+        this._keys = [];
         this._count = 0;
         this._limit = allocation;
     }
@@ -14,6 +15,7 @@ class ObjectNotationMap {
         if (this._count < this._limit) {
             if (!this.has(key)) {
                 this._arrayContainer.push(item);
+                this._keys.push(key);
                 this._count++;
             } else {
                 let i = this._arrayContainer.indexOf(this._jsonContainer[key]);
@@ -28,6 +30,10 @@ class ObjectNotationMap {
         return this._jsonContainer[key];
     }
 
+    get keys(){
+        return this._keys;
+    }
+
     has(key) {
         return this._jsonContainer.hasOwnProperty(key);
     }
@@ -36,6 +42,7 @@ class ObjectNotationMap {
         this._count--;
         this._arrayContainer.splice(this._arrayContainer.indexOf(this._jsonContainer[key]), 1);
         delete this._jsonContainer[key];
+        this._keys.splice(this._keys.indexOf(key), 1)
     }
 
 

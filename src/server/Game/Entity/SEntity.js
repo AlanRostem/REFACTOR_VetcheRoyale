@@ -41,6 +41,7 @@ class SEntity {
     }
 
     constructor(x, y, width, height, id) {
+        this.keys = [];
         this.pos = new Vector2D(x, y);
         this.width = width;
         this.height = height;
