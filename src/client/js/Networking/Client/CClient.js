@@ -58,11 +58,6 @@ class CClient {
         }
         this.timeSyncer.onServerUpdate(this.latency);
         this.lastReceivedData = packet;
-
-        if (packet.gameData){
-            console.log(packet);
-        }
-
         for (let callback of this.serverUpdateCallbacks.array) {
             callback(packet);
         }

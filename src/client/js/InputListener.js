@@ -37,9 +37,6 @@ import PacketBuffer from "./Networking/Client/PacketBuffer.js";
             pressTime: 400
         };
         this.objectInputKeys = ["keyStates", "mouseData", "mouseStates", "sequence", "pressTime"];
-
-        client.emit("InputData", this.packetBuffer.exportSnapshot(this.objectInputKeys, input));
-
     }
 
     update(client) {

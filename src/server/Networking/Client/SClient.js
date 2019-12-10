@@ -8,7 +8,6 @@ class Client {
     constructor(socket, clientList, server) {
         this.inboundDataCallbacks = new ONMap();
         this.outboundPacket = {};
-        this.packetBuffer = new PacketBuffer();
 
         // Object given by socket.io
         this.socket = socket;
