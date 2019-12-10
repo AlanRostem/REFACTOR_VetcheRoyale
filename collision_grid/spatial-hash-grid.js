@@ -115,7 +115,7 @@ class SpatialHashGrid {
         }
     }
 
-    update(entity, callback) {
+    letEntityIterate(entity) {
         let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.width / 2);
         let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);
         let xLen = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.entitiesInProximity.collisionBoundary.bounds.x);
@@ -125,15 +125,24 @@ class SpatialHashGrid {
                 let index = this.indexAt(x, y);
                 if (this.cellContainer.has(index)) {
                     let cell = this.cellContainer.get(index);
-                    callback(cell, this);
+                    entity.proximityCellTraversal(cell, this);
                 }
             }
         }
     }
 
-    updatePositionAcrossSpeed(entity) {
-        let x0 = this.cellifyX(entity.old.x + entity.width / 2);
-        let y0 = this.cellifyY(entity.old.y + entity.height / 2);
+    updateCellPosition(entity) {
+        let x0;
+        let y0;
+
+        if (entity.old) {
+            x0 = this.cellifyX(entity.old.x + entity.width / 2);
+            y0 = this.cellifyY(entity.old.y + entity.height / 2);
+        } else {
+            x0 = this.cellifyX(entity.pos.x + entity.width / 2);
+            y0 = this.cellifyY(entity.pos.y + entity.height / 2);
+        }
+
         let x1 = this.cellifyX(entity.pos.x + entity.width / 2);
         let y1 = this.cellifyY(entity.pos.y + entity.height / 2);
 
@@ -142,15 +151,15 @@ class SpatialHashGrid {
         let err = (dx > dy ? dx : -dy) / 2;
 
         let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
+        if (!this.cellContainer.has(entityIdx)) {
+            let cell = new Set;
+            this.cellContainer.set(entityIdx, cell);
+            cell.add(entity);
+        } else {
+            this.cellContainer.get(entityIdx).add(entity);
+        }
         while (true) {
             let index = this.indexAt(x0, y0);
-            if (!this.cellContainer.has(index)) {
-                let cell = new SpatialHashGrid.Cell(x0, y0, index);
-                this.cellContainer.set(index, cell);
-                cell.add(entity);
-            } else {
-                this.cellContainer.get(index).add(entity);
-            }
             if (entityIdx !== index)
                 if (this.cellContainer.has(index)) {
                     this.cellContainer.get(index)

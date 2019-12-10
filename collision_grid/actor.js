@@ -28,8 +28,14 @@ class Actor {
         this.pos.y = y;
     }
 
-    update(collisionGrid) {
+    proximityCellTraversal(cell, grid) {
+        this.forEachEntity(cell, grid)
+    }
 
+    update(collisionGrid) {
+        collisionGrid.insert(this);
+        collisionGrid.letEntityIterate(this, this.forEachEntity.bind(this));
+        collisionGrid.updateCellPosition(this);
 
         this.old.x = this.pos.x;
         this.old.y = this.pos.y;
@@ -55,11 +61,6 @@ class Actor {
             this.pos.y = height - this.height;
             this.vel.y *= -1;
         }
-
-        //if (!this.removed)
-            collisionGrid.insert(this);
-        collisionGrid.update(this, this.forEachEntity.bind(this));
-        collisionGrid.updatePositionAcrossSpeed(this);
 
         this.time++;
         if (this.time > 3 * 60) {

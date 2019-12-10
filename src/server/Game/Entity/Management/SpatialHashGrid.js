@@ -1,7 +1,6 @@
 /**
  * Grid data structure that stores AABB's in cells at their respective locations.
- * It is used to reduce the collision lookup time complexity. Each cell is a hash set
- * and are created when an entity appears in a space where a cell doesn't exist.
+ * It is used to reduce the collision lookup time complexity. Each cell is a hash set.
  */
 class SpatialHashGrid {
     /**
@@ -71,14 +70,14 @@ class SpatialHashGrid {
 
     /**
      * Inserts an entity to a cell in the grid based on its cartesian coordinates
-     * @param {SEntity} entity Given entity to be inserted.
+     * @param {Entity} entity Given entity to be inserted.
      */
     insert(entity) {
         let cx = this.cellifyX(entity.pos.x + entity.width / 2);
         let cy = this.cellifyY(entity.pos.y + entity.height / 2);
         let index = this.indexAt(cx, cy);
         if (!this.cellContainer.has(index)) {
-            let cell = new Set();
+            let cell = new Set;
             this.cellContainer.set(index, cell);
             cell.add(entity);
         } else {
@@ -100,20 +99,13 @@ class SpatialHashGrid {
             for (let y = cy; y <= yLen; y++) {
                 let index = this.indexAt(x, y);
                 if (this.cellContainer.has(index)) {
-                    callback(this.cellContainer.get(index));
+                    let cell = this.cellContainer.get(index);
+                    callback(cell);
                 }
             }
         }
     }
 
-    /**
-     * Specific method for entities. Updates the cell position of the given entity and calls
-     * the composed ProximityEntityManager.proximityCellTraversal method.
-     * @param entity {SEntity}
-     * @param entityManager {GameWorld}
-     * @param deltaTime {number}
-     * @see ProximityEntityManager
-     */
     letEntityIterate(entity, entityManager, deltaTime) {
         let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x);
         let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y);
@@ -123,8 +115,7 @@ class SpatialHashGrid {
             for (let y = cy; y <= yLen; y++) {
                 let index = this.indexAt(x, y);
                 if (this.cellContainer.has(index)) {
-                    let cell = this.cellContainer.get(index);
-                    entity.entitiesInProximity.proximityCellTraversal(cell, entityManager, deltaTime);
+                    entity.entitiesInProximity.proximityCellTraversal(this.cellContainer.get(index), entityManager, deltaTime);
                 }
             }
         }
@@ -150,16 +141,15 @@ class SpatialHashGrid {
         let err = (dx > dy ? dx : -dy) / 2;
 
         let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
+        if (!this.cellContainer.has(entityIdx)) {
+            let cell = new Set;
+            this.cellContainer.set(entityIdx, cell);
+            cell.add(entity);
+        } else {
+            this.cellContainer.get(entityIdx).add(entity);
+        }
         while (true) {
             let index = this.indexAt(x0, y0);
-            if (!this.cellContainer.has(index)) {
-                let cell = new Set();
-                this.cellContainer.set(index, cell);
-                cell.add(entity);
-            } else {
-                this.cellContainer.get(index).add(entity);
-            }
-
             if (entityIdx !== index)
                 if (this.cellContainer.has(index)) {
                     this.cellContainer
@@ -181,19 +171,12 @@ class SpatialHashGrid {
         }
     }
 
-    /**
-     * Removes an entity if present at its respective cell location.
-     * @param entity {SEntity} Given entity to be removed.
-     */
     remove(entity) {
         let cx = this.cellifyX(entity.pos.x + entity.width / 2);
         let cy = this.cellifyY(entity.pos.y + entity.height / 2);
         let index = this.indexAt(cx, cy);
         if (this.cellContainer.has(index)) {
-            console.log("Successful removal of", entity.constructor.name);
-            if (!this.cellContainer.get(index).delete(entity)) {
-                console.log("Removal of " + entity.constructor.name + " at index " + index + " failed!");
-            }
+            this.cellContainer.get(index).delete(entity);
         } else {
             console.log("Cell " + index + " didnt exist!");
         }

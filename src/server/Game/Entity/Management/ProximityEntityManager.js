@@ -45,8 +45,8 @@ class ProximityEntityManager extends EntityManager {
         if (this.shouldFollowEntity) {
             this.collisionBoundary.update(this.entRef);
         }
-        entityManager.cellSpace.updateCellPosition(this.entRef);
         entityManager.cellSpace.letEntityIterate(this.entRef, entityManager, deltaTime);
+        entityManager.cellSpace.updateCellPosition(this.entRef);
     }
 
     // Performs interactions with entities that intersect the range
