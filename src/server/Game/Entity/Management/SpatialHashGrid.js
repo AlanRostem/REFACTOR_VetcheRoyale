@@ -199,7 +199,6 @@ class SpatialHashGrid {
         let cx = this.cellifyX(entity.pos.x + entity.width / 2);
         let cy = this.cellifyY(entity.pos.y + entity.height / 2);
         let index = this.indexAt(cx, cy);
-        this.updateCellPosition(entity);
         if (this.cellContainer.has(index)) {
             if (!this.cellContainer.get(index).has(entity)) {
                 console.log("SpatialHashGrid: Attempted to delete "+ entity.constructor.name +" that didn't exist at " + cx + "," + cy);
