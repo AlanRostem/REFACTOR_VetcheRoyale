@@ -26,36 +26,36 @@ class CFirepellet extends CProjectile {
         super.update(deltaTime, client);
 
         this.player = Scene.entityManager.getEntityByID(this.output.ownerID);
-        console.log(true);
 
     }
 
     draw() {
         //super.draw();
-/*
-        CFirepellet.bullet1Animation.animate("Firewall_bullet1", this.animationSpec, 14, 5);
-        CFirepellet.bullet1Animation.drawAnimated(
-            this.output.pos.x + R.camera.x,
-            this.output.pos.y + R.camera.y);
+        /*
+                CFirepellet.bullet1Animation.animate("Firewall_bullet1", this.animationSpec, 14, 5);
+                CFirepellet.bullet1Animation.drawAnimated(
+                    this.output.pos.x + R.camera.x,
+                    this.output.pos.y + R.camera.y);
 
-     */
-       /* R.drawCroppedImage(
-            AssetManager.getMapImage("Firewall_bullet"),
-            0,
-            0,
-            3,
-            1,
-            this.output.pos.x + 1,
-            this.output.pos.y,
-            3,
-            1, true);
+             */
+        /* R.drawCroppedImage(
+             AssetManager.getMapImage("Firewall_bullet"),
+             0,
+             0,
+             3,
+             1,
+             this.output.pos.x + 1,
+             this.output.pos.y,
+             3,
+             1, true);
 
-        */
+         */
 
-       R.drawLine(this.output.pos.x, this.output.pos.y, this.prePosX,  this.prePosY, "Orange", 1, true);
+        R.drawLine(this.output.pos.x, this.output.pos.y, this.prePosX, this.prePosY, "Orange", 1, true);
+        R.drawRect("Yellow", this.output.pos.x, this.output.pos.y, 1, 1, true);
 
-       this.prePosX = this.output.pos.x;
-       this.prePosY = this.output.pos.y;
+        this.prePosX = this.output.pos.x;
+        this.prePosY = this.output.pos.y;
     }
 }
 
