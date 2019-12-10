@@ -21,7 +21,7 @@ class EntityManager {
             // the whole tile map.
             this.cellSpace = new SpatialHashGrid(
                 this.tileMap.w * Tile.SIZE,
-                this.tileMap.h * Tile.SIZE, 64, 64);
+                this.tileMap.h * Tile.SIZE, 32, 32);
 
         }
     }

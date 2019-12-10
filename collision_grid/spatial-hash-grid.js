@@ -82,8 +82,8 @@ class SpatialHashGrid {
      * @param {Entity} entity Given entity to be inserted.
      */
     insert(entity) {
-        let cx = this.cellifyX(entity.pos.x);
-        let cy = this.cellifyY(entity.pos.y);
+        let cx = this.cellifyX(entity.pos.x + entity.width / 2);
+        let cy = this.cellifyY(entity.pos.y + entity.height / 2);
         let index = this.indexAt(cx, cy);
         if (!this.cellContainer.has(index)) {
             let cell = new SpatialHashGrid.Cell(cx, cy, index);
@@ -120,27 +120,70 @@ class SpatialHashGrid {
         let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.height / 2);
         let xLen = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.entitiesInProximity.collisionBoundary.bounds.x);
         let yLen = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.entitiesInProximity.collisionBoundary.bounds.y);
-        let entityIdx = this.indexAt(this.cellifyX(entity.pos.x), this.cellifyY(entity.pos.y));
         for (let x = cx; x <= xLen; x++) {
             for (let y = cy; y <= yLen; y++) {
                 let index = this.indexAt(x, y);
                 if (this.cellContainer.has(index)) {
                     let cell = this.cellContainer.get(index);
                     callback(cell, this);
-                    if (entityIdx !== index) {
-                        cell.delete(entity);
-                    }
                 }
             }
         }
     }
 
+    updatePositionAcrossSpeed(entity) {
+        let x0 = this.cellifyX(entity.old.x + entity.width / 2);
+        let y0 = this.cellifyY(entity.old.y + entity.height / 2);
+        let x1 = this.cellifyX(entity.pos.x + entity.width / 2);
+        let y1 = this.cellifyY(entity.pos.y + entity.height / 2);
+
+        let dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+        let dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+        let err = (dx > dy ? dx : -dy) / 2;
+
+        while (true) {
+            let index = this.indexAt(x0, y0);
+            let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
+            if (!this.cellContainer.has(index)) {
+                let cell = new SpatialHashGrid.Cell(x0, y0, index);
+                this.cellContainer.set(index, cell);
+                cell.add(entity);
+            } else {
+                this.cellContainer.get(index).add(entity);
+            }
+            if (entityIdx !== index)
+                if (this.cellContainer.has(index)) {
+                    this.cellContainer.get(index)
+                        .delete(entity);
+                }
+
+            stroke(0, 255, 0);
+            rect(x0 * this.cellWidth, y0 * this.cellHeight, this.cellWidth, this.cellHeight);
+
+            if (x0 === x1 && y0 === y1) break;
+
+            let e2 = err;
+            if (e2 > -dx) {
+                err -= dy;
+                x0 += sx;
+            }
+            if (e2 < dy) {
+                err += dx;
+                y0 += sy;
+            }
+        }
+    }
+
     remove(entity) {
-        let cx = this.cellifyX(entity.pos.x);
-        let cy = this.cellifyY(entity.pos.y);
+        let cx = this.cellifyX(entity.pos.x + entity.width / 2);
+        let cy = this.cellifyY(entity.pos.y + entity.height / 2);
         let index = this.indexAt(cx, cy);
         if (this.cellContainer.has(index)) {
-            console.log(this.cellContainer.get(index).delete(entity));
+            console.log("Removal " + this.cellContainer.get(index).delete(entity));
+        } else {
+            console.log("Cell " + index + " didnt exist!");
+            fill(255, 0, 0);
+            rect(cx * this.cellWidth, cy * this.cellHeight, this.cellWidth, this.cellHeight);
         }
     }
 

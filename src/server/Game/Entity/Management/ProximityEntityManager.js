@@ -37,23 +37,6 @@ class ProximityEntityManager extends EntityManager {
     }
 
     cellSpacePlacement(entityManager, deltaTime) {
-        entityManager.cellSpace.insert(this.entRef);
-        entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
-        if (this.entitySpeedIsTooHigh(entityManager, deltaTime)) {
-            console.log("Too fast!", this.entRef.constructor.name);
-        }
-    }
-
-    entitySpeedIsTooHigh(entityManager, deltaTime) {
-        if (this.entRef.vel)
-            return (
-                Math.round(Math.abs(this.entRef.vel.x) * deltaTime) >= entityManager.cellSpace.cellWidth ||
-                Math.round(Math.abs(this.entRef.vel.y) * deltaTime) >= entityManager.cellSpace.cellHeight
-            );
-    }
-
-    updateCellPositionAcrossSpeed(entityManager, deltaTime) {
-
     }
 
     // Binds the quad tree range bounding rect to
@@ -62,14 +45,13 @@ class ProximityEntityManager extends EntityManager {
         if (this.shouldFollowEntity) {
             this.collisionBoundary.update(this.entRef);
         }
-        this.cellSpacePlacement(entityManager, deltaTime);
-        this.checkProximityEntities(entityManager, deltaTime);
+        entityManager.cellSpace.updateCellPosition(this.entRef);
+        entityManager.cellSpace.letEntityIterate(this.entRef, entityManager, deltaTime);
     }
 
     // Performs interactions with entities that intersect the range
     // bounding rectangle.
     checkProximityEntities(entityManager, deltaTime) {
-        entityManager.cellSpace.update(this.entRef, entityManager, deltaTime);
     }
 
     proximityCellTraversal(cell, entityManager, deltaTime) {

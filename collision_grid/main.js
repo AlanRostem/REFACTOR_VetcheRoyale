@@ -4,8 +4,8 @@ let cellSpace;
 
 function setup() {
     createCanvas(640, 640);
-    for (let i = 0; i < 50; i++) {
-        boxes.push(new Actor(width * Math.random(), height * Math.random(), 10, 10));
+    for (let i = 0; i < 10; i++) {
+        boxes.push(new Actor(width * Math.random(), height * Math.random(), 32, 32));
     }
     boxes.push(me = new Actor(width / 2, height / 2, 24, 24, color(255)));
     me.doIt = true;
@@ -13,7 +13,7 @@ function setup() {
 }
 
 function mouseMoved() {
-    me.move(mouseX - 12, mouseY - 12);
+    //me.move(mouseX - 12, mouseY - 12);
 }
 
 function draw() {
@@ -23,6 +23,7 @@ function draw() {
         aabb.draw();
         if (aabb.removed) {
             boxes.splice(boxes.indexOf(aabb), 1);
+            cellSpace.remove(aabb)
         }
 
     }

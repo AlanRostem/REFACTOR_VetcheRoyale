@@ -1,4 +1,4 @@
-let r = 0;
+let r = 16;
 
 /**
  * The actor class representation. Its body is represented as an AABB for simplicity's sake.
@@ -10,6 +10,7 @@ class Actor {
     height = 0;
     color = 0;
     collisionBoundary = null;
+    old = createVector(0, 0);
 
     constructor(x, y, w, h, clr = color(Math.random() * 255, Math.random() * 255, Math.random() * 255)) {
         this.pos.x = x;
@@ -19,6 +20,7 @@ class Actor {
         this.color = clr;
         this.entitiesInProximity = {};
         this.entitiesInProximity.collisionBoundary = new CollisionBoundary(x, y, w * 3, h * 3)
+        this.time = 0;
     }
 
     move(x, y) {
@@ -27,6 +29,10 @@ class Actor {
     }
 
     update(collisionGrid) {
+
+
+        this.old.x = this.pos.x;
+        this.old.y = this.pos.y;
         this.pos.x += this.vel.x;
         this.pos.y += this.vel.y;
         this.entitiesInProximity.collisionBoundary.update(this);
@@ -50,8 +56,15 @@ class Actor {
             this.vel.y *= -1;
         }
 
-        collisionGrid.insert(this);
+        if (!this.removed)
+            collisionGrid.insert(this);
         collisionGrid.update(this, this.forEachEntity.bind(this));
+        collisionGrid.updatePositionAcrossSpeed(this);
+
+        this.time++;
+        if (this.time > 3 * 60) {
+            this.removed = true;
+        }
     }
 
     forEachEntity(cell, grid) {
