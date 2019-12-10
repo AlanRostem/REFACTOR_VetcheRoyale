@@ -149,6 +149,7 @@ class Player extends GameDataLinker {
     }
 
     update(entityManager, deltaTime) {
+
         if (this.team) {
             this.teamID = this.team.id;
         } else {
@@ -225,6 +226,7 @@ class Player extends GameDataLinker {
                         }
                     );*/
         this.setOutboundPacketData("teamData", this.team.data);
+
         this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
         this.setMovementState("onPlayer", "false");
         this.gameData = {};

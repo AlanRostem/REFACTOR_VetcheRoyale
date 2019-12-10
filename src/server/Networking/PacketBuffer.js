@@ -119,10 +119,10 @@ PacketBuffer.validate = function(validObj, obj) {
     }
 };
 
-PacketBuffer.mergeSnapshot = function (packet, snapShot, oneTimeValues = []) {
+PacketBuffer.mergeSnapshot = function(packet, snapShot, oneTimeValues = []) {
     let data = Object.copy(packet, oneTimeValues);
     if (!Object.isJSON(snapShot) || data === undefined || data === null) return snapShot;
-    if (Object.keys(snapShot).length === 0) return snapShot;
+    if (Object.keys(snapShot).length === 0) return data;
     for (let key of Object.keys(snapShot))
         data[key] = this.mergeSnapshot(data[key], snapShot[key], oneTimeValues);
     return data;

@@ -31,29 +31,14 @@ class InputReceiver {
             }
         });
 
-        this.packetBuffer = new PacketBuffer();
-        this.p = {
-            mouseStates: {},
-            mouseData: {
-                x: 50,
-                y: 100,
-                world: {
-                    x: 50,
-                    y: 100
-                }
-            },
-            keyStates: {"68":true},
-        };
     }
 
     applyInput(input, client) {
         if (this.serverRef) {
-            for (let key in input) {
-            }
             this.inputDataToPlayer = PacketBuffer.mergeSnapshot(this.inputDataToPlayer, input);
 
             //console.log(this.p.keyStates, input.keyStates);
-
+            //if (PacketBuffer.mergeSnapshot(this.inputDataToPlayer, input))
             this.serverRef.dataBridge.transferClientEvent("listenToInput", client.id, this.inputDataToPlayer);
 
             //if (this.inputDataToPlayer)

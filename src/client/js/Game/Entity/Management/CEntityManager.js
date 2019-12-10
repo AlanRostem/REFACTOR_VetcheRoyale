@@ -112,7 +112,6 @@ export default class CEntityManager {
                 } else {
                     console.error("Attempted to update a non existent entity:", entityData.eType, "with ID:", entityData.id);
                     //throw new Error("Attempted to update a non existent entity. There's a hole in your programming...");
-                    //delete dataPack.entityData[id];
                 }
             }
         });
