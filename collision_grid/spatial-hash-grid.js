@@ -141,9 +141,9 @@ class SpatialHashGrid {
         let dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
         let err = (dx > dy ? dx : -dy) / 2;
 
+        let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
         while (true) {
             let index = this.indexAt(x0, y0);
-            let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
             if (!this.cellContainer.has(index)) {
                 let cell = new SpatialHashGrid.Cell(x0, y0, index);
                 this.cellContainer.set(index, cell);

@@ -133,6 +133,7 @@ class SpatialHashGrid {
     updateCellPosition(entity) {
         let x0;
         let y0;
+
         if (entity.old) {
             x0 = this.cellifyX(entity.old.x + entity.width / 2);
             y0 = this.cellifyY(entity.old.y + entity.height / 2);
@@ -148,17 +149,9 @@ class SpatialHashGrid {
         let dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
         let err = (dx > dy ? dx : -dy) / 2;
 
-        if (entity.toRemove) {
-            let index = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
-            if (this.cellContainer.has(index)) {
-                this.cellContainer.get(index)
-                    .delete(entity);
-            }
-        }
-
+        let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
         while (true) {
             let index = this.indexAt(x0, y0);
-            let entityIdx = this.indexAt(this.cellifyX(entity.pos.x + entity.width / 2), this.cellifyY(entity.pos.y + entity.height / 2));
             if (!this.cellContainer.has(index)) {
                 let cell = new Set();
                 this.cellContainer.set(index, cell);
@@ -169,7 +162,8 @@ class SpatialHashGrid {
 
             if (entityIdx !== index)
                 if (this.cellContainer.has(index)) {
-                    this.cellContainer.get(index)
+                    this.cellContainer
+                        .get(index)
                         .delete(entity);
                 }
 
@@ -192,34 +186,16 @@ class SpatialHashGrid {
      * @param entity {SEntity} Given entity to be removed.
      */
     remove(entity) {
-        if (!entity) {
-            console.log(new Error("Caught: Entity was undefined.").stack);
-            return;
-        }
         let cx = this.cellifyX(entity.pos.x + entity.width / 2);
         let cy = this.cellifyY(entity.pos.y + entity.height / 2);
         let index = this.indexAt(cx, cy);
         if (this.cellContainer.has(index)) {
-            if (!this.cellContainer.get(index).has(entity)) {
-                console.log("SpatialHashGrid: Attempted to delete "+ entity.constructor.name +" that didn't exist at " + cx + "," + cy);
+            console.log("Successful removal of", entity.constructor.name);
+            if (!this.cellContainer.get(index).delete(entity)) {
+                console.log("Removal of " + entity.constructor.name + " at index " + index + " failed!");
             }
-            this.cellContainer.get(index).delete(entity);
         } else {
-            // Extra check to see if the entity might be in surrounding cells. Numerous testing
-            // has proved this check is never performed, but due to paranoia it has been implemented.
-            console.log("Excessive entity deletion at SpatialHashGrid. Entity:", entity.constructor.name);
-            let cx = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x);
-            let cy = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y);
-            let xLen = this.cellifyX(entity.entitiesInProximity.collisionBoundary.pos.x + entity.entitiesInProximity.collisionBoundary.bounds.x);
-            let yLen = this.cellifyY(entity.entitiesInProximity.collisionBoundary.pos.y + entity.entitiesInProximity.collisionBoundary.bounds.y);
-            for (let x = cx; x <= xLen; x++) {
-                for (let y = cy; y <= yLen; y++) {
-                    let index = this.indexAt(x, y);
-                    if (this.cellContainer.has(index)) {
-                        this.cellContainer.get(index).delete(entity);
-                    }
-                }
-            }
+            console.log("Cell " + index + " didnt exist!");
         }
     }
 }

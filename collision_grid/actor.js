@@ -1,4 +1,4 @@
-let r = 16;
+let r = 64;
 
 /**
  * The actor class representation. Its body is represented as an AABB for simplicity's sake.
@@ -56,7 +56,7 @@ class Actor {
             this.vel.y *= -1;
         }
 
-        if (!this.removed)
+        //if (!this.removed)
             collisionGrid.insert(this);
         collisionGrid.update(this, this.forEachEntity.bind(this));
         collisionGrid.updatePositionAcrossSpeed(this);
