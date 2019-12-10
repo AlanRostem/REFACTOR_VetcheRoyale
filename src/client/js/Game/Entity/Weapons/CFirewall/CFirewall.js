@@ -17,6 +17,11 @@ export default class CFirewall extends CWeapon {
         AudioPool.play("Weapons/firewall_shoot.oggSE");
     }
 
+    onReloadAction(client, deltaTime) {
+        super.onReloadAction(client, deltaTime);
+        AudioPool.play("Weapons/firewall_reload.oggSE");
+    }
+
     update(deltaTime, client) {
         this.player = Scene.entityManager.getEntityByID(this.output.playerID);
 

@@ -23,6 +23,11 @@ export default class CAquaSLG extends CWeapon {
         AudioPool.play("Weapons/aquaslg_s.oggSE").updatePanPos(this.output.pos);
     }
 
+    onReloadAction(client, deltaTime) {
+        super.onReloadAction(client, deltaTime);
+        AudioPool.play("Weapons/aquaslg_reload.oggSE");
+    }
+
     update(deltaTime, client) {
         this.player = Scene.entityManager.getEntityByID(this.output.playerID);
 
