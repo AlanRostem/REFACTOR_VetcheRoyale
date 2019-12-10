@@ -7,7 +7,7 @@ const PacketBuffer = require("../PacketBuffer.js");
 class Client {
     constructor(socket, clientList, server) {
         this.inboundDataCallbacks = new ONMap();
-        this.outboundPacket = new ONMap();
+        this.outboundPacket = {};
         this.packetBuffer = new PacketBuffer();
 
         // Object given by socket.io
@@ -20,8 +20,6 @@ class Client {
         this.removed = false;
         this.disconnected = false;
 
-        this.playerObjData = {};
-
         // Used to store packets over time and check their frequency
         this.frequencyBuffer = [];
         this.defineSocketEvents(socket, clientList, server);
@@ -31,9 +29,7 @@ class Client {
         this.inboundDataCallbacks.set(eventName, callback);
     }
 
-    setOutboundPacketData(key, value) {
-        this.outboundPacket.set(key, value);
-    }
+
 
     disconnect(message) {
         this.disconnected = true;
@@ -87,22 +83,17 @@ class Client {
 
     networkedUpdate(data, server) {
         this.inputReceiver.update(this, server);
-        this.playerObjData = data;
-
-        this.setOutboundPacketData("entityData", this.playerObjData.entities);
-        this.setOutboundPacketData("gameData", this.playerObjData.gameData);
-        this.setOutboundPacketData("teamData", this.playerObjData.teamData);
+        this.outboundPacket = data;
 
         // TODO: May be deprecated
-        this.setOutboundPacketData("now", Date.now());
+        this.outboundPacket.now = Date.now();
         this.updateDataCycle();
     }
 
     updateDataCycle() {
         // TODO: Send data that changes only (use packet buffer)
-        let packet = this.packetBuffer.exportSnapshot(Object.keys(this.outboundPacket.object), this.outboundPacket.object);
-        this.emit("serverUpdateTick", packet);
-        this.outboundPacket.clear(); // Clear the packet to prevent sending duplicate data
+        this.emit("serverUpdateTick", this.outboundPacket);
+        this.outboundPacket = {};
     }
 
     get id() {

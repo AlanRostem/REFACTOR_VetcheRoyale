@@ -3,7 +3,7 @@ const Inventory = require("./Inventory.js");
 const StatTracker = require("./StatTracker.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const Tile = require("../../TileBased/Tile.js");
-
+const PacketBuffer = require("../../../Networking/PacketBuffer.js");
 const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap.js");
 const Loot = require("../Loot/Loot.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
@@ -34,6 +34,7 @@ class Player extends GameDataLinker {
         this.invWeaponID = null;
         this.invAmmo = null;
         this.stats = new StatTracker(this.id);
+        this.packetBuffer = new PacketBuffer();
         this.statData = this.stats.statMap;
 
         this.jumping = false;
@@ -225,9 +226,10 @@ class Player extends GameDataLinker {
                             pos: this.pos
                         }
                     );*/
-        this.setOutboundPacketData("teamData", this.team.data);
 
-        this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
+        this.setOutboundPacketData("teamData", this.team.data);
+        let packet = this.packetBuffer.exportSnapshot(Object.keys(this.outboundData.object), this.outboundData.object);
+        this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, packet);
         this.setMovementState("onPlayer", "false");
         this.gameData = {};
     }

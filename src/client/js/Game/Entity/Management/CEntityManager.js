@@ -102,10 +102,11 @@ export default class CEntityManager {
         });
 
         client.addServerUpdateListener("updateEntity", dataPack => {
-            for (var id in dataPack.entityData) {
-                var entityData = dataPack.entityData[id];
+            for (var id in dataPack.entities) {
+                var entityData = dataPack.entities[id];
                 if (this.existsOnClient(id)) {
                     var existingEntity = this.getEntityByID(id);
+
                     entityData = PacketBuffer.mergeSnapshot(existingEntity.output, entityData);
                     PacketBuffer.validate(existingEntity.schema, entityData);
                     existingEntity.updateFromDataPack(entityData, client);

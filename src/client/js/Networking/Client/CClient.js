@@ -56,8 +56,6 @@ class CClient {
         if (Scene.debugPause) {
             return;
         }
-
-        console.log(packet.entityData);
         this.timeSyncer.onServerUpdate(this.latency);
         this.lastReceivedData = packet;
         for (let callback of this.serverUpdateCallbacks.array) {

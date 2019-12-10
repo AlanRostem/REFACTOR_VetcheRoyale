@@ -60,6 +60,7 @@ class SnapShotGenerator {
     }
 
     export() {
+        this.snapShot.dynamic = {};
         for (let key of this.dynamicValues) {
             this.snapShot.dynamic[key] = this.composedEntity[key];
         }
