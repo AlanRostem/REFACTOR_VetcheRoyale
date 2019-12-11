@@ -62,11 +62,14 @@ class WeaponItem extends Loot {
     // Bind weapon to the player and check if the player presses
     // the drop key.
     updateWhenEquipped(player, entityManager, deltaTime) {
+        this.old.x = this.pos.x;
+        this.old.y = this.pos.y;
         this.resetLifeTime(entityManager);
         if (player.input.singleKeyPress(WeaponItem.DROP_KEY))
             this.drop(player, entityManager);
         this.pos.x = player.center.x - this.width / 2;
         this.pos.y = player.center.y - this.height / 2;
+        this.entitiesInProximity.update(entityManager, deltaTime);
     }
 
     equip(player) {
