@@ -40,7 +40,6 @@ class OtherPlayer extends CEntity {
 
         this.timer2 = new Timer(0.1, ()=> {
             this.applyDmg = false;
-            this.timer2.reset();
         });
 
         this.applyDmg = false;
