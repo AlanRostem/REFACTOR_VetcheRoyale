@@ -29,14 +29,13 @@ class Firewall extends AttackWeapon {
 
         this.pellets = 4;
 
-        this.firerer.defaultSpread = .2;
 
         this.secondaryUse = false;
         this.superAbilitySnap = false;
 
         this.modAbility = new ModAbility(0.75, 1.5);
 
-        this.configureAttackStats(1.25, 6, 1, 180);
+        this.configureAttackStats(1.25, 6, 1, 120);
 
 
         this.modAbility.onActivation = (weapon, entityManager) => {
