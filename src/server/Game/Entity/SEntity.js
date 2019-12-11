@@ -55,10 +55,6 @@ class SEntity {
         this.entitiesInProximity = new ProximityEntityManager(this);
     }
 
-    get gameID() {
-        return this.homeWorldID;
-    }
-
     setEntityOrder(int) {
         this.entityOrder = int;
     }
@@ -119,9 +115,6 @@ class SEntity {
         return this.snapShotGenerator.exportInitValues();
     }
 
-    get toRemove() {
-        return this.removed;
-    }
 
     get topLeft() {
         return this.pos

@@ -51,7 +51,7 @@ class EntityManager {
             let entity = this.container[i];
             entity.index = i;
             entity.update(this, deltaTime);
-            if (entity.toRemove) {
+            if (entity.removed) {
                 //this.container.splice(i, 1);
                 this.removeEntity(i);
             }
