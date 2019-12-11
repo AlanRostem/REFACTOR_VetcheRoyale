@@ -27,10 +27,7 @@ class Firewall extends AttackWeapon {
         super(x, y, "Firewall", 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
 
-        this.spreadAngle = 20;
         this.pellets = 4;
-
-        this.firerer.defaultSpread = .2;
 
         this.secondaryUse = false;
         this.superAbilitySnap = false;
@@ -65,9 +62,9 @@ class Firewall extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        for (let i = -2; i < this.pellets / 2; i++) {
+        for (let i = -this.pellets / 2; i < this.pellets / 2; i++) {
             entityManager.spawnEntity(this.center.x, this.center.y,
-                new Firepellet(player, this.id, 0, 0, angle + (i / this.pellets / 2 * Math.PI / 6), entityManager));
+                new Firepellet(player, this.id, 0, 0, angle + (i / this.pellets * Math.PI / 12), entityManager));
         }
     }
 
