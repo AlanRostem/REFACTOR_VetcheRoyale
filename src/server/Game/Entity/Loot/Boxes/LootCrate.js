@@ -41,7 +41,7 @@ class LootCrate extends StaticInteractable {
         let items = LootRNG.generateLootArray(this.level, this.capacity, this.levelGuarantee);
         let startAngle = 0;
         let count = 0;
-        for (var loot of items) {
+        for (let loot of items) {
             world.spawnEntity(
                 this.center.x - loot.width / 2,
                 this.pos.y - loot.height,

@@ -1,10 +1,12 @@
 class VetcheEnum {
-    constructor(object) {
+    constructor(...objects) {
         this._indices = {};
         let i = 0;
-        for (let key in object) {
-            this[key] = object[key];
-            this.indices[key] = i++;
+        for (let object of objects) {
+            for (let key in object) {
+                this[key] = object[key];
+                this._indices[key] = i++;
+            }
         }
 
         Object.freeze(this);
