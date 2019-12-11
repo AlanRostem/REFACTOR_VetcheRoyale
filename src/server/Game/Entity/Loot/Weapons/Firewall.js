@@ -29,6 +29,8 @@ class Firewall extends AttackWeapon {
 
         this.pellets = 4;
 
+        this.firerer.defaultSpread = .2;
+
         this.secondaryUse = false;
         this.superAbilitySnap = false;
 
