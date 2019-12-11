@@ -10,9 +10,6 @@ class Firepellet extends Projectile {
     constructor(owner, weaponID, x, y, angle, entityManager) {
         super(owner, x, y, 2, 1, angle, 4 * 100);
         this.damage = new Damage(8, owner);
-
-        this.vel.x = Math.cos(angle) * this.speed; //+ this.getOwner(entityManager).vel.x;
-        this.vel.y = Math.sin(angle) * this.speed;// + this.getOwner(entityManager).vel.y;
     }
 
     onTileHit(entityManager, deltaTime) {
