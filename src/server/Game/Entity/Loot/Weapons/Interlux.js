@@ -65,6 +65,7 @@ class Interlux extends AttackWeapon {
 
     onSuperBuffs(entityManager, deltaTime) {
         super.onSuperBuffs(entityManager, deltaTime);
+        
     }
 
     fire(player, entityManager, deltaTime, angle) {
