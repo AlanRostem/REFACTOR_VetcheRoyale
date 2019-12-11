@@ -204,6 +204,12 @@ class CClient {
             });
         });
 
+        this.on("entityEvent", packet => {
+            // packet.entityType
+            // packet.entityID
+            // packet.eventData
+        });
+
         this.on('serverUpdateTick', packet => {
             this.onServerUpdateReceived(packet);
         });

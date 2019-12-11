@@ -42,7 +42,9 @@ class CElectricSphere extends CProjectile {
         super.onClientDelete(client, data);
         setTimeout(function() {R.camera.setConfig("followPlayer", true)}, 500);
         EffectManager.createEffect(this.output.pos.x - 16, this.output.pos.y - 16, "Sew9sphereExplo", 0);
-        this.missileSound.stop();
+        if (this.missileSound) {
+            this.missileSound.stop();
+        }
         AudioPool.play("Weapons/sew-9_explo.oggSE", this.output.pos);
     }
 
