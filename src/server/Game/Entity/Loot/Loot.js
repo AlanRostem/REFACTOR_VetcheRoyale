@@ -34,11 +34,11 @@ class Loot extends PhysicalInteractable {
 
     // Ground physics.
     update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
         this.lifeTime -= deltaTime;
         if (this.lifeTime <= 0) {
             this.remove();
         }
-        super.update(entityManager, deltaTime);
     }
 
     // Specify what should change about the player inventory
