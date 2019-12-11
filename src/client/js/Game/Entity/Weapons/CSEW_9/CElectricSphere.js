@@ -6,6 +6,7 @@ import AssetManager from "../../../../AssetManager/AssetManager.js";
 import SpriteSheet from "../../../../AssetManager/Classes/Graphical/SpriteSheet.js";
 import Timer from "../../../../../../shared/code/Tools/CTimer.js"
 import CProjectile from "../../CProjectile.js";
+import EffectManager from "../../../../Graphics/EffectManager.js";
 
 
 class CElectricSphere extends CProjectile {
@@ -13,24 +14,48 @@ class CElectricSphere extends CProjectile {
     constructor(data) {
         super(data);
 
-        this.timer = new Timer(0.5, () => {
-            this.drawStatic = true;
-        }, true);
-        this.timer2 = new Timer(0.75, () => {
-            this.drawStatic = true;
+        this.timeStamp = 0;
+        this.timer = new Timer(1, () => {
+            //     if (((Math.random() * 5) | 0)) this.drawStatic = true;
+            this.timeStamp++;
         }, true);
 
-        this.animationSpec = new SpriteSheet.Animation(0, 7, 8, 0.07);
+        this.timer2 = new Timer(0.7, () => {
+            this.timeStatic = true;
+        }, true);
+
+        this.dirX = 1;
+        this.dirY = 1;
+        this.pdirX = 1;
+        this.pdirY = 1;
+
+        this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.07);
 
     }
 
     onClientDelete(client) {
         super.onClientDelete(client);
-        R.camera.setConfig("followPlayer", true);
+        setTimeout(function() {R.camera.setConfig("followPlayer", true)}, 500);
+        EffectManager.createEffect(this.output.pos.x - 16, this.output.pos.y - 16, "Sew9sphereExplo", 0);
+        AudioPool.play("Weapons/sew-9_explo.oggSE", this.output.pos);
+
+
     }
 
     update(deltaTime, client) {
         super.update(deltaTime, client);
+
+        this.dirX = (this.output.vel.x > 60 ? 1 : -1);
+        this.dirY = (this.output.vel.y > 60 ? 1 : -1);
+
+        if (this.dirX !== this.pdirX) {
+            this.pdirX = this.dirX;
+            this.drawStatic = true;
+        }
+        if (this.dirY !== this.pdirY) {
+            this.pdirY = this.dirY;
+            this.drawStatic = true;
+        }
 
         this.timer.tick(deltaTime);
         this.timer2.tick(deltaTime);
@@ -41,6 +66,7 @@ class CElectricSphere extends CProjectile {
         if (!this.getRealtimeProperty("secondary")) return;
         R.camera.setConfig("followPlayer", false);
         R.camera.setCurrentFollowPos(this.output.pos);
+
     }
 
     draw() {
@@ -49,23 +75,46 @@ class CElectricSphere extends CProjectile {
 
         let player = this.player;
 
-        CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 5, 5);
-        CElectricSphere.sphereAnimation.drawAnimated(
-            pos.x + R.camera.x - 1,
-            pos.y + R.camera.y - 1);
+        if (this.timeStamp < 7) {
+            CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 5, 5);
+            CElectricSphere.sphereAnimation.drawAnimated(
+                pos.x + R.camera.x - 1,
+                pos.y + R.camera.y - 1);
+        } else {
+            CElectricSphere.sphereAnimation2.animate("SEW-9_bullet2", this.animationSpec, 5, 5);
+            CElectricSphere.sphereAnimation2.drawAnimated(
+                pos.x + R.camera.x - 1,
+                pos.y + R.camera.y - 1);
+        }
+
+        /*R.drawCroppedImage(AssetManager.getMapImage("SEW-9_bullet"),
+            0, 0,
+            5, 5,
+            pos.x - 1, pos.y - 1,
+            5, 5, true);*/
 
         if (!player) return;
 
-        if (this.drawStatic) {
+        if (this.drawStatic && this.timeStatic) {
             lightningToPlayer(player.output.pos.x + player.output.width / 2, player.output.pos.y + player.output.height / 2, this.output.pos.x, this.output.pos.y, "White", 1, true);
-            this.drawStatic = false;
+            EffectManager.createEffect(pos.x - 4, pos.y - 4, "Sew9sphereElec1", 0);
+            AudioPool.play("Weapons/sew-9_shock.oggSE", pos);
+            this.drawStatic = this.timeStatic = false;
+            this.timer2.reset();
         }
     }
 }
 
 AssetManager.addSpriteCreationCallback(() => {
     CElectricSphere.sphereAnimation = new SpriteSheet("SEW-9_bullet");
-    CElectricSphere.sphereAnimation.bind("SEW-9_bullet", 0, 0, 40, 8);
+    CElectricSphere.sphereAnimation.bind("SEW-9_bullet", 0, 0, 20, 5);
+
+    CElectricSphere.sphereAnimation2 = new SpriteSheet("SEW-9_bullet2");
+    CElectricSphere.sphereAnimation2.bind("SEW-9_bullet2", 0, 0, 20, 5);
+
+    EffectManager.configureEffect("Sew9sphereElec1", 228, 0, 11, 11, 4, 0.05);
+    EffectManager.configureEffect("Sew9sphereExplo", 300, 0, 32, 32, 4, 0.05);
+
 });
 
 

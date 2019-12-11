@@ -185,7 +185,7 @@ class AttackWeapon extends WeaponItem {
             }
         }
 
-        if (player.input.singleKeyPress(81)) {
+        if (this.canUseSuper && player.input.singleKeyPress(81)) {
             if (this.canUseSuper) {
                 this.superAbility.activate(this, entityManager, deltaTime);
             }

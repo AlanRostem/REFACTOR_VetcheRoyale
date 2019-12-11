@@ -30,6 +30,7 @@ class Loot extends PhysicalInteractable {
     cast(x, y) {
         this.vel.x = x;
         this.vel.y = y;
+        this.fric.x = 0;
     }
 
     // Ground physics.
@@ -39,6 +40,20 @@ class Loot extends PhysicalInteractable {
         if (this.lifeTime <= 0) {
             this.remove();
         }
+    }
+
+    onYSideCollision(tile) {
+        this.fric.x = Loot.AIR_FRICTION;
+        this.vel.y *= -0.5;
+    }
+
+    onXSideCollision(tile) {
+        this.fric.x = Loot.AIR_FRICTION;
+        this.vel.x *= -0.4;
+    }
+
+    onBottomSlopeCollision(tile) {
+
     }
 
     // Specify what should change about the player inventory
@@ -54,7 +69,7 @@ class Loot extends PhysicalInteractable {
     }
 }
 
-Loot.AIR_FRICTION = 3;
+Loot.AIR_FRICTION = 2.2;
 Loot.PICK_UP_RANGE = Tile.SIZE * 2;
 
 module.exports = Loot;

@@ -114,8 +114,10 @@ class WeaponItem extends Loot {
             this.equippedToPlayer = false;
             this.playerID = null;
             this.player = null;
-            this.vel.x = WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter;
-            this.vel.y = WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter;
+            this.cast(
+                WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter,
+                WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter
+            );
             this.onDrop(player, entityManager, deltaTime);
             this.dropped = true;
         }
@@ -134,7 +136,7 @@ class WeaponItem extends Loot {
 }
 
 WeaponItem.DROP_KEY = 71;
-WeaponItem.DROP_SPEED = 200;
+WeaponItem.DROP_SPEED = 120;
 WeaponItem.EMPTY_PLAYER = new Player(-1);
 
 module.exports = WeaponItem;

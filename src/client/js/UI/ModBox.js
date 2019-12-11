@@ -11,6 +11,7 @@ export default class ModBox extends UIElement {
             this.modBoxBackground = AssetManager.getMapImage("modBoxBackground");
             this.modBoxCoolDown = AssetManager.getMapImage("modBoxCoolDown");
             this.modIcons = AssetManager.getMapImage("modIcons");
+            this.modIcons10x10 = AssetManager.getMapImage("modIcons10x10");
         });
 
         this.hasWeapon = false;
@@ -98,7 +99,7 @@ export default class ModBox extends UIElement {
                     this.modBoxBackground.height * this.durationPercent / 100 | 0);
 
 
-            // Weapon Icon
+           /* // mod Icon
             R.drawCroppedImage(
                 this.modIcons,
                 this.iconID * 8,
@@ -108,7 +109,19 @@ export default class ModBox extends UIElement {
                 R.WIDTH - 106,
                 R.HEIGHT - 16,
                 8,
-                8);
+                8);*/
+
+            // 10x10 mod Icon TODO: TEST
+            R.drawCroppedImage(
+                this.modIcons10x10,
+                this.iconID * 10,
+                0,
+                10,
+                10,
+                R.WIDTH - 107,
+                R.HEIGHT - 17,
+                10,
+                10);
 
             // Frame around modbox
             R.drawCroppedImage(

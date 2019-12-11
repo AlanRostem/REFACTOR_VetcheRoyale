@@ -18,6 +18,16 @@ export default class CSEW_9 extends CWeapon {
         this.missileSound = AudioPool.play("Weapons/sew-9_a.oggSE")
     }
 
+    onReloadAction(client, deltaTime) {
+        super.onReloadAction(client, deltaTime);
+        this.reloadSnd = AudioPool.play("Weapons/sew-9_reload.oggSE");
+    }
+
+    onDrop(client, deltaTime) {
+        super.onDrop(client, deltaTime);
+        if(this.reloadSnd) this.reloadSnd.stop();
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
         this.player = Scene.entityManager.getEntityByID(this.output.playerID);
