@@ -2,7 +2,6 @@ class Empty{}
 
 Object.equals = function (self, other) {
     if (typeof other === "number" && isNaN(other)) {
-        //console.log("Object cannot equal to NaN, undefined or null!");
         return false;
     }
 
@@ -22,7 +21,6 @@ Object.equals = function (self, other) {
     }
 
     if (props1.length !== props2.length) {
-        //console.log("Object lengths didn't match!");
         return false;
     }
 
