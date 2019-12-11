@@ -2,13 +2,14 @@ const Physical = require("./Physical.js");
 
 // Entity that can receive effects.
 class Affectable extends Physical {
+    static _ = (() => {
+        Affectable.addDynamicValues("effectsData")
+    })();
+
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
         this.effects = {};
         this.effectsData = {};
-        this.addDynamicSnapShotData([
-            "effectsData"
-        ]);
     }
 
     updateEffects(entityManager, deltaTime) {

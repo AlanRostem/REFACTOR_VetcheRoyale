@@ -1,16 +1,15 @@
-const Interactable = require("../Traits/Interactable.js");
+const PhysicalInteractable = require("../Traits/Interactable/PhysicalInteractable.js");
 const Tile = require("../../TileBased/Tile.js");
 
-class Loot extends Interactable {
+class Loot extends PhysicalInteractable {
     constructor(x, y, shouldRemove = false, lifeTime = 6 * 60) {
         super(x, y, 4, 6); // All loot hit boxes should be of this size
         this.shouldRemove = shouldRemove;
         this.lifeTime = lifeTime;
         this.maxLifeTime = lifeTime;
         this.acc.y = 500;
-        this.fric.x = 0;
-        this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
-        this.setPhysicsConfiguration("stop", false);
+        this.fric.x = Loot.AIR_FRICTION;
+        this.setCollisionRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
 
     // Return true based on some data of the player
@@ -36,11 +35,11 @@ class Loot extends Interactable {
 
     // Ground physics.
     update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
         this.lifeTime -= deltaTime;
         if (this.lifeTime <= 0) {
             this.remove();
         }
-        super.update(entityManager, deltaTime);
     }
 
     onYSideCollision(tile) {

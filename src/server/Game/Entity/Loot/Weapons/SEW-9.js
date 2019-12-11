@@ -10,30 +10,33 @@ const Alive = require("../../Traits/Alive.js");
 
 // Projectile fired by the SEW-9 weapon
 class ElectricSphere extends Projectile {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 3, 3, angle, 0);
+    static _ = (() => {
+        ElectricSphere.addDynamicValues("secondary")
+    })();
+
+    constructor(owner, weaponID, x, y, angle, entityManager) {
+        super(owner, x, y, 3, 3, angle, 0);
         this.radius = 3;
         this.maxSpeed = 200;
         this.velVal = 5;
         this.weapon = null;
         this.secondary = false;
-        this.addDynamicSnapShotData(["secondary"]);
 
-        this.areaDmg = new AOEDamage(ownerID, x, y, Tile.SIZE * this.radius, 10,
-            entityManager.getEntity(ownerID).team.players);
+        this.areaDmg = new AOEDamage(owner, x, y, Tile.SIZE * this.radius, 10,
+            owner.team.players);
     }
 
     onTileHit(entityManager, deltaTime) {
         this.detonate(entityManager);
     }
 
-    onPlayerHit(player, entityManager) {
+    onEnemyHit(player, entityManager) {
         this.detonate(entityManager);
     }
 
     detonate(entityManager) {
-        if (this.getOwner(entityManager)) {
-            this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+        if (this.getOwner()) {
+            this.getOwner().entitiesInProximity.shouldFollowEntity = true;
         }
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
@@ -42,14 +45,16 @@ class ElectricSphere extends Projectile {
         this.remove();
     }
 
+
+
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
 
 
-        if (this.getOwner(entityManager)) {
-            let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
+        if (this.getOwner()) {
+            let atan2 = Math.atan2(this.getOwner().input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner().input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
-            let length = Vector2D.distance(this.getOwner(entityManager).input.mouseData.world, this.pos);
+            let length = Vector2D.distance(this.getOwner().input.mouseData.world, this.pos);
 
             this.vel.x = Math.cos(atan2) * length * this.velVal;
             this.vel.y = Math.sin(atan2) * length * this.velVal;
@@ -63,15 +68,15 @@ class ElectricSphere extends Projectile {
 }
 
 class SuperDamage extends SEntity {
-    constructor(x, y, w, h, playerID) {
+    constructor(x, y, w, h, player) {
         super(x, y, w, h);
-        this.damage = new Damage(1, playerID);
+        this.damage = new Damage(1, player);
 
     }
 
     update(game, deltaTime) {
         super.update(game, deltaTime);
-        let player = game.getEntity(this.damage.playerID);
+        let player = this.damage.player;
         if (player) {
             this.pos.x = player.x;
             this.pos.y = player.y;
@@ -83,7 +88,7 @@ class SuperDamage extends SEntity {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.isTeammate(entityManager.getEntity(this.damage.playerID))) {
+            if (!entity.isTeammate(this.damage.player)) {
                 this.damage.inflict(entity, entityManager);
             }
         }
@@ -92,6 +97,10 @@ class SuperDamage extends SEntity {
 }
 
 class SEW_9 extends AttackWeapon {
+    static _ = (() => {
+        SEW_9.addDynamicValues("misPos", "secondaryFire", "superAbilitySnap", "isShooting");
+    })();
+
     constructor(x, y) {
         super(x, y, "SEW-9", 0, 0, 0);
         this.misRef = null;
@@ -108,19 +117,17 @@ class SEW_9 extends AttackWeapon {
 
         this.configureAttackStats(2.25, 5, 1, 100);
 
-        this.addDynamicSnapShotData(["misPos", "secondaryFire", "superAbilitySnap", "isShooting"]);
-
         this.modAbility.onActivation = (weapon, entityManager) => {
             if(!this.primaryFire) {
                 this.currentAmmo--;
                 this.isShooting = true;
                 entityManager.spawnEntity(this.center.x, this.center.y,
-                    this.misRef = new ElectricSphere(this.getOwner(entityManager).id, this.id, 0, 0,
+                    this.misRef = new ElectricSphere(this.getOwner(), this.id, 0, 0,
                         0, entityManager));
                 this.misRef.weapon = this;
                 this.misRef.secondary = true;
                 this.secondaryFire = true;
-                this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = false;
+                this.getOwner().entitiesInProximity.shouldFollowEntity = false;
             }
         };
 
@@ -132,8 +139,8 @@ class SEW_9 extends AttackWeapon {
             this.canMove = true;
 
             this.isShooting = false;
-            if (this.getOwner(entityManager))
-                this.getOwner(entityManager).entitiesInProximity.shouldFollowEntity = true;
+            if (this.getOwner())
+                this.getOwner().entitiesInProximity.shouldFollowEntity = true;
             if (composedWeapon) this.misRef.detonate(entityManager);
         };
 
@@ -141,7 +148,7 @@ class SEW_9 extends AttackWeapon {
             this.canMove = false;
             this.isShooting = true;
             if (this.misRef) {
-                this.getOwner(entityManager).entitiesInProximity.follow(
+                this.getOwner().entitiesInProximity.follow(
                     this.misRef.x,
                     this.misRef.y
                 );
@@ -151,7 +158,7 @@ class SEW_9 extends AttackWeapon {
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
             this.superAbilitySnap = true;
             entityManager.spawnEntity(this.center.x, this.center.y,
-                this.damageBox = new SuperDamage(this.x, this.y, 100, entityManager.getEntity(this.playerID).height, this.playerID)
+                this.damageBox = new SuperDamage(this.x, this.y, 100, this.getOwner().height, this.getOwner())
             );
         };
 
@@ -162,9 +169,8 @@ class SEW_9 extends AttackWeapon {
         };
     }
 
-    update(entityManager, deltaTime) {
-        super.update(entityManager, deltaTime);
-
+    updateWhenEquipped(player, entityManager, deltaTime) {
+        super.updateWhenEquipped(player, entityManager, deltaTime);
         this.canUseMod = this.canFire = this.currentAmmo > 0;
 
         this.canUseMod = this.modCoolDownData === 0 && this.currentAmmo > 0;
@@ -176,9 +182,7 @@ class SEW_9 extends AttackWeapon {
             else this.isShooting = false;
         }
 
-        let player = entityManager.getEntity(this.playerID);
         if (player) player.setMovementState("canMove", this.canMove);
-
     }
 
     onSuperBuffs(entityManager, deltaTime) {
@@ -190,7 +194,7 @@ class SEW_9 extends AttackWeapon {
             this.isShooting = true;
             this.misRef =
                 entityManager.spawnEntity(this.center.x, this.center.y,
-                    new ElectricSphere(player.id, this.id, 0, 0,
+                    new ElectricSphere(player, this.id, 0, 0,
                         angle, entityManager));
             this.misRef.weapon = this;
             this.primaryFire = true;

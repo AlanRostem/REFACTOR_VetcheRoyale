@@ -11,6 +11,19 @@ const HitScanner = require("../../Mechanics/Scanners/HitScanner.js");
 
 // The main player class that has a link to the client.
 class Player extends GameDataLinker {
+    static _ = (() => {
+        Player.addDynamicValues(
+            "teamName",
+            "centerData",
+            "hp",
+            "invAmmo",
+            "invWeaponID",
+            "statData",
+            "side",
+            "teamID"
+        );
+    })();
+
     constructor(clientID, worldMgr) {
         super(0, 0, 6, 12, 100, true, worldMgr, clientID);
         // MISC VAR INITS
@@ -35,18 +48,6 @@ class Player extends GameDataLinker {
         this.addMovementListener("canMove", true);
         this.addMovementListener("onPlayer", "false");
 
-        // INIT FUNCTIONS:
-        this.addDynamicSnapShotData([
-            "teamName",
-            "centerData",
-            "hp",
-            "invAmmo",
-            "invWeaponID",
-            "statData",
-            "side",
-            "teamID"
-        ]);
-
         this.setEntityOrder(1);
 
         // PHYSICS DATA
@@ -70,39 +71,39 @@ class Player extends GameDataLinker {
     // up and then picks it up.
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
-            for (let id in this.entitiesInProximity.container) {
-                let entity = this.entitiesInProximity.getEntity(id);
+            for (let entity of this.entitiesInProximity.container) {
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
                     if (entity.overlapEntity(this)) {
-                        this.itemsNearby.set(entity.id, distance);
+                        this.itemsNearby.set(entity.id, {distance: distance, entity: entity});
                         break;
                     }
                     if (entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
                         this.itemScanner.scan(this.center, entity.center, game, game.tileMap);
                         if (HitScanner.intersectsEntity(this.center, this.itemScanner.end, entity)) {
-                            this.itemsNearby.set(entity.id, distance);
+                            this.itemsNearby.set(entity.id, {distance: distance, entity: entity});
                         }
                     }
                 }
             }
 
-            let closest = Math.min(...this.itemsNearby.array);
-            for (let id in this.itemsNearby.object) {
-                let loot = game.getEntity(id);
-                if (loot) {
-                    if (this.itemsNearby.get(loot.id) === closest) {
-                        loot.onPlayerInteraction(this, game);
-                    }
+            // TODO: Optimize
+            this.itemsNearby.array.sort(function (a, b) {
+                if (a.distance > b.distance) {
+                    return -1;
                 }
+                if (b.distance > a.distance) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            let closest = this.itemsNearby.array[0];
+            if (closest !== undefined) {
+                closest.entity.onPlayerInteraction(this, game);
             }
             this.itemsNearby.clear();
         }
-    }
-
-    setTeam(team) {
-        this.team = team;
-        this.teamName = team.name;
     }
 
     // Performs one way team tileCollision.
@@ -110,7 +111,7 @@ class Player extends GameDataLinker {
         if (this.team) {
             if (entity instanceof Player) {
                 if (this.isTeammate(entity)) {
-                    var p = entity;
+                    let p = entity;
                     if (this.overlapEntity(p) && !p.jumping) {
                         if (this.pos.y + this.height > p.pos.y) {
                             if (this.old.y + this.height <= p.pos.y) {
@@ -124,22 +125,6 @@ class Player extends GameDataLinker {
                     }
                 }
             }
-        }
-    }
-
-    isTeammate(player) {
-        if (player instanceof Player) {
-            if (player.team && this.team) {
-                return player.team.name === this.team.name;
-            }
-        }
-        return false;
-    }
-
-    remove() {
-        super.remove();
-        if (this.team) {
-            this.team.removePlayer(this);
         }
     }
 

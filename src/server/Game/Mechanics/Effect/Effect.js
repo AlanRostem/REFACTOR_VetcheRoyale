@@ -3,8 +3,8 @@ const Affectable = require("../../Entity/Traits/Affectable.js");
 // Base class of the object that performs effects on the
 // Affectable entity class.
 class Effect {
-    constructor(affectedEntityID, duration = Infinity) {
-        this.aeID = affectedEntityID;
+    constructor(affectedEntity, duration = Infinity) {
+        this.ae = affectedEntity;
         this.currentTime = duration;
         this.done = false;
         this.id = Math.random();
@@ -32,7 +32,7 @@ class Effect {
     }
 
     update(entityManager, deltaTime) {
-        var entity = entityManager.getEntity(this.aeID);
+        var entity = this.ae;
         this.currentTime -= deltaTime;
         if (this.currentTime > 0) {
             if (entity instanceof Affectable) {

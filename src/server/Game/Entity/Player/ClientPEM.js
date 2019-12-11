@@ -5,10 +5,14 @@ const SpectatorManager = require("./SpectatorManager.js");
 // entities in proximity and creates data packs sent to
 // the client.
 class ClientPEM extends ProximityEntityManager {
+    static COLLISION_BOUNDARY_X = 640;
+    static COLLISION_BOUNDARY_Y = 320;
     constructor(player) {
         super(player);
         this.dataBox = {};
         this.spectators = new SpectatorManager(player);
+        this.collisionBoundary.bounds.x = ClientPEM.COLLISION_BOUNDARY_X;
+        this.collisionBoundary.bounds.y = ClientPEM.COLLISION_BOUNDARY_Y;
     }
 
     addEntity(entity, game) {
@@ -23,51 +27,62 @@ class ClientPEM extends ProximityEntityManager {
         //console.log("Added:", "\x1b[33m" + entity.eType + "\x1b[0m", "with ID:", '\x1b[36m' + entity.id + "\x1b[0m");
     }
 
-    removeEntity(id) {
-        super.removeEntity(id);
-        let e = this.dataBox[id];
-        delete this.dataBox[id];
+    removeEntity(entity) {
+        super.removeEntity(entity);
+        let e = this.dataBox[entity.id];
+        delete this.dataBox[entity.id];
 
         //console.log("Removing entity:", id);
 
-        let data = {id: id, removalData: e};
+        let data = {id: entity.id, removalData: e};
         this.entRef.emit("removeEntity", data);
-        this.spectators.onRemoveEntity(id);
     }
 
-    throwOutOfBounds(id) {
-        super.removeEntity(id);
-        delete this.dataBox[id];
-        this.entRef.emit("removeOutOfBoundsEntity", id);
-        //console.log("Throwing entity out of bounds:", "with ID:", '\x1b[36m' + id + "\x1b[0m");
-
-        this.spectators.onRemoveOutOfBoundsEntity(id);
+    throwOutOfBounds(entity) {
+        super.removeEntity(entity);
+        delete this.dataBox[entity.id];
+        this.entRef.emit("removeOutOfBoundsEntity", entity.id);
     }
 
     exportInitDataPack() {
-        for (let id in this.container) {
-            this.dataBox[id] = this.container[id].getInitDataPack();
+        for (let entity of this.container) {
+            this.dataBox[entity.id] = entity.getInitDataPack();
         }
         this.dataBox[this.entRef.id] = this.entRef.getInitDataPack();
         return this.dataBox;
     }
 
+    proximityCellTraversal(cell, entityManager, deltaTime) {
+        for (let e of cell) {
+            if (e === this.entRef) continue;
+            if (!this.container.has(e)) {
+                if (this.collisionBoundary.containsEntity(e)) {
+                    this.addEntity(e, entityManager);
+                }
+            } else {
+                this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
+                if (this.entRef.overlapEntity(e)) {
+                    this.entRef.onEntityCollision(e, entityManager);
+                }
+                if (e.toRemove) {
+                    continue;
+                }
+
+                if (!this.collisionBoundary.containsEntity(e)) {
+                    this.throwOutOfBounds(e);
+                }
+            }
+        }
+    }
+
     exportDataPack() {
         this.dataBox = {};
-        for (let id in this.container) {
-            if (Object.keys(this.container[id].getDataPack()).length)
-                this.dataBox[id] = this.container[id].getDataPack();
-            let e = this.container[id];
+        for (let e of this.container) {
+            this.dataBox[e.id] = e.getDataPack();
             // Removes entities out of bounds. Suboptimal location to do this.
             if (e.toRemove) {
-                this.removeEntity(id);
-                continue;
+                this.removeEntity(e);
             }
-
-            if (!this.qtBounds.myContains(e)) {
-                this.throwOutOfBounds(e.id);
-            }
-
         }
         if (Object.keys(this.entRef.getDataPack()).length) {
             this.dataBox[this.entRef.id] = this.entRef.getDataPack();

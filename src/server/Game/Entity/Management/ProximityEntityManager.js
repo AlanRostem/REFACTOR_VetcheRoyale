@@ -1,28 +1,20 @@
 const EntityManager = require("./EntityManager.js");
-const Rect = require("./QTRect.js");
+const Rect = require("./CollisionBoundary.js");
 
 // Composition class for entities which handles
 // all entities in proximity using the global
-// quad tree.
+// entity storage per game world.
 
 class ProximityEntityManager extends EntityManager {
     constructor(entity) {
         super(false);
         this.entRef = entity;
-        this.qtBounds = new Rect(entity.center.x, entity.center.y,
-            // These rectangle bounds start from the center, so the
-            // actual entity check range would be a 320*2 by 160*2
-            // rectangle around the entity.
-            320, 160);
-        this._shouldFollowEntity = true;
-    }
-
-    get shouldFollowEntity() {
-        return this._shouldFollowEntity;
-    }
-
-    set shouldFollowEntity(val) {
-        this._shouldFollowEntity = val;
+        this.container = new Set();
+        this.collisionBoundary = new Rect(entity.center.x, entity.center.y,
+            32 + entity.width, 32 + entity.height // TODO: Optimize the choice of values
+            //entity.width * 3, entity.height * 3
+        );
+        this.shouldFollowEntity = true;
     }
 
     toggleFollowEntity() {
@@ -31,50 +23,46 @@ class ProximityEntityManager extends EntityManager {
 
     follow(x, y) {
         if (!this.shouldFollowEntity) {
-            this.qtBounds.x = x;
-            this.qtBounds.y = y;
+            this.collisionBoundary.pos.x = x - this.collisionBoundary.bounds.x / 2;
+            this.collisionBoundary.pos.y = y - this.collisionBoundary.bounds.y / 2;
         }
     }
 
     addEntity(entity) {
-        this.container[entity.id] = entity;
+        this.container.add(entity);
     }
 
-    removeEntity(id) {
-        delete this.container[id];
+    removeEntity(entity) {
+        this.container.delete(entity);
     }
 
-    quadTreePlacement(entityManager) {
-        entityManager.quadTree.insert(this.entRef);
+    cellSpacePlacement(entityManager, deltaTime) {
     }
 
     // Binds the quad tree range bounding rect to
     // the entity's center and does interaction checks.
     update(entityManager, deltaTime) {
         if (this.shouldFollowEntity) {
-            this.qtBounds.x = this.entRef.center.x;
-            this.qtBounds.y = this.entRef.center.y;
+            this.collisionBoundary.update(this.entRef);
         }
-        this.quadTreePlacement(entityManager);
-        this.checkProximityEntities(entityManager, deltaTime);
+        entityManager.cellSpace.letEntityIterate(this.entRef, entityManager, deltaTime);
+        entityManager.cellSpace.updateCellPosition(this.entRef);
     }
 
-    // Performs interactions with entities that intersect the range
-    // bounding rectangle.
-    checkProximityEntities(entityManager, deltaTime) {
-        var entities = entityManager.quadTree.query(this.qtBounds);
-        for (let e of entities) {
-            if (e !== this.entRef) {
-                if (!this.exists(e.id)) {
+    proximityCellTraversal(cell, entityManager, deltaTime) {
+        for (let e of cell) {
+            if (e === this.entRef) continue;
+            if (!this.container.has(e)) {
+                if (this.collisionBoundary.containsEntity(e)) {
                     this.addEntity(e, entityManager);
-                } else {
-                    this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
-                    if (this.entRef.overlapEntity(e)) {
-                        this.entRef.onEntityCollision(e, entityManager);
-                    }
-                    if (e.toRemove || !entityManager.exists(e.id) || !this.qtBounds.myContains(e)) {
-                        this.removeEntity(e.id);
-                    }
+                }
+            } else {
+                this.entRef.forEachNearbyEntity(e, entityManager, deltaTime);
+                if (this.entRef.overlapEntity(e)) {
+                    this.entRef.onEntityCollision(e, entityManager);
+                }
+                if (e.toRemove || !this.collisionBoundary.containsEntity(e)) {
+                    this.removeEntity(e);
                 }
             }
         }
@@ -82,12 +70,12 @@ class ProximityEntityManager extends EntityManager {
 
     // Called when player spawns in the world
     initProximityEntityData(entityManager) {
-        var entities = entityManager.quadTree.query(this.qtBounds);
-        for (var e of entities) {
-            if (e !== this.entRef && this.qtBounds.contains(e)) {
-                this.addEntity(e);
-            }
-        }
+        entityManager.cellSpace.iterate(this.collisionBoundary, cell => {
+            for (let e of cell)
+                if (e !== this.entRef) {
+                    this.container.add(e);
+                }
+        });
     }
 }
 

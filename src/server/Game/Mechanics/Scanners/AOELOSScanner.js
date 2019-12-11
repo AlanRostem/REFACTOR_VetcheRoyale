@@ -15,28 +15,29 @@ class AOELOSScanner extends HitScanner {
     }
 
     areaScan(originPos, entityManager) {
-        this.qtRange.x = originPos.x;
-        this.qtRange.y = originPos.y;
-        let entities = entityManager.quadTree.query(this.qtRange);
-        for (let e of entities) {
-            if (this.entityExceptions.hasOwnProperty(e.id)) continue;
-
-            let angle = Math.atan2(
-                e.center.y - originPos.y,
-                e.center.x - originPos.x);
-            let rangePos = new Vector2D(
-                originPos.x + this.radius * Math.cos(angle),
-                originPos.y + this.radius * Math.sin(angle));
-            let a = originPos;
-            let b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
-            if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
-                Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
-                Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
-                Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
-                let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                this.onEntityHit(e, entityManager, ang);
+        this.rangeBoundary.pos.x = originPos.x;
+        this.rangeBoundary.pos.y = originPos.y;
+        // TODO: Avoid creating function every execution
+        entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
+            for (let e of cell) {
+                if (this.entityExceptions.hasOwnProperty(e.id)) continue;
+                let angle = Math.atan2(
+                    e.center.y - originPos.y,
+                    e.center.x - originPos.x);
+                let rangePos = new Vector2D(
+                    originPos.x + this.radius * Math.cos(angle),
+                    originPos.y + this.radius * Math.sin(angle));
+                let a = originPos;
+                let b = this.scan(originPos, rangePos, entityManager, entityManager.tileMap);
+                if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft) ||
+                    Vector2D.intersect(a, b, e.topLeft, e.topRight) ||
+                    Vector2D.intersect(a, b, e.topRight, e.bottomRight) ||
+                    Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
+                    let ang = Math.atan2(a.y - b.y, a.x - b.x);
+                    this.onEntityHit(e, entityManager, ang);
+                }
             }
-        }
+        });
     }
 }
 

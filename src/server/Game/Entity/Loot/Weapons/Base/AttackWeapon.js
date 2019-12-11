@@ -9,6 +9,20 @@ const Firerer = require("./Firerer.js");
 // picks up the weapon all tileCollision of the item version is
 // disabled and follows the player.
 class AttackWeapon extends WeaponItem {
+    static _ = (() => {
+        AttackWeapon.addDynamicValues("superChargeData",
+            "canUseSuper",
+            "modCoolDownData",
+            "canUseMod",
+            "currentAmmo",
+            "spreadAngle",
+            "firing",
+            "modActive",
+            "superActive",
+            "modAbilityData",
+            "reloading");
+    })();
+
     constructor(x, y,
                 displayName, weaponClass = "pistol",
                 modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15,
@@ -29,19 +43,7 @@ class AttackWeapon extends WeaponItem {
         this.superActive = false;
         this.modAbilityData = {};
         this.configureAttackStats(2, 10, 1, 600);
-        this.addDynamicSnapShotData([
-            "superChargeData",
-            "canUseSuper",
-            "modCoolDownData",
-            "canUseMod",
-            "currentAmmo",
-            "spreadAngle",
-            "firing",
-            "modActive",
-            "superActive",
-            "modAbilityData",
-            "reloading"
-        ]);
+
     }
 
     get isSuperActive() {

@@ -1,4 +1,5 @@
 class Team {
+    // TODO: Fix all naming about player to just alive entity
     constructor() {
         this.name = "name";
         this.id = String.random();

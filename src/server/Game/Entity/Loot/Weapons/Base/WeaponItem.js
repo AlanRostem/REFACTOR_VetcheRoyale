@@ -4,27 +4,29 @@ const Player = require("../../../Player/SPlayer.js");
 // Composition abstraction class for the weapon you can pick up.
 // Handles interaction and world physics.
 class WeaponItem extends Loot {
+    static _ = (() => {
+        WeaponItem.addDynamicValues(
+            "equippedToPlayer",
+            "playerID",
+            "dropped",
+        );
+        WeaponItem.addStaticValues(
+            "displayName",
+            "weaponClass"
+        );
+    })();
+
     constructor(x, y, displayName, weaponClass = "pistol") {
         super(x, y, false);
         this.equippedToPlayer = false;
         this.playerID = null;
+        this.player = null;
         this.displayName = displayName;
         this.weaponClass = weaponClass;
         this.dropped = false;
 
         // All possible weapon classes:
         // pistol, rifle
-
-        this.addStaticSnapShotData([
-            "displayName",
-            "weaponClass",
-        ]);
-
-        this.addDynamicSnapShotData([
-            "equippedToPlayer",
-            "playerID",
-            "dropped",
-        ]);
     }
 
     // Can pick up when the player does not have a weapon.
@@ -43,8 +45,9 @@ class WeaponItem extends Loot {
                 // If the player disconnects (or is removed from game world)
                 // the weapon is dropped. Otherwise we call methods for when
                 // it is equipped.
-                if (entityManager.getEntity(this.playerID)) {
-                    this.updateWhenEquipped(entityManager.getEntity(this.playerID), entityManager, deltaTime);
+                if (this.player) {
+                    this.entitiesInProximity.update(entityManager, deltaTime);
+                    this.updateWhenEquipped(this.player, entityManager, deltaTime);
                 } else {
                     if (entityManager.getGameRule("dropLootOnDeath")) {
                         this.dropOnPlayerRemoval(entityManager, deltaTime);
@@ -59,24 +62,33 @@ class WeaponItem extends Loot {
     // Bind weapon to the player and check if the player presses
     // the drop key.
     updateWhenEquipped(player, entityManager, deltaTime) {
+        this.old.x = this.pos.x;
+        this.old.y = this.pos.y;
         this.resetLifeTime(entityManager);
         if (player.input.singleKeyPress(WeaponItem.DROP_KEY))
             this.drop(player, entityManager);
         this.pos.x = player.center.x - this.width / 2;
         this.pos.y = player.center.y - this.height / 2;
+        this.entitiesInProximity.update(entityManager, deltaTime);
     }
 
     equip(player) {
         this.equippedToPlayer = true;
         this.playerID = player.id;
+        this.player = player;
         player.setMovementState("weapon", this.weaponClass);
     }
 
-    getOwner(entityManager) {
-        if (entityManager.getEntity(this.playerID)) {
-            return entityManager.getEntity(this.playerID);
+    getOwner() {
+        if (this.player) {
+            return this.player;
         }
+        console.log(new Error("Player was undefined in getOwner called at " + this.constructor.name + " because id was " + this.playerID).stack);
         return WeaponItem.EMPTY_PLAYER;
+    }
+
+    hasOwner() {
+        return !!this.player;
     }
 
     // Drops the weapon when the player disconnects (removed from game world)
@@ -84,6 +96,7 @@ class WeaponItem extends Loot {
         this.onDrop(this.getOwner(entityManager), entityManager, deltaTime);
         this.equippedToPlayer = false;
         this.playerID = null;
+        this.player = null;
     }
 
     // Callback when dropping the weapon
@@ -100,6 +113,7 @@ class WeaponItem extends Loot {
             player.setMovementState("weapon", "none");
             this.equippedToPlayer = false;
             this.playerID = null;
+            this.player = null;
             this.cast(
                 WeaponItem.DROP_SPEED * player.input.mouseData.cosCenter,
                 WeaponItem.DROP_SPEED * player.input.mouseData.sinCenter

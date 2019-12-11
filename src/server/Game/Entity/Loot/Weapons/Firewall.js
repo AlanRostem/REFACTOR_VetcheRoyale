@@ -7,20 +7,16 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 
 // Projectile fired by the firewall
 class Firepellet extends Projectile {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 2, 1, angle);
-        this.speed = 4 * 100;
-        this.damage = new Damage(8, ownerID);
-
-        this.vel.x = Math.cos(angle) * this.speed; //+ this.getOwner(entityManager).vel.x;
-        this.vel.y = Math.sin(angle) * this.speed;// + this.getOwner(entityManager).vel.y;
+    constructor(owner, weaponID, x, y, angle, entityManager) {
+        super(owner, x, y, 2, 1, angle, 4 * 100);
+        this.damage = new Damage(8, owner);
     }
 
     onTileHit(entityManager, deltaTime) {
         this.remove();
     }
 
-    onPlayerHit(player, entityManager) {
+    onEnemyHit(player, entityManager) {
         this.damage.inflict(player, entityManager);
         this.remove();
     }
@@ -34,17 +30,18 @@ class Firewall extends AttackWeapon {
         this.spreadAngle = 20;
         this.pellets = 4;
 
+        this.firerer.defaultSpread = .2;
+
         this.secondaryUse = false;
         this.superAbilitySnap = false;
 
         this.modAbility = new ModAbility(0.75, 1.5);
 
-        this.configureAttackStats(1.25, 6, 1, 110);
+        this.configureAttackStats(1.25, 6, 1, 180);
 
-        this.addDynamicSnapShotData(["secondaryUse", "superAbilitySnap"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
-            let player = this.getOwner(entityManager);
+            let player = weapon.getOwner(entityManager);
         };
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
@@ -68,9 +65,9 @@ class Firewall extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        for (let i = 0; i < this.pellets; i++) {
+        for (let i = -2; i < this.pellets / 2; i++) {
             entityManager.spawnEntity(this.center.x, this.center.y,
-                new Firepellet(player.id, this.id, 0, 0, angle + ((Math.random() * 10) / 180 * Math.PI) * ((Math.random() * 2 | 0) ? -1 : 1), entityManager));
+                new Firepellet(player, this.id, 0, 0, angle + (i / this.pellets / 2 * Math.PI / 6), entityManager));
         }
     }
 

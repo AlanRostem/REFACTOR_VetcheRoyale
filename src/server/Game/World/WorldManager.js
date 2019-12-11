@@ -4,9 +4,9 @@ const GameWorld = require("../../Game/World/GameWorld.js");
 const HubWorld = require("../../Game/World/Matches/Hubs/HubWorld.js");
 const PlayGround = require("../../Game/World/Matches/PlayGround/PlayGround.js");
 const Match = require("../../Game/World/Matches/Match/Match.js");
-const SPlayer = require("../Entity/Player/SPlayer.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
+const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 
 String.random = () => {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -40,6 +40,9 @@ class WorldManager {
 
         let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(match, "match");
+        for (let i = 0; i < 0; i++) {
+            match.spawnEntity(Math.random() * match.tileMap.w * 8, Math.random() * match.tileMap.h * 8, new LootCrate(0, 0));
+        }
 
         let playground = new PlayGround(this.gameWorlds);
         this.addWorld(playground, "playground");
