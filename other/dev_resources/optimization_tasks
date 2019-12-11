@@ -1,0 +1,3 @@
+Initialize properties ONLY in constructor
+Remove ES6 getters and setters
+Prevent all forms of object creation (besides numbers) every tick
