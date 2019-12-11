@@ -15,7 +15,6 @@ class SEntity {
         SEntity.SNAPSHOT_TEMPLATE.addDynamicValues(
             "pos",
             "removed",
-            "color",
             "entityType",
             "entityOrder");
     })();
@@ -42,13 +41,13 @@ class SEntity {
 
     constructor(x, y, width, height, id) {
         this.pos = new Vector2D(x, y);
+        this.center = new Vector2D(x + width / 2, y + height / 2);
         this.width = width;
         this.height = height;
         if (id) this.id = id;
         else this.id = String.random();
         this.removed = false;
         this.entityType = this.constructor.name;
-        this.color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
         this.homeWorldID = -1;
         this.entityOrder = 0;
         this.snapShotGenerator = new SnapShotGenerator(this);
@@ -91,7 +90,13 @@ class SEntity {
 
     }
 
+    updateCenter() {
+        this.center.x = this.pos.x + this.width / 2;
+        this.center.y = this.pos.y + this.height / 2;
+    }
+
     update(game, deltaTime) {
+        this.updateCenter();
         this.entitiesInProximity.update(game, deltaTime);
     }
 
@@ -139,13 +144,6 @@ class SEntity {
             x: this.pos.x + this.width,
             y: this.pos.y + this.height
         };
-    }
-
-    get center() {
-        return {
-            x: this.pos.x + this.width / 2,
-            y: this.pos.y + this.height / 2
-        }
     }
 
     onRemoved() {
