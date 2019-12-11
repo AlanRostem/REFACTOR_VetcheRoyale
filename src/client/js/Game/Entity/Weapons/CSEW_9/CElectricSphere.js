@@ -33,13 +33,17 @@ class CElectricSphere extends CProjectile {
 
     }
 
-    onClientDelete(client) {
-        super.onClientDelete(client);
+    onClientSpawn(dataPack, client) {
+        super.onClientSpawn(dataPack, client);
+        this.missileSound = AudioPool.play("Weapons/sew-9_a.oggSE")
+    }
+
+    onClientDelete(client, data) {
+        super.onClientDelete(client, data);
         setTimeout(function() {R.camera.setConfig("followPlayer", true)}, 500);
         EffectManager.createEffect(this.output.pos.x - 16, this.output.pos.y - 16, "Sew9sphereExplo", 0);
+        this.missileSound.stop();
         AudioPool.play("Weapons/sew-9_explo.oggSE", this.output.pos);
-
-
     }
 
     update(deltaTime, client) {
@@ -66,6 +70,10 @@ class CElectricSphere extends CProjectile {
         if (!this.getRealtimeProperty("secondary")) return;
         R.camera.setConfig("followPlayer", false);
         R.camera.setCurrentFollowPos(this.output.pos);
+
+        if (this.missileSound) {
+            this.missileSound.updatePanPos(this.output.pos);
+        }
 
     }
 

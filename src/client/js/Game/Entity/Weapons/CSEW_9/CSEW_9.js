@@ -1,7 +1,5 @@
 import CWeapon from "../CWeapon.js";
 import R from "../../../../Graphics/Renderer.js";
-import {vectorLinearInterpolation} from "../../../../../../shared/code/Math/CCustomMath.js";
-import UI from "../../../../UI/UI.js";
 import Scene from "../../../Scene.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
@@ -11,11 +9,6 @@ export default class CSEW_9 extends CWeapon {
         super(data, 1);
         this.isShooting = false;
         this.missileSound = null;
-    }
-
-    onFire(client, deltaTime) {
-        super.onFire(client, deltaTime);
-        this.missileSound = AudioPool.play("Weapons/sew-9_a.oggSE")
     }
 
     onReloadAction(client, deltaTime) {
@@ -32,24 +25,6 @@ export default class CSEW_9 extends CWeapon {
         super.update(deltaTime, client);
         this.player = Scene.entityManager.getEntityByID(this.output.playerID);
         this.isShooting = this.getRealtimeProperty("isShooting");
-        if (this.missileSound) {
-            this.missileSound.updatePanPos(this.output.misPos);
-            if (!this.isShooting) {
-                this.missileSound.stop();
-                this.missileSound = null;
-            }
-        }
-
-        if (this.output.modAbilityData.active) {
-            if (!this.missileSound) {
-                this.missileSound = AudioPool.play("Weapons/sew-9_a.oggSE")
-            }
-        } else if (this.missileSound && !this.isShooting) {
-            this.missileSound.stop();
-            this.missileSound = null;
-        }
-
-
     }
 
     draw() {

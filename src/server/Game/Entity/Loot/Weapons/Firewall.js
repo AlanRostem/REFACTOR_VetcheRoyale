@@ -38,7 +38,7 @@ class Firewall extends AttackWeapon {
 
         this.modAbility = new ModAbility(0.75, 1.5);
 
-        this.configureAttackStats(1.25, 6, 1, 110);
+        this.configureAttackStats(1.25, 6, 1, 180);
 
 
         this.modAbility.onActivation = (weapon, entityManager) => {
