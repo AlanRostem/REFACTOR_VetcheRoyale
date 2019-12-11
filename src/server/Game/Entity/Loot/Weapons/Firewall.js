@@ -19,7 +19,7 @@ class Firepellet extends Projectile {
         this.remove();
     }
 
-    onPlayerHit(player, entityManager) {
+    onEnemyHit(player, entityManager) {
         this.damage.inflict(player, entityManager);
         this.remove();
     }
@@ -33,6 +33,8 @@ class Firewall extends AttackWeapon {
         this.spreadAngle = 20;
         this.pellets = 4;
 
+        this.firerer.defaultSpread = .2;
+
         this.secondaryUse = false;
         this.superAbilitySnap = false;
 
@@ -42,7 +44,7 @@ class Firewall extends AttackWeapon {
 
 
         this.modAbility.onActivation = (weapon, entityManager) => {
-            let player = this.getOwner(entityManager);
+            let player = weapon.getOwner(entityManager);
         };
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
@@ -66,9 +68,9 @@ class Firewall extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        for (let i = 0; i < this.pellets; i++) {
+        for (let i = -2; i < this.pellets / 2; i++) {
             entityManager.spawnEntity(this.center.x, this.center.y,
-                new Firepellet(player, this.id, 0, 0, angle + ((Math.random() * 10) / 180 * Math.PI) * ((Math.random() * 2 | 0) ? -1 : 1), entityManager));
+                new Firepellet(player, this.id, 0, 0, angle + (i / this.pellets / 2 * Math.PI / 6), entityManager));
         }
     }
 
