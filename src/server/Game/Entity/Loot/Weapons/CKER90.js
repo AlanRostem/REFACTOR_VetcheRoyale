@@ -128,7 +128,7 @@ class SeekerSmoke extends Bouncy {
             this.vel.x = 0;
         }
 
-        if(!this.findPlayers && entityManager.getEntity(this.ownerID).input.singleKeyPress(81)) {
+        if(!this.findPlayers && this.getOwner().input.singleKeyPress(81)) {
             this.findPlayers = true;
             this.vel.x = this.vel.y = this.acc.y = 0;
         }

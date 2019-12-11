@@ -7,10 +7,9 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 
 // Projectile fired by the firewall
 class Firepellet extends Projectile {
-    constructor(ownerID, weaponID, x, y, angle, entityManager) {
-        super(ownerID, x, y, 2, 1, angle);
-        this.speed = 4 * 100;
-        this.damage = new Damage(8, ownerID);
+    constructor(owner, weaponID, x, y, angle, entityManager) {
+        super(owner, x, y, 2, 1, angle, 4 * 100);
+        this.damage = new Damage(8, owner);
 
         this.vel.x = Math.cos(angle) * this.speed; //+ this.getOwner(entityManager).vel.x;
         this.vel.y = Math.sin(angle) * this.speed;// + this.getOwner(entityManager).vel.y;
@@ -41,7 +40,6 @@ class Firewall extends AttackWeapon {
 
         this.configureAttackStats(1.25, 6, 1, 110);
 
-        this.addDynamicSnapShotData(["secondaryUse", "superAbilitySnap"]);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
             let player = this.getOwner(entityManager);
@@ -70,7 +68,7 @@ class Firewall extends AttackWeapon {
     fire(player, entityManager, deltaTime, angle) {
         for (let i = 0; i < this.pellets; i++) {
             entityManager.spawnEntity(this.center.x, this.center.y,
-                new Firepellet(player.id, this.id, 0, 0, angle + ((Math.random() * 10) / 180 * Math.PI) * ((Math.random() * 2 | 0) ? -1 : 1), entityManager));
+                new Firepellet(player, this.id, 0, 0, angle + ((Math.random() * 10) / 180 * Math.PI) * ((Math.random() * 2 | 0) ? -1 : 1), entityManager));
         }
     }
 
