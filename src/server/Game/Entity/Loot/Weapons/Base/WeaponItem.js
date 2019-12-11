@@ -69,7 +69,7 @@ class WeaponItem extends Loot {
             this.drop(player, entityManager);
         this.pos.x = player.center.x - this.width / 2;
         this.pos.y = player.center.y - this.height / 2;
-        this.updateCenter();
+        this.updatePoints();
         this.entitiesInProximity.update(entityManager, deltaTime);
     }
 
