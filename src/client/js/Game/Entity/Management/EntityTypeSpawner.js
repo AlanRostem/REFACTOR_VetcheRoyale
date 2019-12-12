@@ -14,7 +14,9 @@ import CElectricSphere from "../Weapons/CSEW_9/CElectricSphere.js";
 import CKineticBomb from "../Weapons/CKE_6H/CKineticBomb.js";
 import CMicroMissile from "../Weapons/CBIGMotorizer/CMicroMissile.js";
 import CAquaSLG from "../Weapons/CAquaSLG/CAquaSLG.js";
+import CFirewall from "../Weapons/CFirewall/CFirewall.js";
 import CIceBullet from "../Weapons/CAquaSLG/CIceBullet.js";
+import CFirepellet from "../Weapons/CFirewall/CFirepellet.js";
 import CSeekerSmoke from "../Weapons/CCKER90/CSeekerSmoke.js";
 import CATBullet from "../Weapons/CCKER90/CATBullet.js";
 
@@ -69,12 +71,14 @@ EntityTypeSpawner.createSpawner("KE_6H", CKE_6H);
 EntityTypeSpawner.createSpawner("SEW_9", CSEW_9);
 EntityTypeSpawner.createSpawner("Interlux", CInterlux);
 EntityTypeSpawner.createSpawner("AquaSLG", CAquaSLG);
+EntityTypeSpawner.createSpawner("Firewall", CFirewall);
 
 EntityTypeSpawner.createSpawner("SuperDamage", Invisible);
 EntityTypeSpawner.createSpawner("ElectricSphere", CElectricSphere);
 EntityTypeSpawner.createSpawner("KineticBomb", CKineticBomb);
 EntityTypeSpawner.createSpawner("MicroMissile", CMicroMissile);
 EntityTypeSpawner.createSpawner("IceBullet", CIceBullet);
+EntityTypeSpawner.createSpawner("Firepellet", CFirepellet);
 EntityTypeSpawner.createSpawner("ATBullet", CATBullet);
 EntityTypeSpawner.createSpawner("SeekerSmoke", CSeekerSmoke);
 

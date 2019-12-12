@@ -9,6 +9,7 @@ const SEW_9 = require("../../../Entity/Loot/Weapons/SEW-9.js");
 const Interlux = require("../../../Entity/Loot/Weapons/Interlux.js");
 const AquaSLG = require("../../../Entity/Loot/Weapons/AquaSLG.js");
 const CKER90 = require("../../../Entity/Loot/Weapons/CKER90.js");
+const Firewall = require("../../../Entity/Loot/Weapons/Firewall.js");
 
 const START_TILE = 14 * 8; // 14 rows times 8 cols on tile-sheet
 
@@ -33,14 +34,15 @@ const GUN_LIST = {
     3: new GunSpawnFunction(KE_6H),
     4: new GunSpawnFunction(Interlux),
     5: new GunSpawnFunction(BIGMotorizer),
-    6: new GunSpawnFunction(AquaSLG)
+    6: new GunSpawnFunction(AquaSLG),
+    7: new GunSpawnFunction(Firewall)
 };
 
 
 class GunSpawner extends Entity {
     constructor(x, y, args) {
         super(x, y, Tile.SIZE, Tile.SIZE);
-        this.setQuadTreeRange(this.width, this.height);
+        this.setCollisionRange(this.width, this.height);
 
         this.gunID = args.id - START_TILE;
         this.currentTickTime = 0;

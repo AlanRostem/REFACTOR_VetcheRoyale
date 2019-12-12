@@ -30,7 +30,6 @@ class DataBridge {
         });
     }
 
-    // TODO: Refactor away these wrapper functions
     addClientResponseListener(responseEvent, callback) {
         this.addEventListener(responseEvent, callback);
     }

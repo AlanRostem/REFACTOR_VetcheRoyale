@@ -25,6 +25,8 @@ class CCKER90 extends CWeapon {
         super.onDrop(client, deltaTime);
         this.toLerp.x = 0;
         this.toLerp.y = 0;
+
+        if(this.reloadSnd) this.reloadSnd.stop();
     }
 
     onFire(client, deltaTime) {
@@ -33,7 +35,7 @@ class CCKER90 extends CWeapon {
 
     onReloadAction(client, deltaTime) {
         super.onReloadAction(client, deltaTime);
-        AudioPool.play("Weapons/cker90_reload.oggSE");
+        this.reloadSnd = AudioPool.play("Weapons/cker90_reload.oggSE");
     }
 
     update(deltaTime, client) {

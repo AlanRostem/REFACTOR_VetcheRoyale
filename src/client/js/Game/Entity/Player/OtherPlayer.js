@@ -37,8 +37,13 @@ class OtherPlayer extends CEntity {
             this.footCount = (Math.random() * 3 | 0) + 1;
         }, true);
         this.jumpSound = false;
-
         this.schema.vel = {x: "number", y: "number"};
+        this.timer2 = new Timer(0.1, ()=> {
+            this.applyDmg = false;
+        });
+
+        this.applyDmg = false;
+        this.preHP = 100;
 
     }
 
@@ -72,6 +77,13 @@ class OtherPlayer extends CEntity {
         this.timer.tick(deltaTime);
 
         let self = this.output;
+
+        if(self.hp < this.preHP) { this.preHP = self.hp; this.applyDmg = true;}
+
+        if(this.applyDmg) {
+            this.timer2.tick(deltaTime);
+        }
+
         if (self.vel.x !== 0 && self.vel.x !== undefined) {
             if (this.output.effectsData)
                 if (this.output.effectsData.KnockBackEffect) {
@@ -155,11 +167,19 @@ class OtherPlayer extends CEntity {
         } else {
             this.jumpSound = false;
         }
-
     }
 
     draw() {
-        this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
+        if(OtherPlayer.sprite !== OtherPlayer.normal && !this.applyDmg) OtherPlayer.sprite = OtherPlayer.normal;
+
+        else if(this.applyDmg) {
+            if(this.output.hp > 70) OtherPlayer.sprite = OtherPlayer.highDamage;
+            else if(this.output.hp > 25) OtherPlayer.sprite = OtherPlayer.medDamage;
+            else OtherPlayer.sprite = OtherPlayer.lowDamage;
+        }
+
+        if(OtherPlayer.sprite === OtherPlayer.normal) this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
+        else this.animations.animate(OtherPlayer.sprite, "hurt", 16, 16);
         SpriteSheet.beginChanges();
         if (this.movementState.direction === "left") {
             OtherPlayer.sprite.flipX();
@@ -171,13 +191,27 @@ class OtherPlayer extends CEntity {
     }
 }
 
-OtherPlayer.sprite = new SpriteSheet("playerSprite");
 
+OtherPlayer.normal = new SpriteSheet("playerSprite");
 
-OtherPlayer.sprite.bind("red", 0, 0, 16 * 16, 16);
-OtherPlayer.sprite.bind("blue", 0, 16, 16 * 16, 16);
-OtherPlayer.sprite.bind("yellow", 0, 32, 16 * 16, 16);
-OtherPlayer.sprite.bind("green", 0, 48, 16 * 16, 16);
-OtherPlayer.sprite.setCentralOffset(4);
+OtherPlayer.sprite = OtherPlayer.normal;
+
+OtherPlayer.lowDamage = new SpriteSheet("playerLowHP");
+OtherPlayer.medDamage = new SpriteSheet("playerMedHP");
+OtherPlayer.highDamage = new SpriteSheet("playerHighHP");
+
+OtherPlayer.normal.bind("red", 0, 0, 16 * 16, 16);
+OtherPlayer.normal.bind("blue", 0, 16, 16 * 16, 16);
+OtherPlayer.normal.bind("yellow", 0, 32, 16 * 16, 16);
+OtherPlayer.normal.bind("green", 0, 48, 16 * 16, 16);
+
+OtherPlayer.lowDamage.bind("hurt", 0, 0, 16 * 16, 16);
+OtherPlayer.medDamage.bind("hurt", 0, 0, 16 * 16, 16);
+OtherPlayer.highDamage.bind("hurt", 0, 0, 16 * 16, 16);
+
+OtherPlayer.normal.setCentralOffset(4);
+OtherPlayer.lowDamage.setCentralOffset(4);
+OtherPlayer.medDamage.setCentralOffset(4);
+OtherPlayer.highDamage.setCentralOffset(4);
 
 export default OtherPlayer;

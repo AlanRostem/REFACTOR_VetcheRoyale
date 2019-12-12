@@ -1,15 +1,14 @@
 const Tile = require("../../TileBased/Tile.js");
 const GameClock = require("../../Entity/Management/GameClock.js");
-const QuadTree = require("./QuadTree.js");
-const Rect = require("./QTRect.js");
+const SpatialHashGrid = require("./SpatialHashGrid.js");
+const Rect = require("./CollisionBoundary.js");
 
-// Updates entities and manages proximity queries in the quad tree
 /**
- *
+ * Updates entities and manages proximity queries in the spatial hash grid
  */
 class EntityManager {
     constructor(globalManager = false, gameMap) {
-        this.container = {};
+        this.container = [];
 
         // If true it will be used as a global entity manager
         // for a game world. Otherwise it might have other use cases.
@@ -18,19 +17,13 @@ class EntityManager {
             this.gameClock = new GameClock(0);
             this.entitiesQueuedToDelete = [];
 
-            // Create a singular quad tree with the size of
+            // Create a singular spatial hash grid with the size of
             // the whole tile map.
-            this.qt = new QuadTree(new Rect(
-                this.tileMap.w * Tile.SIZE / 2,
-                this.tileMap.h * Tile.SIZE / 2,
-                this.tileMap.w * Tile.SIZE / 2,
-                this.tileMap.h * Tile.SIZE / 2,
-            ));
-        }
-    }
+            this.cellSpace = new SpatialHashGrid(
+                this.tileMap.w * Tile.SIZE,
+                this.tileMap.h * Tile.SIZE, 32, 32);
 
-    get quadTree() {
-        return this.qt;
+        }
     }
 
     get timeStamp() {
@@ -42,55 +35,51 @@ class EntityManager {
     update(deltaTime) {
         this.gameClock.update(deltaTime);
         this.updateEntities(deltaTime);
-        for (let i = 0; i < this.entitiesQueuedToDelete.length; i++) {
-            this.quadTree.remove(this.container[this.entitiesQueuedToDelete[i]]);
-            delete this.container[this.entitiesQueuedToDelete[i]];
-            this.entitiesQueuedToDelete.splice(i, 1);
-        }
-        // TODO: Update each "entitiesInProximity" and other emit related shit for each player here in a separate loop
+        this.refreshEntityDataPacks(deltaTime); // TODO: Determine if this is a performance caveat
     }
 
     // Regenerates data packs every frame for every entity
     // in the container.
-
-    updateEntities(deltaTime) {
-        for (let id in this.container) {
-            if (this.exists(id)) {
-                let entity = this.container[id];
-                if (entity.toRemove) {
-                    this.removeEntity(entity.id);
-                    continue;
-                }
-                entity.update(this, deltaTime);
-            }
+    refreshEntityDataPacks(deltaTime) {
+        for (let entity of this.container) {
+            entity.updateDataPack(this, deltaTime);
         }
     }
 
-    exists(id) {
-        return this.container.hasOwnProperty(id);
+    updateEntities(deltaTime) {
+        for (let i = 0; i < this.container.length; i++) {
+            let entity = this.container[i];
+            entity.index = i;
+            entity.update(this, deltaTime);
+            if (entity.toRemove) {
+                //this.container.splice(i, 1);
+                this.removeEntity(i);
+            }
+        }
     }
 
     // Spawns an existing (or new) entity into the game world
     // on a given position.
     spawnEntity(x, y, entity) {
-        this.container[entity.id] = entity;
+        this.container.push(entity);
         entity.initFromEntityManager(this);
         entity.pos.x = x;
         entity.pos.y = y;
 
-        this.qt.insert(entity);
+        this.cellSpace.insert(entity);
         return entity;
     }
 
-    getEntity(id) {
-        return this.container[id];
+    getEntity(i) {
+        return this.container[i];
     }
 
     // Assigns the entity as removed and queues
     // it to deletion.
-    removeEntity(id) {
-        this.getEntity(id).remove();
-        this.entitiesQueuedToDelete.push(id);
+    removeEntity(i) {
+        this.getEntity(i).remove();
+        this.cellSpace.remove(this.getEntity(i));
+        this.container.splice(i, 1);
     }
 }
 

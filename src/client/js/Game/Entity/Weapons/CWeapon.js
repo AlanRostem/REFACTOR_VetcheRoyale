@@ -33,11 +33,15 @@ export default class CWeapon extends CLoot {
 
     }
 
+    updateFromDataPack(dataPack, client) {
+        super.updateFromDataPack(dataPack, client);
+        if (this.getRealtimeProperty("firing") && this.getRealtimeProperty("equippedToPlayer")) {
+            this.onFire(client, Scene.deltaTime);
+        }
+    }
+
     update(deltaTime, client) {
         super.update(deltaTime, client);
-        if (this.getRealtimeProperty("firing") && this.getRealtimeProperty("equippedToPlayer")) {
-            this.onFire(client, deltaTime);
-        }
 
         if (this.getRealtimeProperty("dropped")) {
             this.onDrop(client, deltaTime);
@@ -82,7 +86,7 @@ export default class CWeapon extends CLoot {
 
                     AssetManager.getMapImage(name).width,
                     AssetManager.getMapImage(name).height,
-                    pos.x - 4 + R.camera.x,
+                    pos.x - 5 + R.camera.x,
                     pos.y - 3 + R.camera.y,
                     AssetManager.getMapImage(name).width,
                     AssetManager.getMapImage(name).height

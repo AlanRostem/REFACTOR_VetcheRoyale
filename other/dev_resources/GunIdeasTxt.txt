@@ -22,10 +22,10 @@ Mod: Incendiary Wave: Burn effect wave shot.
 Super: Napalm Gas: Blanket your surroundings with a flammable gas.
 
 Fusion .238
-Description: Corrosive tactical pistol.
+Description: Uranium rail-pistol.
 Ammo Capacity: 14
 Primary Attack: Uranium chunks: Fast radioactive bullets.
-Mod: Rad-guardian: Enemies in line of sight attack slower and get slowed down.
+Mod: Rad-guardian: Enemies in line of sight attack slower and get slowed down. Firing reduces ability uptime.
 Super: Tactical corrosion: Projectile that weakens a targets damage and health.
 
 |||||Level 2 weapons|||||
@@ -60,25 +60,25 @@ in different ways. Positional role enforcement is not as strict on these weapons
 dealing damage, as well as providing some utility along with it.
 
 KE-6H
-Description: Compressed kinetic energy rifle, predecessor to the KE-L.
+Description: Compressed kinetic energy launcher, predecessor to the KE-L.
 Ammo Capacity: 8
-Primary Attack: Kinetic bomb: Explosive bouncy projectile.
-Mod: Kinetic implosion: Retract all roaming bombs into one spot and detonate them.
-Super: Propulsive scatter: Ticking energy bomb scattering bouncy projectile.
+Primary Attack: Kinetic bombs: Explosive bouncy projectile.
+Mod: Force call: Retract nearby enemies and all roaming bombs into one spot and detonate them.
+Super: Propulsive scatter bomb: Energy time bomb scattering multiple kinetic bombs.
 
 AE Motorizer
-Description: Motor driven death machine.
+Description: Motorized air-rocket launcher.
 Ammo Capacity: 36
 Primary Attack: Gust Rockets: Burst micro missile launcher.
-Mod: Whirlwind: Lock down enemies hit by your whirlwind.
-Super: Salvo storm: Move enemies towards your salvo of rockets.
+Mod: Aerial grasp: Lock down enemies hit by your whirlwind.
+Super: Salvo storm: Move enemies towards your barrage of rockets.
 
 SEW-9
-Description: Electric Missile Launcher
+Description: Electric missile launcher
 Ammo Capacity: 1
 Primary Attack: Sphere Missile: Guided electric explosive.
 Mod: Eye of the volt: View your missile's location with improved damage.
-Super: Short-Circuiting: Wall-penetrating electric shock.
+Super: Short-Circuiting: Constant wall-penetrating electric shock.
 
 |||||Level 4 weapons|||||
 These weapons are strictly meant to be powerful, versatile and easy to use, but have some drawbacks to balance them. These can be used in
@@ -88,14 +88,14 @@ of the game or in loot drops where combat is inevitable.
 Hadron Railgun
 Description: Hadron particle cannon
 Ammo Capacity: 15
-Primary Attack: Hadron wave: Laser shot with proportional damage to charge time. Let go of trigger to fire. Leaves a trail that damages enemies.
-Mod: Brute shot: Constant beam with explosion effect at the end.
-Super: Quantum core: Huge powerful constant beam.
+Primary Attack: Hadron wave: Laser shot with proportional damage to charge time. Leaves a trail that damages enemies if fully charged.
+Mod: Brute shot: Constant beam with followed up by an explosion.
+Super: Quantum core: Large powerful constant beam.
 
 3.93 World-Line
 Description: Space-time manipulator
 Ammo Capacity: 1
-Primary Attack: Wormhole: Arcing projectile with wormhole effect on impact.
+Primary Attack: Wormhole: Arcing projectile with wormhole effect on impact followed up by an explosion.
 Mod: Tunnel punch: Teleport to any visible location.
 Super: Space-time ally: Spawn a clone of yourself attacking enemies.
 
@@ -104,4 +104,4 @@ Description: Light bender
 Ammo Capacity: 4
 Primary Attack: Phocus: Bouncing light beam with connected damage.
 Mod: Lux Aeterna: Large protective light barrier.
-Super: Esto perpetua: Steal life from everyone on screen.
+Super: Esto perpetua: Steal life from all visible enemies.

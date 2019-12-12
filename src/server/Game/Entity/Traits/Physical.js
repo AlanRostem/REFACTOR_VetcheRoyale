@@ -265,6 +265,8 @@ class Physical extends Entity {
             this.pos.x = Math.round(this.pos.x);
             this.pos.y = Math.round(this.pos.y);
         }
+
+        super.update(entityManager, deltaTime);
     }
 
     isSpeedTooHigh(deltaTime) {
@@ -297,6 +299,8 @@ class Physical extends Entity {
         this.customCollisionX(entityManager, entityManager.tileMap, deltaTime);
 
         this.updateMovementStates(entityManager, deltaTime);
+
+        super.update(entityManager, deltaTime);
     }
 
     dividedTileCollision(game, deltaTime) {
@@ -320,7 +324,6 @@ class Physical extends Entity {
         } else {
             this.physics(game, deltaTime);
         }
-        super.update(game, deltaTime);
     }
 
     get x() {

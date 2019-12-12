@@ -72,31 +72,36 @@ class Player extends GameDataLinker {
     // up and then picks it up.
     checkForNearbyLoot(game) {
         if (this.input.singleKeyPress(69)) {
-            for (let id in this.entitiesInProximity.container) {
-                let entity = this.entitiesInProximity.getEntity(id); // TODO: Remove after its array
+            for (let entity of this.entitiesInProximity.container) {
                 if (entity instanceof Loot) {
                     let distance = Vector2D.distance(this.center, entity.center);
                     if (entity.overlapEntity(this)) {
-                        this.itemsNearby.set(entity.id, distance);
+                        this.itemsNearby.set(entity.id, {distance: distance, entity: entity});
                         break;
                     }
                     if (entity.canPickUp(this) && distance < Loot.PICK_UP_RANGE) {
                         this.itemScanner.scan(this.center, entity.center, game, game.tileMap);
                         if (HitScanner.intersectsEntity(this.center, this.itemScanner.end, entity)) {
-                            this.itemsNearby.set(entity.id, distance);
+                            this.itemsNearby.set(entity.id, {distance: distance, entity: entity});
                         }
                     }
                 }
             }
 
-            let closest = Math.min(...this.itemsNearby.array);
-            for (let id in this.itemsNearby.object) {
-                let loot = game.getEntity(id); // TODO: Remove after its array
-                if (loot) {
-                    if (this.itemsNearby.get(loot.id) === closest) {
-                        loot.onPlayerInteraction(this, game);
-                    }
+            // TODO: Optimize
+            this.itemsNearby.array.sort(function (a, b) {
+                if (a.distance > b.distance) {
+                    return -1;
                 }
+                if (b.distance > a.distance) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            let closest = this.itemsNearby.array[0];
+            if (closest !== undefined) {
+                closest.entity.onPlayerInteraction(this, game);
             }
             this.itemsNearby.clear();
         }

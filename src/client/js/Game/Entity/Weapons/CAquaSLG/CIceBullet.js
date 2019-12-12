@@ -13,6 +13,11 @@ class CIceBullet extends CProjectile {
 
     }
 
+    onClientSpawn(dataPack, client) {
+        super.onClientSpawn(dataPack, client);
+        AudioPool.play("Weapons/aquaslg_s.oggSE").updatePanPos(this.output.pos);
+    }
+
     onClientDelete(client, data) {
         super.onClientDelete(client, data);
         //this.output.pos = data.pos;

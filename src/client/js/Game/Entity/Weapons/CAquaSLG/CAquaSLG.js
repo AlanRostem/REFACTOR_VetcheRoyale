@@ -18,9 +18,14 @@ export default class CAquaSLG extends CWeapon {
         this.waterDrawY = 0;
     }
 
-    onFire(client, deltaTime) {
-        super.onFire(client, deltaTime);
-        AudioPool.play("Weapons/aquaslg_s.oggSE").updatePanPos(this.output.pos);
+    onReloadAction(client, deltaTime) {
+        super.onReloadAction(client, deltaTime);
+        this.reloadSnd = AudioPool.play("Weapons/aquaslg_reload.oggSE");
+    }
+
+    onDrop(client, deltaTime) {
+        super.onDrop(client, deltaTime);
+        if(this.reloadSnd) this.reloadSnd.stop();
     }
 
     update(deltaTime, client) {

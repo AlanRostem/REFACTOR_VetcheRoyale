@@ -36,7 +36,7 @@ class SEventManager {
     }
 
     update(gameWorld, deltaTime) {
-        this.sendEvent(gameWorld);
+        //this.sendEvent(gameWorld); // TODO: FIX
     }
 }
 

@@ -8,9 +8,8 @@ class Loot extends PhysicalInteractable {
         this.lifeTime = lifeTime;
         this.maxLifeTime = lifeTime;
         this.acc.y = 500;
-        this.fric.x = 0;
-        this.setQuadTreeRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
-        this.setPhysicsConfiguration("stop", false);
+        this.fric.x = Loot.AIR_FRICTION;
+        this.setCollisionRange(Loot.PICK_UP_RANGE, Loot.PICK_UP_RANGE);
     }
 
     // Return true based on some data of the player
@@ -36,11 +35,11 @@ class Loot extends PhysicalInteractable {
 
     // Ground physics.
     update(entityManager, deltaTime) {
+        super.update(entityManager, deltaTime);
         this.lifeTime -= deltaTime;
         if (this.lifeTime <= 0) {
             this.remove();
         }
-        super.update(entityManager, deltaTime);
     }
 
     onYSideCollision(tile) {

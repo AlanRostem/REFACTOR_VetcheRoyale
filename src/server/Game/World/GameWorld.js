@@ -1,18 +1,14 @@
 const EntityManager = require("../Entity/Management/EntityManager.js");
 const TeamManager = require("./TeamManager.js");
-const Tile = require("../TileBased/Tile.js");
-const ClientList = require("../../Networking/ClientList.js");
-const TileMapConfigs = require("../../../shared/code/TileBased/STileMapConfigs.js");
 const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js");
-const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 const Portal = require("../Entity/Portal/Portal.js");
 const GameDataLinker = require("../Entity/Player/GameDataLinker.js");
 const GameRules = require("./GameRules.js");
 const EventManager = require("./Matches/SEventManager.js");
-const PacketBuffer = require("../../Networking/PacketBuffer.js");
 
 // Simulation of an entire game world.
 class GameWorld extends EntityManager {
+    playerMap = new Map();
     constructor(name, gameMap) {
         super(true, gameMap);
         this.settings = new GameRules();
@@ -90,6 +86,7 @@ class GameWorld extends EntityManager {
         this.players++;
         this.teamManager.addPlayer(player, this);
         this.spawner.spawnSpecificAtPos(105, player, this);
+        this.playerMap.set(player.id, player);
 
        /* this.eventManager.addGlobal(
             "Welcome", "announcement", "Green", 0, {
@@ -99,7 +96,8 @@ class GameWorld extends EntityManager {
     }
 
     removePlayer(id) {
-        this.removeEntity(id);
+        let i = this.playerMap.get(id).index;
+        this.removeEntity(i);
         this.players--;
     }
 

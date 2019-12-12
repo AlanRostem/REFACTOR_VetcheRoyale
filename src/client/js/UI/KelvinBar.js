@@ -9,6 +9,11 @@ export default class KelvinBar extends UIElement {
 
         AssetManager.addSpriteCreationCallback(() => {
             this.kelvinGlassBar = AssetManager.getMapImage("kelvinGlassBar");
+            this.kelvinGlassBarReady = AssetManager.getMapImage("kelvinGlassBarReady");
+
+            this.drawBar = this.kelvinGlassBar;
+            this.kelvinReady = AssetManager.getMapImage("kelvinReady");
+
             this.kelvinThinLiquid = AssetManager.getMapImage("kelvinThinLiquid");
             this.kelvinIcons = AssetManager.getMapImage("kelvinIcons");
 
@@ -16,6 +21,8 @@ export default class KelvinBar extends UIElement {
 
             this.kelvinLiquidAnimation = new SpriteSheet("kelvinLiquidAnimation");
             this.kelvinLiquidAnimation.bind("liquid", 0, 0, 40, 8);
+
+            this.ready = false;
         });
 
         this.hasWeapon = false;
@@ -29,12 +36,16 @@ export default class KelvinBar extends UIElement {
             if (gun) {
                 this.iconID = gun.iconID;
                 this.charge = gun.output.superChargeData;
-                this.hasWeapon = true
+                this.hasWeapon = true;
+                (this.charge === 100 ? this.ready = true : this.ready = false);
 
             } else {
                 this.charge = 0;
                 this.hasWeapon = false;
             }
+
+            if(this.ready) this.drawBar = this.kelvinGlassBarReady;
+            else this.drawBar = this.kelvinGlassBar;
         }
     }
 
@@ -45,9 +56,23 @@ export default class KelvinBar extends UIElement {
 
             let liquidLength = 40 * this.charge / 100 | 0;
 
+            if(this.ready) {
+                R.drawText("[Q]", R.WIDTH - this.kelvinGlassBar.width - 1, R.HEIGHT - this.kelvinGlassBar.height - 12, "White", false,320, true);
+
+                R.drawCroppedImage(
+                    this.kelvinReady,
+                    0,
+                    0,
+                    this.kelvinReady.width,
+                    this.kelvinReady.height,
+                    R.WIDTH - this.kelvinReady.width - 6,
+                    R.HEIGHT - 2 - this.kelvinGlassBar.height,
+                    this.kelvinReady.width,
+                    this.kelvinReady.height);
+            }
             // Draw Glass Tube
             R.drawCroppedImage(
-                this.kelvinGlassBar,
+                this.drawBar,
                 0,
                 0,
                 this.kelvinGlassBar.width,
@@ -86,13 +111,15 @@ export default class KelvinBar extends UIElement {
                 this.kelvinThinLiquid.width,
                 liquidLength);
 
-            // Liquid Top
-            this.kelvinLiquidAnimation.animate("liquid", this.animationSpec, 4, 8);
-            this.kelvinLiquidAnimation.drawAnimated(
-                R.WIDTH - this.kelvinGlassBar.width + 5 | 0,
-                R.HEIGHT - 9 - liquidLength,
-                4,
-                8);
+            if(!this.ready) {
+                // Liquid Top
+                this.kelvinLiquidAnimation.animate("liquid", this.animationSpec, 4, 8);
+                this.kelvinLiquidAnimation.drawAnimated(
+                    R.WIDTH - this.kelvinGlassBar.width + 5 | 0,
+                    R.HEIGHT - 9 - liquidLength,
+                    4,
+                    8);
+            }
 
 
             R.ctx.restore();

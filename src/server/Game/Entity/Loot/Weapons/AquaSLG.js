@@ -44,7 +44,7 @@ class AquaSLG extends AttackWeapon {
 
         this.modAbility = new ModAbility(0.75, 1.5);
 
-        this.configureAttackStats(2, 25, 1, 500);
+        this.configureAttackStats(2.25, 25, 1, 500);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
             let player = this.getOwner();

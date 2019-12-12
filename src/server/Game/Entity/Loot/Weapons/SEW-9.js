@@ -115,7 +115,7 @@ class SEW_9 extends AttackWeapon {
 
         this.isShooting = false;
 
-        this.configureAttackStats(1.5, 5, 1, 100);
+        this.configureAttackStats(2.25, 5, 1, 100);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
             if(!this.primaryFire) {
