@@ -5,8 +5,7 @@ const Tile = require("../../../TileBased/Tile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const AOEWormHoleScanner = require("../../../Mechanics/Scanners/AOEWormHoleScanner.js");
 const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage.js");
-const ModAbility = require("./Base/ModAbility.js");
-const SuperAbility = require("./Base/SuperAbility.js");
+
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
@@ -68,44 +67,33 @@ class KineticBomb extends Bouncy {
         }
     }
 }
+
 const RETRACTION_SCANNER = new AOEWormHoleScanner(null, Tile.SIZE * 6, null, .2, 350, null);
 
-class KE_6HModAbility extends ModAbility {
-    constructor() {
-        super(.2, 4, 25);
-    }
-
-    onActivation(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.kineticImplosion = true;
-        composedWeapon.canFire = false;
-        composedWeapon.followPoint.x = composedWeapon.getOwner().input.mouseData.world.x;
-        composedWeapon.followPoint.y = composedWeapon.getOwner().input.mouseData.world.y;
-        RETRACTION_SCANNER.ownerID = composedWeapon.playerID;
-        RETRACTION_SCANNER.pos = composedWeapon.followPoint;
-        RETRACTION_SCANNER.entityExceptions = composedWeapon.getOwner().team.players;
-        RETRACTION_SCANNER.areaScan(composedWeapon.followPoint, entityManager);
-    }
-
-    onDeactivation(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.kineticImplosion = false;
-        composedWeapon.canFire = true;
-    }
-}
-
-class KE_6HSuperAbility extends SuperAbility {
-
-}
-
 class KE_6H extends AttackWeapon {
-    static _ = (() => {
-        KE_6H.assignWeaponClassAbilities(KE_6HModAbility, KE_6HSuperAbility);
-    })();
-
     constructor(x, y) {
         super(x, y, "KE-6H", 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
         this.configureAttackStats(2.5, 8, 1, 100);
+
+        this.modAbility.configureStats(.2, 4);
+        this.modAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
+            composedWeapon.kineticImplosion = true;
+            composedWeapon.canFire = false;
+            this.followPoint.x = this.getOwner().input.mouseData.world.x;
+            this.followPoint.y = this.getOwner().input.mouseData.world.y;
+            RETRACTION_SCANNER.ownerID = this.playerID;
+            RETRACTION_SCANNER.pos = this.followPoint;
+            RETRACTION_SCANNER.entityExceptions = this.getOwner().team.players;
+            RETRACTION_SCANNER.areaScan(this.followPoint, entityManager);
+        };
+
+        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
+            composedWeapon.kineticImplosion = false;
+            composedWeapon.canFire = true;
+        };
+
     }
 
     fire(player, entityManager, deltaTime, angle) {
@@ -114,5 +102,6 @@ class KE_6H extends AttackWeapon {
                 angle, entityManager));
     }
 }
+
 
 module.exports = KE_6H;

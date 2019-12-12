@@ -6,7 +6,7 @@ class Bouncy extends Projectile {
         this.vy = 0;
         this.vx = 0;
         this.bounceFactor = bounceFactor;
-        this.setPhysicsConfiguration(Projectile.PHYSICS_CONFIG_RESP.STOP, false);
+        this.setPhysicsConfiguration("stop", false);
     }
 
     onTopCollision(tile) {

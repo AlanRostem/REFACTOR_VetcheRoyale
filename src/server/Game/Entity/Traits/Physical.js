@@ -4,23 +4,12 @@ const EntityCollider = require("../Management/EntityCollider.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
-const VetcheEnum = require("../../../Structures/VetcheEnum.js");
 
 // Entity with tile tileCollision and movement.
 class Physical extends Entity {
     static _ = (() => {
         Physical.addDynamicValues("vel");
     })();
-
-    static COLLISION_RESP_ID = "Physical";
-
-    static PHYSICS_CONFIG_RESP = new VetcheEnum({
-        TILE_COLLISION: "tileCollision",
-        GRAVITY: "gravity",
-        STATIC: "static",
-        STOP: "stop",
-        PIXELATE_POS: "pixelatePos",
-    });
 
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
@@ -45,18 +34,23 @@ class Physical extends Entity {
             pixelatePos: true, // Rounds position to nearest integer
         };
 
-        this.CR_ID = Physical.COLLISION_RESP_ID;
+        this.collisionResponseID = "Physical";
+
     }
 
     resetSides() {
         this.side.left = this.side.right = this.side.top = this.side.bottom = false;
     }
 
+    get CR_ID() {
+        return this.collisionResponseID;
+    }
+
     // Sets the ID of (preferably the extended constructor name) a presumably
     // mapped ID in the TileCollider to a callback function which is the
     // tileCollision response to a specific tile.
     setCollisionResponseID(string) {
-        this.CR_ID = string;
+        this.collisionResponseID = string;
     }
 
     // Composite method for the movement tracker

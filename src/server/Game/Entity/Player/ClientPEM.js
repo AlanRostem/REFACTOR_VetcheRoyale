@@ -66,7 +66,7 @@ class ClientPEM extends ProximityEntityManager {
                 if (this.entRef.overlapEntity(e)) {
                     this.entRef.onEntityCollision(e, entityManager);
                 }
-                if (e.removed) {
+                if (e.toRemove) {
                     continue;
                 }
 
@@ -82,7 +82,7 @@ class ClientPEM extends ProximityEntityManager {
         for (let e of this.container) {
             this.dataBox[e.id] = e.getDataPack();
             // Removes entities out of bounds. Suboptimal location to do this.
-            if (e.removed) {
+            if (e.toRemove) {
                 this.removeEntity(e);
             }
         }

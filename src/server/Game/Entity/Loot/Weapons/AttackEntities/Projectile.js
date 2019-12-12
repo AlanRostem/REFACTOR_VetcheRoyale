@@ -16,8 +16,6 @@ class Projectile extends Physical {
         Projectile.addStaticValues("ownerID");
     })();
 
-    static COLLISION_RESP_ID = "Projectile";
-
     /**
      * @param owner {Player} The entity that projectile belongs to
      * @param x {number} Position in the world
@@ -44,13 +42,13 @@ class Projectile extends Physical {
         this.hitTile = false;
         this.alreadyCollided = false;
 
-        this.setPhysicsConfiguration(Physical.PHYSICS_CONFIG_RESP.GRAVITY, false);
-        this.setPhysicsConfiguration(Physical.PHYSICS_CONFIG_RESP.PIXELATE_POS, false);
-        this.setCollisionResponseID(Projectile.COLLISION_RESP_ID);
+        this.setPhysicsConfiguration("gravity", false);
+        this.setPhysicsConfiguration("pixelatePos", false);
+        this.setCollisionResponseID("Projectile");
         this.setCollisionRange(w * 2, h * 2);
         if (arc) {
             this.acc.y = arc; // Gravity for the projectile
-            this.setPhysicsConfiguration(Physical.PHYSICS_CONFIG_RESP.GRAVITY, true);
+            this.setPhysicsConfiguration("gravity", true);
         }
     }
 
@@ -110,6 +108,10 @@ class Projectile extends Physical {
     }
 
     update(entityManager, deltaTime) {
+        let d = Vector2D.abs(this.vel) * deltaTime * 2;
+        if (d > 0) {
+            this.setCollisionRange(d, d);
+        }
         super.update(entityManager, deltaTime);
         if (this.hitTile) {
             this.onTileHit(entityManager, deltaTime);
@@ -125,6 +127,7 @@ class Projectile extends Physical {
             }, this.center, entity)) {
                 this.onEntityCollision(entity, entityManager);
             }
+
         }
     }
 
@@ -133,7 +136,7 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID)) return;
+            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID) ) return;
             if (this.alreadyCollided === false) {
                 this.onEnemyHit(entity, entityManager);
                 if (this.shouldRemove) {
