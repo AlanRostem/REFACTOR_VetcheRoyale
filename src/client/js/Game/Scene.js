@@ -19,8 +19,6 @@ import TileMapManager from "./TileBased/TileMapManager.js"
 import Announcement from "../UI/Announcement.js";
 import EnemyDetector from "../UI/EnemyDetector.js";
 import EffectManager from "../Graphics/EffectManager.js";
-import CClient from "../Networking/Client/CClient.js";
-import CEntityManager from "./Entity/Management/CEntityManager.js";
 
 /**
  * The main object on the client that renders the game world and UI.
@@ -92,10 +90,7 @@ const Scene = {
      * @param entityManager {CEntityManager} - Main client entity manager
      * @param client {CClient} - Reference to the end user object
      */
-    run() {
-        var client = new CClient(io());
-        let entityManager = new CEntityManager(client);
-        io = undefined; // Restricting console from using this function.
+    run(entityManager, client) {
         Scene.clientRef = client;
         Scene.entityManager = entityManager;
         Scene.eventManager = new CEventManager(); // TODO::Kor ska denne?

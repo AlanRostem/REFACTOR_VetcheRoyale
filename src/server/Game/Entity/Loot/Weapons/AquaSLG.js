@@ -1,6 +1,5 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const ModAbility = require("./Base/ModAbility.js");
-const SuperAbility = require("./Base/SuperAbility.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const Tile = require("../../../TileBased/Tile.js");
@@ -28,67 +27,62 @@ class IceBullet extends Projectile {
     }
 }
 
-class AquaSLGModAbility extends ModAbility {
-    constructor() {
-        super(0.75, 1.5);
-    }
-
-    onActivation(weapon, entityManager) {
-        let player = weapon.getOwner();
-        //if(player.vel.y >= 0) player.vel.y = 0;
-        player.vel.y = 0;
-        weapon.secondaryUse = true;
-    };
-
-    onDeactivation(weapon, entityManager, deltaTime) {
-        weapon.secondaryUse = false;
-    };
-
-    buffs(weapon, entityManager, deltaTime) {
-        let player = weapon.getOwner();
-        if (player.input.heldDownMapping("modAbility")) {
-            player.vel.y = -100;
-
-            if (player.vel.y < -this.maxSpeed) player.vel.y = -weapon.maxSpeed;
-
-            if (player.vel.y === 0) player.vel.y = -1;
-        } else {
-            let oldCharge = this.currentDuration - 0.5;
-            this.deActivate(weapon, entityManager, deltaTime);
-            this.currentCoolDown = this.maxDuration - oldCharge;
-        }
-
-    };
-}
-
-class AquaSLGSuperAbility extends SuperAbility {
-    onActivation(weapon, entityManager, deltaTime) {
-        weapon.superAbilitySnap = true;
-        let exceptions = weapon.getOwner().team.players;
-        weapon.areaDmg = new AOEKnockBackDamage(weapon.getOwner(), weapon.center.x, weapon.center.y, Tile.SIZE * 8, 900, 20, exceptions);
-        weapon.areaDmg.applyAreaOfEffect(entityManager);
-    };
-
-    onDeactivation(weapon, entityManager, deltaTime) {
-        weapon.superAbilitySnap = false;
-    };
-}
-
 class AquaSLG extends AttackWeapon {
 
     static _ = (() => {
-        // Shit look at this line
-        AquaSLG.assignWeaponClassAbilities(AquaSLGModAbility, AquaSLGSuperAbility);
         AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
     })();
 
     constructor(x, y) {
         super(x, y, "AquaSLG", 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
+
         this.secondaryUse = false;
         this.superAbilitySnap = false;
+
         this.maxSpeed = 102;
+
+        this.modAbility = new ModAbility(0.75, 1.5);
+
         this.configureAttackStats(2.25, 25, 1, 500);
+
+        this.modAbility.onActivation = (weapon, entityManager) => {
+            let player = this.getOwner();
+            //if(player.vel.y >= 0) player.vel.y = 0;
+            player.vel.y = 0;
+            this.secondaryUse = true;
+        };
+
+        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
+            this.secondaryUse = false;
+        };
+
+        this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
+            let player = this.getOwner();
+            if (player.input.heldDownMapping("modAbility")) {
+                player.accelerateY(-6400, deltaTime);
+
+                if (player.vel.y < -this.maxSpeed) player.vel.y = -this.maxSpeed;
+
+                if (player.vel.y === 0) player.vel.y = -1;
+            } else {
+                var oldCharge = this.modAbility.currentDuration - 0.5;
+                this.modAbility.deActivate(composedWeapon, entityManager, deltaTime);
+                this.modAbility.currentCoolDown = this.modAbility.maxDuration - oldCharge;
+            }
+
+        };
+
+        this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
+            this.superAbilitySnap = true;
+            let exceptions = this.getOwner().team.players;
+            this.areaDmg = new AOEKnockBackDamage(this.getOwner(), this.x, this.y, Tile.SIZE * 8, 900, 20, exceptions);
+            this.areaDmg.applyAreaOfEffect(entityManager);
+        };
+
+        this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
+            this.superAbilitySnap = false;
+        };
     }
 
     onSuperBuffs(entityManager, deltaTime) {

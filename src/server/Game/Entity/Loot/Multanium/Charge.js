@@ -9,8 +9,6 @@ class Charge extends Bottle {
         Charge.addStaticValues("type", "amount");
     })();
 
-    static TYPE = "charge";
-
     /**
      * @param x {number} Position in the world
      * @param y {number} Position in the world
@@ -19,7 +17,7 @@ class Charge extends Bottle {
     constructor(x, y, amount = 24) {
         super(x, y);
         this.amount = amount;
-        this.type = Charge.TYPE;
+        this.type = "charge";
     }
 
     /**

@@ -10,12 +10,10 @@ class Ammo extends Bottle {
             "count");
     })();
 
-    static TYPE = "ammo";
-
     constructor(x, y, count = 24 /* cus dome 24 xD*/) {
         super(x, y);
         this.count = count;
-        this.type = Ammo.TYPE;
+        this.type = "ammo";
     }
 
     /*

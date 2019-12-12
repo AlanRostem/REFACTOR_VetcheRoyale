@@ -15,6 +15,7 @@ class SEntity {
         SEntity.SNAPSHOT_TEMPLATE.addDynamicValues(
             "pos",
             "removed",
+            "color",
             "entityType",
             "entityOrder");
     })();
@@ -42,22 +43,21 @@ class SEntity {
     constructor(x, y, width, height, id) {
         this.keys = [];
         this.pos = new Vector2D(x, y);
-        this.center = new Vector2D(x + width / 2, y + height / 2);
-        this.topLeft = this.pos;
-        this.topRight = new Vector2D(x + width, y);
-        this.bottomLeft = new Vector2D(x, y + height);
-        this.bottomRight = new Vector2D(x + width, y + height);
-
         this.width = width;
         this.height = height;
         if (id) this.id = id;
         else this.id = String.random();
         this.removed = false;
         this.entityType = this.constructor.name;
+        this.color = "rgb(" + 255 * Math.random() + "," + 255 * Math.random() + "," + 255 * Math.random() + ")";
         this.homeWorldID = -1;
         this.entityOrder = 0;
         this.snapShotGenerator = new SnapShotGenerator(this);
         this.entitiesInProximity = new ProximityEntityManager(this);
+    }
+
+    get gameID() {
+        return this.homeWorldID;
     }
 
     setEntityOrder(int) {
@@ -96,22 +96,7 @@ class SEntity {
 
     }
 
-    updatePoints() {
-        this.center.x = this.pos.x + this.width / 2;
-        this.center.y = this.pos.y + this.height / 2;
-
-        this.topRight.x = this.pos.x + this.width;
-        this.topRight.y = this.pos.y;
-
-        this.bottomRight.x = this.pos.x + this.width;
-        this.bottomRight.y = this.pos.y + this.height;
-
-        this.bottomLeft.x = this.pos.x;
-        this.bottomLeft.y = this.pos.y + this.height;
-    }
-
     update(game, deltaTime) {
-        this.updatePoints();
         this.entitiesInProximity.update(game, deltaTime);
     }
 
@@ -129,8 +114,44 @@ class SEntity {
         return this.snapShotGenerator.export();
     }
 
-    getInitDataPack() {
+    getInitDataPack(){
         return this.snapShotGenerator.exportInitValues();
+    }
+
+    get toRemove() {
+        return this.removed;
+    }
+
+    get topLeft() {
+        return this.pos
+    }
+
+    get topRight() {
+        return {
+            x: this.pos.x + this.width,
+            y: this.pos.y
+        };
+    }
+
+    get bottomLeft() {
+        return {
+            x: this.pos.x,
+            y: this.pos.y + this.height
+        };
+    }
+
+    get bottomRight() {
+        return {
+            x: this.pos.x + this.width,
+            y: this.pos.y + this.height
+        };
+    }
+
+    get center() {
+        return {
+            x: this.pos.x + this.width / 2,
+            y: this.pos.y + this.height / 2
+        }
     }
 
     onRemoved() {
