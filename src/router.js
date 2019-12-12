@@ -24,9 +24,6 @@ module.exports = function () {
         res.sendFile(path.join(__dirname + "/client/html/index.html"));
     });
 
-    router.get('/login', (req, res) => {
-        res.sendFile(path.join(__dirname + "/admin/client/HTML/login.html"));
-    });
 
     return router;
 };

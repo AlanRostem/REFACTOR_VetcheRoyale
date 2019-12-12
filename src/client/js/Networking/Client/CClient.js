@@ -23,7 +23,7 @@ class CClient {
         this.inputListener = new InputListener(this);
         this.timeSyncer = new ServerTimeSyncer();
         this.packetSendLoop = new CTimer(1, () => 0);
-        this.onReadyCallback = [];
+        this.gameData = {};
 
         [32, 83, 68, 65, 87, 69, 70, 71, 82, 81, 84].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
@@ -58,8 +58,11 @@ class CClient {
         }
         this.timeSyncer.onServerUpdate(this.latency);
         this.lastReceivedData = packet;
+        if (packet.gameData)
+            this.gameData = PacketBuffer.mergeSnapshot(this.gameData, packet.gameData);
+
         for (let callback of this.serverUpdateCallbacks.array) {
-            callback(packet);
+            callback(this.lastReceivedData);
         }
     }
 
@@ -159,22 +162,10 @@ class CClient {
         }
 
         if (Object.keys(this.player.output).length > 0) {
-            this.onReady();
             return true;
         }
     }
 
-
-    addOnReadyCallback(callback){
-        this.onReadyCallback.push(callback);
-    }
-
-    onReady(){
-        for (let callback of this.onReadyCallback){
-            callback();
-            this.onReadyCallback.splice(this.onReadyCallback.indexOf(callback),1);
-        }
-    }
 
     update(entityManager, deltaTime) {
         if (!this.eMgr) {
@@ -201,9 +192,6 @@ class CClient {
         this.on('connectClient', data => {
             this.id = data.id;
             this.disconnected = false;
-            this.addOnReadyCallback(()=>{
-               console.log('Ready');
-            });
             this.socket.emit("connectClientCallback", {id: this.id});
             this.tickRate = data.tickRate;
             this.packetSendLoop = new CTimer(1/data.tickRate, () => {
