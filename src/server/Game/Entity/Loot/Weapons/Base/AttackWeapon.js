@@ -38,7 +38,7 @@ class AttackWeapon extends WeaponItem {
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
         super(x, y, displayName, weaponClass);
         this.modAbility = new this.constructor.ModAbilityClass(modDuration, modCoolDown);
-        this.superAbility = new this.constructor.SuperAbilityClass((superDuration, superChargeGainTick, superChargeGainKill);
+        this.superAbility = new this.constructor.SuperAbilityClass(superDuration, superChargeGainTick, superChargeGainKill);
         this.superChargeData = 0;
         this.modCoolDownData = 0;
         this.firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
