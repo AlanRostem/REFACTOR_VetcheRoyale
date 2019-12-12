@@ -23,14 +23,22 @@ class AttackWeapon extends WeaponItem {
             "reloading");
     })();
 
+    static ModAbilityClass = ModAbility;
+    static SuperAbilityClass = SuperAbility;
+
+    static assignWeaponClassAbilities(classForMod, classForSuper) {
+        this.ModAbilityClass = classForMod;
+        this.SuperAbilityClass = classForSuper;
+    }
+
     constructor(x, y,
                 displayName, weaponClass = "pistol",
                 modDuration = 5, modCoolDown = 5, superDuration = 3, superChargeGainTick = 3, superChargeGainKill = 15,
                 spread = 0, recoil = 0, accurator = 0,
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
         super(x, y, displayName, weaponClass);
-        this.modAbility = new ModAbility(modDuration, modCoolDown);
-        this.superAbility = new SuperAbility(superDuration, superChargeGainTick, superChargeGainKill);
+        this.modAbility = new this.constructor.ModAbilityClass(modDuration, modCoolDown);
+        this.superAbility = new this.constructor.SuperAbilityClass((superDuration, superChargeGainTick, superChargeGainKill);
         this.superChargeData = 0;
         this.modCoolDownData = 0;
         this.firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
