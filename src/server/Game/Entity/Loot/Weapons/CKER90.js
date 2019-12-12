@@ -141,8 +141,51 @@ const SCOPED_SPEED = 480;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 
+class CKER90ModAbility extends  ModAbility{
+    constructor() {
+        super(5, 5, true);
+    }
+
+    buffs(composedWeapon, entityManager, deltaTime) {
+        let player = composedWeapon.getOwner();
+        if (player) {
+            composedWeapon.dataIsScoping = player.input.heldDownMapping("modAbility");
+        }
+    }
+
+    onDeactivation(composedWeapon, entityManager, deltaTime) {
+        composedWeapon.dataIsScoping = false;
+    }
+
+}
+
+class CKER90SuperAbility extends SuperAbility {
+
+    constructor() {
+        super(0, 100, 100);
+    }
+    onActivation(composedWeapon, entityManager, deltaTime) {
+        let player = composedWeapon.getOwner();
+        let angle = 0;
+        if (player) {
+            angle = player.input.mouseData.angleCenter;
+        }
+        entityManager.spawnEntity(
+            composedWeapon.pos.x,
+            composedWeapon.pos.y,
+            new SeekerSmoke(
+                composedWeapon.getOwner(),
+                composedWeapon,
+                0, 0,
+                angle
+            ));
+    }
+
+}
+
 class CKER90 extends AttackWeapon {
     static _ = (() => {
+        CKER90.assignWeaponClassAbilities(CKER90ModAbility, CKER90SuperAbility);
         CKER90.addDynamicValues(
             "dataIsScoping",
             "found")
@@ -155,39 +198,6 @@ class CKER90 extends AttackWeapon {
             10,
             1,
             60);
-        this.modAbility = new class extends ModAbility {
-            buffs(composedWeapon, entityManager, deltaTime) {
-                let player = composedWeapon.getOwner();
-                if (player) {
-                    composedWeapon.dataIsScoping = player.input.heldDownMapping("modAbility");
-                }
-            }
-
-            onDeactivation(composedWeapon, entityManager, deltaTime) {
-                composedWeapon.dataIsScoping = false;
-            }
-        }(5, 5, true);
-
-        let _this = this;
-        this.superAbility = new class extends SuperAbility {
-            onActivation(composedWeapon, entityManager, deltaTime) {
-                let player = _this.getOwner();
-                let angle = 0;
-                if (player) {
-                    angle = player.input.mouseData.angleCenter;
-                }
-                entityManager.spawnEntity(
-                    composedWeapon.pos.x,
-                    composedWeapon.pos.y,
-                    new SeekerSmoke(
-                        composedWeapon.getOwner(),
-                        composedWeapon,
-                        0, 0,
-                        angle
-                    ));
-            }
-        }(0, 100, 100);
-
         this.found = {};
         this.entityType = "AttackWeapon";
     }
