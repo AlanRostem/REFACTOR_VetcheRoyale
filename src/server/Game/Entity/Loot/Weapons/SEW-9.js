@@ -41,10 +41,9 @@ class ElectricSphere extends Projectile {
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);
-        if (this.weapon.modActive) this.weapon.modAbility.deActivate(null, entityManager);
+        if (this.weapon.modActive) this.weapon.modAbility.currentDuration = 0;
         this.remove();
     }
-
 
 
     update(entityManager, deltaTime) {
@@ -78,10 +77,10 @@ class SuperDamage extends SEntity {
         super.update(game, deltaTime);
         let player = this.damage.player;
         if (player) {
-            this.pos.x = player.x;
-            this.pos.y = player.y;
-
-            if (player.movementState.direction !== "right") this.pos.x -= this.width;
+            this.pos.x = player.center.x;
+            this.pos.y = player.center.y;
+            if (player.movementState.direction !== "right")
+                this.pos.x -= this.width;
         }
     }
 
@@ -118,54 +117,55 @@ class SEW_9 extends AttackWeapon {
         this.configureAttackStats(2.25, 5, 1, 100);
 
         this.modAbility.onActivation = (weapon, entityManager) => {
-            if(!this.primaryFire) {
-                this.currentAmmo--;
-                this.isShooting = true;
-                entityManager.spawnEntity(this.center.x, this.center.y,
-                    this.misRef = new ElectricSphere(this.getOwner(), this.id, 0, 0,
+            if (!weapon.primaryFire) {
+                weapon.currentAmmo--;
+                weapon.isShooting = true;
+                entityManager.spawnEntity(weapon.center.x, weapon.center.y,
+                    weapon.misRef = new ElectricSphere(weapon.getOwner(), weapon.id, 0, 0,
                         0, entityManager));
-                this.misRef.weapon = this;
-                this.misRef.secondary = true;
-                this.secondaryFire = true;
-                this.getOwner().entitiesInProximity.shouldFollowEntity = false;
+                weapon.misRef.weapon = this;
+                weapon.misRef.secondary = true;
+                weapon.secondaryFire = true;
+                weapon.getOwner().entitiesInProximity.shouldFollowEntity = false;
             }
         };
 
         this.modAbility.configureStats(9, 4);
 
         this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
+            composedWeapon.secondaryFire = false;
+            composedWeapon.canMove = true;
 
-            this.secondaryFire = false;
-            this.canMove = true;
-
-            this.isShooting = false;
-            if (this.getOwner())
-                this.getOwner().entitiesInProximity.shouldFollowEntity = true;
-            if (composedWeapon) this.misRef.detonate(entityManager);
+            composedWeapon.isShooting = false;
+            if (composedWeapon.getOwner())
+                composedWeapon.getOwner().entitiesInProximity.shouldFollowEntity = true;
+            if (composedWeapon) composedWeapon.misRef.detonate(entityManager);
         };
 
         this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-            this.canMove = false;
-            this.isShooting = true;
-            if (this.misRef) {
-                this.getOwner().entitiesInProximity.follow(
-                    this.misRef.x,
-                    this.misRef.y
+            composedWeapon.canMove = false;
+            composedWeapon.isShooting = true;
+            if (composedWeapon.misRef) {
+                composedWeapon.getOwner().entitiesInProximity.follow(
+                    composedWeapon.misRef.center.x,
+                    composedWeapon.misRef.center.y
                 );
             }
         };
 
+        this.superAbility.configureStats(5, 100, 100);
+
         this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
-            this.superAbilitySnap = true;
-            entityManager.spawnEntity(this.center.x, this.center.y,
-                this.damageBox = new SuperDamage(this.x, this.y, 100, this.getOwner().height, this.getOwner())
+            composedWeapon.superAbilitySnap = true;
+            entityManager.spawnEntity(composedWeapon.center.x, composedWeapon.center.y,
+                composedWeapon.damageBox = new SuperDamage(composedWeapon.center.x, composedWeapon.center.y, 100, composedWeapon.getOwner().height, composedWeapon.getOwner())
             );
         };
 
         this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-            this.superAbilitySnap = false;
-            if (this.damageBox) this.damageBox.remove();
-            this.damageBox = null;
+            composedWeapon.superAbilitySnap = false;
+            if (composedWeapon.damageBox) composedWeapon.damageBox.remove();
+            composedWeapon.damageBox = null;
         };
     }
 
@@ -190,7 +190,7 @@ class SEW_9 extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        if(!this.secondaryFire) {
+        if (!this.secondaryFire) {
             this.isShooting = true;
             this.misRef =
                 entityManager.spawnEntity(this.center.x, this.center.y,

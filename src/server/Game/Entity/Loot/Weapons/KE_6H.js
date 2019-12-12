@@ -92,13 +92,11 @@ class KE_6HModAbility extends ModAbility {
     }
 }
 
-
 class KE_6HSuperAbility extends SuperAbility {
 
 }
 
 class KE_6H extends AttackWeapon {
-
     static _ = (() => {
         KE_6H.assignWeaponClassAbilities(KE_6HModAbility, KE_6HSuperAbility);
     })();
@@ -116,6 +114,5 @@ class KE_6H extends AttackWeapon {
                 angle, entityManager));
     }
 }
-
 
 module.exports = KE_6H;
