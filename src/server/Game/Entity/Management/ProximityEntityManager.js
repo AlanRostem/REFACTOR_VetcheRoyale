@@ -61,7 +61,7 @@ class ProximityEntityManager extends EntityManager {
                 if (this.entRef.overlapEntity(e)) {
                     this.entRef.onEntityCollision(e, entityManager);
                 }
-                if (e.toRemove || !this.collisionBoundary.containsEntity(e)) {
+                if (e.removed || !this.collisionBoundary.containsEntity(e)) {
                     this.removeEntity(e);
                 }
             }
