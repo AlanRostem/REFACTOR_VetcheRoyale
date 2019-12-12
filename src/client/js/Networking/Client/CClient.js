@@ -23,7 +23,7 @@ class CClient {
         this.inputListener = new InputListener(this);
         this.timeSyncer = new ServerTimeSyncer();
         this.packetSendLoop = new CTimer(1, () => 0);
-
+        this.onReadyCallback = [];
 
         [32, 83, 68, 65, 87, 69, 70, 71, 82, 81, 84].forEach(keyCode => {
             this.addKeyEmitter(keyCode);
@@ -159,7 +159,20 @@ class CClient {
         }
 
         if (Object.keys(this.player.output).length > 0) {
+            this.onReady();
             return true;
+        }
+    }
+
+
+    addOnReadyCallback(callback){
+        this.onReadyCallback.push(callback);
+    }
+
+    onReady(){
+        for (let callback of this.onReadyCallback){
+            callback();
+            this.onReadyCallback.splice(this.onReadyCallback.indexOf(callback),1);
         }
     }
 
@@ -188,6 +201,9 @@ class CClient {
         this.on('connectClient', data => {
             this.id = data.id;
             this.disconnected = false;
+            this.addOnReadyCallback(()=>{
+               console.log('Ready');
+            });
             this.socket.emit("connectClientCallback", {id: this.id});
             this.tickRate = data.tickRate;
             this.packetSendLoop = new CTimer(1/data.tickRate, () => {
