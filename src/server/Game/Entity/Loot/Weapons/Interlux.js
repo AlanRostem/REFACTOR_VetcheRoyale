@@ -1,10 +1,20 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const HitScanner = require("../../../Mechanics/Scanners/HitScanner.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
+const ModAbility = require("./Base/ModAbility.js");
+const SuperAbility = require("./Base/SuperAbility.js");
 
+class InterluxModAbility extends ModAbility {
+
+}
+
+class InterluxSuperAbility extends SuperAbility {
+
+}
 
 class Interlux extends AttackWeapon {
     static _ = (() => {
+        Interlux.assignWeaponClassAbilities(InterluxModAbility, InterluxSuperAbility);
         Interlux.addDynamicValues("secondaryFire", "superAbilitySnap", "lines");
     })();
 
@@ -24,30 +34,6 @@ class Interlux extends AttackWeapon {
         this.superAbilitySnap = false;
 
         this.configureAttackStats(1.5, 400, 1, 500);
-
-        this.modAbility.onActivation = (weapon, entityManager) => {
-
-        };
-
-        this.modAbility.configureStats(3, 15);
-
-        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-
-        };
-
-        this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-
-        };
-
-        this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
-            this.superAbilitySnap = true;
-
-        };
-
-        this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-            this.superAbilitySnap = false;
-
-        };
     }
 
     update(entityManager, deltaTime) {

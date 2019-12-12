@@ -1,9 +1,8 @@
 const AttackWeapon = require("./Base/AttackWeapon.js");
 const ModAbility = require("./Base/ModAbility.js");
+const SuperAbility = require("./Base/SuperAbility.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
-const Tile = require("../../../TileBased/Tile.js");
-const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage.js");
 
 // Projectile fired by the firewall
 class Firepellet extends Projectile {
@@ -22,44 +21,24 @@ class Firepellet extends Projectile {
     }
 }
 
+class FirewallModAbility extends ModAbility {
+
+}
+
+class FirewallSuperAbility extends SuperAbility {
+
+}
+
 class Firewall extends AttackWeapon {
+    static _ = (() => {
+        Firewall.assignWeaponClassAbilities(FirewallModAbility, FirewallSuperAbility);
+    })();
+
     constructor(x, y) {
         super(x, y, "Firewall", 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
-
         this.pellets = 4;
-
-
-        this.secondaryUse = false;
-        this.superAbilitySnap = false;
-
-        this.modAbility = new ModAbility(0.75, 1.5);
-
         this.configureAttackStats(1.25, 6, 1, 120);
-
-
-        this.modAbility.onActivation = (weapon, entityManager) => {
-            let player = weapon.getOwner(entityManager);
-        };
-
-        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-        };
-
-        this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-
-
-        };
-
-        this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
-
-        };
-
-        this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-        };
-    }
-
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
     }
 
     fire(player, entityManager, deltaTime, angle) {
@@ -67,11 +46,6 @@ class Firewall extends AttackWeapon {
             entityManager.spawnEntity(this.center.x, this.center.y,
                 new Firepellet(player, this.id, 0, 0, angle + (i / this.pellets * Math.PI / 12), entityManager));
         }
-    }
-
-    onDrop(player, entityManager, deltaTime) {
-        super.onDrop(player, entityManager, deltaTime);
-        this.secondaryFire = false;
     }
 }
 
