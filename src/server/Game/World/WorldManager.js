@@ -6,7 +6,6 @@ const PlayGround = require("../../Game/World/Matches/PlayGround/PlayGround.js");
 const Match = require("../../Game/World/Matches/Match/Match.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
-const GameSimulationAdmin = require("../../../admin/server/monitor/GameSimulationAdmin.js");
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
 
 String.random = () => {
@@ -29,7 +28,6 @@ class WorldManager {
         this.dataBridge = new DataBridge(parentPort);
 
         this.defineClientResponseEvents();
-        this.defineAdminResponseEvents();
 
         this.lastCreatedWorldID = -1;
         this.deltaTime = 0;
@@ -37,7 +35,6 @@ class WorldManager {
 
         this.gameWorlds = new ONMap();
         this.playerList = new ONMap();
-        this.adminList = new ONMap();
 
         // TODO: FIX THIS HACK
 
@@ -97,10 +94,6 @@ class WorldManager {
         world.spawnPlayer(player);
     }
 
-    addAdministrator(adminID) {
-        const admin = new GameSimulationAdmin(adminID, this.gameWorlds.object);
-        this.adminList.set(adminID, admin);
-    }
 
     update() {
         if (Date.now() > 0)
@@ -114,9 +107,6 @@ class WorldManager {
             this.deltaTime = 0;
         }
 
-        for (let admin of this.adminList.array) {
-            admin.update(this);
-        }
 
         this.checkQueuedPlayers();
         for (let worldID in this.gameWorlds.object) {
@@ -163,23 +153,6 @@ class WorldManager {
         });
     }
 
-    defineAdminResponseEvents() {
-        this.dataBridge.addClientResponseListener("connectAdmin", data => {
-            this.addAdministrator(data.id);
-        });
-
-        this.dataBridge.addClientResponseListener("removeAdmin", data => {
-            this.adminList.remove(data.id);
-        });
-
-        this.dataBridge.addClientResponseListener("adminDataSelection", data => {
-
-        });
-
-        this.dataBridge.addClientResponseListener("adminToServer", data => {
-            this.adminList.get(data.id).selectProp(data.data.content.prop, data.data.content.type, data.data.messageType);
-        })
-    }
 }
 
 module.exports = WorldManager;
