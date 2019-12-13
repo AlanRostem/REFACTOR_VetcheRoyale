@@ -14,6 +14,9 @@ Primary fire: Kinetic orbs: Bouncy projectiles.
 Mod: Propulsive energy: Knock yourself and enemies away.
 Super: Propulsive bubble: Large bubble moving enemies caught in it.
 
+Yumiya
+Description: 
+
 Firewall
 Description: Incendiary shotgun.
 Ammo Capacity: 4
