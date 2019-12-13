@@ -10,10 +10,6 @@ class WeaponItem extends Loot {
             "playerID",
             "dropped",
         );
-        WeaponItem.addStaticValues(
-            "displayName",
-            "weaponClass"
-        );
     })();
 
     constructor(x, y, displayName) {
@@ -21,17 +17,13 @@ class WeaponItem extends Loot {
         this.equippedToPlayer = false;
         this.playerID = null;
         this.player = null;
-        this.displayName = displayName;
         this.dropped = false;
-
-        // All possible weapon classes:
-        // pistol, rifle
     }
 
     // Can pick up when the player does not have a weapon.
     // (!null returns true)
     canPickUp(player) {
-        return !player.inventory.weapon;
+        return !player.inventory.equippedWeapon;
     }
 
     update(entityManager, deltaTime) {
@@ -76,7 +68,7 @@ class WeaponItem extends Loot {
         this.equippedToPlayer = true;
         this.playerID = player.id;
         this.player = player;
-        player.setMovementState("weapon", this.weaponClass);
+        // player.setMovementState("weapon", this.weaponClass);
     }
 
     getOwner() {

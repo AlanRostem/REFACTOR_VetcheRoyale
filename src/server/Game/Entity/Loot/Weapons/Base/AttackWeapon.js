@@ -204,7 +204,7 @@ class AttackWeapon extends WeaponItem {
         this.listenToInput(player, entityManager, deltaTime);
         this.modAbility.update(this, entityManager, deltaTime);
         this.superAbility.update(this, entityManager, deltaTime);
-        this.superChargeData = this.superAbility.charge;
+        this.superChargeData = this.superAbility.currentCharge;
         this.modCoolDownData = this.modAbility.currentCoolDown;
 
         this.canUseMod = this.modAbility.currentCoolDown === 0;
