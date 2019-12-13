@@ -92,16 +92,6 @@ class AttackWeapon extends WeaponItem {
 
     }
 
-    // Override to new ability object
-    setModAbility(overridden) {
-        this.modAbility = overridden;
-    }
-
-    // Override to new ability object
-    setSuperAbility(overridden) {
-        this.superAbility = overridden;
-    }
-
     onFireButton(entityManager, deltaTime) {
 
     }
