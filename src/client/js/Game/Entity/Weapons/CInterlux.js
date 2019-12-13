@@ -3,6 +3,7 @@ import Scene from "../../Scene.js";
 import R from "../../../Graphics/Renderer.js";
 
 export default class CInterlux extends CWeapon {
+    static DISPLAY_NAME = "Interlux";
 
     constructor(data) {
         super(data, 3);

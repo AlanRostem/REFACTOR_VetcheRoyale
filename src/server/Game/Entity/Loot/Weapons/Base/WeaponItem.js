@@ -16,13 +16,12 @@ class WeaponItem extends Loot {
         );
     })();
 
-    constructor(x, y, displayName, weaponClass = "pistol") {
+    constructor(x, y, displayName) {
         super(x, y, false);
         this.equippedToPlayer = false;
         this.playerID = null;
         this.player = null;
         this.displayName = displayName;
-        this.weaponClass = weaponClass;
         this.dropped = false;
 
         // All possible weapon classes:

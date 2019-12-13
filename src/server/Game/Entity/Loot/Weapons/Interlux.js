@@ -19,7 +19,7 @@ class Interlux extends AttackWeapon {
     })();
 
     constructor(x, y) {
-        super(x, y, "Interlux", 0, 0, 0);
+        super(x, y, 0, 0, 0);
 
         this.scanRange = 640;
         this.scanner = new HitScanner({}, false, true);

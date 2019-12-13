@@ -9,6 +9,7 @@ import EffectManager from "../../../../Graphics/EffectManager.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
 
 class CCKER90 extends CWeapon {
+    static DISPLAY_NAME = "C-KER .90";
     constructor(props) {
         super(props, 0);
         this.toLerp = {

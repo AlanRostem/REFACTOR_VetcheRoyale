@@ -1,4 +1,6 @@
 class SuperAbility {
+    static MAX_CHARGE = 100;
+
     constructor(duration, chargeGainPerTick, chargeGainPerKill) {
         this.currentDuration = 0;
         this.maxDuration = duration;

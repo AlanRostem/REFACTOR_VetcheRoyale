@@ -32,10 +32,9 @@ class AttackWeapon extends WeaponItem {
     }
 
     constructor(x, y,
-                displayName, weaponClass = "pistol",
                 spread = 0, recoil = 0, accurator = 0,
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
-        super(x, y, displayName, weaponClass);
+        super(x, y);
         this.modAbility = new this.constructor.ModAbilityClass();
         this.superAbility = new this.constructor.SuperAbilityClass();
         this.superChargeData = 0;
@@ -205,7 +204,7 @@ class AttackWeapon extends WeaponItem {
         this.listenToInput(player, entityManager, deltaTime);
         this.modAbility.update(this, entityManager, deltaTime);
         this.superAbility.update(this, entityManager, deltaTime);
-        this.superChargeData = this.superCharge;
+        this.superChargeData = this.superAbility.charge;
         this.modCoolDownData = this.modAbility.currentCoolDown;
 
         this.canUseMod = this.modAbility.currentCoolDown === 0;

@@ -4,6 +4,7 @@ import R from "../../../Graphics/Renderer.js";
 import AssetManager from "../../../AssetManager/AssetManager.js";
 
 export default class CWeapon extends CLoot {
+    static DISPLAY_NAME = "none";
     constructor(data, iconID) {
         super(data);
         this.iconID = iconID;
@@ -60,7 +61,7 @@ export default class CWeapon extends CLoot {
     draw() {
         if (!this.getRealtimeProperty("equippedToPlayer")) {
             if (!this.isClose) {
-                let name = this.getRealtimeProperty("displayName") + "_world";
+                let name = this.constructor.DISPLAY_NAME + "_world";
                 let pos = this.getRealtimeProperty("pos");
 
                 R.drawCroppedImage(
@@ -75,7 +76,7 @@ export default class CWeapon extends CLoot {
                     8
                 );
             } else {
-                let name = this.getRealtimeProperty("displayName") + "_world_selected";
+                let name = this.constructor.DISPLAY_NAME + "_world_selected";
                 let pos = this.getRealtimeProperty("pos");
 
                 R.drawText("[E]", pos.x - 3, pos.y + 9, "White", true);

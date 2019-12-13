@@ -102,7 +102,7 @@ class KE_6H extends AttackWeapon {
     })();
 
     constructor(x, y) {
-        super(x, y, "KE-6H", 0, 0, 0);
+        super(x, y, 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
         this.configureAttackStats(2.5, 8, 1, 100);
