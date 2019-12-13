@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/jquery/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="icon" href="../client/html/icon3.png" type="image/x-icon" >
+
+</head>
+<body>
+<div class="col-md-4 col-md-offset-4 well">
+   <h1 class="text-danger text-center">!RESTRICTED AREA!</h1>
+    <form action="/admin/login" method="post">
+        <div class="form-group">
+            <label><b>Username</b></label>
+            <input class="form-control" type="text" placeholder="Enter Username" name="username" required autofocus>
+        </div>
+        <div class="form-group">
+            <label><b>Password</b></label>
+            <input class="form-control" type="password" placeholder="Enter Password" name="password" required>
+        </div>
+        <button class="btn-success btn-block btn-lg" type="submit">Login</button>
+    </form>
+</div>
+</body>
+</html>

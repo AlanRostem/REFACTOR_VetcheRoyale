@@ -2,6 +2,7 @@ const WebSocket = require("./WebSocket.js");
 const MatchMaker = require("./Matchmaker.js");
 const Thread = require("../Multithreading/Thread.js");
 const DataBridge = require("../Multithreading/DataBridge.js");
+const Monitor = require("../../admin/server/monitor/Monitor.js");
 
 
 // Class for the main server
@@ -9,6 +10,7 @@ class GameServer {
     constructor(sio) {
         this.matchMaker = new MatchMaker();
         this.mainSocket = new WebSocket(sio.of("/game"), this.matchMaker, this);
+        this.monitor = new Monitor(sio.of("/admin"), this);
 
         this.tickRate = 64; // Hz (TEMPORARY)
 
@@ -36,6 +38,7 @@ class GameServer {
         }
 
         this.matchMaker.update(this);
+        this.monitor.update(this.deltaTime);
 
         if (Date.now() > 0)
             this.lastTime = Date.now();
@@ -51,6 +54,7 @@ class GameServer {
         this.thread.run();
         this.dataBridge = new DataBridge(this.thread.worker);
         this.defineClientResponseEvents();
+        this.defineAdminResponseEvents();
         setInterval(() => this.update(), 1000 / this.tickRate);
     }
 
@@ -120,7 +124,14 @@ class GameServer {
         });
     }
 
-
+    defineAdminResponseEvents() {
+        this.dataBridge.addClientResponseListener("adminUpdate", data => {
+            if (!this.monitor.adminList.getClient(data.id)) {
+                return;
+            }
+            this.monitor.adminList.getClient(data.id).socket.emit("adminUpdate", data.data.object);
+        });
+    }
 }
 
 module.exports = GameServer;
