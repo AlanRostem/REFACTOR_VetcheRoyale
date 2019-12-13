@@ -6,6 +6,8 @@ const Projectile = require("./AttackEntities/Projectile.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 const SEntity = require("../../SEntity.js");
 const Alive = require("../../Traits/Alive.js");
+const ModAbility = require("./Base/ModAbility.js");
+const SuperAbility = require("./Base/SuperAbility.js");
 
 
 // Projectile fired by the SEW-9 weapon
@@ -14,12 +16,12 @@ class ElectricSphere extends Projectile {
         ElectricSphere.addDynamicValues("secondary")
     })();
 
-    constructor(owner, weaponID, x, y, angle, entityManager) {
+    constructor(owner, weapon, x, y, angle, entityManager) {
         super(owner, x, y, 3, 3, angle, 0);
         this.radius = 3;
         this.maxSpeed = 200;
         this.velVal = 5;
-        this.weapon = null;
+        this.weapon = weapon;
         this.secondary = false;
 
         this.areaDmg = new AOEDamage(owner, x, y, Tile.SIZE * this.radius, 10,
@@ -41,10 +43,9 @@ class ElectricSphere extends Projectile {
         this.areaDmg.x = this.center.x;
         this.areaDmg.y = this.center.y;
         this.areaDmg.applyAreaOfEffect(entityManager);
-        if (this.weapon.modActive) this.weapon.modAbility.deActivate(null, entityManager);
+        if (this.weapon.modAbility.active) this.weapon.modAbility.currentDuration = 0;
         this.remove();
     }
-
 
 
     update(entityManager, deltaTime) {
@@ -78,10 +79,10 @@ class SuperDamage extends SEntity {
         super.update(game, deltaTime);
         let player = this.damage.player;
         if (player) {
-            this.pos.x = player.x;
-            this.pos.y = player.y;
-
-            if (player.movementState.direction !== "right") this.pos.x -= this.width;
+            this.pos.x = player.center.x;
+            this.pos.y = player.center.y;
+            if (player.movementState.direction !== "right")
+                this.pos.x -= this.width;
         }
     }
 
@@ -96,8 +97,69 @@ class SuperDamage extends SEntity {
 
 }
 
+
+class SEW_9ModAbility extends ModAbility {
+    constructor() {
+        super(9, 4, );
+    }
+    onActivation(weapon, entityManager, deltaTime) {
+        if (!weapon.primaryFire) {
+            weapon.currentAmmo--;
+            weapon.isShooting = true;
+            entityManager.spawnEntity(weapon.center.x, weapon.center.y,
+                weapon.misRef = new ElectricSphere(weapon.getOwner(), weapon, 0, 0,
+                    0, entityManager));
+            weapon.misRef.weapon = weapon;
+            weapon.misRef.secondary = true;
+            weapon.secondaryFire = true;
+            weapon.getOwner().entitiesInProximity.shouldFollowEntity = false;
+        }
+    }
+
+    onDeactivation(composedWeapon, entityManager, deltaTime) {
+        composedWeapon.secondaryFire = false;
+        composedWeapon.canMove = true;
+
+        composedWeapon.isShooting = false;
+        if (composedWeapon.getOwner())
+            composedWeapon.getOwner().entitiesInProximity.shouldFollowEntity = true;
+        if (composedWeapon) composedWeapon.misRef.detonate(entityManager);
+    }
+
+    buffs(composedWeapon, entityManager, deltaTime) {
+        composedWeapon.canMove = false;
+        composedWeapon.isShooting = true;
+        if (composedWeapon.misRef) {
+            composedWeapon.getOwner().entitiesInProximity.follow(
+                composedWeapon.misRef.center.x,
+                composedWeapon.misRef.center.y
+            );
+        }
+    }
+}
+
+class SEW_9SuperAbility extends SuperAbility {
+    constructor() {
+        super(5, 100, 100);
+    }
+
+    onActivation(composedWeapon, entityManager, deltaTime) {
+        composedWeapon.superAbilitySnap = true;
+        entityManager.spawnEntity(composedWeapon.center.x, composedWeapon.center.y,
+            composedWeapon.damageBox = new SuperDamage(composedWeapon.center.x, composedWeapon.center.y, 100, composedWeapon.getOwner().height, composedWeapon.getOwner())
+        );
+    }
+
+    onDeactivation(composedWeapon, entityManager, deltaTime) {
+        composedWeapon.superAbilitySnap = false;
+        if (composedWeapon.damageBox) composedWeapon.damageBox.remove();
+        composedWeapon.damageBox = null;
+    }
+}
+
 class SEW_9 extends AttackWeapon {
     static _ = (() => {
+        SEW_9.assignWeaponClassAbilities(SEW_9ModAbility, SEW_9SuperAbility);
         SEW_9.addDynamicValues("misPos", "secondaryFire", "superAbilitySnap", "isShooting");
     })();
 
@@ -112,61 +174,8 @@ class SEW_9 extends AttackWeapon {
         this.primaryFire = false;
         this.secondaryFire = false;
         this.superAbilitySnap = false;
-
         this.isShooting = false;
-
         this.configureAttackStats(2.25, 5, 1, 100);
-
-        this.modAbility.onActivation = (weapon, entityManager) => {
-            if(!this.primaryFire) {
-                this.currentAmmo--;
-                this.isShooting = true;
-                entityManager.spawnEntity(this.center.x, this.center.y,
-                    this.misRef = new ElectricSphere(this.getOwner(), this.id, 0, 0,
-                        0, entityManager));
-                this.misRef.weapon = this;
-                this.misRef.secondary = true;
-                this.secondaryFire = true;
-                this.getOwner().entitiesInProximity.shouldFollowEntity = false;
-            }
-        };
-
-        this.modAbility.configureStats(9, 4);
-
-        this.modAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-
-            this.secondaryFire = false;
-            this.canMove = true;
-
-            this.isShooting = false;
-            if (this.getOwner())
-                this.getOwner().entitiesInProximity.shouldFollowEntity = true;
-            if (composedWeapon) this.misRef.detonate(entityManager);
-        };
-
-        this.modAbility.buffs = (composedWeapon, entityManager, deltaTime) => {
-            this.canMove = false;
-            this.isShooting = true;
-            if (this.misRef) {
-                this.getOwner().entitiesInProximity.follow(
-                    this.misRef.x,
-                    this.misRef.y
-                );
-            }
-        };
-
-        this.superAbility.onActivation = (composedWeapon, entityManager, deltaTime) => {
-            this.superAbilitySnap = true;
-            entityManager.spawnEntity(this.center.x, this.center.y,
-                this.damageBox = new SuperDamage(this.x, this.y, 100, this.getOwner().height, this.getOwner())
-            );
-        };
-
-        this.superAbility.onDeactivation = (composedWeapon, entityManager, deltaTime) => {
-            this.superAbilitySnap = false;
-            if (this.damageBox) this.damageBox.remove();
-            this.damageBox = null;
-        };
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
@@ -190,11 +199,11 @@ class SEW_9 extends AttackWeapon {
     }
 
     fire(player, entityManager, deltaTime, angle) {
-        if(!this.secondaryFire) {
+        if (!this.secondaryFire) {
             this.isShooting = true;
             this.misRef =
                 entityManager.spawnEntity(this.center.x, this.center.y,
-                    new ElectricSphere(player, this.id, 0, 0,
+                    new ElectricSphere(player, this, 0, 0,
                         angle, entityManager));
             this.misRef.weapon = this;
             this.primaryFire = true;
