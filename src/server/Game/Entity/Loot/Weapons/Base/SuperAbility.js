@@ -1,5 +1,7 @@
 class SuperAbility {
     static MAX_CHARGE = 100;
+    static MIN_CHARGE = 0;
+    static CHARGE_UP_TICK_TIME = 3; // Seconds
 
     constructor(duration, chargeGainPerTick, chargeGainPerKill) {
         this.currentDuration = 0;
@@ -31,14 +33,14 @@ class SuperAbility {
                 this.deActivate(composedWeapon, entityManager, deltaTime);
             }
         } else {
-            if (this.currentCharge < 100) {
+            if (this.currentCharge < SuperAbility.MAX_CHARGE) {
                 this.currentChargeTickTime -= deltaTime;
                 if (this.currentChargeTickTime <= 0) {
                     this.currentCharge += this.tickChargeGain;
-                    this.currentChargeTickTime = 3; // Seconds
+                    this.currentChargeTickTime = SuperAbility.CHARGE_UP_TICK_TIME; // Seconds
                 }
             } else {
-                this.currentCharge = 100; // In case it adds more than 100
+                this.currentCharge = SuperAbility.MAX_CHARGE; // In case it adds more than 100
                 this.fullyCharged = true;
             }
         }
