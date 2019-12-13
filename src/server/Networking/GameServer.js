@@ -8,7 +8,7 @@ const DataBridge = require("../Multithreading/DataBridge.js");
 class GameServer {
     constructor(sio) {
         this.matchMaker = new MatchMaker();
-        this.mainSocket = new WebSocket(sio.of("/game"), this.matchMaker, this);
+        this.mainSocket = new WebSocket(sio, this.matchMaker, this);
 
         this.tickRate = 64; // Hz (TEMPORARY)
 

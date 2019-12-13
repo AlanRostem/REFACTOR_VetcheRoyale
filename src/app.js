@@ -3,10 +3,7 @@
 var path = require('path');
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
 var server = require('http').Server(app);
-var session = require('express-session');
-var passport = require('passport');
 
 var user = require('./router.js')();
 
