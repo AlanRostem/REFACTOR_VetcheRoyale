@@ -139,14 +139,14 @@ class SEW_9ModAbility extends ModAbility {
 }
 
 class SEW_9SuperAbility extends SuperAbility {
-    constructor() {
-        super(5, 100, 100);
-    }
+    static _ = (() => {
+        SEW_9SuperAbility.configureStats(5);
+    })();
 
     onActivation(composedWeapon, entityManager, deltaTime) {
         composedWeapon.superAbilitySnap = true;
         entityManager.spawnEntity(composedWeapon.center.x, composedWeapon.center.y,
-            composedWeapon.damageBox = new SuperDamage(composedWeapon.center.x, composedWeapon.center.y, 100, composedWeapon.getOwner().height, composedWeapon.getOwner())
+            composedWeapon.damageBox = new SuperDamage(composedWeapon.cenzter.x, composedWeapon.center.y, 100, composedWeapon.getOwner().height, composedWeapon.getOwner())
         );
     }
 

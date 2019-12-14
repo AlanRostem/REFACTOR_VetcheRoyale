@@ -62,9 +62,10 @@ class AquaSLGModAbility extends ModAbility {
 }
 
 class AquaSLGSuperAbility extends SuperAbility {
-    constructor() {
-        super(0.1, 100, 100);
-    }
+    static _ = (() => {
+        AquaSLGSuperAbility.configureStats(0.1);
+    })();
+
     onActivation(weapon, entityManager, deltaTime) {
         weapon.superAbilitySnap = true;
         let exceptions = weapon.getOwner().team.players;

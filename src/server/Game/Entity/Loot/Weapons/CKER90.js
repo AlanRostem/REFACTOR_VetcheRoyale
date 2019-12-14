@@ -196,6 +196,11 @@ class CKER90SuperAbility extends SuperAbility {
         }
     }
 
+    onDeactivation(composedWeapon, entityManager, deltaTime) {
+        super.onDeactivation(composedWeapon, entityManager, deltaTime);
+        this.smokeBomb = null;
+    }
+
 }
 
 class CKER90 extends AttackWeapon {

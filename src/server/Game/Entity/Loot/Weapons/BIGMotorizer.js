@@ -85,10 +85,6 @@ class BIGMotorizer extends AttackWeapon {
             0.07 * Math.PI / 180, 0, 6, 0.05)
     })();
 
-    constructor(x, y) {
-        super(x, y);
-    }
-
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player, 0, 0,
