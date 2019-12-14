@@ -225,8 +225,8 @@ class Player extends GameDataLinker {
 
 
         this.setOutboundPacketData("teamData", this.team.data);
-        let packet = this.packetBuffer.exportSnapshot(this.outboundData.keys, this.outboundData.object);
-        this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, packet);
+        //let packet = this.packetBuffer.exportSnapshot(this.outboundData.keys, this.outboundData.object);
+        this.worldMgrRef.dataBridge.transferClientEvent("serverUpdateTick", this.id, this.outboundData.object);
         this.setMovementState("onPlayer", "false");
         this.gameData = {};
     }

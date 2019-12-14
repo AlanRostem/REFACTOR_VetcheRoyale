@@ -9,6 +9,8 @@ class Client {
         this.inboundDataCallbacks = new ONMap();
         this.outboundPacket = {};
 
+        this.packetBuffer = new PacketBuffer();
+
         // Object given by socket.io
         this.socket = socket;
 
@@ -91,6 +93,7 @@ class Client {
 
     updateDataCycle() {
         // TODO: Send data that changes only (use packet buffer)
+        this.outboundPacket = this.packetBuffer.exportSnapshot(Object.keys(this.outboundPacket), this.outboundPacket);
         this.emit("serverUpdateTick", this.outboundPacket);
         this.outboundPacket = {};
     }
