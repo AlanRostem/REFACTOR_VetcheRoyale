@@ -204,7 +204,7 @@ const R = {
 
             while (true) {
 
-                if (counter-- && drawPixel) {
+                if ((counter-- && drawPixel) || !space) {
                     R.context.fillStyle = color;
                     R.context.fillRect(
                         Math.round(x0 + (useCamera ? R.camera.x : 0)),
