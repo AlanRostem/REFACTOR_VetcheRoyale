@@ -188,6 +188,7 @@ class OtherPlayer extends CEntity {
             Math.round(this.output.pos.x) + R.camera.displayPos.x,
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
+
     }
 }
 

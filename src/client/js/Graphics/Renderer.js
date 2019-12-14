@@ -188,8 +188,9 @@ const R = {
         },
 
 
-        drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false, dotSpace = 0) {
+        drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false, dotted = false) {
 
+            var drawPixel = true;
             x0 = Math.round(x0);
             y0 = Math.round(y0);
             x1 = Math.round(x1);
@@ -200,11 +201,15 @@ const R = {
             var err = (dx > dy ? dx : -dy) / 2;
 
             while (true) {
-                R.context.fillStyle = color;
-                R.context.fillRect(
-                    Math.round(x0 + (useCamera ? R.camera.x : 0)),
-                    Math.round(y0 + (useCamera ? R.camera.y : 0)),
-                    thickness, thickness);
+
+                if(dotted) drawPixel = !drawPixel;
+                if(drawPixel) {
+                    R.context.fillStyle = color;
+                    R.context.fillRect(
+                        Math.round(x0 + (useCamera ? R.camera.x : 0)),
+                        Math.round(y0 + (useCamera ? R.camera.y : 0)),
+                        thickness, thickness);
+                }
                 if (x0 === x1 && y0 === y1) break;
 
                 var e2 = err;
