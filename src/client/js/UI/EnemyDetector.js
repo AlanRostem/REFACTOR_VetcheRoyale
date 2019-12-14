@@ -76,6 +76,11 @@ class EnemyDetector extends UIElement {
             R.drawRect("red", R.screenSize.x / 2 - 1, R.screenSize.y / 2, 1,1);
             R.drawRect("red", R.screenSize.x / 2 + 1, R.screenSize.y / 2, 1,1);
             R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 + 1, 1,1);
+            R.drawLine(
+                Scene.clientRef.player.output.pos.x + Scene.clientRef.player.width / 2 + R.camera.x,
+                Scene.clientRef.player.output.pos.y + Scene.clientRef.player.height / 2 + R.camera.y,
+                R.screenSize.x / 2, R.screenSize.y / 2, "Red", 1, false, 10
+            )
         }
 
         this.showScope = false;
