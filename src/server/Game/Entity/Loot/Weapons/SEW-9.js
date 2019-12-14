@@ -208,7 +208,7 @@ class SEW_9 extends AttackWeapon {
             this.misRef.weapon = this;
             this.primaryFire = true;
         }
-    }
+    }dr
 
     onDrop(player, entityManager, deltaTime) {
         super.onDrop(player, entityManager, deltaTime);
