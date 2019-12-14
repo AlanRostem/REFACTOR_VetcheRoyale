@@ -79,7 +79,6 @@ class AquaSLGSuperAbility extends SuperAbility {
 }
 
 class AquaSLG extends AttackWeapon {
-
     static _ = (() => {
         AquaSLG.assignWeaponClassAbilities(AquaSLGModAbility, AquaSLGSuperAbility);
         AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
