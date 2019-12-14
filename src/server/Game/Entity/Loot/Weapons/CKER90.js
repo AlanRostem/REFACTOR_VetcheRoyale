@@ -90,11 +90,12 @@ class SeekerSmoke extends Bouncy {
         );
     })();
 
+    static LIFE_DURATION = 10;
     constructor(owner, weapon, x, y, angle) {
         super(owner, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
         this.weapon = weapon;
-        this.life = 10;
+        this.life = this.constructor.LIFE_DURATION;
         this.taps = true;
         this.minSpeed = 10;
         this.smokeBounds = {
@@ -160,9 +161,13 @@ class CKER90ModAbility extends ModAbility {
 }
 
 class CKER90SuperAbility extends SuperAbility {
+    static _ = (() => {
+        CKER90SuperAbility.configureStats(SeekerSmoke.LIFE_DURATION);
+    })();
 
     constructor() {
-        super(0, 100, 100);
+        super();
+        this.smokeBomb = null;
     }
 
     onActivation(composedWeapon, entityManager, deltaTime) {
@@ -171,7 +176,7 @@ class CKER90SuperAbility extends SuperAbility {
         if (player) {
             angle = player.input.mouseData.angleCenter;
         }
-        entityManager.spawnEntity(
+        this.smokeBomb = entityManager.spawnEntity(
             composedWeapon.pos.x,
             composedWeapon.pos.y,
             new SeekerSmoke(
@@ -180,6 +185,15 @@ class CKER90SuperAbility extends SuperAbility {
                 0, 0,
                 angle
             ));
+    }
+
+    buffs(composedWeapon, entityManager, deltaTime) {
+        super.buffs(composedWeapon, entityManager, deltaTime);
+        if (this.smokeBomb) {
+            if (!this.smokeBomb.findPlayers) {
+                this.currentDuration = SeekerSmoke.LIFE_DURATION;
+            }
+        }
     }
 
 }

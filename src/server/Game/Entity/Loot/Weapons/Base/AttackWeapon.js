@@ -105,7 +105,7 @@ class AttackWeapon extends WeaponItem {
 
     // When the player gets a kill, this function is called.
     grantSuperCharge() {
-        this.superCharge += this.superAbility.killChargeGain;
+        this.superCharge += this.superAbility.constructor.Stats.CHARGE_GAIN_PER_KILL;
     }
 
     // Configures all stats for the primary attack of the weapon.
