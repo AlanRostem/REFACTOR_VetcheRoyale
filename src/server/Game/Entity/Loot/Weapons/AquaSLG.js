@@ -93,10 +93,6 @@ class AquaSLG extends AttackWeapon {
         this.configureAttackStats(2.25, 25, 1, 500);
     }
 
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
-    }
-
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new IceBullet(player, 0, 0, angle));

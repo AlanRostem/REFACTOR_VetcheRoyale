@@ -49,11 +49,6 @@ class Interlux extends AttackWeapon {
 
     }
 
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
-        
-    }
-
     fire(player, entityManager, deltaTime, angle) {
         // this.scan(this.pos, this.shootPos, this.scanRange, entityManager);
         this.shootPos.x = player.center.x + (this.width / 2 | 0) + Math.cos(this.aimAngle) * this.scanRange;

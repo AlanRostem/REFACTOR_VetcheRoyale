@@ -49,7 +49,7 @@ class SuperAbility {
 
     // Callback when deactivating the ability.
     onDeactivation(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.onSuperDeactivation(entityManager, deltaTime);
+        //composedWeapon.onSuperDeactivation(entityManager, deltaTime);
     }
 
     deActivate(composedWeapon, entityManager, deltaTime) {
@@ -66,7 +66,7 @@ class SuperAbility {
     activate(composedWeapon, entityManager, deltaTime) {
         if (!this.active && this.fullyCharged) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
-            composedWeapon.onSuperActivation(entityManager, deltaTime);
+            //composedWeapon.onSuperActivation(entityManager, deltaTime);
             this.currentDuration = this.maxDuration;
             this.currentCharge = 0;
             this.fullyCharged = false;
@@ -77,7 +77,7 @@ class SuperAbility {
     // Overridable looping method for what happens while
     // the ability is active.
     buffs(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.onSuperBuffs(entityManager, deltaTime)
+        //composedWeapon.onSuperBuffs(entityManager, deltaTime)
     }
 
 }

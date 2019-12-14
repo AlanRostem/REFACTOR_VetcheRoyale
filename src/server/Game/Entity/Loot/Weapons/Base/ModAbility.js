@@ -91,7 +91,7 @@ class ModAbility {
 
     // Callback when deactivating the ability.
     onDeactivation(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.onModDeactivation(entityManager, deltaTime);
+        //composedWeapon.onModDeactivation(entityManager, deltaTime);
     }
 
     deActivate(composedWeapon, entityManager, deltaTime) {
@@ -109,7 +109,7 @@ class ModAbility {
     activate(composedWeapon, entityManager, deltaTime) {
         if (!this.active && !this.onCoolDown) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
-            composedWeapon.onModActivation(entityManager, deltaTime);
+            //composedWeapon.onModActivation(entityManager, deltaTime);
             this.currentDuration = this.maxDuration;
             this.active = true;
         }
@@ -118,7 +118,7 @@ class ModAbility {
     // Overridable looping method for what happens while
     // the ability is active.
     buffs(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.onModBuffs(entityManager, deltaTime);
+        //composedWeapon.onModBuffs(entityManager, deltaTime);
     }
 
     get isOnCoolDown() {

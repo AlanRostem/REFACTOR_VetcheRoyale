@@ -52,10 +52,6 @@ class AttackWeapon extends WeaponItem {
 
     }
 
-    get isSuperActive() {
-        return this.superAbility.active;
-    }
-
     get superCharge() {
         return this.superAbility.currentCharge;
     }
@@ -65,30 +61,6 @@ class AttackWeapon extends WeaponItem {
         if (this.superAbility.currentCharge > 100) {
             this.superAbility.currentCharge = 100;
         }
-    }
-
-    onSuperActivation(entityManager, deltaTime) {
-
-    }
-
-    onSuperBuffs(entityManager, deltaTime) {
-
-    }
-
-    onSuperDeactivation(entityManager, deltaTime) {
-
-    }
-
-    onModActivation(entityManager, deltaTime) {
-
-    }
-
-    onModBuffs(entityManager, deltaTime) {
-
-    }
-
-    onModDeactivation(entityManager, deltaTime) {
-
     }
 
     onFireButton(entityManager, deltaTime) {

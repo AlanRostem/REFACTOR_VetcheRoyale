@@ -194,10 +194,6 @@ class SEW_9 extends AttackWeapon {
         if (player) player.setMovementState("canMove", this.canMove);
     }
 
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
-    }
-
     fire(player, entityManager, deltaTime, angle) {
         if (!this.secondaryFire) {
             this.isShooting = true;
