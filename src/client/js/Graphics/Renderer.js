@@ -188,7 +188,7 @@ const R = {
         },
 
 
-        drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false, space = 0, length = 1) {
+        drawLine(x0, y0, x1, y1, color = "White", thickness = 1, useCamera = false, space = 0, length = 1) {
 
             let counter = length;
             let drawPixel = true;
@@ -212,9 +212,9 @@ const R = {
                         thickness, thickness);
                 }
 
-                if (!counter) {
+                if (counter <= 0) {
                     drawPixel = !drawPixel;
-                    counter = drawPixel ? length : space;
+                    counter = drawPixel ? length : space * thickness;
                 }
 
                 if (x0 === x1 && y0 === y1) break;
