@@ -55,13 +55,13 @@ class CCKER90 extends CWeapon {
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);
                 UI.getElement("enemyDetector").showCentralPoint();
-                UI.getElement("enemyDetector").queryPositions(this.getRealtimeProperty("found"));
             }
         } else {
             let to = {x: 0, y: 0};
             this.toLerp = vectorLinearInterpolation(this.toLerp,
                 vectorLinearInterpolation(this.toLerp, to, .2), .2);
         }
+        UI.getElement("enemyDetector").queryPositions(this.getRealtimeProperty("found"));
         R.camera.shift(this.toLerp.x, this.toLerp.y);
     }
 }

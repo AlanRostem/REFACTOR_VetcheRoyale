@@ -29,9 +29,9 @@ class IceBullet extends Projectile {
 }
 
 class AquaSLGModAbility extends ModAbility {
-    constructor() {
-        super(0.75, 1.5);
-    }
+    static _ = (() => {
+        AquaSLGModAbility.configureStats(0.75, 1.5);
+    })();
 
     onActivation(weapon, entityManager) {
         let player = weapon.getOwner();

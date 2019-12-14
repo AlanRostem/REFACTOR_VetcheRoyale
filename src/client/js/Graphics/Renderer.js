@@ -188,7 +188,7 @@ const R = {
         },
 
 
-        drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false) {
+        drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false, dotSpace = 0) {
 
             x0 = Math.round(x0);
             y0 = Math.round(y0);

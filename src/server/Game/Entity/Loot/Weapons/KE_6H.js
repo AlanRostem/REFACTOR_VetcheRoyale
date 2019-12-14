@@ -71,9 +71,9 @@ class KineticBomb extends Bouncy {
 const RETRACTION_SCANNER = new AOEWormHoleScanner(null, Tile.SIZE * 6, null, .2, 350, null);
 
 class KE_6HModAbility extends ModAbility {
-    constructor() {
-        super(.2, 4, 25);
-    }
+    static _ = (() => {
+        KE_6HModAbility.configureStats(.2, 4);
+    })();
 
     onActivation(composedWeapon, entityManager, deltaTime) {
         composedWeapon.kineticImplosion = true;

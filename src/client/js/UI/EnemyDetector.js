@@ -66,7 +66,7 @@ class EnemyDetector extends UIElement {
             //console.log("FROM DETECTOR", this.found)
             R.drawText(string,
                 R.screenSize.x / 2 - string.length * 2,
-                R.screenSize.y / 2 - 16, color);
+                R.screenSize.y / 3 - 16, color);
         }
 
         this.found = {};

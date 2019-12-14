@@ -16,6 +16,7 @@ class ATBullet extends Projectile {
         this.findPlayers = false;
         this.weapon = null;
         this.stuck = false;
+        this.setCollisionRange(5 * 8, 5 * 8);
     }
 
     update(entityManager, deltaTime) {
@@ -23,6 +24,9 @@ class ATBullet extends Projectile {
         if (this.stuck) {
             this.pos.x = this.stuck.center.x;
             this.pos.y = this.stuck.center.y;
+            if (this.stuck.removed || this.stuck.dead) {
+                this.remove();
+            }
         }
         if (this.seek) {
             this.lifeTime -= deltaTime;
@@ -33,13 +37,8 @@ class ATBullet extends Projectile {
             if (owner) {
                 if (owner.inventory.weapon) {
                     if (owner.inventory.weapon.id === this.wID) {
-                        if (owner.inventory.weapon.dataIsScoping) {
-                            this.findPlayers = true;
-                            this.weapon = owner.inventory.weapon;
-                            this.setCollisionRange(5 * 8, 5 * 8);
-                        } else {
-                            this.findPlayers = false;
-                        }
+                        this.findPlayers = true;
+                        this.weapon = owner.inventory.weapon;
                     }
                 }
             } else {
@@ -51,7 +50,7 @@ class ATBullet extends Projectile {
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         super.forEachNearbyEntity(entity, entityManager, deltaTime);
         if (this.weapon) {
-            if (entity.constructor.name === "Player") {
+            if (entity instanceof Player) {
                 if (entity.id !== this.weapon.playerID && !this.getOwner().isTeammate(entity)) {
                     this.weapon.found[entity.id] = entity.center;
                 }
@@ -138,14 +137,14 @@ class SeekerSmoke extends Bouncy {
     }
 }
 
-const SCOPED_SPEED = 480;
+const SCOPED_SPEED = 520;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 
 class CKER90ModAbility extends ModAbility {
-    constructor() {
-        super(5, 5, true);
-    }
+    static _ = (() => {
+        CKER90ModAbility.configureStats(1, 1, false, 0, true);
+    })();
 
     buffs(composedWeapon, entityManager, deltaTime) {
         let player = composedWeapon.getOwner();

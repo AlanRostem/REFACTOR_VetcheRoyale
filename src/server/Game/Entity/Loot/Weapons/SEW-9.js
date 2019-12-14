@@ -99,9 +99,10 @@ class SuperDamage extends SEntity {
 
 
 class SEW_9ModAbility extends ModAbility {
-    constructor() {
-        super(9, 4, );
-    }
+    static _ = (() => {
+        SEW_9ModAbility.configureStats(9, 4);
+    })();
+
     onActivation(weapon, entityManager, deltaTime) {
         if (!weapon.primaryFire) {
             weapon.currentAmmo--;
