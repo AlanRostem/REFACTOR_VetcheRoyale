@@ -31,10 +31,10 @@ class Firerer {
 
     doSingleFire(weapon, player, entityManager, deltaTime) {
         let angle = this.getRecoilAngle(weapon, player, deltaTime);
-        if (weapon.currentAmmo >= weapon.ammoPerShot) {
+        if (weapon.currentAmmo >= weapon.constructor.AttackStats.AMMO_USE_PER_SHOT) {
             weapon.fire(player, entityManager, deltaTime, angle);
             weapon.firing = true;
-            weapon.currentAmmo -= weapon.ammoPerShot;
+            weapon.currentAmmo -= weapon.constructor.AttackStats.AMMO_USE_PER_SHOT;
         } else if (player.inventory.ammo > 0 && !weapon.reloading) {
             weapon.activateReloadAction();
         }
@@ -68,7 +68,7 @@ class Firerer {
                         } else {
                             this.doSingleFire(weapon, player, entityManager, deltaTime);
                         }
-                        weapon.currentFireTime = 60 / weapon.fireRate;
+                        weapon.currentFireTime = 60 / weapon.constructor.AttackStats.FIRE_RATE_RPM;
                     }
                 } else {
                     if (weapon.currentFireTime <= 0 && !weapon.reloading) {
@@ -77,14 +77,13 @@ class Firerer {
                         } else {
                             this.doSingleFire(weapon, player, entityManager, deltaTime);
                         }
-                        weapon.currentFireTime = 60 / weapon.fireRate;
+                        weapon.currentFireTime = 60 / weapon.constructor.AttackStats.FIRE_RATE_RPM;
                     }
                 }
-            } else if (weapon.currentAmmo === 0 && player.inventory.ammo > 0 && !weapon.reloading){
+            } else if (weapon.currentAmmo === 0 && player.inventory.ammo > 0 && !weapon.reloading) {
                 weapon.activateReloadAction()
             }
         }
-
 
 
         if (this.queueBurst) {

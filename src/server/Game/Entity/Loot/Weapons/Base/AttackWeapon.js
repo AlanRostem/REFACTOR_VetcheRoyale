@@ -81,13 +81,9 @@ class AttackWeapon extends WeaponItem {
         this.modAbilityData = {};
 
         this.currentAmmo = this.constructor.AttackStats.CLIP_SIZE;
-        this.maxAmmo = this.constructor.AttackStats.CLIP_SIZE;
 
         this.currentReloadTime = 0;
-        this.maxReloadTime = this.constructor.AttackStats.RELOAD_SPEED;
 
-        this.ammoPerShot = this.constructor.AttackStats.AMMO_USE_PER_SHOT;
-        this.fireRate = this.constructor.AttackStats.FIRE_RATE_RPM;
         this.currentFireTime = 0;
         this.reloading = false;
     }
@@ -121,9 +117,11 @@ class AttackWeapon extends WeaponItem {
         if (this.modAbility.active) {
             this.modAbility.deActivate(this, entityManager, deltaTime);
         }
+
         if (this.superAbility.active) {
             this.superAbility.deActivate(this, entityManager, deltaTime);
         }
+
         this.firerer.reset();
         this.currentReloadTime = 0;
         this.reloading = false;
@@ -147,18 +145,18 @@ class AttackWeapon extends WeaponItem {
 
     // Called when pressing the reload key.
     activateReloadAction() {
-        if (this.currentAmmo < this.maxAmmo) {
+        if (this.currentAmmo < this.constructor.AttackStats.CLIP_SIZE) {
             this.reloading = true;
             this.canFire = false;
-            this.currentReloadTime = this.maxReloadTime;
+            this.currentReloadTime = this.constructor.AttackStats.RELOAD_SPEED;
         }
     }
 
     // Adds ammo to the clip with correct calculations.
     reload(player) {
-        if (this.maxAmmo > this.currentAmmo) {
-            if (player.inventory.ammo > (this.maxAmmo - this.currentAmmo)) {
-                let ammoDiff = this.maxAmmo - this.currentAmmo;
+        if (this.constructor.AttackStats.CLIP_SIZE > this.currentAmmo) {
+            if (player.inventory.ammo > (this.constructor.AttackStats.CLIP_SIZE - this.currentAmmo)) {
+                let ammoDiff = this.constructor.AttackStats.CLIP_SIZE - this.currentAmmo;
                 this.currentAmmo += ammoDiff;
                 player.inventory.ammo -= ammoDiff;
                 this.canFire = true;
