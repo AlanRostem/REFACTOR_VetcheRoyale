@@ -73,7 +73,7 @@ class AttackWeapon extends WeaponItem {
         this.firerer = new Firerer(this);
         this.firing = false;
         this.spreadAngle = 0;
-        this.canUseSuper = true;
+        this.canUseSuper = false;
         this.canUseMod = true;
         this.canFire = true;
         this.modActive = false;
