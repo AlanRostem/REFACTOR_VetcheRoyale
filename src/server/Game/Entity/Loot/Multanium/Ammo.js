@@ -11,8 +11,9 @@ class Ammo extends Bottle {
     })();
 
     static TYPE = "ammo";
+    static DEFAULT_AMMO_COUNT = 24; //cus dome 24 xD
 
-    constructor(x, y, count = 24 /* cus dome 24 xD*/) {
+    constructor(x, y, count = Ammo.DEFAULT_AMMO_COUNT) {
         super(x, y);
         this.count = count;
         this.type = Ammo.TYPE;

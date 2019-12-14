@@ -35,7 +35,7 @@ class Firewall extends AttackWeapon {
     })();
 
     constructor(x, y) {
-        super(x, y, "Firewall", 0, 0, 0);
+        super(x, y, 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
         this.pellets = 4;
         this.configureAttackStats(1.25, 6, 1, 120);

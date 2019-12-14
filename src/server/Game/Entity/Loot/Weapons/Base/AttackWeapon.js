@@ -32,10 +32,9 @@ class AttackWeapon extends WeaponItem {
     }
 
     constructor(x, y,
-                displayName, weaponClass = "pistol",
                 spread = 0, recoil = 0, accurator = 0,
                 chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
-        super(x, y, displayName, weaponClass);
+        super(x, y);
         this.modAbility = new this.constructor.ModAbilityClass();
         this.superAbility = new this.constructor.SuperAbilityClass();
         this.superChargeData = 0;
@@ -90,16 +89,6 @@ class AttackWeapon extends WeaponItem {
 
     onModDeactivation(entityManager, deltaTime) {
 
-    }
-
-    // Override to new ability object
-    setModAbility(overridden) {
-        this.modAbility = overridden;
-    }
-
-    // Override to new ability object
-    setSuperAbility(overridden) {
-        this.superAbility = overridden;
     }
 
     onFireButton(entityManager, deltaTime) {
@@ -215,11 +204,11 @@ class AttackWeapon extends WeaponItem {
         this.listenToInput(player, entityManager, deltaTime);
         this.modAbility.update(this, entityManager, deltaTime);
         this.superAbility.update(this, entityManager, deltaTime);
-        this.superChargeData = this.superCharge;
+        this.superChargeData = this.superAbility.currentCharge;
         this.modCoolDownData = this.modAbility.currentCoolDown;
 
-        this.canUseMod = this.modAbility.currentCoolDown === 0;
-        this.canUseSuper = this.superAbility.currentCharge === 100;
+        this.canUseMod = this.modAbility.currentCoolDown === SuperAbility.MIN_CHARGE;
+        this.canUseSuper = this.superAbility.currentCharge === SuperAbility.MAX_CHARGE;
 
         if (this.reloading) {
             this.currentReloadTime -= deltaTime;

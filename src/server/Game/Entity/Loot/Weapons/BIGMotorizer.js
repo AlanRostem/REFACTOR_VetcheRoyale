@@ -79,7 +79,7 @@ class StunEffect extends Effect {
 
 class BIGMotorizer extends AttackWeapon {
     constructor(x, y) {
-        super(x, y, "Gust Motorizer", "rifle",
+        super(x, y,
             5 * Math.PI / 180,
             Math.PI / 180,
             0.07 * Math.PI / 180,

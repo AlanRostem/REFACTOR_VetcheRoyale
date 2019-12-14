@@ -3,6 +3,8 @@ import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
 
 export default class CKE_6H extends CWeapon {
+    static DISPLAY_NAME = "KE-6H";
+
     constructor(data) {
         super(data, 2);
     }

@@ -128,7 +128,7 @@ class SeekerSmoke extends Bouncy {
             this.vel.x = 0;
         }
 
-        if(!this.findPlayers && this.getOwner().input.singleKeyPress(81)) {
+        if (!this.findPlayers && this.getOwner().input.singleKeyPress(81)) {
             this.findPlayers = true;
             this.vel.x = this.vel.y = this.acc.y = 0;
         }
@@ -141,7 +141,7 @@ const SCOPED_SPEED = 480;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 
-class CKER90ModAbility extends  ModAbility{
+class CKER90ModAbility extends ModAbility {
     constructor() {
         super(5, 5, true);
     }
@@ -164,6 +164,7 @@ class CKER90SuperAbility extends SuperAbility {
     constructor() {
         super(0, 100, 100);
     }
+
     onActivation(composedWeapon, entityManager, deltaTime) {
         let player = composedWeapon.getOwner();
         let angle = 0;
@@ -192,7 +193,7 @@ class CKER90 extends AttackWeapon {
     })();
 
     constructor(x, y) {
-        super(x, y, "C-KER .90", "rifle");
+        super(x, y);
         this.dataIsScoping = false;
         this.configureAttackStats(2,
             10,

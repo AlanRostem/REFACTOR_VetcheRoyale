@@ -62,6 +62,9 @@ class AquaSLGModAbility extends ModAbility {
 }
 
 class AquaSLGSuperAbility extends SuperAbility {
+    constructor() {
+        super(0.1, 100, 100);
+    }
     onActivation(weapon, entityManager, deltaTime) {
         weapon.superAbilitySnap = true;
         let exceptions = weapon.getOwner().team.players;
@@ -77,13 +80,12 @@ class AquaSLGSuperAbility extends SuperAbility {
 class AquaSLG extends AttackWeapon {
 
     static _ = (() => {
-        // Shit look at this line
         AquaSLG.assignWeaponClassAbilities(AquaSLGModAbility, AquaSLGSuperAbility);
         AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
     })();
 
     constructor(x, y) {
-        super(x, y, "AquaSLG", 0, 0, 0);
+        super(x, y, 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
         this.secondaryUse = false;
         this.superAbilitySnap = false;
