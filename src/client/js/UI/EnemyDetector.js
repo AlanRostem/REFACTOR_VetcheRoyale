@@ -2,6 +2,7 @@ import UIElement from "./UIElement.js";
 import R from "../Graphics/Renderer.js";
 import Vector2D from "../../../shared/code/Math/CVector2D.js";
 import Scene from "../Game/Scene.js";
+import CHitScanner from "../Game/Entity/Player/CHitScanner.js";
 
 class EnemyDetector extends UIElement {
     constructor(x, y) {
@@ -10,6 +11,7 @@ class EnemyDetector extends UIElement {
         this.maxFlashTime = .5;
         this.flashTime = 0;
         this.showScope = false;
+        this.lineScanner = new CHitScanner();
     }
 
     showCentralPoint() {
@@ -72,14 +74,25 @@ class EnemyDetector extends UIElement {
         this.found = {};
 
         if (this.showScope) {
-            R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 - 1, 1,1);
-            R.drawRect("red", R.screenSize.x / 2 - 1, R.screenSize.y / 2, 1,1);
-            R.drawRect("red", R.screenSize.x / 2 + 1, R.screenSize.y / 2, 1,1);
-            R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 + 1, 1,1);
+            R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 - 1, 1, 1);
+            R.drawRect("red", R.screenSize.x / 2 - 1, R.screenSize.y / 2, 1, 1);
+            R.drawRect("red", R.screenSize.x / 2 + 1, R.screenSize.y / 2, 1, 1);
+            R.drawRect("red", R.screenSize.x / 2, R.screenSize.y / 2 + 1, 1, 1);
+            let p0 = {
+                x: Scene.clientRef.player.output.pos.x + Scene.clientRef.player.width / 2,
+                y: Scene.clientRef.player.output.pos.y + Scene.clientRef.player.height / 2,
+            };
+            let p1 = {
+                x: R.screenSize.x / 2 - R.camera.x,
+                y: R.screenSize.y / 2 - R.camera.y,
+            };
+
+            this.lineScanner.scan(p0, p1, Scene.getCurrentTileMap());
+
             R.drawLine(
-                Scene.clientRef.player.output.pos.x + Scene.clientRef.player.width / 2 + R.camera.x,
-                Scene.clientRef.player.output.pos.y + Scene.clientRef.player.height / 2 + R.camera.y,
-                R.screenSize.x / 2, R.screenSize.y / 2, "Red", 1, false, 10
+                p0.x + R.camera.x, p0.y + R.camera.y,
+                this.lineScanner.end.x + R.camera.x, this.lineScanner.end.y + R.camera.y,
+                "Red", 1, false, 10
             )
         }
 
