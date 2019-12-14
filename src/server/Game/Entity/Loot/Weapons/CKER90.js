@@ -189,16 +189,13 @@ class CKER90 extends AttackWeapon {
         CKER90.assignWeaponClassAbilities(CKER90ModAbility, CKER90SuperAbility);
         CKER90.addDynamicValues(
             "dataIsScoping",
-            "found")
+            "found");
+        CKER90.overrideAttackStats(2, 10, 60)
     })();
 
     constructor(x, y) {
         super(x, y);
         this.dataIsScoping = false;
-        this.configureAttackStats(2,
-            10,
-            1,
-            60);
         this.found = {};
         this.entityType = "AttackWeapon";
     }

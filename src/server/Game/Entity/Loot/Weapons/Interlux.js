@@ -16,6 +16,7 @@ class Interlux extends AttackWeapon {
     static _ = (() => {
         Interlux.assignWeaponClassAbilities(InterluxModAbility, InterluxSuperAbility);
         Interlux.addDynamicValues("secondaryFire", "superAbilitySnap", "lines");
+        Interlux.overrideAttackStats(1.5, 400, 500);
     })();
 
     constructor(x, y) {
@@ -32,8 +33,6 @@ class Interlux extends AttackWeapon {
 
         this.secondaryFire = false;
         this.superAbilitySnap = false;
-
-        this.configureAttackStats(1.5, 400, 1, 500);
     }
 
     update(entityManager, deltaTime) {

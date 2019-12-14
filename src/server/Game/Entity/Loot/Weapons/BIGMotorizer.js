@@ -78,14 +78,15 @@ class StunEffect extends Effect {
 }
 
 class BIGMotorizer extends AttackWeapon {
-    constructor(x, y) {
-        super(x, y,
+    static _ = (() => {
+        BIGMotorizer.overrideAttackStats(1.5, 36, 100, 1,
             5 * Math.PI / 180,
             Math.PI / 180,
-            0.07 * Math.PI / 180,
-            0, 6, 0.05);
-        this.configureAttackStats(1.5, 36, 1, 100);
-        this.modAbility.configureStats(.5, 10);
+            0.07 * Math.PI / 180, 0, 6, 0.05)
+    })();
+
+    constructor(x, y) {
+        super(x, y);
     }
 
     fire(player, entityManager, deltaTime, angle) {

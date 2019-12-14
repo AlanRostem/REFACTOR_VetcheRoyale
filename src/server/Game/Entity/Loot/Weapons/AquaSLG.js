@@ -82,6 +82,7 @@ class AquaSLG extends AttackWeapon {
     static _ = (() => {
         AquaSLG.assignWeaponClassAbilities(AquaSLGModAbility, AquaSLGSuperAbility);
         AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
+        AquaSLG.overrideAttackStats(2.25, 25, 500);
     })();
 
     constructor(x, y) {
@@ -90,7 +91,6 @@ class AquaSLG extends AttackWeapon {
         this.secondaryUse = false;
         this.superAbilitySnap = false;
         this.maxSpeed = 102;
-        this.configureAttackStats(2.25, 25, 1, 500);
     }
 
     fire(player, entityManager, deltaTime, angle) {

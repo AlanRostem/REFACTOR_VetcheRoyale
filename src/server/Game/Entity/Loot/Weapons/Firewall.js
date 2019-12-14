@@ -32,13 +32,13 @@ class FirewallSuperAbility extends SuperAbility {
 class Firewall extends AttackWeapon {
     static _ = (() => {
         Firewall.assignWeaponClassAbilities(FirewallModAbility, FirewallSuperAbility);
+        Firewall.overrideAttackStats(1.25, 6, 120);
     })();
 
     constructor(x, y) {
         super(x, y, 0, 0, 0);
         this.superAbility.tickChargeGain = 100;
         this.pellets = 4;
-        this.configureAttackStats(1.25, 6, 1, 120);
     }
 
     fire(player, entityManager, deltaTime, angle) {

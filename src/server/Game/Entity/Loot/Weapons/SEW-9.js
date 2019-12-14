@@ -161,6 +161,7 @@ class SEW_9 extends AttackWeapon {
     static _ = (() => {
         SEW_9.assignWeaponClassAbilities(SEW_9ModAbility, SEW_9SuperAbility);
         SEW_9.addDynamicValues("misPos", "secondaryFire", "superAbilitySnap", "isShooting");
+        SEW_9.overrideAttackStats(2.25, 5, 100);
     })();
 
     constructor(x, y) {
@@ -175,7 +176,6 @@ class SEW_9 extends AttackWeapon {
         this.secondaryFire = false;
         this.superAbilitySnap = false;
         this.isShooting = false;
-        this.configureAttackStats(2.25, 5, 1, 100);
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {

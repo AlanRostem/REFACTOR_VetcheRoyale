@@ -26,20 +26,51 @@ class AttackWeapon extends WeaponItem {
     static ModAbilityClass = ModAbility;
     static SuperAbilityClass = SuperAbility;
 
+
     static assignWeaponClassAbilities(classForMod, classForSuper) {
         this.ModAbilityClass = classForMod;
         this.SuperAbilityClass = classForSuper;
     }
 
-    constructor(x, y,
-                spread = 0, recoil = 0, accurator = 0,
-                chargeSeconds = 0, burstCount = 0, burstDelay = 0) {
+    static AttackStats = {
+        SPREAD: 0,
+        RECOIL: 0,
+        BLOOM_REGULATOR: 0,
+
+        CHARGE_TIME: 0,
+
+        BURST_COUNT: 0,
+        BURST_DELAY: 0,
+
+        RELOAD_SPEED: 2,
+        CLIP_SIZE: 10,
+        AMMO_USE_PER_SHOT: 1,
+        FIRE_RATE_RPM: 600,
+    };
+
+    static overrideAttackStats(reloadSpeed, clipSize, fireRateRPM,
+                               ammoUsePerShot = 1, spread = 0, recoil = 0, bloomRegulator = 0,
+                               chargeTime = 0, burstCount = 0, burstDelay = 0) {
+        this.AttackStats = {};
+        this.AttackStats.RELOAD_SPEED = reloadSpeed;
+        this.AttackStats.CLIP_SIZE = clipSize;
+        this.AttackStats.FIRE_RATE_RPM = fireRateRPM;
+        this.AttackStats.AMMO_USE_PER_SHOT = ammoUsePerShot;
+        this.AttackStats.SPREAD = spread;
+        this.AttackStats.RECOIL = recoil;
+        this.AttackStats.BLOOM_REGULATOR = bloomRegulator;
+        this.AttackStats.CHARGE_TIME = chargeTime;
+        this.AttackStats.BURST_COUNT = burstCount;
+        this.AttackStats.BURST_DELAY = burstDelay;
+    }
+
+    constructor(x, y) {
         super(x, y);
         this.modAbility = new this.constructor.ModAbilityClass();
         this.superAbility = new this.constructor.SuperAbilityClass();
         this.superChargeData = 0;
         this.modCoolDownData = 0;
-        this.firerer = new Firerer(chargeSeconds, burstCount, burstDelay, spread, recoil, accurator);
+        this.firerer = new Firerer(this);
         this.firing = false;
         this.spreadAngle = 0;
         this.canUseSuper = true;
@@ -48,8 +79,17 @@ class AttackWeapon extends WeaponItem {
         this.modActive = false;
         this.superActive = false;
         this.modAbilityData = {};
-        this.configureAttackStats(2, 10, 1, 600);
 
+        this.currentAmmo = this.constructor.AttackStats.CLIP_SIZE;
+        this.maxAmmo = this.constructor.AttackStats.CLIP_SIZE;
+
+        this.currentReloadTime = 0;
+        this.maxReloadTime = this.constructor.AttackStats.RELOAD_SPEED;
+
+        this.ammoPerShot = this.constructor.AttackStats.AMMO_USE_PER_SHOT;
+        this.fireRate = this.constructor.AttackStats.FIRE_RATE_RPM;
+        this.currentFireTime = 0;
+        this.reloading = false;
     }
 
     get superCharge() {
@@ -58,8 +98,8 @@ class AttackWeapon extends WeaponItem {
 
     set superCharge(val) {
         this.superAbility.currentCharge += val;
-        if (this.superAbility.currentCharge > 100) {
-            this.superAbility.currentCharge = 100;
+        if (this.superAbility.currentCharge > SuperAbility.MAX_CHARGE) {
+            this.superAbility.currentCharge =  SuperAbility.MAX_CHARGE;
         }
     }
 
@@ -73,18 +113,7 @@ class AttackWeapon extends WeaponItem {
     }
 
     // Configures all stats for the primary attack of the weapon.
-    configureAttackStats(reloadSpeed, clipSize, ammoUsagePerShot, fireRateRPM) {
-        this.currentAmmo = clipSize;
-        this.maxAmmo = clipSize;
 
-        this.currentReloadTime = 0;
-        this.maxReloadTime = reloadSpeed;
-
-        this.ammoPerShot = ammoUsagePerShot;
-        this.fireRate = fireRateRPM;
-        this.currentFireTime = 0;
-        this.reloading = false;
-    }
 
     // Happens when the player drops the weapon. Good for resetting
     // certain abilities to retain the flow of the game.

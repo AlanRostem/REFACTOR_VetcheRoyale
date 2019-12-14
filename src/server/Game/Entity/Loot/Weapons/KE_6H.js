@@ -99,13 +99,13 @@ class KE_6HSuperAbility extends SuperAbility {
 class KE_6H extends AttackWeapon {
     static _ = (() => {
         KE_6H.assignWeaponClassAbilities(KE_6HModAbility, KE_6HSuperAbility);
+        KE_6H.overrideAttackStats(2.5, 8, 100);
     })();
 
     constructor(x, y) {
         super(x, y, 0, 0, 0);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
-        this.configureAttackStats(2.5, 8, 1, 100);
     }
 
     fire(player, entityManager, deltaTime, angle) {
