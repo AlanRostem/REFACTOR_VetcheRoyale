@@ -188,7 +188,10 @@ const R = {
         },
 
 
-        drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false) {
+        drawLine(x0, y0, x1, y1, color = "White", thickness = 1, useCamera = false, space = 0, length = 1) {
+
+            let counter = length;
+            let drawPixel = true;
 
             x0 = Math.round(x0);
             y0 = Math.round(y0);
@@ -200,11 +203,20 @@ const R = {
             var err = (dx > dy ? dx : -dy) / 2;
 
             while (true) {
-                R.context.fillStyle = color;
-                R.context.fillRect(
-                    Math.round(x0 + (useCamera ? R.camera.x : 0)),
-                    Math.round(y0 + (useCamera ? R.camera.y : 0)),
-                    thickness, thickness);
+
+                if ((counter-- && drawPixel) || !space) {
+                    R.context.fillStyle = color;
+                    R.context.fillRect(
+                        Math.round(x0 + (useCamera ? R.camera.x : 0)),
+                        Math.round(y0 + (useCamera ? R.camera.y : 0)),
+                        thickness, thickness);
+                }
+
+                if (counter <= 0) {
+                    drawPixel = !drawPixel;
+                    counter = drawPixel ? length : space * thickness;
+                }
+
                 if (x0 === x1 && y0 === y1) break;
 
                 var e2 = err;
@@ -246,8 +258,8 @@ const R = {
             if (img) {
                 if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
                 R.context.drawImage(img, cropX, cropY, cropW, cropH,
-                    Math.round(x  + (useCamera ? R.camera.displayPos.x : 0)),
-                    Math.round(y +  (useCamera ? R.camera.displayPos.y : 0)),
+                    Math.round(x + (useCamera ? R.camera.displayPos.x : 0)),
+                    Math.round(y + (useCamera ? R.camera.displayPos.y : 0)),
                     Math.round(w),
                     Math.round(h));
             }

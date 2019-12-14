@@ -35,7 +35,7 @@ class CIceBullet extends CProjectile {
     }
 
     draw() {
-        super.draw();
+       // super.draw();
         R.drawCroppedImage(
             AssetManager.getMapImage("AquaSLG_bullet"),
             0,
