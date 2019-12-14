@@ -84,18 +84,21 @@ class CElectricSphere extends CProjectile {
         let pos = this.getRealtimeProperty("pos");
 
         let player = this.player;
-
+/*
         if (this.timeStamp < 7) {
-            CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 5, 5);
+
+            CElectricSphere.sphereAnimation.animate("SEW-9_bullet", this.animationSpec, 3, 3);
             CElectricSphere.sphereAnimation.drawAnimated(
-                pos.x + R.camera.x - 1,
-                pos.y + R.camera.y - 1);
+                pos.x + R.camera.x,
+                pos.y + R.camera.y);
         } else {
-            CElectricSphere.sphereAnimation2.animate("SEW-9_bullet2", this.animationSpec, 5, 5);
+            CElectricSphere.sphereAnimation2.animate("SEW-9_bullet2", this.animationSpec, 3, 3);
             CElectricSphere.sphereAnimation2.drawAnimated(
-                pos.x + R.camera.x - 1,
-                pos.y + R.camera.y - 1);
-        }
+                pos.x + R.camera.x,
+                pos.y + R.camera.y);
+        }*/
+
+        R.drawRect("Red", pos.x, pos.y, 3, 3, true);
 
         /*R.drawCroppedImage(AssetManager.getMapImage("SEW-9_bullet"),
             0, 0,
