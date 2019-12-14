@@ -190,7 +190,7 @@ const R = {
 
         drawLine(x0, y0, x1, y1, color = "White", thickness, useCamera = false, space = 0, length = 1) {
 
-            let counter = space;
+            let counter = length;
             let drawPixel = true;
 
             x0 = Math.round(x0);
@@ -204,7 +204,7 @@ const R = {
 
             while (true) {
 
-                if(counter-- && drawPixel) {
+                if (counter-- && drawPixel) {
                     R.context.fillStyle = color;
                     R.context.fillRect(
                         Math.round(x0 + (useCamera ? R.camera.x : 0)),
@@ -212,7 +212,7 @@ const R = {
                         thickness, thickness);
                 }
 
-                if(!counter) {
+                if (!counter) {
                     drawPixel = !drawPixel;
                     counter = drawPixel ? length : space;
                 }
@@ -258,8 +258,8 @@ const R = {
             if (img) {
                 if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
                 R.context.drawImage(img, cropX, cropY, cropW, cropH,
-                    Math.round(x  + (useCamera ? R.camera.displayPos.x : 0)),
-                    Math.round(y +  (useCamera ? R.camera.displayPos.y : 0)),
+                    Math.round(x + (useCamera ? R.camera.displayPos.x : 0)),
+                    Math.round(y + (useCamera ? R.camera.displayPos.y : 0)),
                     Math.round(w),
                     Math.round(h));
             }
