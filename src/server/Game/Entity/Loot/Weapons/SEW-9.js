@@ -166,7 +166,7 @@ class SEW_9 extends AttackWeapon {
     })();
 
     constructor(x, y) {
-        super(x, y, 0, 0, 0);
+        super(x, y);
         this.misRef = null;
         this.misPos = null;
 

@@ -86,7 +86,7 @@ class AquaSLG extends AttackWeapon {
     })();
 
     constructor(x, y) {
-        super(x, y, 0, 0, 0);
+        super(x, y);
         this.superAbility.tickChargeGain = 100;
         this.secondaryUse = false;
         this.superAbilitySnap = false;
