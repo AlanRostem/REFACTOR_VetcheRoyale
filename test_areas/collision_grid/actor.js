@@ -19,7 +19,7 @@ class Actor {
         this.height = h;
         this.color = clr;
         this.entitiesInProximity = {};
-        this.entitiesInProximity.collisionBoundary = new CollisionBoundary(x, y, w * 3, h * 3)
+        this.entitiesInProximity.collisionBoundary = new CollisionBoundary(x, y, w * 3, h * 3);
         this.time = 0;
     }
 
