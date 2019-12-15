@@ -20,8 +20,8 @@ class OtherPlayer extends CEntity {
         this.animations = new AnimationManager();
         this.animations.addAnimation("run", new SpriteSheet.Animation(0, 5, 16, 0.1));
         this.animations.addAnimation("stand", new SpriteSheet.Animation(6, 6, 16, 0.1));
-        this.animations.addAnimation("jump", new SpriteSheet.Animation(0, 0, 16, 0.1));
-        this.animations.addAnimation("fall", new SpriteSheet.Animation(3, 3, 16, 0.1));
+        this.animations.addAnimation("jump", new SpriteSheet.Animation(2, 2, 16, 0.1));
+        this.animations.addAnimation("fall", new SpriteSheet.Animation(0, 0, 16, 0.1));
         this.animations.setCurrentAnimation("stand");
         this.movementState = {};
         this.deltaPos = {x: 0, y: 0};
