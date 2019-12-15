@@ -16,7 +16,6 @@ class ATBullet extends Projectile {
         this.findPlayers = false;
         this.weapon = null;
         this.stuck = false;
-        this.setCollisionRange(5 * 8, 5 * 8);
     }
 
     update(entityManager, deltaTime) {
