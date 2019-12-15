@@ -9,7 +9,7 @@ const SuperAbility = require("./Base/SuperAbility.js");
 class ATBullet extends Projectile {
     constructor(owner, wID, x, y, speed, arc, angle) {
         super(owner, x, y, 2, 2, angle, speed, arc, false);
-        this.damage = new Damage(50, owner);
+        this.damage = new Damage(20, owner);
         this.seek = false;
         this.lifeTime = 10;
         this.wID = wID;
