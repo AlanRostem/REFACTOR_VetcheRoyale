@@ -90,6 +90,7 @@ class SeekerSmoke extends Bouncy {
     })();
 
     static LIFE_DURATION = 10;
+
     constructor(owner, weapon, x, y, angle) {
         super(owner, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
@@ -146,11 +147,15 @@ class CKER90ModAbility extends ModAbility {
         CKER90ModAbility.configureStats(1, 1, false, 0, true);
     })();
 
+
     buffs(composedWeapon, entityManager, deltaTime) {
         let player = composedWeapon.getOwner();
         if (player) {
             composedWeapon.dataIsScoping = player.input.heldDownMapping("modAbility");
         }
+
+        composedWeapon.firerer.maxFireRate = composedWeapon.dataIsScoping ?
+            composedWeapon.constructor.SCOPED_FIRE_RATE : composedWeapon.constructor.UNSCOPED_FIRE_RATE
     }
 
     onDeactivation(composedWeapon, entityManager, deltaTime) {
@@ -203,12 +208,14 @@ class CKER90SuperAbility extends SuperAbility {
 }
 
 class CKER90 extends AttackWeapon {
+    static SCOPED_FIRE_RATE = 60;
+    static UNSCOPED_FIRE_RATE = 1.5 * 60;
     static _ = (() => {
         CKER90.assignWeaponClassAbilities(CKER90ModAbility, CKER90SuperAbility);
         CKER90.addDynamicValues(
             "dataIsScoping",
             "found");
-        CKER90.overrideAttackStats(2, 10, 60)
+        CKER90.overrideAttackStats(2, 10, CKER90.UNSCOPED_FIRE_RATE);
     })();
 
     constructor(x, y) {

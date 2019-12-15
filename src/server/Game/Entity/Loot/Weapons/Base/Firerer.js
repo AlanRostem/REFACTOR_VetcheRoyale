@@ -12,6 +12,7 @@ class Firerer {
         this.burstCount = stats.BURST_COUNT;
 
         this.burstDelay = stats.BURST_DELAY;
+        this.maxFireRate = stats.FIRE_RATE_RPM;
 
         this.currentRecoil = 0;
     }
@@ -68,7 +69,7 @@ class Firerer {
                         } else {
                             this.doSingleFire(weapon, player, entityManager, deltaTime);
                         }
-                        weapon.currentFireTime = 60 / weapon.constructor.AttackStats.FIRE_RATE_RPM;
+                        weapon.currentFireTime = 60 / this.maxFireRate;
                     }
                 } else {
                     if (weapon.currentFireTime <= 0 && !weapon.reloading) {
@@ -77,7 +78,7 @@ class Firerer {
                         } else {
                             this.doSingleFire(weapon, player, entityManager, deltaTime);
                         }
-                        weapon.currentFireTime = 60 / weapon.constructor.AttackStats.FIRE_RATE_RPM;
+                        weapon.currentFireTime = 60 / this.maxFireRate;
                     }
                 }
             } else if (weapon.currentAmmo === 0 && player.inventory.ammo > 0 && !weapon.reloading) {
