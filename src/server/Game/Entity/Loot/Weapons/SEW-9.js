@@ -69,10 +69,9 @@ class ElectricSphere extends Projectile {
 }
 
 class SuperDamage extends SEntity {
+    static DAMAGE = 1;
     constructor(x, y, w, h, player) {
         super(x, y, w, h);
-        this.damage = new Damage(1, player);
-
     }
 
     update(game, deltaTime) {
@@ -90,7 +89,7 @@ class SuperDamage extends SEntity {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
             if (!entity.isTeammate(this.damage.player)) {
-                this.damage.inflict(entity, entityManager);
+                Damage.inflict(this.getOwner(), entity, entityManager, this.constructor.DAMAGE);
             }
         }
     }

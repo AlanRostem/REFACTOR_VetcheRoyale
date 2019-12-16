@@ -10,10 +10,10 @@ const SuperAbility = require("./Base/SuperAbility.js");
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
+    static DAMAGE = 8;
     constructor(weaponRef, owner, x, y, angle) {
         super(owner, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
-        this.directHitDmg = new Damage(8, owner);
 
         this.exceptions = {};
         for (let key in owner.team.players) {
@@ -30,7 +30,7 @@ class KineticBomb extends Bouncy {
     }
 
     onEnemyHit(player, entityManager) {
-        this.directHitDmg.inflict(player, entityManager);
+        Damage.inflict(this.getOwner(), player, entityManager, this.constructor.DAMAGE);
         this.detonate(entityManager);
     }
 

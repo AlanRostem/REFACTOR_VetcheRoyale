@@ -6,9 +6,9 @@ const Damage = require("../../../Mechanics/Damage/Damage.js");
 
 // Projectile fired by the firewall
 class Firepellet extends Projectile {
+    static DAMAGE = 8;
     constructor(owner, weaponID, x, y, angle, entityManager) {
         super(owner, x, y, 2, 1, angle, 4 * 100);
-        this.damage = new Damage(8, owner);
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -16,7 +16,7 @@ class Firepellet extends Projectile {
     }
 
     onEnemyHit(player, entityManager) {
-        this.damage.inflict(player, entityManager);
+        Damage.inflict(this.getOwner(), player, entityManager, this.constructor.DAMAGE);
         this.remove();
     }
 }

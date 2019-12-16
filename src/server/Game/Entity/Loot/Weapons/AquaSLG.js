@@ -8,9 +8,9 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 
 // Projectile fired by the AquaSLG
 class IceBullet extends Projectile {
+    static DAMAGE = 10;
     constructor(owner, x, y, angle) {
         super(owner, x, y, 2, 2, angle, 300);
-        this.damage = new Damage(10, owner);
 
         //let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
@@ -23,7 +23,7 @@ class IceBullet extends Projectile {
     }
 
     onEnemyHit(player, entityManager) {
-        this.damage.inflict(player, entityManager);
+        Damage.inflict(this.getOwner(), player, entityManager, this.constructor.DAMAGE);
         this.remove();
     }
 }
@@ -38,11 +38,11 @@ class AquaSLGModAbility extends ModAbility {
         //if(player.vel.y >= 0) player.vel.y = 0;
         player.vel.y = 0;
         weapon.secondaryUse = true;
-    };
+    }
 
     onDeactivation(weapon, entityManager, deltaTime) {
         weapon.secondaryUse = false;
-    };
+    }
 
     buffs(weapon, entityManager, deltaTime) {
         let player = weapon.getOwner();
@@ -58,7 +58,7 @@ class AquaSLGModAbility extends ModAbility {
             this.currentCoolDown = this.maxDuration - oldCharge;
         }
 
-    };
+    }
 }
 
 class AquaSLGSuperAbility extends SuperAbility {

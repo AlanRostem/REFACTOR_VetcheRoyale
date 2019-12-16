@@ -7,9 +7,9 @@ const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
 
 class ATBullet extends Projectile {
+    static DAMAGE = 20;
     constructor(owner, wID, x, y, speed, arc, angle) {
         super(owner, x, y, 2, 2, angle, speed, arc, false);
-        this.damage = new Damage(20, owner);
         this.seek = false;
         this.lifeTime = 10;
         this.wID = wID;
@@ -59,7 +59,7 @@ class ATBullet extends Projectile {
 
     onEnemyHit(entity, entityManager) {
         if (!this.seek) {
-            this.damage.inflict(entity, entityManager);
+            Damage.inflict(this.getOwner(), entity, entityManager, this.constructor.DAMAGE);
         }
         this.stuck = entity;
         this.startSeek();
