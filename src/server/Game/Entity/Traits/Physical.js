@@ -1,6 +1,5 @@
 const Entity = require("../SEntity.js");
 const Tile = require("../../TileBased/Tile.js");
-const EntityCollider = require("../Management/EntityCollider.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
 const MovementTracker = require("../Management/EntityMovementTracker.js");
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
@@ -219,7 +218,7 @@ class Physical extends Entity {
     }
 
     onEntityCollision(entity, entityManager) {
-        EntityCollider.applyCollisionsEffects(this, entity, entityManager);
+
     }
 
     // Overridable method for collisions along the X-axis.

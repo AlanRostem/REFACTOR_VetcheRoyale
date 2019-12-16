@@ -72,11 +72,12 @@ class SuperDamage extends SEntity {
     static DAMAGE = 1;
     constructor(x, y, w, h, player) {
         super(x, y, w, h);
+        this.player = player;
     }
 
     update(game, deltaTime) {
         super.update(game, deltaTime);
-        let player = this.damage.player;
+        let player = this.player;
         if (player) {
             this.pos.x = player.center.x;
             this.pos.y = player.center.y;
@@ -88,8 +89,8 @@ class SuperDamage extends SEntity {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.isTeammate(this.damage.player)) {
-                Damage.inflict(this.getOwner(), entity, entityManager, this.constructor.DAMAGE);
+            if (!entity.isTeammate(this.player)) {
+                Damage.inflict(this.player, entity, entityManager, this.constructor.DAMAGE);
             }
         }
     }
@@ -146,7 +147,7 @@ class SEW_9SuperAbility extends SuperAbility {
     onActivation(composedWeapon, entityManager, deltaTime) {
         composedWeapon.superAbilitySnap = true;
         entityManager.spawnEntity(composedWeapon.center.x, composedWeapon.center.y,
-            composedWeapon.damageBox = new SuperDamage(composedWeapon.cenzter.x, composedWeapon.center.y, 100, composedWeapon.getOwner().height, composedWeapon.getOwner())
+            composedWeapon.damageBox = new SuperDamage(composedWeapon.center.x, composedWeapon.center.y, 100, composedWeapon.getOwner().height, composedWeapon.getOwner())
         );
     }
 
