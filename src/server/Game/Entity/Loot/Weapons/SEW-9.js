@@ -100,7 +100,7 @@ class SuperDamage extends SEntity {
 
 class SEW_9ModAbility extends ModAbility {
     constructor() {
-        super(9, 4, );
+        super(9, 4);
     }
     onActivation(weapon, entityManager, deltaTime) {
         if (!weapon.primaryFire) {

@@ -55,6 +55,8 @@ class SpriteSheet {
      * @param ctx {CanvasRenderingContext2D} - Default parameter to R.context. Can be overridden to draw on different canvases
      */
     drawCropped(cropX, cropY, cropW, cropH, x, y, w, h, ctx = R.context) {
+        R.context.save();
+
         if (this.img) {
             if (w === 0 || h === 0 || cropW === 0 || cropH === 0) return;
             ctx.drawImage(this.img, cropX, cropY, cropW, cropH,
@@ -63,6 +65,8 @@ class SpriteSheet {
                 Math.round(w),
                 Math.round(h));
         }
+
+        R.context.restore();
     }
 
     /**
@@ -178,6 +182,8 @@ class SpriteSheet {
      * @param h {number} - Output height of the sprite (defaults to the animation height)
      */
     drawAnimated(x, y, w = this.animRect.w, h = this.animRect.h) {
+        R.context.save();
+
         if (!this.img) return;
 
         var rect = this.animRect;
@@ -200,9 +206,13 @@ class SpriteSheet {
             w, h);
 
         this.flipped = false;
+
+        R.context.restore();
+
     }
 
     drawCroppedAnimated(cropX, cropY, cropW, cropH, x, y, w = this.animRect.w, h = this.animRect.h, ctx = R.context) {
+        R.context.save();
         if (!this.img) return;
 
         var rect = this.animRect;
@@ -228,6 +238,7 @@ class SpriteSheet {
             Math.round(h));
 
         this.flipped = false;
+        R.context.restore();
     }
 
 }
