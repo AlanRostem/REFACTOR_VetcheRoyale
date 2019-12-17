@@ -39,7 +39,6 @@ export default class CAquaSLG extends CWeapon {
         this.secondaryUse = this.getRealtimeProperty("secondaryUse");
         this.superAbility = this.getRealtimeProperty("superAbilitySnap");
 
-        console.log(this.superAbility);
         if (this.effect) {
             this.effect.updatePos(this.waterDrawX, this.waterDrawY);
             if (this.effect.remove) this.effect = null;
