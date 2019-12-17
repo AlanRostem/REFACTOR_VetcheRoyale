@@ -41,8 +41,6 @@ export default class CFirewall extends CWeapon {
         this.superAbility = this.getRealtimeProperty("superAbilitySnap");
         this.wallWidth = this.getRealtimeProperty("wallWidth");
 
-        this.effect = EffectManager.createEffect(this.waterDrawX, this.waterDrawY, "AquaWaterEnd", 0);
-
         if(this.hasUsedMod) this.fireEndPH = true;
         if(!this.hasUsedMod && this.fireEndPH) {
             this.fireEndPH = false;
@@ -63,7 +61,6 @@ export default class CFirewall extends CWeapon {
             CFirewall.fireAnimation2.flipX();
         }
 
-        console.log(this.wallWidth);
 
         R.ctx.save();
 

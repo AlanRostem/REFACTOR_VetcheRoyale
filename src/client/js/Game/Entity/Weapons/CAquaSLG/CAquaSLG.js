@@ -35,17 +35,19 @@ export default class CAquaSLG extends CWeapon {
             this.waterDrawY = this.player.output.pos.y + this.player.output.height - 2;
             this.waterDrawX = this.player.output.pos.x;
         }
+
         this.secondaryUse = this.getRealtimeProperty("secondaryUse");
         this.superAbility = this.getRealtimeProperty("superAbilitySnap");
 
+        console.log(this.superAbility);
         if (this.effect) {
             this.effect.updatePos(this.waterDrawX, this.waterDrawY);
             if (this.effect.remove) this.effect = null;
         }
 
         if (this.secondaryUse && !this.placeHolder) {
-            this.modSound = AudioPool.play("Weapons/aquaslg_mod.oggSE")
-                .updatePanPos(this.output.pos);
+            this.modSound = AudioPool.play("Weapons/aquaslg_mod.oggSE");
+            this.modSound.updatePanPos(this.output.pos);
         }
 
         if (this.placeHolderSuper && !this.superAbility) this.placeHolderSuper = false;

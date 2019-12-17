@@ -79,7 +79,8 @@ class AquaSLG extends AttackWeapon {
     static _ = (() => {
         // Shit look at this line
         AquaSLG.assignWeaponClassAbilities(AquaSLGModAbility, AquaSLGSuperAbility);
-        AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
+        AquaSLG.addDynamicValues("secondaryUse",
+            "superAbilitySnap");
     })();
 
     constructor(x, y) {
