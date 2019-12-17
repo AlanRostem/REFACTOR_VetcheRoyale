@@ -10,7 +10,7 @@ export default class CFirewall extends CWeapon {
 
     constructor(data) {
         super(data, 6);
-        this.animationSpec = new SpriteSheet.Animation(0, 1, 2, 0.09);
+        this.animationSpec = new SpriteSheet.Animation(0, 3, 4, 0.09);
         this.animationSpec2 = new SpriteSheet.Animation(0, 1, 2, 0.09);
 
         this.fireEndPH = false;
