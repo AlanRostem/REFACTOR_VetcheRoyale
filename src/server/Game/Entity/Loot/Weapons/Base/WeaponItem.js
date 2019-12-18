@@ -36,7 +36,7 @@ class WeaponItem extends Loot {
                 // If the player disconnects (or is removed from game world)
                 // the weapon is dropped. Otherwise we call methods for when
                 // it is equipped.
-                if (this.player) {
+                if (!this.player.removed) {
                     this.entitiesInProximity.update(entityManager, deltaTime);
                     this.updateWhenEquipped(this.player, entityManager, deltaTime);
                 } else {
