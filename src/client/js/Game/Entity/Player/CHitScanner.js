@@ -23,18 +23,20 @@ class CHitScanner {
         var distX = b.x - a.x;
         var distY = b.y - a.y;
 
-        var startX = Math.round(a.x / tileMap.tileSize);
-        var startY = Math.round((a.y + distY) / tileMap.tileSize);
+        var startX = Math.round(a.x / tileMap.tileSize) - 1;
+        var startY = Math.round((a.y + distY) / tileMap.tileSize) - 1;
 
-        var endX = startX + Math.round(distX / tileMap.tileSize);
-        var endY = Math.round(a.y / tileMap.tileSize);
+        var endX = startX + Math.round(distX / tileMap.tileSize) + 1;
+        var endY = Math.round(a.y / tileMap.tileSize) + 1;
 
         if (startX - endX === 0) {
             startX--;
+            endX++;
         }
 
         if (startY - endY === 0) {
             startY--;
+            endY++;
         }
 
         if (startX > endX) {
@@ -51,6 +53,7 @@ class CHitScanner {
 
         for (var y = startY; y <= endY; y++) {
             for (var x = startX; x <= endX; x++) {
+                R.drawRect("rgba(0, 255, 0, 50)", x * 8, y * 8, 8, 8, true);
                 if (CTileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {
                     let ts = tileMap.tileSize;
                     let topLeft = new Vector2D(x * ts, y * ts);

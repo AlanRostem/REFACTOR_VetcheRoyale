@@ -34,19 +34,22 @@ class HitScanner {
         let distX = b.x - a.x;
         let distY = b.y - a.y;
 
-        let startX = Math.round(a.x / tileMap.tileSize);
-        let startY = Math.round((a.y + distY) / tileMap.tileSize);
+        var startX = Math.round(a.x / tileMap.tileSize) - 1;
+        var startY = Math.round((a.y + distY) / tileMap.tileSize) - 1;
 
-        let endX = startX + Math.round(distX / tileMap.tileSize);
-        let endY = Math.round(a.y / tileMap.tileSize);
+        var endX = startX + Math.round(distX / tileMap.tileSize) + 1;
+        var endY = Math.round(a.y / tileMap.tileSize) + 1;
+
 
         if (this.scanTiles) {
             if (startX - endX === 0) {
                 startX--;
+                endX++;
             }
 
             if (startY - endY === 0) {
                 startY--;
+                endY++;
             }
 
             if (startX > endX) {

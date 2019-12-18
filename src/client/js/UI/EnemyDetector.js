@@ -93,7 +93,7 @@ class EnemyDetector extends UIElement {
                 p0.x + R.camera.x, p0.y + R.camera.y,
                 this.lineScanner.end.x + R.camera.x, this.lineScanner.end.y + R.camera.y,
                 "Red", 1, false, 10
-            )
+            );
         }
 
         this.showScope = false;
