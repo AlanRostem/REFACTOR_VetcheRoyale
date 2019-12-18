@@ -38,7 +38,7 @@ class OtherPlayer extends CEntity {
         }, true);
         this.jumpSound = false;
 
-        this.timer2 = new Timer(0.1, ()=> {
+        this.timer2 = new Timer(0.1, () => {
             this.applyDmg = false;
         });
 
@@ -78,9 +78,12 @@ class OtherPlayer extends CEntity {
 
         let self = this.output;
 
-        if(self.hp < this.preHP) { this.preHP = self.hp; this.applyDmg = true;}
+        if (self.hp < this.preHP) {
+            this.preHP = self.hp;
+            this.applyDmg = true;
+        }
 
-        if(this.applyDmg) {
+        if (this.applyDmg) {
             this.timer2.tick(deltaTime);
         }
 
@@ -151,7 +154,7 @@ class OtherPlayer extends CEntity {
         if (this.checkMovementState("main", "run")) {
             if (this.footStep) {
                 AudioPool.play("Player/footStep_" + this.footCount + ".oggSE")
-                .updatePanPos(this.output.pos);
+                    .updatePanPos(this.output.pos);
                 this.footStep = false;
             }
             this.footStep = false;
@@ -170,16 +173,17 @@ class OtherPlayer extends CEntity {
     }
 
     draw() {
-        if(OtherPlayer.sprite !== OtherPlayer.normal && !this.applyDmg) OtherPlayer.sprite = OtherPlayer.normal;
+        if (OtherPlayer.sprite !== OtherPlayer.normal && !this.applyDmg) OtherPlayer.sprite = OtherPlayer.normal;
 
-        else if(this.applyDmg) {
-            if(this.output.hp > 70) OtherPlayer.sprite = OtherPlayer.highDamage;
-            else if(this.output.hp > 25) OtherPlayer.sprite = OtherPlayer.medDamage;
-            else OtherPlayer.sprite = OtherPlayer.lowDamage;
+        else if (this.applyDmg) {
+            OtherPlayer.sprite = OtherPlayer.damage;
+            if (this.output.hp > 70) this.hitName = "low";
+            else if (this.output.hp > 25) this.hitName = "med";
+            else this.hitName = "high";
         }
 
-        if(OtherPlayer.sprite === OtherPlayer.normal) this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
-        else this.animations.animate(OtherPlayer.sprite, "hurt", 16, 16);
+        if (OtherPlayer.sprite === OtherPlayer.normal) this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
+        else this.animations.animate(OtherPlayer.sprite, this.hitName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.movementState.direction === "left") {
             OtherPlayer.sprite.flipX();
@@ -189,7 +193,7 @@ class OtherPlayer extends CEntity {
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
 
-       // R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
+        // R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
     }
 }
 
@@ -198,22 +202,19 @@ OtherPlayer.normal = new SpriteSheet("playerSprite");
 
 OtherPlayer.sprite = OtherPlayer.normal;
 
-OtherPlayer.lowDamage = new SpriteSheet("playerLowHP");
-OtherPlayer.medDamage = new SpriteSheet("playerMedHP");
-OtherPlayer.highDamage = new SpriteSheet("playerHighHP");
+OtherPlayer.damage = new SpriteSheet("playerHit");
 
 OtherPlayer.normal.bind("red", 0, 0, 16 * 16, 16);
 OtherPlayer.normal.bind("blue", 0, 16, 16 * 16, 16);
 OtherPlayer.normal.bind("yellow", 0, 32, 16 * 16, 16);
 OtherPlayer.normal.bind("green", 0, 48, 16 * 16, 16);
 
-OtherPlayer.lowDamage.bind("hurt", 0, 0, 16 * 16, 16);
-OtherPlayer.medDamage.bind("hurt", 0, 0, 16 * 16, 16);
-OtherPlayer.highDamage.bind("hurt", 0, 0, 16 * 16, 16);
+OtherPlayer.damage.bind("low", 0, 0, 7 * 16, 16);
+OtherPlayer.damage.bind("med", 112, 0, 7 * 16, 16);
+OtherPlayer.damage.bind("high", 224, 0, 7 * 16, 16);
 
 OtherPlayer.normal.setCentralOffset(4);
-OtherPlayer.lowDamage.setCentralOffset(4);
-OtherPlayer.medDamage.setCentralOffset(4);
-OtherPlayer.highDamage.setCentralOffset(4);
+OtherPlayer.damage.setCentralOffset(4);
+
 
 export default OtherPlayer;
