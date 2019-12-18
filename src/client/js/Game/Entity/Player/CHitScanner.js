@@ -23,19 +23,14 @@ class CHitScanner {
         var distX = b.x - a.x;
         var distY = b.y - a.y;
 
-        var startX = Math.round(a.x / tileMap.tileSize);
-        var startY = Math.round((a.y + distY) / tileMap.tileSize);
+        var startX = Math.round(a.x / tileMap.tileSize) ;
+        var startY = Math.round((a.y + distY) / tileMap.tileSize) ;
 
-        var endX = startX + Math.round(distX / tileMap.tileSize);
-        var endY = Math.round(a.y / tileMap.tileSize);
+        var endX = startX + Math.round(distX / tileMap.tileSize) ;
+        var endY = Math.round(a.y / tileMap.tileSize) ;
 
-        if (startX - endX === 0) {
-            startX--;
-        }
-
-        if (startY - endY === 0) {
-            startY--;
-        }
+        let scanDoubleX = (startX - endX) === 0;
+        let scanDoubleY = (startY - endY) === 0;
 
         if (startX > endX) {
             let temp = endX;
@@ -51,12 +46,34 @@ class CHitScanner {
 
         for (var y = startY; y <= endY; y++) {
             for (var x = startX; x <= endX; x++) {
+                /*
+                R.ctx.save();
+                R.ctx.fillStyle = "rgba(" + 255 * Math.random() + ", " + 255 * Math.random() + ", " + 255 * Math.random() + ", .5)";
+                let xx = R.camera.x;
+                let yy = R.camera.y;
+                R.ctx.fillRect(topLeft.x + xx, topLeft.y + yy, Math.abs(topLeft.x - topRight.x), Math.abs(topLeft.y - bottomLeft.y));
+                R.ctx.restore();
+                 */
+                let ts = tileMap.tileSize;
                 if (CTileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {
-                    let ts = tileMap.tileSize;
                     let topLeft = new Vector2D(x * ts, y * ts);
                     let bottomLeft = new Vector2D(x * ts, (y + 1) * ts);
                     let topRight = new Vector2D((x + 1) * ts, y * ts);
                     let bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
+
+                    if (scanDoubleX) {
+                        topLeft.x -= ts;
+                        bottomLeft.x -= ts;
+                        topRight.x += ts;
+                        bottomRight += ts;
+                    }
+
+                    if (scanDoubleY) {
+                        topLeft.y -= ts;
+                        topRight.y -= ts;
+                        bottomLeft.y += ts;
+                        bottomRight.y += ts;
+                    }
 
                     if (Vector2D.intersect(a, b, topLeft, bottomLeft)) {
                         if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, bottomLeft));
