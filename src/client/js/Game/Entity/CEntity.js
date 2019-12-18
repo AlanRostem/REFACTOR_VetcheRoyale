@@ -28,7 +28,13 @@ class CEntity {
             this.output[key] = this.consts[key];
         }
 
-        this.schema = {pos: {x: "number", y: "number"}, id: "string"};
+        this.schema = {
+            pos: {x: "number", y: "number"},
+            id: "string",
+            removed: "boolean",
+            entityType: "string",
+            entityOrder: "number"
+        };
 
         /**
          * Packet buffer tuning the entity data

@@ -36,14 +36,26 @@ class OtherPlayer extends CEntity {
             this.footStep = true;
             this.footCount = (Math.random() * 3 | 0) + 1;
         }, true);
+
         this.jumpSound = false;
-        this.schema.vel = {x: "number", y: "number"};
+
         this.timer2 = new Timer(0.1, ()=> {
             this.applyDmg = false;
         });
 
         this.applyDmg = false;
         this.preHP = 100;
+
+        this.schema.vel = {x: "number", y: "number"};
+        this.schema.centerData = {x: "number", y: "number"};
+        this.schema.statData = {Kills: "number", Damage: "number"};
+        this.schema.side = {left: "boolean", right: "boolean", top: "boolean", bottom: "boolean"};
+        this.schema.hp = "number";
+        this.schema.invAmmo = "number";
+        this.schema.effectsData = "object";
+        this.schema.isAlive = "boolean";
+        this.schema.teamName = "string";
+        this.schema.teamID = "string";
 
     }
 

@@ -11,6 +11,9 @@ export default class CWeapon extends CLoot {
         this.hasPressedReloadKey = false;
         this.hasUsedMod = false;
         this.hasUsedSuper = false;
+
+        this.schema.vel = {x: "number", y: "number"};
+
     }
 
     onFire(client, deltaTime) {
