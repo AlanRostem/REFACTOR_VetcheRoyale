@@ -20,72 +20,62 @@ class CHitScanner {
     }
 
     scanGeometry(a, b, tileMap) {
-        let x0 = Math.floor(a.x / tileMap.tileSize);
-        let y0 = Math.floor(a.y / tileMap.tileSize);
+        var distX = b.x - a.x;
+        var distY = b.y - a.y;
 
-        let x1 = Math.floor(b.x / tileMap.tileSize);
-        let y1 = Math.floor(b.y / tileMap.tileSize);
+        var startX = Math.round(a.x / tileMap.tileSize);
+        var startY = Math.round((a.y + distY) / tileMap.tileSize);
 
-        let dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-        let dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-        let err = (dx > dy ? dx : -dy) / 2;
+        var endX = startX + Math.round(distX / tileMap.tileSize);
+        var endY = Math.round(a.y / tileMap.tileSize);
 
-        while (true) {
-            if (this.operateOnScan(a, b, x0, y0, tileMap)) {
-                break;
-            }
-            if (x0 === x1 && y0 === y1) break;
-
-            let e2 = err;
-            if (e2 > -dx) {
-                err -= dy;
-                x0 += sx;
-            }
-            if (e2 < dy) {
-                err += dx;
-                y0 += sy;
-            }
+        if (startX - endX === 0) {
+            startX--;
         }
 
+        if (startY - endY === 0) {
+            startY--;
+        }
 
-    }
+        if (startX > endX) {
+            let temp = endX;
+            endX = startX;
+            startX = temp;
+        }
 
-    operateOnScan(a, b, x0, y0, tileMap) {
-        for (let x = -1; x <= 1; x++) {
-            for (let y = -1; y <= 1; y++) {
-                let x1 = x0 + x;
-                let y1 = y0 + y;
-                let ts = tileMap.tileSize;
-                // TODO: Remove line below
-                R.drawRect("White", x1 * ts, y1 * ts, ts, ts, true);
-                if (CTileCollider.isSolid(tileMap.array[y1 * tileMap.w + x1])) {
-                    let topLeft = new Vector2D(x1 * ts, y1 * ts);
-                    let bottomLeft = new Vector2D(x1 * ts, (y1 + 1) * ts);
-                    let topRight = new Vector2D((x1 + 1) * ts, y1 * ts);
-                    let bottomRight = new Vector2D((x1 + 1) * ts, (y1 + 1) * ts);
+        if (startY > endY) {
+            let temp = endY;
+            endY = startY;
+            startY = temp;
+        }
+
+        for (var y = startY; y <= endY; y++) {
+            for (var x = startX; x <= endX; x++) {
+                if (CTileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {
+                    let ts = tileMap.tileSize;
+                    let topLeft = new Vector2D(x * ts, y * ts);
+                    let bottomLeft = new Vector2D(x * ts, (y + 1) * ts);
+                    let topRight = new Vector2D((x + 1) * ts, y * ts);
+                    let bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
 
                     if (Vector2D.intersect(a, b, topLeft, bottomLeft)) {
                         if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, bottomLeft));
                         this.onTileHit(b);
-                        return true;
                     }
 
                     if (Vector2D.intersect(a, b, topLeft, topRight)) {
                         if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, topRight));
                         this.onTileHit(b);
-                        return true;
                     }
 
                     if (Vector2D.intersect(a, b, topRight, bottomRight)) {
                         if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topRight, bottomRight));
                         this.onTileHit(b);
-                        return true;
                     }
 
                     if (Vector2D.intersect(a, b, bottomLeft, bottomRight)) {
                         if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, bottomLeft, bottomRight));
                         this.onTileHit(b);
-                        return true;
                     }
                 }
             }
