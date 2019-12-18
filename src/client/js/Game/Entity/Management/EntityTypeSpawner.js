@@ -74,6 +74,7 @@ EntityTypeSpawner.createSpawner("AquaSLG", CAquaSLG);
 EntityTypeSpawner.createSpawner("Firewall", CFirewall);
 
 EntityTypeSpawner.createSpawner("SuperDamage", Invisible);
+EntityTypeSpawner.createSpawner("FireDamage", Invisible);
 EntityTypeSpawner.createSpawner("ElectricSphere", CElectricSphere);
 EntityTypeSpawner.createSpawner("KineticBomb", CKineticBomb);
 EntityTypeSpawner.createSpawner("MicroMissile", CMicroMissile);
