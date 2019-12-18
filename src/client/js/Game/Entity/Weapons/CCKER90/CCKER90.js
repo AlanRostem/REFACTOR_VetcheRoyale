@@ -9,6 +9,7 @@ import EffectManager from "../../../../Graphics/EffectManager.js";
 import AssetManager from "../../../../AssetManager/AssetManager.js";
 
 class CCKER90 extends CWeapon {
+    static DISPLAY_NAME = "C-KER .90";
     constructor(props) {
         super(props, 0);
         this.toLerp = {
@@ -54,13 +55,13 @@ class CCKER90 extends CWeapon {
                 this.toLerp = vectorLinearInterpolation(this.toLerp,
                     vectorLinearInterpolation(from, to, .2), .2);
                 UI.getElement("enemyDetector").showCentralPoint();
-                UI.getElement("enemyDetector").queryPositions(this.getRealtimeProperty("found"));
             }
         } else {
             let to = {x: 0, y: 0};
             this.toLerp = vectorLinearInterpolation(this.toLerp,
                 vectorLinearInterpolation(this.toLerp, to, .2), .2);
         }
+        UI.getElement("enemyDetector").queryPositions(this.getRealtimeProperty("found"));
         R.camera.shift(this.toLerp.x, this.toLerp.y);
     }
 }

@@ -7,6 +7,7 @@ import EffectManager from "../../../../Graphics/EffectManager.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
 export default class CFirewall extends CWeapon {
+    static DISPLAY_NAME = "Firewall";
 
     constructor(data) {
         super(data, 6);

@@ -1,4 +1,11 @@
 Initialize properties ONLY in constructor
+
 Remove ES6 getters and setters
+
 Prevent all forms of object creation (besides numbers) every tick
-CONSIDERATION: Replace instance of operator with a new system by creating a custom string based inheritance chain
+
+CONSIDERATION: Replace `instance of` operator with a new system by creating
+a custom string based inheritance chain
+
+Use flyweight pattern for entities (such as projectile or weapons) to
+statically assign configurations (weapon stats, projectile speeds)

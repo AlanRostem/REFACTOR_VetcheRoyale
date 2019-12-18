@@ -4,6 +4,7 @@ import Scene from "../../../Scene.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
 export default class CSEW_9 extends CWeapon {
+    static DISPLAY_NAME = "SEW-9";
 
     constructor(data) {
         super(data, 1);

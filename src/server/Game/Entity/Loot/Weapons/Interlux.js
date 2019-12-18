@@ -16,10 +16,11 @@ class Interlux extends AttackWeapon {
     static _ = (() => {
         Interlux.assignWeaponClassAbilities(InterluxModAbility, InterluxSuperAbility);
         Interlux.addDynamicValues("secondaryFire", "superAbilitySnap", "lines");
+        Interlux.overrideAttackStats(1.5, 400, 500);
     })();
 
     constructor(x, y) {
-        super(x, y, "Interlux", 0, 0, 0);
+        super(x, y);
 
         this.scanRange = 640;
         this.scanner = new HitScanner({}, false, true);
@@ -32,8 +33,6 @@ class Interlux extends AttackWeapon {
 
         this.secondaryFire = false;
         this.superAbilitySnap = false;
-
-        this.configureAttackStats(1.5, 400, 1, 500);
     }
 
     update(entityManager, deltaTime) {
@@ -47,11 +46,6 @@ class Interlux extends AttackWeapon {
             this.aimAngle = this.getOwner().input.mouseData.angleCenter;
         }
 
-    }
-
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
-        
     }
 
     fire(player, entityManager, deltaTime, angle) {

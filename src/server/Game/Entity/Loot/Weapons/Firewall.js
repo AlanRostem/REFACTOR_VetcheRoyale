@@ -11,9 +11,9 @@ const Alive = require("../../Traits/Alive.js");
 
 // Projectile fired by the firewall
 class Firepellet extends Projectile {
+    static DAMAGE = 8;
     constructor(owner, weaponID, x, y, angle, entityManager) {
         super(owner, x, y, 2, 1, angle, 4 * 100);
-        this.damage = new Damage(8, owner);
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -21,7 +21,7 @@ class Firepellet extends Projectile {
     }
 
     onEnemyHit(player, entityManager) {
-        this.damage.inflict(player, entityManager);
+        Damage.inflict(this.getOwner(), player, entityManager, this.constructor.DAMAGE);
         this.remove();
     }
 }
@@ -92,22 +92,16 @@ class FirewallModAbility extends ModAbility {
 class Firewall extends AttackWeapon {
     static _ = (() => {
         Firewall.assignWeaponClassAbilities(FirewallModAbility, FirewallSuperAbility);
-
         Firewall.addDynamicValues(
             "secondaryUse",
-            "wallWidth")
+            "wallWidth");
+        Firewall.overrideAttackStats(1.25, 6, 120);
     })();
 
     constructor(x, y) {
-        super(x, y, "Firewall", 0, 0, 0);
+        super(x, y);
         this.superAbility.tickChargeGain = 100;
         this.pellets = 4;
-        this.secondaryUse = false;
-        this.configureAttackStats(1.25, 6, 1, 120);
-        this.modAbility.configureStats(2, 0.1);
-
-        this.wallWidth = 64;
-
     }
 
     fire(player, entityManager, deltaTime, angle) {

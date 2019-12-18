@@ -37,7 +37,7 @@ export default class GunBox extends UIElement {
         if (client.player) {
             let gun = entityList.getEntityByID(client.player.output.invWeaponID);
             if (gun) {
-                this.iconName = gun.output.displayName;
+                this.iconName = gun.constructor.DISPLAY_NAME;
                 if (this.iconName !== this.oldName) {
                     this.gunAnimation.img = AssetManager.getMapImage(this.iconName);
                     this.oldName = this.iconName;

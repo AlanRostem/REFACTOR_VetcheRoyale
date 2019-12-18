@@ -31,6 +31,7 @@ class Projectile extends Physical {
      */
     constructor(owner, x, y, w, h, angle, speed, arc = 0, shouldRemove = true) {
         super(x, y, w, h);
+        this.oldCenter = new Vector2D(x + w / 2, y + h / 2);
         this.owner = owner;
         if (!owner.team) {
             console.log(new Error(this.constructor.name + " has an owner without a team! The owner is " + owner.id).stack)
@@ -117,12 +118,21 @@ class Projectile extends Physical {
         }
     }
 
+    physics(entityManager, deltaTime) {
+        this.oldCenter.x = this.center.x;
+        this.oldCenter.y = this.center.y;
+        super.physics(entityManager, deltaTime);
+    }
+
+    dividedPhysics(entityManager, vx, vy, deltaTime) {
+        this.oldCenter.x = this.center.x;
+        this.oldCenter.y = this.center.y;
+        super.dividedPhysics(entityManager, vx, vy, deltaTime);
+    }
+
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         if (entity instanceof Alive) {
-            if (HitScanner.intersectsEntity({
-                x: this.center.x - this.vel.x * deltaTime,
-                y: this.center.y - this.vel.y * deltaTime,
-            }, this.center, entity)) {
+            if (HitScanner.intersectsEntity(this.oldCenter, this.center, entity)) {
                 this.onEntityCollision(entity, entityManager);
             }
         }
@@ -133,7 +143,7 @@ class Projectile extends Physical {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (entity.hasTeam()) if(entity.team.hasEntity(this.ownerID)) return;
+            if (entity.hasTeam()) if (entity.team.hasEntity(this.ownerID)) return;
             if (this.alreadyCollided === false) {
                 this.onEnemyHit(entity, entityManager);
                 if (this.shouldRemove) {

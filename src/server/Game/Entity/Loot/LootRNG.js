@@ -23,9 +23,9 @@ const LootRNG = {
         LootRNG.setLootConstructor(3, KE_6H);
         LootRNG.setLootConstructor(3, BIGMotorizer);
         LootRNG.setLootConstructor(3, SEW_9);
-        LootRNG.setLootConstructor(3, Interlux);
-        LootRNG.setLootConstructor(3, AquaSLG);
-        LootRNG.setLootConstructor(3, Firewall);
+        LootRNG.setLootConstructor(4, Interlux);
+        LootRNG.setLootConstructor(2, AquaSLG);
+        LootRNG.setLootConstructor(1, Firewall);
         LootRNG.setLootConstructor(2, Charge);
         LootRNG.setLootConstructor(1, Ammo);
     },

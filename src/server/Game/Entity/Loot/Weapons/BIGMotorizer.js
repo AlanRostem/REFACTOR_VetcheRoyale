@@ -78,78 +78,18 @@ class StunEffect extends Effect {
 }
 
 class BIGMotorizer extends AttackWeapon {
-    constructor(x, y) {
-        super(x, y, "Gust Motorizer", "rifle",
+    static _ = (() => {
+        BIGMotorizer.overrideAttackStats(1.5, 36, 100, 1,
             5 * Math.PI / 180,
             Math.PI / 180,
-            0.07 * Math.PI / 180,
-            0, 6, 0.05);
-        this.minFireRate = 100;
-        this.configureAttackStats(1.5, 36, 1, this.minFireRate);
-        this.modAbility.configureStats(.5, 10);
-        this.upgradeStage = 0;
-        this.thunderPulsePos = null;
-        this.thunderPulse = new HitScanner([]);
-        this.thunderPulse.onEntityHit = (entity, game, angle) => {
-            if (entity instanceof Affectable) {
-                if (!entity.isTeammate(this.getOwner())) {
-                    entity.applyEffect(new StunEffect(entity), game);
-                }
-            }
-        };
-        this.thunderPulseRange = 40 * 8;
-    }
-
-    onModActivation(entityManager, deltaTime) {
-        super.onModActivation(entityManager, deltaTime);
-    }
-
-    onModBuffs(entityManager, deltaTime) {
-        super.onModBuffs(entityManager, deltaTime);
-        this.canFire = false;
-    }
-
-    onModDeactivation(entityManager, deltaTime) {
-        super.onModDeactivation(entityManager, deltaTime);
-        let end = {};
-        end.x = this.center.x + Math.cos(this.fireAngle) * this.thunderPulseRange;
-        end.y = this.center.y + Math.sin(this.fireAngle) * this.thunderPulseRange;
-        this.thunderPulse.scan(this.center, end, entityManager, entityManager.tileMap);
-        this.thunderPulsePos = end;
-        this.canFire = true;
-        this.thunderPulsePos = null;
-    }
-
-    onSuperActivation(entityManager, deltaTime) {
-
-    }
+            0.07 * Math.PI / 180, 0, 6, 0.05)
+    })();
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
             new MicroMissile(player, 0, 0,
-                angle, entityManager, this.upgradeStage < 3,
+                angle, entityManager, true,
         player.checkMovementState("direction", "left")));
-    }
-
-    activateReloadAction() {
-        super.activateReloadAction();
-        this.fireRate = this.minFireRate;
-    }
-
-    updateWhenEquipped(player, entityManager, deltaTime) {
-        super.updateWhenEquipped(player, entityManager, deltaTime);
-        if (this.hasOwner()) {
-            this.fireAngle = this.getOwner().input.mouseData.angleCenter;
-        }
-    }
-
-    onFireButton(entityManager, deltaTime) {
-        if (this.upgradeStage >= 1 && !this.reloading) {
-            this.fireRate += 500 * deltaTime;
-            if (this.fireRate >= 1100) {
-                this.fireRate = 1100;
-            }
-        }
     }
 }
 

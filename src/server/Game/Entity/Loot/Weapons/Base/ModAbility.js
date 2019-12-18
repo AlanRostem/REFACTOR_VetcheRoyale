@@ -1,16 +1,16 @@
 // Composition class for the right-click ability of a weapon.
 // Handles cool-downs and callbacks based on input.
 class ModAbility {
-    constructor(duration, coolDown, resourceMeter = false, consumptionTime = 0.16) {
+    constructor() {
         this.currentDuration = 0;
-        this.maxDuration = duration;
+        this.maxDuration = this.constructor.Stats.MAX_DURATION;
 
-        this.isResourceMeter = resourceMeter;
+        this.isResourceMeter = this.constructor.Stats.IS_RESOURCE_METER;
         this.justConsumed = false;
-        this.consumptionTime = consumptionTime;
+        this.consumptionTime = this.constructor.Stats.CONSUMPTION_TIME;
 
         this.currentCoolDown = 0;
-        this.maxCoolDown = coolDown;
+        this.maxCoolDown = this.constructor.Stats.MAX_COOL_DOWN;
 
         this.active = false;
         this.onCoolDown = false;
@@ -18,10 +18,23 @@ class ModAbility {
         this.data = {};
     }
 
+    static Stats = {
+        MAX_DURATION: 1,
+        MAX_COOL_DOWN: 1,
+        IS_RESOURCE_METER: false,
+        CONSUMPTION_TIME: 0.16,
+        IS_CONSTANT: false
+    };
+
     // Configure cool-down and duration of the ability.
-    configureStats(duration, coolDown) {
-        this.maxDuration = duration;
-        this.maxCoolDown = coolDown;
+    static configureStats(duration, coolDown, isResourceMeter = false, consumptionTime = 0.16, isConstant = false) {
+        this.Stats = {
+            MAX_DURATION: duration,
+            MAX_COOL_DOWN: coolDown,
+            IS_RESOURCE_METER: isResourceMeter,
+            CONSUMPTION_TIME: consumptionTime,
+            IS_CONSTANT: isConstant
+        };
     }
 
     update(composedWeapon, entityManager, deltaTime) {
@@ -72,7 +85,8 @@ class ModAbility {
             if (this.active) {
                 this.buffs(composedWeapon, entityManager, deltaTime);
                 if (this.currentDuration > 0) {
-                    this.currentDuration -= deltaTime;
+                    if (!this.constructor.Stats.IS_CONSTANT)
+                        this.currentDuration -= deltaTime;
                 } else {
                     this.deActivate(composedWeapon, entityManager, deltaTime);
                 }
@@ -91,13 +105,15 @@ class ModAbility {
 
     // Callback when deactivating the ability.
     onDeactivation(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.onModDeactivation(entityManager, deltaTime);
+        //composedWeapon.onModDeactivation(entityManager, deltaTime);
     }
 
     deActivate(composedWeapon, entityManager, deltaTime) {
         this.active = false;
-        this.currentCoolDown = this.maxCoolDown;
-        this.onCoolDown = true;
+        if (!this.constructor.Stats.IS_CONSTANT) {
+            this.currentCoolDown = this.maxCoolDown;
+            this.onCoolDown = true;
+        }
         this.onDeactivation(composedWeapon, entityManager, deltaTime);
     }
 
@@ -109,7 +125,7 @@ class ModAbility {
     activate(composedWeapon, entityManager, deltaTime) {
         if (!this.active && !this.onCoolDown) {
             this.onActivation(composedWeapon, entityManager, deltaTime);
-            composedWeapon.onModActivation(entityManager, deltaTime);
+            //composedWeapon.onModActivation(entityManager, deltaTime);
             this.currentDuration = this.maxDuration;
             this.active = true;
         }
@@ -118,7 +134,7 @@ class ModAbility {
     // Overridable looping method for what happens while
     // the ability is active.
     buffs(composedWeapon, entityManager, deltaTime) {
-        composedWeapon.onModBuffs(entityManager, deltaTime);
+        //composedWeapon.onModBuffs(entityManager, deltaTime);
     }
 
     get isOnCoolDown() {

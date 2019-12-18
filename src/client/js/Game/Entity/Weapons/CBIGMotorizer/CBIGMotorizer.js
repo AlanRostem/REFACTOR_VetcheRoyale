@@ -3,6 +3,7 @@ import R from "../../../../Graphics/Renderer.js";
 import CVector2D from "../../../../../../shared/code/Math/CVector2D.js";
 
 export default class CBIGMotorizer extends CWeapon {
+    static DISPLAY_NAME = "Gust Motorizer";
     constructor(data) {
         super(data, 4);
     }

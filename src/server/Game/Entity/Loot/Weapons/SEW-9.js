@@ -69,15 +69,15 @@ class ElectricSphere extends Projectile {
 }
 
 class SuperDamage extends SEntity {
+    static DAMAGE = 1;
     constructor(x, y, w, h, player) {
         super(x, y, w, h);
-        this.damage = new Damage(1, player);
-
+        this.player = player;
     }
 
     update(game, deltaTime) {
         super.update(game, deltaTime);
-        let player = this.damage.player;
+        let player = this.player;
         if (player) {
             this.pos.x = player.center.x;
             this.pos.y = player.center.y;
@@ -89,8 +89,8 @@ class SuperDamage extends SEntity {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.isTeammate(this.damage.player)) {
-                this.damage.inflict(entity, entityManager);
+            if (!entity.isTeammate(this.player)) {
+                Damage.inflict(this.player, entity, entityManager, this.constructor.DAMAGE);
             }
         }
     }
@@ -99,9 +99,10 @@ class SuperDamage extends SEntity {
 
 
 class SEW_9ModAbility extends ModAbility {
-    constructor() {
-        super(9, 4);
-    }
+    static _ = (() => {
+        SEW_9ModAbility.configureStats(9, 4);
+    })();
+
     onActivation(weapon, entityManager, deltaTime) {
         if (!weapon.primaryFire) {
             weapon.currentAmmo--;
@@ -139,9 +140,9 @@ class SEW_9ModAbility extends ModAbility {
 }
 
 class SEW_9SuperAbility extends SuperAbility {
-    constructor() {
-        super(5, 100, 100);
-    }
+    static _ = (() => {
+        SEW_9SuperAbility.configureStats(5);
+    })();
 
     onActivation(composedWeapon, entityManager, deltaTime) {
         composedWeapon.superAbilitySnap = true;
@@ -161,10 +162,11 @@ class SEW_9 extends AttackWeapon {
     static _ = (() => {
         SEW_9.assignWeaponClassAbilities(SEW_9ModAbility, SEW_9SuperAbility);
         SEW_9.addDynamicValues("misPos", "secondaryFire", "superAbilitySnap", "isShooting");
+        SEW_9.overrideAttackStats(2.25, 5, 100);
     })();
 
     constructor(x, y) {
-        super(x, y, "SEW-9", 0, 0, 0);
+        super(x, y);
         this.misRef = null;
         this.misPos = null;
 
@@ -175,7 +177,6 @@ class SEW_9 extends AttackWeapon {
         this.secondaryFire = false;
         this.superAbilitySnap = false;
         this.isShooting = false;
-        this.configureAttackStats(2.25, 5, 1, 100);
     }
 
     updateWhenEquipped(player, entityManager, deltaTime) {
@@ -192,10 +193,6 @@ class SEW_9 extends AttackWeapon {
         }
 
         if (player) player.setMovementState("canMove", this.canMove);
-    }
-
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
     }
 
     fire(player, entityManager, deltaTime, angle) {

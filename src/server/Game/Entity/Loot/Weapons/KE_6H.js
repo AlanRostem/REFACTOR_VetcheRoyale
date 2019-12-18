@@ -10,20 +10,18 @@ const SuperAbility = require("./Base/SuperAbility.js");
 
 // Projectile fired by the KE-6H weapon
 class KineticBomb extends Bouncy {
-    constructor(weaponRef, owner, weaponID, x, y, angle, entityManager) {
+    static DAMAGE = 8;
+    constructor(weaponRef, owner, x, y, angle) {
         super(owner, x, y, 2, 2, angle, 120, 0);
         this.hits = 6;
-        this.weaponID = weaponID;
-        this.directHitDmg = new Damage(8, owner);
 
-        let exceptions = {};
+        this.exceptions = {};
         for (let key in owner.team.players) {
-            exceptions[key] = owner.team.players[key];
+            this.exceptions[key] = owner.team.players[key];
         }
-        delete exceptions[owner.id];
         this.weapon = weaponRef;
 
-        this.areaDmg = new AOEKnockBackDamage(owner, x, y, Tile.SIZE * 3, 300, 15, exceptions);
+        this.areaDmg = new AOEKnockBackDamage(owner, x, y, Tile.SIZE * 3, 300, 15, this.exceptions);
     }
 
     onTileHit(entityManager, deltaTime) {
@@ -32,7 +30,7 @@ class KineticBomb extends Bouncy {
     }
 
     onEnemyHit(player, entityManager) {
-        this.directHitDmg.inflict(player, entityManager);
+        Damage.inflict(this.getOwner(), player, entityManager, this.constructor.DAMAGE);
         this.detonate(entityManager);
     }
 
@@ -55,6 +53,7 @@ class KineticBomb extends Bouncy {
             this.followPoint = true;
             this.point = this.weapon.followPoint;
             this.hits = 1;
+            delete this.exceptions[this.getOwner().id];
         }
 
         if (this.followPoint) {
@@ -71,9 +70,9 @@ class KineticBomb extends Bouncy {
 const RETRACTION_SCANNER = new AOEWormHoleScanner(null, Tile.SIZE * 6, null, .2, 350, null);
 
 class KE_6HModAbility extends ModAbility {
-    constructor() {
-        super(.2, 4, 25);
-    }
+    static _ = (() => {
+        KE_6HModAbility.configureStats(.2, 4);
+    })();
 
     onActivation(composedWeapon, entityManager, deltaTime) {
         composedWeapon.kineticImplosion = true;
@@ -99,18 +98,18 @@ class KE_6HSuperAbility extends SuperAbility {
 class KE_6H extends AttackWeapon {
     static _ = (() => {
         KE_6H.assignWeaponClassAbilities(KE_6HModAbility, KE_6HSuperAbility);
+        KE_6H.overrideAttackStats(2.5, 8, 100);
     })();
 
     constructor(x, y) {
-        super(x, y, "KE-6H", 0, 0, 0);
+        super(x, y);
         this.followPoint = new Vector2D(0, 0);
         this.followPoint.radius = 2;
-        this.configureAttackStats(2.5, 8, 1, 100);
     }
 
     fire(player, entityManager, deltaTime, angle) {
         entityManager.spawnEntity(this.center.x, this.center.y,
-            new KineticBomb(this, player, this.id, 0, 0,
+            new KineticBomb(this, player, 0, 0,
                 angle, entityManager));
     }
 }

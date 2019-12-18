@@ -8,9 +8,9 @@ const AOEKnockBackDamage = require("../../../Mechanics/Damage/AOEKnockBackDamage
 
 // Projectile fired by the AquaSLG
 class IceBullet extends Projectile {
+    static DAMAGE = 10;
     constructor(owner, x, y, angle) {
         super(owner, x, y, 2, 2, angle, 300);
-        this.damage = new Damage(10, owner);
 
         //let atan2 = Math.atan2(this.getOwner(entityManager).input.mouseData.world.y - (this.height / 2 | 0) - this.pos.y, this.getOwner(entityManager).input.mouseData.world.x - (this.width / 2 | 0) - this.pos.x);
 
@@ -23,26 +23,26 @@ class IceBullet extends Projectile {
     }
 
     onEnemyHit(player, entityManager) {
-        this.damage.inflict(player, entityManager);
+        Damage.inflict(this.getOwner(), player, entityManager, this.constructor.DAMAGE);
         this.remove();
     }
 }
 
 class AquaSLGModAbility extends ModAbility {
-    constructor() {
-        super(0.75, 1.5);
-    }
+    static _ = (() => {
+        AquaSLGModAbility.configureStats(0.75, 1.5);
+    })();
 
     onActivation(weapon, entityManager) {
         let player = weapon.getOwner();
         //if(player.vel.y >= 0) player.vel.y = 0;
         player.vel.y = 0;
         weapon.secondaryUse = true;
-    };
+    }
 
     onDeactivation(weapon, entityManager, deltaTime) {
         weapon.secondaryUse = false;
-    };
+    }
 
     buffs(weapon, entityManager, deltaTime) {
         let player = weapon.getOwner();
@@ -58,10 +58,14 @@ class AquaSLGModAbility extends ModAbility {
             this.currentCoolDown = this.maxDuration - oldCharge;
         }
 
-    };
+    }
 }
 
 class AquaSLGSuperAbility extends SuperAbility {
+    static _ = (() => {
+        AquaSLGSuperAbility.configureStats(0.1);
+    })();
+
     onActivation(weapon, entityManager, deltaTime) {
         weapon.superAbilitySnap = true;
         let exceptions = weapon.getOwner().team.players;
@@ -75,25 +79,18 @@ class AquaSLGSuperAbility extends SuperAbility {
 }
 
 class AquaSLG extends AttackWeapon {
-
     static _ = (() => {
-        // Shit look at this line
         AquaSLG.assignWeaponClassAbilities(AquaSLGModAbility, AquaSLGSuperAbility);
-        AquaSLG.addDynamicValues("secondaryUse",
-            "superAbilitySnap");
+        AquaSLG.addDynamicValues("secondaryUse", "superAbilitySnap");
+        AquaSLG.overrideAttackStats(2.25, 25, 500);
     })();
 
     constructor(x, y) {
-        super(x, y, "AquaSLG", 0, 0, 0);
+        super(x, y);
         this.superAbility.tickChargeGain = 100;
         this.secondaryUse = false;
         this.superAbilitySnap = false;
         this.maxSpeed = 102;
-        this.configureAttackStats(2.25, 25, 1, 500);
-    }
-
-    onSuperBuffs(entityManager, deltaTime) {
-        super.onSuperBuffs(entityManager, deltaTime);
     }
 
     fire(player, entityManager, deltaTime, angle) {

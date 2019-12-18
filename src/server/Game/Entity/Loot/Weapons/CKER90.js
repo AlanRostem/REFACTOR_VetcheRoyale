@@ -7,9 +7,9 @@ const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
 
 class ATBullet extends Projectile {
+    static DAMAGE = 20;
     constructor(owner, wID, x, y, speed, arc, angle) {
         super(owner, x, y, 2, 2, angle, speed, arc, false);
-        this.damage = new Damage(50, owner);
         this.seek = false;
         this.lifeTime = 10;
         this.wID = wID;
@@ -23,6 +23,9 @@ class ATBullet extends Projectile {
         if (this.stuck) {
             this.pos.x = this.stuck.center.x;
             this.pos.y = this.stuck.center.y;
+            if (this.stuck.removed || this.stuck.dead) {
+                this.remove();
+            }
         }
         if (this.seek) {
             this.lifeTime -= deltaTime;
@@ -33,13 +36,8 @@ class ATBullet extends Projectile {
             if (owner) {
                 if (owner.inventory.weapon) {
                     if (owner.inventory.weapon.id === this.wID) {
-                        if (owner.inventory.weapon.dataIsScoping) {
-                            this.findPlayers = true;
-                            this.weapon = owner.inventory.weapon;
-                            this.setCollisionRange(5 * 8, 5 * 8);
-                        } else {
-                            this.findPlayers = false;
-                        }
+                        this.findPlayers = true;
+                        this.weapon = owner.inventory.weapon;
                     }
                 }
             } else {
@@ -51,7 +49,7 @@ class ATBullet extends Projectile {
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         super.forEachNearbyEntity(entity, entityManager, deltaTime);
         if (this.weapon) {
-            if (entity.constructor.name === "Player") {
+            if (entity instanceof Player) {
                 if (entity.id !== this.weapon.playerID && !this.getOwner().isTeammate(entity)) {
                     this.weapon.found[entity.id] = entity.center;
                 }
@@ -61,7 +59,7 @@ class ATBullet extends Projectile {
 
     onEnemyHit(entity, entityManager) {
         if (!this.seek) {
-            this.damage.inflict(entity, entityManager);
+            Damage.inflict(this.getOwner(), entity, entityManager, this.constructor.DAMAGE);
         }
         this.stuck = entity;
         this.startSeek();
@@ -90,11 +88,13 @@ class SeekerSmoke extends Bouncy {
         );
     })();
 
+    static LIFE_DURATION = 10;
+
     constructor(owner, weapon, x, y, angle) {
         super(owner, x, y, 4, 6, angle, 185, 200, 0.5);
         this.findPlayers = false;
         this.weapon = weapon;
-        this.life = 10;
+        this.life = this.constructor.LIFE_DURATION;
         this.taps = true;
         this.minSpeed = 10;
         this.smokeBounds = {
@@ -128,7 +128,7 @@ class SeekerSmoke extends Bouncy {
             this.vel.x = 0;
         }
 
-        if(!this.findPlayers && this.getOwner().input.singleKeyPress(81)) {
+        if (!this.findPlayers && this.getOwner().input.singleKeyPress(81)) {
             this.findPlayers = true;
             this.vel.x = this.vel.y = this.acc.y = 0;
         }
@@ -137,20 +137,24 @@ class SeekerSmoke extends Bouncy {
     }
 }
 
-const SCOPED_SPEED = 480;
+const SCOPED_SPEED = 520;
 const NORMAL_SPEED = 350;
 const ARC = 60;
 
-class CKER90ModAbility extends  ModAbility{
-    constructor() {
-        super(5, 5, true);
-    }
+class CKER90ModAbility extends ModAbility {
+    static _ = (() => {
+        CKER90ModAbility.configureStats(1, 1, false, 0, true);
+    })();
+
 
     buffs(composedWeapon, entityManager, deltaTime) {
         let player = composedWeapon.getOwner();
         if (player) {
             composedWeapon.dataIsScoping = player.input.heldDownMapping("modAbility");
         }
+
+        composedWeapon.firerer.maxFireRate = composedWeapon.dataIsScoping ?
+            composedWeapon.constructor.SCOPED_FIRE_RATE : composedWeapon.constructor.UNSCOPED_FIRE_RATE
     }
 
     onDeactivation(composedWeapon, entityManager, deltaTime) {
@@ -160,17 +164,22 @@ class CKER90ModAbility extends  ModAbility{
 }
 
 class CKER90SuperAbility extends SuperAbility {
+    static _ = (() => {
+        CKER90SuperAbility.configureStats(SeekerSmoke.LIFE_DURATION);
+    })();
 
     constructor() {
-        super(0, 100, 100);
+        super();
+        this.smokeBomb = null;
     }
+
     onActivation(composedWeapon, entityManager, deltaTime) {
         let player = composedWeapon.getOwner();
         let angle = 0;
         if (player) {
             angle = player.input.mouseData.angleCenter;
         }
-        entityManager.spawnEntity(
+        this.smokeBomb = entityManager.spawnEntity(
             composedWeapon.pos.x,
             composedWeapon.pos.y,
             new SeekerSmoke(
@@ -181,23 +190,36 @@ class CKER90SuperAbility extends SuperAbility {
             ));
     }
 
+    buffs(composedWeapon, entityManager, deltaTime) {
+        super.buffs(composedWeapon, entityManager, deltaTime);
+        if (this.smokeBomb) {
+            if (!this.smokeBomb.findPlayers) {
+                this.currentDuration = SeekerSmoke.LIFE_DURATION;
+            }
+        }
+    }
+
+    onDeactivation(composedWeapon, entityManager, deltaTime) {
+        super.onDeactivation(composedWeapon, entityManager, deltaTime);
+        this.smokeBomb = null;
+    }
+
 }
 
 class CKER90 extends AttackWeapon {
+    static SCOPED_FIRE_RATE = 60;
+    static UNSCOPED_FIRE_RATE = 1.5 * 60;
     static _ = (() => {
         CKER90.assignWeaponClassAbilities(CKER90ModAbility, CKER90SuperAbility);
         CKER90.addDynamicValues(
             "dataIsScoping",
-            "found")
+            "found");
+        CKER90.overrideAttackStats(2, 10, CKER90.UNSCOPED_FIRE_RATE);
     })();
 
     constructor(x, y) {
-        super(x, y, "C-KER .90", "rifle");
+        super(x, y);
         this.dataIsScoping = false;
-        this.configureAttackStats(2,
-            10,
-            1,
-            60);
         this.found = {};
         this.entityType = "AttackWeapon";
     }

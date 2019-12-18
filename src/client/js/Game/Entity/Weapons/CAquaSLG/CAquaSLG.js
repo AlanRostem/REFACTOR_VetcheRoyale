@@ -7,7 +7,7 @@ import EffectManager from "../../../../Graphics/EffectManager.js";
 import AudioPool from "../../../../AssetManager/Classes/Audio/AudioPool.js";
 
 export default class CAquaSLG extends CWeapon {
-
+    static DISPLAY_NAME = "AquaSLG";
     constructor(data) {
         super(data, 5);
 
