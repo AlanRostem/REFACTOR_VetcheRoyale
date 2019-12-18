@@ -32,7 +32,7 @@ class Player extends GameDataLinker {
         this.snapShotGenerator.snapShot.id = this.id;
         this.inventory = new Inventory();
         this.invWeaponID = null;
-        this.invAmmo = null;
+        this.invAmmo = 0;
         this.stats = new StatTracker(this.id);
         this.packetBuffer = new PacketBuffer();
         this.statData = this.stats.statMap;

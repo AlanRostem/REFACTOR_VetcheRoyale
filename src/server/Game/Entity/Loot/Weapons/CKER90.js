@@ -101,7 +101,6 @@ class SeekerSmoke extends Bouncy {
             x: 100,
             y: 60,
         };
-        this.setCollisionRange(this.smokeBounds.x, this.smokeBounds.y);
         this.entityOrder = 2;
     }
 

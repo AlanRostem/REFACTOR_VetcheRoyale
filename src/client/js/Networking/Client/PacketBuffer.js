@@ -105,18 +105,18 @@ class PacketBuffer {
     }
 }
 
-PacketBuffer.validate = function (validObj, obj) {
+PacketBuffer.validate = function (validObj, obj, objectID) {
     if (!Object.isJSON(validObj) || !Object.isJSON(obj)) {
         if (typeof obj !== validObj)
-            console.error("expected typeof '" + validObj + "' value was: '" + typeof obj + "'");
+            console.error("expected typeof '" + validObj + "' value was: '" + typeof obj + "' on Object with ID: " + objectID);
         return;
     }
 
     for (let key in validObj) {
         if (Object.isJSON(validObj[key]))
-            PacketBuffer.validate(validObj[key], obj[key]);
+            PacketBuffer.validate(validObj[key], obj[key]), objectID;
         else if (typeof obj[key] !== validObj[key])
-            console.error("expected typeof '" + validObj[key] + "' value was: '" + typeof obj[key] + "': " + obj[key]);
+            console.error("expected typeof '" + validObj[key] + "' for '"+ key + "' value was: '" + typeof obj[key] + "' on Object with ID: " + objectID);
     }
 };
 

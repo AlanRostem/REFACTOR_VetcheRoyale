@@ -95,7 +95,7 @@ class AttackWeapon extends WeaponItem {
     set superCharge(val) {
         this.superAbility.currentCharge += val;
         if (this.superAbility.currentCharge > SuperAbility.MAX_CHARGE) {
-            this.superAbility.currentCharge =  SuperAbility.MAX_CHARGE;
+            this.superAbility.currentCharge = SuperAbility.MAX_CHARGE;
         }
     }
 
@@ -180,8 +180,8 @@ class AttackWeapon extends WeaponItem {
             }
         }
 
-        if (this.canUseSuper && player.input.singleKeyPress(81)) {
-            if (this.canUseSuper) {
+        if (this.canUseSuper) {
+            if (player.input.singleKeyPress(81)) {
                 this.superAbility.activate(this, entityManager, deltaTime);
             }
         }
