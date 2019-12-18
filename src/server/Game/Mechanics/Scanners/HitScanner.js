@@ -34,11 +34,11 @@ class HitScanner {
         let distX = b.x - a.x;
         let distY = b.y - a.y;
 
-        var startX = Math.round(a.x / tileMap.tileSize) - 1;
-        var startY = Math.round((a.y + distY) / tileMap.tileSize) - 1;
+        var startX = Math.round(a.x / tileMap.tileSize);
+        var startY = Math.round((a.y + distY) / tileMap.tileSize);
 
-        var endX = startX + Math.round(distX / tileMap.tileSize) + 1;
-        var endY = Math.round(a.y / tileMap.tileSize) + 1;
+        var endX = startX + Math.round(distX / tileMap.tileSize);
+        var endY = Math.round(a.y / tileMap.tileSize);
 
         let scanDoubleX = (startX - endX) === 0;
         let scanDoubleY = (startY - endY) === 0;
@@ -67,7 +67,6 @@ class HitScanner {
                         let topRight = new Vector2D((x + 1) * ts, y * ts);
                         let bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
 
-
                         if (scanDoubleX) {
                             topLeft.x -= ts;
                             bottomLeft.x -= ts;
@@ -86,6 +85,7 @@ class HitScanner {
                         if (Vector2D.intersect(a, b, topLeft, bottomLeft)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, bottomLeft));
                             this.onTileHit(b, entityManager);
+                            return;
                         }
 
                         if (Vector2D.intersect(a, b, topLeft, topRight)) {
