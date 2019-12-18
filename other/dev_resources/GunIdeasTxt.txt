@@ -39,8 +39,8 @@ enforce those roles, but are not used as an offensive tool directly (like damage
 C-KER 90
 Description: Belt-fed tracking rifle.
 Ammo Capacity: 10
-Primary Attack: Sonar rounds: Arcing sticky projectile with tracking abilities.
-Mod: Tracker scope: Turn your view and track enemies near your sonar rounds.
+Primary Attack: Sonar rounds: Sticky projectile with proximity tracking abilities.
+Mod: Tracker scope: Turn your view and fire faster tracking rounds.
 Super: Seeker smoke: Blanket a large area with a vision impaling tracking smoke.
 
 Falchion SLR
@@ -54,8 +54,8 @@ Aqua SLG
 Description: Automatic Icicle Rifle
 Ammo Capacity: 25
 Primary Attack: Ice bullets: Fully automatic ice rifle.
-Mod: Water jump: Activate a second jump.
-Super: Steam Blast: Deal damage to and knock back nearby enemies.
+Mod: Water jump: Hover for a desired period of time.
+Super: Steam Blast: Damage and knock away nearby enemies.
 
 |||||Level 3 weapons|||||
 Weapons in this stage are all explosive and are focused on dealing high damage. Secondary abilities are focused on dealing damage
@@ -92,7 +92,7 @@ Hadron Railgun
 Description: Hadron particle cannon
 Ammo Capacity: 15
 Primary Attack: Hadron wave: Laser shot with proportional damage to charge time. Leaves a trail that damages enemies if fully charged.
-Mod: Brute shot: Constant beam with followed up by an explosion.
+Mod: Brute shot: Constant beam followed up by an explosion.
 Super: Quantum core: Large powerful constant beam.
 
 3.93 World-Line
