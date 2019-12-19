@@ -71,7 +71,7 @@ class HitScanner {
                             topLeft.x -= ts;
                             bottomLeft.x -= ts;
                             topRight.x += ts;
-                            bottomRight += ts;
+                            bottomRight.x += ts;
                         }
 
                         if (scanDoubleY) {
