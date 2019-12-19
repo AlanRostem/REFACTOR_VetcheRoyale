@@ -4,7 +4,6 @@ const Tile = require("../../../TileBased/Tile.js");
 
 const WeaponItem = require("../../../Entity/Loot/Weapons/Base/WeaponItem.js");
 const KE_6H = require("../../../Entity/Loot/Weapons/KE_6H.js");
-const BIGMotorizer = require("../../../Entity/Loot/Weapons/BIGMotorizer.js");
 const SEW_9 = require("../../../Entity/Loot/Weapons/SEW-9.js");
 const Interlux = require("../../../Entity/Loot/Weapons/Interlux.js");
 const AquaSLG = require("../../../Entity/Loot/Weapons/AquaSLG.js");
@@ -33,9 +32,8 @@ const GUN_LIST = {
     2: new GunSpawnFunction(SEW_9),
     3: new GunSpawnFunction(KE_6H),
     4: new GunSpawnFunction(Interlux),
-    5: new GunSpawnFunction(BIGMotorizer),
-    6: new GunSpawnFunction(AquaSLG),
-    7: new GunSpawnFunction(Firewall)
+    5: new GunSpawnFunction(AquaSLG),
+    6: new GunSpawnFunction(Firewall)
 };
 
 

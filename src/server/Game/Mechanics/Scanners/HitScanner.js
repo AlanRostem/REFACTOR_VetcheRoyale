@@ -31,20 +31,19 @@ class HitScanner {
     }
 
     scanGeometry(a, b, entityManager, tileMap) {
-        let distX = b.x - a.x;
-        let distY = b.y - a.y;
-
-        var startX = Math.round(a.x / tileMap.tileSize);
-        var startY = Math.round((a.y + distY) / tileMap.tileSize);
-
-        var endX = startX + Math.round(distX / tileMap.tileSize);
-        var endY = Math.round(a.y / tileMap.tileSize);
-
-        let scanDoubleX = (startX - endX) === 0;
-        let scanDoubleY = (startY - endY) === 0;
-
         if (this.scanTiles) {
 
+            let distX = b.x - a.x;
+            let distY = b.y - a.y;
+
+            let startX = Math.floor(a.x / tileMap.tileSize);
+            let startY = Math.floor((a.y + distY) / tileMap.tileSize);
+
+            let endX = startX + Math.floor(distX / tileMap.tileSize);
+            let endY = Math.floor(a.y / tileMap.tileSize);
+
+            let scanDoubleX = (startX - endX) === 0;
+            let scanDoubleY = (startY - endY) === 0;
 
             if (startX > endX) {
                 let temp = endX;
@@ -81,11 +80,9 @@ class HitScanner {
                             bottomRight.y += ts;
                         }
 
-
                         if (Vector2D.intersect(a, b, topLeft, bottomLeft)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, bottomLeft));
                             this.onTileHit(b, entityManager);
-                            return;
                         }
 
                         if (Vector2D.intersect(a, b, topLeft, topRight)) {
