@@ -1,9 +1,14 @@
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const CollisionBoundary = require("../../Entity/Management/CollisionBoundary.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
+const SEntity = require("../../Entity/SEntity.js");
 
 // Scan line that collides with map geometry or entities (can be set however you like).
 class HitScanner {
+    static ScannableEntity = SEntity;
+    static setScannableEntityType(type) {
+        this.ScannableEntity = type;
+    }
     constructor(entityIDExclusions = {}, entityCollision = true, tileCollision = true) {
         this.shouldScanEntities = entityCollision;
         this.scanTiles = tileCollision;
@@ -109,6 +114,7 @@ class HitScanner {
         if (this.shouldScanEntities) {
             entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
                 for (let e of cell) {
+                    if (!(e instanceof this.constructor.ScannableEntity)) continue;
                     if (this.entityExceptions.hasOwnProperty(e.id)) continue;
                     if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                         if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));

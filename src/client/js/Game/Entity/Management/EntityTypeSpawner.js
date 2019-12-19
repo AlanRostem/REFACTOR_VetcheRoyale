@@ -19,6 +19,8 @@ import CIceBullet from "../Weapons/CAquaSLG/CIceBullet.js";
 import CFirepellet from "../Weapons/CFirewall/CFirepellet.js";
 import CSeekerSmoke from "../Weapons/CCKER90/CSeekerSmoke.js";
 import CATBullet from "../Weapons/CCKER90/CATBullet.js";
+import CHadronRailGun from "../Weapons/CHadronRailGun.js";
+
 
 
 /**
@@ -82,5 +84,6 @@ EntityTypeSpawner.createSpawner("IceBullet", CIceBullet);
 EntityTypeSpawner.createSpawner("Firepellet", CFirepellet);
 EntityTypeSpawner.createSpawner("ATBullet", CATBullet);
 EntityTypeSpawner.createSpawner("SeekerSmoke", CSeekerSmoke);
+EntityTypeSpawner.createSpawner("HadronRailGun", CHadronRailGun);
 
 export default EntityTypeSpawner;

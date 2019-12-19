@@ -9,6 +9,7 @@ const Interlux = require("../../../Entity/Loot/Weapons/Interlux.js");
 const AquaSLG = require("../../../Entity/Loot/Weapons/AquaSLG.js");
 const CKER90 = require("../../../Entity/Loot/Weapons/CKER90.js");
 const Firewall = require("../../../Entity/Loot/Weapons/Firewall.js");
+const HadronRailGun = require("../../../Entity/Loot/Weapons/HadronRailGun.js");
 
 const START_TILE = 14 * 8; // 14 rows times 8 cols on tile-sheet
 
@@ -33,7 +34,8 @@ const GUN_LIST = {
     3: new GunSpawnFunction(KE_6H),
     4: new GunSpawnFunction(Interlux),
     5: new GunSpawnFunction(AquaSLG),
-    6: new GunSpawnFunction(Firewall)
+    6: new GunSpawnFunction(Firewall),
+    7: new GunSpawnFunction(HadronRailGun)
 };
 
 

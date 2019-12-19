@@ -7,7 +7,7 @@ class Match extends GameWorld{
     constructor(worldList, name, gameMap) {
         super(name, gameMap);
         this.setGameRules({
-            "lootLife": 2,
+            "lootLife": 120,
             "pvp": true,
             "maxPlayers": 24,
             "maxTeamMembers": 3,

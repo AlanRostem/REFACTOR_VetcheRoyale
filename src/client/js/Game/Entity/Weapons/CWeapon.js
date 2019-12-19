@@ -4,7 +4,7 @@ import R from "../../../Graphics/Renderer.js";
 import AssetManager from "../../../AssetManager/AssetManager.js";
 
 export default class CWeapon extends CLoot {
-    static DISPLAY_NAME = "none";
+    static DISPLAY_NAME = "None";
     constructor(data, iconID) {
         super(data);
         this.iconID = iconID;
