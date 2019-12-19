@@ -10,7 +10,7 @@ const Alive = require("../../Traits/Alive.js");
 
 class HadronRailGun extends HitScanWeapon {
     static _ = (() => {
-        HadronRailGun.setMaxRange(128);
+        HadronRailGun.setMaxRange(640);
         HadronRailGun.addDynamicValues("scanHitPos");
         HadronRailGun.overrideAttackStats(2.2, 7, 20, 1, 0,0,
             0, 1);

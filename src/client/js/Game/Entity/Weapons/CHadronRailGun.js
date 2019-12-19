@@ -18,7 +18,7 @@ class CHadronRailGun extends CWeapon {
 
     countDownCallback() {
         this.laserPower += 2;
-        this.laserThickness -= (this.laserPower % 4) | 0;
+        this.laserThickness = 5 / this.laserPower | 0;
     }
 
     update(deltaTime, client) {
@@ -28,11 +28,9 @@ class CHadronRailGun extends CWeapon {
 
     draw() {
         super.draw();
-        if (this.output.scanHitPos) {
+        if (this.laserPower < 20 && this.laserPower !== 0 && this.laserThickness > 0 && this.output.scanHitPos !== null) {
             R.drawLine(this.center.x, this.center.y, this.output.scanHitPos.x, this.output.scanHitPos.y,
-                "Purple", 1, true, 1);
-        }
-        if (this.laserPower < 20 && this.laserPower !== 0 && this.laserThickness > 0 && this.output.scanHitPos) {
+                "Purple", this.laserThickness, true, this.laserPower);
         }
     }
 

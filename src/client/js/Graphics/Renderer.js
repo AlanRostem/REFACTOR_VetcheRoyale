@@ -193,14 +193,15 @@ const R = {
             let counter = length;
             let drawPixel = true;
 
-            x0 = Math.round(x0);
-            y0 = Math.round(y0);
-            x1 = Math.round(x1);
-            y1 = Math.round(y1);
+            let dim = thickness / 2 | 0;
+            x0 = Math.round(x0) - dim;
+            y0 = Math.round(y0) - dim;
+            x1 = Math.round(x1) - dim;
+            y1 = Math.round(y1) - dim;
 
-            var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-            var dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-            var err = (dx > dy ? dx : -dy) / 2;
+            let dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+            let dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+            let err = (dx > dy ? dx : -dy) / 2;
 
             while (true) {
 
