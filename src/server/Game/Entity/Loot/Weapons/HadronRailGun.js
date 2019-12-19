@@ -9,12 +9,19 @@ const SEntity = require("../../SEntity.js");
 const Alive = require("../../Traits/Alive.js");
 
 class HadronRailGun extends HitScanWeapon {
+    static MAX_DAMAGE = 95;
     static _ = (() => {
         HadronRailGun.setMaxRange(640);
         HadronRailGun.addDynamicValues("scanHitPos");
         HadronRailGun.overrideAttackStats(2.2, 7, 20, 1, 0,0,
             0, 1);
     })();
+
+    onEntityHit(entity, entityManager, angle) {
+        super.onEntityHit(entity, entityManager, angle);
+        Damage.inflict(this.getOwner(), entity, entityManager, this.firerer.chargePercent
+            * HadronRailGun.MAX_DAMAGE);
+    }
 }
 
 module.exports = HadronRailGun;

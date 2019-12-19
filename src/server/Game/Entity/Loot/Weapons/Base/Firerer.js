@@ -8,6 +8,7 @@ class Firerer {
     constructor(gun) {
         let stats = gun.constructor.AttackStats;
         this.chargeTime = stats.CHARGE_TIME;
+        this.chargePercent = 1; // TODO: Make different types of classes for firing modes
 
         this.burstCount = stats.BURST_COUNT;
 
