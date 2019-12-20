@@ -7,7 +7,7 @@ class CHadronRailGun extends CWeapon {
     laserTimer = new CTimer(.05, this.countDownCallback.bind(this), true);
 
     constructor(d) {
-        super(d, 0)
+        super(d, 4)
     }
 
     onFire(client, deltaTime) {

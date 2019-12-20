@@ -20,8 +20,11 @@ class FMPartialChargeShot extends FiringMechanism {
 
     firingUpdate(weapon, player, entityManager, deltaTime) {
         super.firingUpdate(weapon, player, entityManager, deltaTime);
-        if (weapon.currentFireTime <= 0) {
+        if (weapon.currentFireTime <= 0 && weapon.canFire) {
             if (this.holdingDownFireButton) {
+                if (!this.canShoot) {
+                    this.chargePercent += this.chargePercentGainPerTick;
+                }
                 this.canShoot = true;
                 if (this.chargePercent < 100) {
                     if (this.currentTick >= this.maxTickTime) {
@@ -39,7 +42,7 @@ class FMPartialChargeShot extends FiringMechanism {
                     this.doSingleFire(weapon, player, entityManager, deltaTime);
                     this.currentTick = 0;
                 }
-                this.chargePercent = this.chargePercentGainPerTick;
+                this.chargePercent = 0;
             }
         }
     }
