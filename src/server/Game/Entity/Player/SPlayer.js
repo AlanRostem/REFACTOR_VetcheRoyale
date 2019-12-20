@@ -184,8 +184,6 @@ class Player extends GameDataLinker {
         }
 
         if (this.dead) {
-
-            console.log(entityManager.constructor.name, entityManager.settings)
             if (entityManager.getGameRule("respawnPlayerOnDeath")) {
                 this.isAlive = true;
                 this.HP = 100;
