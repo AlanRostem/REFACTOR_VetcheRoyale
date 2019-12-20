@@ -70,7 +70,7 @@ class HadronParticleLine extends Entity {
         this.setCollisionRange(Math.abs(w), Math.abs(h));
         this.currentTime = 0;
         this.doDMG = false;
-        this.life = Infinity; HadronParticleLine.MAX_LIFE;
+        this.life = HadronParticleLine.MAX_LIFE;
         this.entitiesOnLine = {};
     }
 
