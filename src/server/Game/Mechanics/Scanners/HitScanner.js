@@ -6,9 +6,11 @@ const SEntity = require("../../Entity/SEntity.js");
 // Scan line that collides with map geometry or entities (can be set however you like).
 class HitScanner {
     static ScannableEntity = SEntity;
+
     static setScannableEntityType(type) {
         this.ScannableEntity = type;
     }
+
     constructor(entityIDExclusions = {}, entityCollision = true, tileCollision = true) {
         this.shouldScanEntities = entityCollision;
         this.scanTiles = tileCollision;
@@ -65,45 +67,40 @@ class HitScanner {
             for (let y = startY; y <= endY; y++) {
                 for (let x = startX; x <= endX; x++) {
                     if (TileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {
-                        let ts = tileMap.tileSize;
-                        let topLeft = new Vector2D(x * ts, y * ts);
-                        let bottomLeft = new Vector2D(x * ts, (y + 1) * ts);
-                        let topRight = new Vector2D((x + 1) * ts, y * ts);
-                        let bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
-
+                        let ts = tileMap.tileSize, topLeft = new Vector2D(x * ts, y * ts),
+                            bottomLeft = new Vector2D(x * ts, (y + 1) * ts),
+                            topRight = new Vector2D((x + 1) * ts, y * ts),
+                            bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
                         if (scanDoubleX) {
                             topLeft.x -= ts;
                             bottomLeft.x -= ts;
                             topRight.x += ts;
                             bottomRight.x += ts;
                         }
-
                         if (scanDoubleY) {
                             topLeft.y -= ts;
                             topRight.y -= ts;
                             bottomLeft.y += ts;
                             bottomRight.y += ts;
                         }
-
                         if (Vector2D.intersect(a, b, topLeft, bottomLeft)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, bottomLeft));
                             this.onTileHit(b, entityManager);
                         }
-
                         if (Vector2D.intersect(a, b, topLeft, topRight)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, topRight));
                             this.onTileHit(b, entityManager);
                         }
-
                         if (Vector2D.intersect(a, b, topRight, bottomRight)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topRight, bottomRight));
                             this.onTileHit(b, entityManager);
                         }
-
                         if (Vector2D.intersect(a, b, bottomLeft, bottomRight)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, bottomLeft, bottomRight));
                             this.onTileHit(b, entityManager);
                         }
+                    } else {
+                        continue;
                     }
                 }
             }

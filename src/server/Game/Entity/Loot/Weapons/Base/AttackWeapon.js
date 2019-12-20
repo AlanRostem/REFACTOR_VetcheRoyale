@@ -2,7 +2,7 @@ const WeaponItem = require("./WeaponItem.js");
 const ModAbility = require("./ModAbility.js");
 const SuperAbility = require("./SuperAbility.js");
 const Projectile = require("../AttackEntities/Projectile.js");
-const Firerer = require("./Firerer.js");
+const FMFullAuto = require("./FMFullAuto.js");
 
 // Composition abstraction class for the weapon abilities.
 // It extends the item version of the weapon. When the player
@@ -25,11 +25,12 @@ class AttackWeapon extends WeaponItem {
 
     static ModAbilityClass = ModAbility;
     static SuperAbilityClass = SuperAbility;
+    static FiringMechanismClass = FMFullAuto;
 
-
-    static assignWeaponClassAbilities(classForMod, classForSuper) {
+    static assignWeaponClassAbilities(classForMod, classForSuper, classForFiringMechanism = FMFullAuto) {
         this.ModAbilityClass = classForMod;
         this.SuperAbilityClass = classForSuper;
+        this.FiringMechanismClass = classForFiringMechanism;
     }
 
     static AttackStats = {
@@ -70,7 +71,7 @@ class AttackWeapon extends WeaponItem {
         this.superAbility = new this.constructor.SuperAbilityClass();
         this.superChargeData = 0;
         this.modCoolDownData = 0;
-        this.firerer = new Firerer(this);
+        this.firerer = new this.constructor.FiringMechanismClass(this);
         this.firing = false;
         this.spreadAngle = 0;
         this.canUseSuper = false;
