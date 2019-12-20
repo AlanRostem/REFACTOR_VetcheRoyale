@@ -68,8 +68,8 @@ class SEntity {
     // should have the least amount of iteration depending on
     // their size in the world.
     setCollisionRange(x, y) {
-        this.entitiesInProximity.collisionBoundary.w = x;
-        this.entitiesInProximity.collisionBoundary.h = y;
+        this.entitiesInProximity.collisionBoundary.bounds.x = x;
+        this.entitiesInProximity.collisionBoundary.bounds.y = y;
     }
 
     setWorld(game) {

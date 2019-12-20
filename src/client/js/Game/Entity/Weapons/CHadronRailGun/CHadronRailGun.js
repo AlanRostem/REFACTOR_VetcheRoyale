@@ -1,6 +1,6 @@
-import CWeapon from "./CWeapon.js";
-import CTimer from "../../../../../shared/code/Tools/CTimer.js";
-import R from "../../../Graphics/Renderer.js";
+import CWeapon from "../CWeapon.js";
+import CTimer from "../../../../../../shared/code/Tools/CTimer.js";
+import R from "../../../../Graphics/Renderer.js";
 
 class CHadronRailGun extends CWeapon {
 
@@ -51,7 +51,7 @@ class CHadronRailGun extends CWeapon {
     }
 }
 
-function hadronParticleEffect(x0, y0, x1, y1, thickness, space) {
+export function hadronParticleEffect(x0, y0, x1, y1, thickness, space) {
 
     let counter = 1;
     let drawPixel = true;

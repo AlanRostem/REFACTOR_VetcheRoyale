@@ -19,9 +19,8 @@ import CIceBullet from "../Weapons/CAquaSLG/CIceBullet.js";
 import CFirepellet from "../Weapons/CFirewall/CFirepellet.js";
 import CSeekerSmoke from "../Weapons/CCKER90/CSeekerSmoke.js";
 import CATBullet from "../Weapons/CCKER90/CATBullet.js";
-import CHadronRailGun from "../Weapons/CHadronRailGun.js";
-
-
+import CHadronRailGun from "../Weapons/CHadronRailGun/CHadronRailGun.js";
+import CHadronParticleLine from "../Weapons/CHadronRailGun/CHadronParticleLine.js";
 
 /**
  * Creates client versions of inbound entity data by mapping extended classes (CEntity) to the entity
@@ -85,5 +84,6 @@ EntityTypeSpawner.createSpawner("Firepellet", CFirepellet);
 EntityTypeSpawner.createSpawner("ATBullet", CATBullet);
 EntityTypeSpawner.createSpawner("SeekerSmoke", CSeekerSmoke);
 EntityTypeSpawner.createSpawner("HadronRailGun", CHadronRailGun);
+EntityTypeSpawner.createSpawner("HadronParticleLine", CHadronParticleLine);
 
 export default EntityTypeSpawner;
