@@ -48,8 +48,8 @@ class FMPartialChargeShot extends FiringMechanism {
     }
 }
 
-const ONE = 1;
 
+const ONE = 1;
 class HadronParticleLine extends Entity {
     static _ = (() => {
         HadronParticleLine.addDynamicValues("p0", "p1");
@@ -99,8 +99,6 @@ class HadronParticleLine extends Entity {
 
     update(game, deltaTime) {
         super.update(game, deltaTime);
-        this.boxX = this.entitiesInProximity.collisionBoundary.bounds.x;
-        this.boxY = this.entitiesInProximity.collisionBoundary.bounds.y;
         this.doDMG = false;
         if (this.currentTime <= 0) {
             this.currentTime = HadronParticleLine.DMG_TICK_TIME;
@@ -116,7 +114,7 @@ class HadronParticleLine extends Entity {
 class HadronRailGun extends HitScanWeapon {
     static MAX_DAMAGE = 65;
     static _ = (() => {
-        HadronRailGun.setMaxRange(640);
+        HadronRailGun.setMaxRange(480);
         HadronRailGun.addDynamicValues("scanHitPos", "chargePercent");
         HadronRailGun.assignWeaponClassAbilities(HadronRailGun.ModAbilityClass, HadronRailGun.SuperAbilityClass, FMPartialChargeShot);
         HadronRailGun.overrideAttackStats(2.2, 7, 120, 1, 0, 0,
