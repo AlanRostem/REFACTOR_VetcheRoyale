@@ -51,11 +51,7 @@ class CHadronRailGun extends CWeapon {
     }
 }
 
-export function hadronParticleEffect(x0, y0, x1, y1, thickness, space) {
-
-    let counter = 1;
-    let drawPixel = true;
-
+export function hadronParticleEffect(x0, y0, x1, y1, thickness) {
     x0 = Math.round(x0);
     y0 = Math.round(y0);
     x1 = Math.round(x1);
