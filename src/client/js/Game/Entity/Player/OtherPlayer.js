@@ -83,6 +83,11 @@ class OtherPlayer extends CEntity {
             this.applyDmg = true;
         }
 
+        if (self.hp > this.preHP) {
+            this.preHP = self.hp;
+        }
+
+
         if (this.applyDmg) {
             this.timer2.tick(deltaTime);
         }
@@ -193,7 +198,7 @@ class OtherPlayer extends CEntity {
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
 
-        // R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
+         //R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
     }
 }
 
