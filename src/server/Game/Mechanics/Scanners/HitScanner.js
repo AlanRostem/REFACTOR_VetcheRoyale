@@ -121,7 +121,6 @@ class HitScanner {
             }
             this.rangeBoundary.pos.x -= this.rangeBoundary.bounds.x / 2;
             this.rangeBoundary.pos.y -= this.rangeBoundary.bounds.y / 2;
-            //if (this.constructor.ScannableEntity.name === "Alive") console.log(this.rangeBoundary)
             entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
                 for (let e of cell) {
                     if (!(e instanceof this.constructor.ScannableEntity)) continue;

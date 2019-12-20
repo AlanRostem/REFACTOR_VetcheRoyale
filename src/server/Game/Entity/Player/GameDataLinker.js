@@ -8,12 +8,13 @@ const PacketBuffer = require("../../../Networking/PacketBuffer.js");
 // server based data given to the player by
 // certain events.
 class GameDataLinker extends Alive {
+    static _ = (() => {
+        GameDataLinker.setPEMClass(ClientPEM);
+    })();
     constructor(x, y, w, h, HP, regenCoolDown, worldMgr, clientID) {
         super(x, y, w, h, HP, true, 1, .2, regenCoolDown, clientID);
         this._gameData = {};
         this.packetBuffer = new PacketBuffer;
-
-        this.entitiesInProximity = new ClientPEM(this);
         this.worldMgrRef = worldMgr;
         this.input = new InputBridge();
         this.outboundData = new ONMap();

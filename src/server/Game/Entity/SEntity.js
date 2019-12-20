@@ -6,6 +6,12 @@ const ProximityEntityManager = require("./Management/ProximityEntityManager.js")
 // Base class of dynamic objects in the game world.
 class SEntity {
     static SNAPSHOT_TEMPLATE = new SnapShotTemplate(SEntity);
+    static PEMClass = ProximityEntityManager;
+
+    static setPEMClass(type) {
+        this.PEMClass = type;
+    }
+
     static _ = (() => {
         SEntity.SNAPSHOT_TEMPLATE.addStaticValues(
             "id",
@@ -56,7 +62,7 @@ class SEntity {
         this.homeWorldID = -1;
         this.entityOrder = 0;
         this.snapShotGenerator = new SnapShotGenerator(this);
-        this.entitiesInProximity = new ProximityEntityManager(this);
+        this.entitiesInProximity = new this.constructor.PEMClass(this);
     }
 
     setEntityOrder(int) {
