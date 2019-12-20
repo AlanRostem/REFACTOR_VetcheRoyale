@@ -15,7 +15,7 @@ class FMPartialChargeShot extends FiringMechanism {
         this.chargePercent = 0;
         this.chargePercentGainPerTick = 10;
         this.currentTick = 0;
-        this.maxTickTime = 0.2;
+        this.maxTickTime = 0.15;
         this.canShoot = false;
     }
 
@@ -109,7 +109,7 @@ class HadronRailGun extends HitScanWeapon {
         HadronRailGun.setMaxRange(640);
         HadronRailGun.addDynamicValues("scanHitPos", "chargePercent");
         HadronRailGun.assignWeaponClassAbilities(HadronRailGun.ModAbilityClass, HadronRailGun.SuperAbilityClass, FMPartialChargeShot);
-        HadronRailGun.overrideAttackStats(2.2, 7, 60, 1, 0, 0,
+        HadronRailGun.overrideAttackStats(2.2, 7, 120, 1, 0, 0,
             0, 1);
     })();
 
