@@ -128,14 +128,12 @@ class HitScanner {
                     if (Vector2D.intersect(a, b, e.topRight, e.bottomRight)) {
                         if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topRight, e.bottomRight));
                         let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                        if (this.constructor.ScannableEntity.name === "Alive") console.log("tr-br")
                         this.onEntityHit(e, entityManager, ang);
                     }
 
                     if (Vector2D.intersect(a, b, e.bottomLeft, e.bottomRight)) {
                         if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.bottomLeft, e.bottomRight));
                         let ang = Math.atan2(a.y - b.y, a.x - b.x);
-                        if (this.constructor.ScannableEntity.name === "Alive") console.log("bl-br")
                         this.onEntityHit(e, entityManager, ang);
                     }
                 }
