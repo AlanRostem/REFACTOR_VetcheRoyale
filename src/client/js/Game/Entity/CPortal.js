@@ -17,7 +17,7 @@ export default class CPortal extends CEntity {
         if (this.overlapLocalPlayer(client)
             || this.localPlayerOverlapsPair(client)
         ) {
-            AudioPool.play("Map/portal.oggSE")
+            AudioPool.play("World/hubportal_enter.oggSE")
         }
     }
 
