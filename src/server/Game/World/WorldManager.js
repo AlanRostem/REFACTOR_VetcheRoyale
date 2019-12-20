@@ -3,7 +3,7 @@ const ONMap = require("../../../shared/code/DataStructures/SObjectNotationMap.js
 const GameWorld = require("../../Game/World/GameWorld.js");
 const HubWorld = require("../../Game/World/Matches/Hubs/HubWorld.js");
 const PlayGround = require("../../Game/World/Matches/PlayGround/PlayGround.js");
-const Match = require("../../Game/World/Matches/Match/Match.js");
+const TestWorld = require("./Matches/Match/TestWorld.js");
 const DataBridge = require("../../Multithreading/DataBridge.js");
 const Player = require("../Entity/Player/SPlayer.js");
 const LootCrate = require("../Entity/Loot/Boxes/LootCrate.js");
@@ -38,7 +38,7 @@ class WorldManager {
 
         // TODO: FIX THIS HACK
 
-        let match = new Match(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
+        let match = new TestWorld(this.gameWorlds, "match", TileMapConfigs.getMap("MegaMap"));
         this.addWorld(match, "match");
         for (let i = 0; i < 0; i++) {
             match.spawnEntity(Math.random() * match.tileMap.w * 8, Math.random() * match.tileMap.h * 8, new LootCrate(0, 0));
@@ -47,11 +47,7 @@ class WorldManager {
         let playground = new PlayGround(this.gameWorlds);
         this.addWorld(playground, "playground");
 
-        let battleground = new Match(this.gameWorlds, "battleground", TileMapConfigs.getMap("battleground"));
-        battleground.setGameRules({
-           "infiniteAmmo": true,
-            "maxTeamMembers": 1
-        });
+        let battleground = new TestWorld(this.gameWorlds, "battleground", TileMapConfigs.getMap("battleground"));
         this.addWorld(battleground, "battleground");
 
     }

@@ -3,15 +3,17 @@ const Tile = require("../../../TileBased/Tile.js");
 const HubPortal = require("../../../Entity/Portal/HubPortal.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 
-class Match extends GameWorld{
+class TestWorld extends GameWorld {
     constructor(worldList, name, gameMap) {
         super(name, gameMap);
         this.setGameRules({
             "lootLife": 120,
             "pvp": true,
             "maxPlayers": 24,
-            "maxTeamMembers": 3,
+            "maxTeamMembers": 1,
             "dropLootOnDeath": true,
+            "respawnPlayerOnDeath": true,
+            "infiniteAmmo": true,
         });
         this.spawnEntity(
             61 * Tile.SIZE,
@@ -27,4 +29,4 @@ class Match extends GameWorld{
     }
 }
 
-module.exports = Match;
+module.exports = TestWorld;
