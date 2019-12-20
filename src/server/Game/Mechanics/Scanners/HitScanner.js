@@ -99,8 +99,6 @@ class HitScanner {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, bottomLeft, bottomRight));
                             this.onTileHit(b, entityManager);
                         }
-                    } else {
-                        continue;
                     }
                 }
             }
@@ -109,6 +107,17 @@ class HitScanner {
 
     scanEntities(entityManager, a, b) {
         if (this.shouldScanEntities) {
+            this.rangeBoundary.pos.x = a.x + b.x / 2;
+            this.rangeBoundary.pos.y = a.y + b.y / 2;
+            this.rangeBoundary.bounds.x = Math.abs(b.x - a.x);
+            if (this.rangeBoundary.bounds.x < 32) {
+                this.rangeBoundary.bounds.x += 32;
+            }
+            this.rangeBoundary.bounds.y = Math.abs(b.y - a.y);
+            if (this.rangeBoundary.bounds.y < 32) {
+                this.rangeBoundary.bounds.y += 32;
+            }
+            //if (this.constructor.ScannableEntity.name === "Alive") console.log(this.rangeBoundary)
             entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
                 for (let e of cell) {
                     if (!(e instanceof this.constructor.ScannableEntity)) continue;
@@ -143,13 +152,9 @@ class HitScanner {
 
     scan(originPos, endPos, entityManager, tileMap) {
         let a = originPos;
-        this.rangeBoundary.pos.x = a.x;
-        this.rangeBoundary.pos.y = a.y;
-
         let b = this.end;
         b.x = endPos.x;
         b.y = endPos.y;
-
         this.scanGeometry(a, b, entityManager, tileMap);
         this.scanEntities(entityManager, a, b);
 

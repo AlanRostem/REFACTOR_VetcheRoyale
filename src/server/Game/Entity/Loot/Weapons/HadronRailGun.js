@@ -6,7 +6,6 @@ const Entity = require("../../SEntity.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
 const HitScanner = require("../../../Mechanics/Scanners/HitScanner.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
-const SEntity = require("../../SEntity.js");
 const Alive = require("../../Traits/Alive.js");
 
 class FMPartialChargeShot extends FiringMechanism {
@@ -49,9 +48,11 @@ class FMPartialChargeShot extends FiringMechanism {
     }
 }
 
+const ONE = 1;
+
 class HadronParticleLine extends Entity {
     static _ = (() => {
-        HadronParticleLine.addDynamicValues("p0", "p1", "boxX", "boxY");
+        HadronParticleLine.addDynamicValues("p0", "p1");
     })();
     static DMG_PER_TICK = 2;
     static DMG_TICK_TIME = 0.2;
@@ -67,20 +68,29 @@ class HadronParticleLine extends Entity {
         this.pos.y = p0.y + h / 2;
         this.owner = owner;
         this.setCollisionRange(Math.abs(w), Math.abs(h));
-        this.boxX = this.entitiesInProximity.collisionBoundary.bounds.x;
-        this.boxY = this.entitiesInProximity.collisionBoundary.bounds.y;
         this.currentTime = 0;
         this.doDMG = false;
-        this.life = HadronParticleLine.MAX_LIFE;
+        this.life = Infinity; HadronParticleLine.MAX_LIFE;
+        this.entitiesOnLine = {};
     }
 
     forEachNearbyEntity(entity, entityManager) {
         super.forEachNearbyEntity(entity, entityManager);
         if (entity instanceof Alive) {
-            if (this.doDMG) {
-                if (!entity.isTeammate(this.owner)) {
-                    if (HitScanner.intersectsEntity(this.p0, this.p1, entity)) {
+            if (!entity.isTeammate(this.owner)) {
+                if (HitScanner.intersectsEntity(this.p0, this.p1, entity)) {
+                    if (!this.entitiesOnLine.hasOwnProperty(entity.id)) {
+                        this.entitiesOnLine[entity.id] = ONE;
                         Damage.inflict(this.owner, entity, entityManager, HadronParticleLine.DMG_PER_TICK);
+                    }
+                    if (this.doDMG) {
+                        if (!entity.isTeammate(this.owner)) {
+                            Damage.inflict(this.owner, entity, entityManager, HadronParticleLine.DMG_PER_TICK);
+                        }
+                    }
+                } else {
+                    if (this.entitiesOnLine.hasOwnProperty(entity.id)) {
+                        delete this.entitiesOnLine[entity.id];
                     }
                 }
             }
