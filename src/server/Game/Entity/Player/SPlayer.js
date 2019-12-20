@@ -90,10 +90,10 @@ class Player extends GameDataLinker {
             // TODO: Optimize
             this.itemsNearby.array.sort(function (a, b) {
                 if (a.distance > b.distance) {
-                    return -1;
+                    return 1;
                 }
                 if (b.distance > a.distance) {
-                    return 1;
+                    return -1;
                 }
                 return 0;
             });
