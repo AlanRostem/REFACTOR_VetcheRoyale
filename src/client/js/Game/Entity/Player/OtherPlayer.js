@@ -45,6 +45,8 @@ class OtherPlayer extends CEntity {
         this.applyDmg = false;
         this.preHP = 100;
 
+        this.damageAudioSrc = "Player/damage_deal.oggSE";
+
     }
 
     setMovementState(key, value) {
@@ -81,6 +83,8 @@ class OtherPlayer extends CEntity {
         if (self.hp < this.preHP) {
             this.preHP = self.hp;
             this.applyDmg = true;
+            AudioPool.play(this.damageAudioSrc);
+
         }
 
         if (self.hp > this.preHP) {

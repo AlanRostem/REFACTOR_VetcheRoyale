@@ -38,6 +38,8 @@ class UserPlayer extends OtherPlayer {
 
         this.jumping = false;
 
+        this.damageAudioSrc = "Player/damage_take.oggSE";
+
         Scene.clientRef.inputListener.addKeyMapping(32, (keyState) => {
             this.jumping = keyState;
         });
