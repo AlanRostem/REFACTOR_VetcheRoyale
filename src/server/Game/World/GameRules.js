@@ -16,6 +16,7 @@ class GameRules {
         this.config.set("superChargeTickMultiplier", 1);
         this.config.set("superChargePerKillMultiplier", 1);
         this.config.set("modCoolDownTickMultiplier", 1);
+        this.config.set("respawnPlayerOnDeath", false);
     }
 
     configure(object) {

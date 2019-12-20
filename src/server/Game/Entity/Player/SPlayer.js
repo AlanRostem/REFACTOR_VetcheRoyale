@@ -183,6 +183,16 @@ class Player extends GameDataLinker {
             }
         }
 
+        if (this.dead) {
+            if (entityManager.getGameRule("respawnPlayerOnDeath")) {
+                this.isAlive = true;
+                this.HP = 100;
+                let sPos = entityManager.spawner.spawners.get(105);
+                this.pos.x = sPos.x;
+                this.pos.y = sPos.y;
+            }
+        }
+
         this.setMovementState("slope", "false");
         super.update(entityManager, deltaTime);
         this.checkForNearbyLoot(entityManager);

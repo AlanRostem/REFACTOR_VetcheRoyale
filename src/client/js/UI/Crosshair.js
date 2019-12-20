@@ -47,7 +47,7 @@ export default class CrossHair extends UIElement {
         else {
             R.drawCroppedImage(AssetManager.getMapImage("crossHairs"),
                 15 * this.Wid, 0, 15, 15,
-                this.pos.x - 8, this.pos.y - 8, 15, 15, false);
+                this.pos.x - 8, this.pos.y - 7, 15, 15, false);
 
             R.ctx.restore();
         }

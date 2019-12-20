@@ -25,9 +25,7 @@ class GameWorld extends EntityManager {
         this.recentlySpawnedEntities = new ONMap();
         this.spawner.spawnAll(this);
         this.debugData = {};
-
     }
-
 
     getGameRule(key) {
         return this.settings.getRule(key);
@@ -36,7 +34,6 @@ class GameWorld extends EntityManager {
     setGameRules(object) {
         this.settings.configure(object);
     }
-
 
     spawnEntity(x, y, entity) {
         entity.setWorld(this);

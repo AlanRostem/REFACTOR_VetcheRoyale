@@ -69,9 +69,7 @@ class HadronRailGun extends HitScanWeapon {
     }
 
     onEntityHit(entity, entityManager, angle) {
-        super.onEntityHit(entity, entityManager, angle);
-        Damage.inflict(this.getOwner(), entity, entityManager, this.firerer.chargePercent / 100
-            * HadronRailGun.MAX_DAMAGE | 0);
+        Damage.inflict(this.getOwner(), entity, entityManager, this.firerer.chargePercent / 100 * HadronRailGun.MAX_DAMAGE | 0);
     }
 }
 
