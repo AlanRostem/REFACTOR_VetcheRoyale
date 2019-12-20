@@ -19,15 +19,15 @@ class LootCrate extends StaticInteractable {
      * Constructor method
      * @param x {number} Position in the world
      * @param y {number} Position in thw world
-     * @param level {number} The level of the items likely to spawn when opening the crate
+     * @param args {object} Arguments with the level of the items likely to spawn when opening the crate
      * @param capacity {number} Maximum amount of items spawned
      * @param levelGuarantee {number} The minimum item level that is always spawned
      */
-    constructor(x, y, level = 1, capacity = 15, levelGuarantee = 1) {
+    constructor(x, y, args, capacity = 5) {
         super(x, y, 16, 8);
-        this.level = level;
+        this.level = args.level;
         this.capacity = capacity;
-        this.levelGuarantee = levelGuarantee;
+        this.levelGuarantee = this.level - 1;
     }
 
     /**

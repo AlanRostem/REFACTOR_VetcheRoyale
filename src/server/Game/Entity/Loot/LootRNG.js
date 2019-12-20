@@ -44,7 +44,7 @@ const LootRNG = {
         var guaranteeLevel = LootRNG.levelMap[level];
         var countUsage = count;
         var array = [];
-
+        debugger;
         for (var i = 0; i < guaranteeCount; i++) {
             countUsage--;
             var idx = (Math.random() * guaranteeLevel.length) | 0;
