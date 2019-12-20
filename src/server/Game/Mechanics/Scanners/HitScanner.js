@@ -107,16 +107,20 @@ class HitScanner {
 
     scanEntities(entityManager, a, b) {
         if (this.shouldScanEntities) {
-            this.rangeBoundary.pos.x = a.x + b.x / 2;
-            this.rangeBoundary.pos.y = a.y + b.y / 2;
-            this.rangeBoundary.bounds.x = Math.abs(b.x - a.x);
+            let deltaX = b.x - a.x;
+            let deltaY = b.y - a.y;
+            this.rangeBoundary.pos.x = a.x + deltaX / 2;
+            this.rangeBoundary.pos.y = a.y + deltaY / 2;
+            this.rangeBoundary.bounds.x = Math.abs(deltaX);
             if (this.rangeBoundary.bounds.x < 32) {
                 this.rangeBoundary.bounds.x += 32;
             }
-            this.rangeBoundary.bounds.y = Math.abs(b.y - a.y);
+            this.rangeBoundary.bounds.y = Math.abs(deltaY);
             if (this.rangeBoundary.bounds.y < 32) {
                 this.rangeBoundary.bounds.y += 32;
             }
+            this.rangeBoundary.pos.x -= this.rangeBoundary.bounds.x / 2;
+            this.rangeBoundary.pos.y -= this.rangeBoundary.bounds.y / 2;
             //if (this.constructor.ScannableEntity.name === "Alive") console.log(this.rangeBoundary)
             entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
                 for (let e of cell) {
