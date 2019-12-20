@@ -29,7 +29,8 @@ class CHadronRailGun extends CWeapon {
     draw() {
         super.draw();
         if (this.output.equippedToPlayer) {
-            R.drawText((this.output.chargePercent).toString(), R.screenSize.x / 2 - 5, R.screenSize.y / 2 - 20, "White");
+            if (this.output.id === Scene.clientRef.player.output.invWeaponID)
+                R.drawText((this.output.chargePercent).toString(), R.screenSize.x / 2 - 5, R.screenSize.y / 2 - 20, "White");
         }
         if (this.laserPower < 20 && this.laserPower !== 0 && this.laserThickness > 0 && this.output.scanHitPos !== null) {
             R.drawLine(this.center.x, this.center.y, this.output.scanHitPos.x, this.output.scanHitPos.y,
