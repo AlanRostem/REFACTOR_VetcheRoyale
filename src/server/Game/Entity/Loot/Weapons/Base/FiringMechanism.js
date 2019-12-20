@@ -7,7 +7,6 @@ function randMinMax(min, max) {
 class FiringMechanism {
     constructor(gun) {
         let stats = gun.constructor.AttackStats;
-        this.chargePercent = 1; // TODO: Make different types of classes for firing modes
         this.maxFireRate = stats.FIRE_RATE_RPM;
         this.currentRecoil = 0;
         this.holdingDownFireButton = false;
