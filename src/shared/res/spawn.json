@@ -17,7 +17,7 @@
     "classType": "LootCrate",
     "isPositionalData": false,
     "parameters": {
-      "level": 2
+      "level": 3
     }
   },
   "127": {
@@ -25,7 +25,7 @@
     "classType": "LootCrate",
     "isPositionalData": false,
     "parameters": {
-      "level": 3
+      "level": 4
     }
   },
   "113": {
