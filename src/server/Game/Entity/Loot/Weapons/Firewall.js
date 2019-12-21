@@ -27,6 +27,7 @@ class Firepellet extends Projectile {
     }
 }
 
+class BurnEffect extends DamageOverTime {}
 
 class FireDamage extends SEntity {
     static DAMAGE_PER_TICK = 2.5;
@@ -52,8 +53,8 @@ class FireDamage extends SEntity {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
             if (!entity.isTeammate(this.player)) {
-                if (!entity.effectsData[DamageOverTime.name]) {
-                    entity.applyEffect(new DamageOverTime(this.player, entity, FireDamage.DAMAGE_PER_TICK,
+                if (!entity.effectsData[BurnEffect.name]) {
+                    entity.applyEffect(new BurnEffect(this.player, entity, FireDamage.DAMAGE_PER_TICK,
                         FireDamage.DAMAGE_TICK_SPEED, FireDamage.DAMAGE_DURATION));
                 }
             }
