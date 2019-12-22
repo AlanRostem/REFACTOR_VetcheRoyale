@@ -45,6 +45,8 @@ class OtherPlayer extends CEntity {
         this.applyDmg = false;
         this.preHP = 100;
 
+        this.burnEffectAni = new SpriteSheet.Animation(0, 2, 3, 0.07);
+
         this.damageAudioSrc = "Player/damage_deal.oggSE";
 
     }
@@ -196,11 +198,20 @@ class OtherPlayer extends CEntity {
         SpriteSheet.beginChanges();
         if (this.movementState.direction === "left") {
             OtherPlayer.sprite.flipX();
+            OtherPlayer.burnEffectAnimation.flipX();
         }
         OtherPlayer.sprite.drawAnimated(
             Math.round(this.output.pos.x) + R.camera.displayPos.x,
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
+
+        if (this.output.effectsData["BurnEffect"] > 0) {
+            OtherPlayer.burnEffectAnimation.animate("burnEffectAnimation", this.burnEffectAni, 8, 14);
+            OtherPlayer.burnEffectAnimation.drawAnimated(
+                this.output.pos.x + R.camera.displayPos.x - 2,
+                this.output.pos.y + R.camera.displayPos.y - 2
+            );
+        }
 
          //R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
     }
@@ -225,5 +236,9 @@ OtherPlayer.damage.bind("high", 224, 0, 7 * 16, 16);
 OtherPlayer.normal.setCentralOffset(4);
 OtherPlayer.damage.setCentralOffset(4);
 
+AssetManager.addSpriteCreationCallback(() => {
+    OtherPlayer.burnEffectAnimation = new SpriteSheet("burnEffectAnimation");
+    OtherPlayer.burnEffectAnimation.bind("burnEffectAnimation", 0, 0, 8, 14);
+});
 
 export default OtherPlayer;
