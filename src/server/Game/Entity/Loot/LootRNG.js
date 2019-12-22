@@ -1,9 +1,9 @@
 const KE_6H = require("./Weapons/KE_6H.js");
 const SEW_9 = require("./Weapons/SEW-9.js");
 const Interlux = require("./Weapons/Interlux.js");
+const HadronRailGun = require("./Weapons/HadronRailGun.js");
 const AquaSLG = require("./Weapons/AquaSLG.js");
 const Firewall = require("./Weapons/Firewall.js");
-const BIGMotorizer = require("./Weapons/BIGMotorizer.js");
 const Ammo = require("./Multanium/Ammo.js");
 const Charge = require("./Multanium/Charge.js");
 
@@ -21,9 +21,9 @@ const LootRNG = {
     // Initialize
     setup() {
         LootRNG.setLootConstructor(3, KE_6H);
-        LootRNG.setLootConstructor(3, BIGMotorizer);
         LootRNG.setLootConstructor(3, SEW_9);
         LootRNG.setLootConstructor(4, Interlux);
+        LootRNG.setLootConstructor(4, HadronRailGun);
         LootRNG.setLootConstructor(2, AquaSLG);
         LootRNG.setLootConstructor(1, Firewall);
         LootRNG.setLootConstructor(2, Charge);
@@ -46,7 +46,7 @@ const LootRNG = {
         var guaranteeLevel = LootRNG.levelMap[level];
         var countUsage = count;
         var array = [];
-
+        debugger;
         for (var i = 0; i < guaranteeCount; i++) {
             countUsage--;
             var idx = (Math.random() * guaranteeLevel.length) | 0;

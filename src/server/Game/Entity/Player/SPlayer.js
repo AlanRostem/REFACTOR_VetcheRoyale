@@ -91,10 +91,10 @@ class Player extends GameDataLinker {
             // TODO: Optimize
             this.itemsNearby.array.sort(function (a, b) {
                 if (a.distance > b.distance) {
-                    return -1;
+                    return 1;
                 }
                 if (b.distance > a.distance) {
-                    return 1;
+                    return -1;
                 }
                 return 0;
             });
@@ -182,6 +182,16 @@ class Player extends GameDataLinker {
             if (!this.jumping) {
                 this.vel.y = this.speed.jump;
                 this.jumping = true;
+            }
+        }
+
+        if (this.dead) {
+            if (entityManager.getGameRule("respawnPlayerOnDeath")) {
+                this.isAlive = true;
+                this.HP = 100;
+                let sPos = entityManager.spawner.spawners.get(105);
+                this.pos.x = sPos.x;
+                this.pos.y = sPos.y;
             }
         }
 

@@ -2,12 +2,14 @@ const ONMap = require("../../../../shared/code/DataStructures/SObjectNotationMap
 const Alive = require("../Traits/Alive.js");
 const ClientPEM = require("./ClientPEM.js");
 const InputBridge = require("./InputBridge.js");
-const PacketBuffer = require("../../../Networking/PacketBuffer.js");
 
 // Abstract class composition of miscellaneous
 // server based data given to the player by
 // certain events.
 class GameDataLinker extends Alive {
+    static _ = (() => {
+        GameDataLinker.setPEMClass(ClientPEM);
+    })();
     constructor(x, y, w, h, HP, regenCoolDown, worldMgr, clientID) {
         super(x, y, w, h, HP, true, 1, .2, regenCoolDown, clientID);
         this._gameData = {};

@@ -1,4 +1,3 @@
-import typeCheck from "../Debugging/CtypeCheck.js"
 import {sqrt} from "./CCustomMath.js"
 
 // 2D vector with mathematical methods

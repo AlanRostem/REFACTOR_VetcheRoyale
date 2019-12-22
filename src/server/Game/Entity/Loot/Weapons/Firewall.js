@@ -3,6 +3,7 @@ const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Damage = require("../../../Mechanics/Damage/Damage.js");
+const DamageOverTime = require("../../../Mechanics/Effect/DamageOverTime.js");
 const HitScanner = require("../../../Mechanics/Scanners/HitScanner.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 const SEntity = require("../../SEntity.js");
@@ -26,17 +27,20 @@ class Firepellet extends Projectile {
     }
 }
 
+class BurnEffect extends DamageOverTime {}
 
 class FireDamage extends SEntity {
+    static DAMAGE_PER_TICK = 2.5;
+    static DAMAGE_TICK_SPEED = .25;
+    static DAMAGE_DURATION = 5;
     constructor(x, y, w, h, player) {
         super(x, y, w, h);
-        this.damage = new Damage(1, player);
-
+        this.player = player;
     }
 
     update(game, deltaTime) {
         super.update(game, deltaTime);
-        let player = this.damage.player;
+        let player = this.player;
         if (player) {
             this.pos.x = player.center.x - player.width / 2;
             this.pos.y = player.center.y - player.height / 2;
@@ -48,8 +52,11 @@ class FireDamage extends SEntity {
     onEntityCollision(entity, entityManager) {
         super.onEntityCollision(entity, entityManager);
         if (entity instanceof Alive) {
-            if (!entity.isTeammate(this.damage.player)) {
-                this.damage.inflict(entity, entityManager);
+            if (!entity.isTeammate(this.player)) {
+                if (!entity.effectsData[BurnEffect.name]) {
+                    entity.applyEffect(new BurnEffect(this.player, entity, FireDamage.DAMAGE_PER_TICK,
+                        FireDamage.DAMAGE_TICK_SPEED, FireDamage.DAMAGE_DURATION));
+                }
             }
         }
     }

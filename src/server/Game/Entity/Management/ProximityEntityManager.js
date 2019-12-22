@@ -36,9 +36,6 @@ class ProximityEntityManager extends EntityManager {
         this.container.delete(entity);
     }
 
-    cellSpacePlacement(entityManager, deltaTime) {
-    }
-
     // Binds the quad tree range bounding rect to
     // the entity's center and does interaction checks.
     update(entityManager, deltaTime) {

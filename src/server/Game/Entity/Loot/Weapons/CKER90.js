@@ -8,6 +8,7 @@ const SuperAbility = require("./Base/SuperAbility.js");
 
 class ATBullet extends Projectile {
     static DAMAGE = 20;
+
     constructor(owner, wID, x, y, speed, arc, angle) {
         super(owner, x, y, 2, 2, angle, speed, arc, false);
         this.seek = false;
@@ -21,8 +22,8 @@ class ATBullet extends Projectile {
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
         if (this.stuck) {
-            this.pos.x = this.stuck.center.x;
-            this.pos.y = this.stuck.center.y;
+            this.vel.x = (this.stuck.center.x - this.center.x) / deltaTime;
+            this.vel.y = (this.stuck.center.y - this.center.y) / deltaTime;
             if (this.stuck.removed || this.stuck.dead) {
                 this.remove();
             }

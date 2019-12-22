@@ -39,12 +39,15 @@ class OtherPlayer extends CEntity {
 
         this.jumpSound = false;
 
-        this.timer2 = new Timer(0.1, ()=> {
+        this.timer2 = new Timer(0.1, () => {
             this.applyDmg = false;
         });
 
         this.applyDmg = false;
         this.preHP = 100;
+
+        this.burnEffectAni = new SpriteSheet.Animation(0, 2, 3, 0.07);
+        this.damageAudioSrc = "Player/damage_deal.oggSE";
 
         this.schema.vel = {x: "number", y: "number"};
         this.schema.centerData = {x: "number", y: "number"};
@@ -90,9 +93,19 @@ class OtherPlayer extends CEntity {
 
         let self = this.output;
 
-        if(self.hp < this.preHP) { this.preHP = self.hp; this.applyDmg = true;}
+        if (self.hp < this.preHP) {
+            this.preHP = self.hp;
+            this.applyDmg = true;
+            AudioPool.play(this.damageAudioSrc);
 
-        if(this.applyDmg) {
+        }
+
+        if (self.hp > this.preHP) {
+            this.preHP = self.hp;
+        }
+
+
+        if (this.applyDmg) {
             this.timer2.tick(deltaTime);
         }
 
@@ -182,26 +195,36 @@ class OtherPlayer extends CEntity {
     }
 
     draw() {
-        if(OtherPlayer.sprite !== OtherPlayer.normal && !this.applyDmg) OtherPlayer.sprite = OtherPlayer.normal;
+        if (OtherPlayer.sprite !== OtherPlayer.normal && !this.applyDmg) OtherPlayer.sprite = OtherPlayer.normal;
 
-        else if(this.applyDmg) {
-            if(this.output.hp > 70) OtherPlayer.sprite = OtherPlayer.highDamage;
-            else if(this.output.hp > 25) OtherPlayer.sprite = OtherPlayer.medDamage;
-            else OtherPlayer.sprite = OtherPlayer.lowDamage;
+        else if (this.applyDmg) {
+            OtherPlayer.sprite = OtherPlayer.damage;
+            if (this.output.hp > 70) this.hitName = "low";
+            else if (this.output.hp > 25) this.hitName = "med";
+            else this.hitName = "high";
         }
 
-        if(OtherPlayer.sprite === OtherPlayer.normal) this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
-        else this.animations.animate(OtherPlayer.sprite, "hurt", 16, 16);
+        if (OtherPlayer.sprite === OtherPlayer.normal) this.animations.animate(OtherPlayer.sprite, this.output.teamName, 16, 16);
+        else this.animations.animate(OtherPlayer.sprite, this.hitName, 16, 16);
         SpriteSheet.beginChanges();
         if (this.movementState.direction === "left") {
             OtherPlayer.sprite.flipX();
+            OtherPlayer.burnEffectAnimation.flipX();
         }
         OtherPlayer.sprite.drawAnimated(
             Math.round(this.output.pos.x) + R.camera.displayPos.x,
             Math.round(this.output.pos.y) + R.camera.displayPos.y);
         SpriteSheet.end();
 
-       // R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
+        if (this.output.effectsData["BurnEffect"] > 0) {
+            OtherPlayer.burnEffectAnimation.animate("burnEffectAnimation", this.burnEffectAni, 8, 14);
+            OtherPlayer.burnEffectAnimation.drawAnimated(
+                this.output.pos.x + R.camera.displayPos.x - 2,
+                this.output.pos.y + R.camera.displayPos.y - 2
+            );
+        }
+
+         //R.drawLine(this.output.pos.x + R.camera.x, this.output.pos.y + R.camera.y, Scene.clientRef.input.mouse.x,Scene.clientRef.input.mouse.y, "White", 1, false);
     }
 }
 
@@ -210,22 +233,23 @@ OtherPlayer.normal = new SpriteSheet("playerSprite");
 
 OtherPlayer.sprite = OtherPlayer.normal;
 
-OtherPlayer.lowDamage = new SpriteSheet("playerLowHP");
-OtherPlayer.medDamage = new SpriteSheet("playerMedHP");
-OtherPlayer.highDamage = new SpriteSheet("playerHighHP");
+OtherPlayer.damage = new SpriteSheet("playerHit");
 
 OtherPlayer.normal.bind("red", 0, 0, 16 * 16, 16);
 OtherPlayer.normal.bind("blue", 0, 16, 16 * 16, 16);
 OtherPlayer.normal.bind("yellow", 0, 32, 16 * 16, 16);
 OtherPlayer.normal.bind("green", 0, 48, 16 * 16, 16);
 
-OtherPlayer.lowDamage.bind("hurt", 0, 0, 16 * 16, 16);
-OtherPlayer.medDamage.bind("hurt", 0, 0, 16 * 16, 16);
-OtherPlayer.highDamage.bind("hurt", 0, 0, 16 * 16, 16);
+OtherPlayer.damage.bind("low", 0, 0, 7 * 16, 16);
+OtherPlayer.damage.bind("med", 112, 0, 7 * 16, 16);
+OtherPlayer.damage.bind("high", 224, 0, 7 * 16, 16);
 
 OtherPlayer.normal.setCentralOffset(4);
-OtherPlayer.lowDamage.setCentralOffset(4);
-OtherPlayer.medDamage.setCentralOffset(4);
-OtherPlayer.highDamage.setCentralOffset(4);
+OtherPlayer.damage.setCentralOffset(4);
+
+AssetManager.addSpriteCreationCallback(() => {
+    OtherPlayer.burnEffectAnimation = new SpriteSheet("burnEffectAnimation");
+    OtherPlayer.burnEffectAnimation.bind("burnEffectAnimation", 0, 0, 8, 14);
+});
 
 export default OtherPlayer;

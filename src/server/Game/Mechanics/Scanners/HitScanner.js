@@ -1,9 +1,16 @@
 const Vector2D = require("../../../../shared/code/Math/SVector2D.js");
 const CollisionBoundary = require("../../Entity/Management/CollisionBoundary.js");
 const TileCollider = require("../../TileBased/TileCollider.js");
+const SEntity = require("../../Entity/SEntity.js");
 
 // Scan line that collides with map geometry or entities (can be set however you like).
 class HitScanner {
+    static ScannableEntity = SEntity;
+
+    static setScannableEntityType(type) {
+        this.ScannableEntity = type;
+    }
+
     constructor(entityIDExclusions = {}, entityCollision = true, tileCollision = true) {
         this.shouldScanEntities = entityCollision;
         this.scanTiles = tileCollision;
@@ -31,23 +38,19 @@ class HitScanner {
     }
 
     scanGeometry(a, b, entityManager, tileMap) {
-        let distX = b.x - a.x;
-        let distY = b.y - a.y;
-
-        let startX = Math.round(a.x / tileMap.tileSize);
-        let startY = Math.round((a.y + distY) / tileMap.tileSize);
-
-        let endX = startX + Math.round(distX / tileMap.tileSize);
-        let endY = Math.round(a.y / tileMap.tileSize);
-
         if (this.scanTiles) {
-            if (startX - endX === 0) {
-                startX--;
-            }
 
-            if (startY - endY === 0) {
-                startY--;
-            }
+            let distX = b.x - a.x;
+            let distY = b.y - a.y;
+
+            let startX = Math.floor(a.x / tileMap.tileSize);
+            let startY = Math.floor((a.y + distY) / tileMap.tileSize);
+
+            let endX = startX + Math.floor(distX / tileMap.tileSize);
+            let endY = Math.floor(a.y / tileMap.tileSize);
+
+            let scanDoubleX = (startX - endX) === 0;
+            let scanDoubleY = (startY - endY) === 0;
 
             if (startX > endX) {
                 let temp = endX;
@@ -64,27 +67,34 @@ class HitScanner {
             for (let y = startY; y <= endY; y++) {
                 for (let x = startX; x <= endX; x++) {
                     if (TileCollider.isSolid(tileMap.array[y * tileMap.w + x])) {
-                        let ts = tileMap.tileSize;
-                        let topLeft = new Vector2D(x * ts, y * ts);
-                        let bottomLeft = new Vector2D(x * ts, (y + 1) * ts);
-                        let topRight = new Vector2D((x + 1) * ts, y * ts);
-                        let bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
-
+                        let ts = tileMap.tileSize, topLeft = new Vector2D(x * ts, y * ts),
+                            bottomLeft = new Vector2D(x * ts, (y + 1) * ts),
+                            topRight = new Vector2D((x + 1) * ts, y * ts),
+                            bottomRight = new Vector2D((x + 1) * ts, (y + 1) * ts);
+                        if (scanDoubleX) {
+                            topLeft.x -= ts;
+                            bottomLeft.x -= ts;
+                            topRight.x += ts;
+                            bottomRight.x += ts;
+                        }
+                        if (scanDoubleY) {
+                            topLeft.y -= ts;
+                            topRight.y -= ts;
+                            bottomLeft.y += ts;
+                            bottomRight.y += ts;
+                        }
                         if (Vector2D.intersect(a, b, topLeft, bottomLeft)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, bottomLeft));
                             this.onTileHit(b, entityManager);
                         }
-
                         if (Vector2D.intersect(a, b, topLeft, topRight)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topLeft, topRight));
                             this.onTileHit(b, entityManager);
                         }
-
                         if (Vector2D.intersect(a, b, topRight, bottomRight)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, topRight, bottomRight));
                             this.onTileHit(b, entityManager);
                         }
-
                         if (Vector2D.intersect(a, b, bottomLeft, bottomRight)) {
                             if (this.stopAtTile) b.set(Vector2D.getIntersectedPos(a, b, bottomLeft, bottomRight));
                             this.onTileHit(b, entityManager);
@@ -97,8 +107,23 @@ class HitScanner {
 
     scanEntities(entityManager, a, b) {
         if (this.shouldScanEntities) {
+            let deltaX = b.x - a.x;
+            let deltaY = b.y - a.y;
+            this.rangeBoundary.pos.x = a.x + deltaX / 2;
+            this.rangeBoundary.pos.y = a.y + deltaY / 2;
+            this.rangeBoundary.bounds.x = Math.abs(deltaX);
+            if (this.rangeBoundary.bounds.x < 32) {
+                this.rangeBoundary.bounds.x += 32;
+            }
+            this.rangeBoundary.bounds.y = Math.abs(deltaY);
+            if (this.rangeBoundary.bounds.y < 32) {
+                this.rangeBoundary.bounds.y += 32;
+            }
+            this.rangeBoundary.pos.x -= this.rangeBoundary.bounds.x / 2;
+            this.rangeBoundary.pos.y -= this.rangeBoundary.bounds.y / 2;
             entityManager.cellSpace.iterate(this.rangeBoundary, cell => {
                 for (let e of cell) {
+                    if (!(e instanceof this.constructor.ScannableEntity)) continue;
                     if (this.entityExceptions.hasOwnProperty(e.id)) continue;
                     if (Vector2D.intersect(a, b, e.topLeft, e.bottomLeft)) {
                         if (this.stopAtEntity) b.set(Vector2D.getIntersectedPos(a, b, e.topLeft, e.bottomLeft));
@@ -130,13 +155,9 @@ class HitScanner {
 
     scan(originPos, endPos, entityManager, tileMap) {
         let a = originPos;
-        this.rangeBoundary.pos.x = a.x;
-        this.rangeBoundary.pos.y = a.y;
-
         let b = this.end;
         b.x = endPos.x;
         b.y = endPos.y;
-
         this.scanGeometry(a, b, entityManager, tileMap);
         this.scanEntities(entityManager, a, b);
 

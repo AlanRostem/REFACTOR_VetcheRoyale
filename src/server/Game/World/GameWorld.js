@@ -26,14 +26,6 @@ class GameWorld extends EntityManager {
         this.debugData = {};
     }
 
-    get mapName() {
-        return this.tileMap.name;
-    }
-
-    get entityCount() {
-        return Object.keys(this.container).length;
-    }
-
     getGameRule(key) {
         return this.settings.getRule(key);
     }
@@ -41,8 +33,6 @@ class GameWorld extends EntityManager {
     setGameRules(object) {
         this.settings.configure(object);
     }
-
-
 
     spawnEntity(x, y, entity) {
         entity.setWorld(this);

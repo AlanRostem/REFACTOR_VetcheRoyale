@@ -4,10 +4,29 @@
     "classType": "null",
     "isPositionalData": true
   },
-  "90": {
+  "125": {
     "name": "LootCrate",
     "classType": "LootCrate",
-    "isPositionalData": false
+    "isPositionalData": false,
+    "parameters": {
+        "level": 1
+    }
+  },
+  "126": {
+    "name": "LootCrate",
+    "classType": "LootCrate",
+    "isPositionalData": false,
+    "parameters": {
+      "level": 3
+    }
+  },
+  "127": {
+    "name": "LootCrate",
+    "classType": "LootCrate",
+    "isPositionalData": false,
+    "parameters": {
+      "level": 4
+    }
   },
   "113": {
     "name": "GunSpawner",
