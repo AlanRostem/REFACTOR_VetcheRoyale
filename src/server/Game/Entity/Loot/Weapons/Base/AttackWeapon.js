@@ -124,10 +124,10 @@ class AttackWeapon extends WeaponItem {
         }
 
         this.firerer.reset();
-        this.currentReloadTime = 0;
-        this.reloading = false;
+        if (this.reloading) {
+            this.cancelReload();
+        }
         this.firing = false;
-        this.canFire = true; 
     }
 
     // Overridable method for when the weapon fires.
@@ -219,6 +219,12 @@ class AttackWeapon extends WeaponItem {
                 this.reload(player);
             }
         }
+    }
+
+    cancelReload() {
+        this.reloading = false;
+        this.currentReloadTime = 0;
+        this.canFire = true;
     }
 }
 
