@@ -14,7 +14,7 @@ const Alive = require("../../Traits/Alive.js");
 class Firepellet extends Projectile {
     static DAMAGE = 8;
     constructor(owner, weaponID, x, y, angle, entityManager) {
-        super(owner, x, y, 2, 1, angle, 4 * 100);
+        super(owner, x, y, 1, 1, angle, 4 * 100);
     }
 
     onTileHit(entityManager, deltaTime) {

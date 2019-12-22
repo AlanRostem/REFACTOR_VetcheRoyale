@@ -86,8 +86,7 @@ class GameWorld extends EntityManager {
     }
 
     removePlayer(id) {
-        let i = this.playerMap.get(id).index;
-        this.removeEntity(i);
+        this.playerMap.get(id).remove();
         this.players--;
     }
 

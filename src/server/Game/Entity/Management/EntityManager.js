@@ -49,7 +49,6 @@ class EntityManager {
     updateEntities(deltaTime) {
         for (let i = 0; i < this.container.length; i++) {
             let entity = this.container[i];
-            entity.index = i;
             entity.update(this, deltaTime);
             if (entity.removed) {
                 //this.container.splice(i, 1);
