@@ -127,6 +127,7 @@ class AttackWeapon extends WeaponItem {
         this.currentReloadTime = 0;
         this.reloading = false;
         this.firing = false;
+        this.canFire = true; 
     }
 
     // Overridable method for when the weapon fires.

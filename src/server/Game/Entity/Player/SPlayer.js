@@ -185,6 +185,10 @@ class Player extends GameDataLinker {
             }
         }
 
+        this.setMovementState("slope", "false");
+        super.update(entityManager, deltaTime);
+        this.checkForNearbyLoot(entityManager);
+
         if (this.dead) {
             if (entityManager.getGameRule("respawnPlayerOnDeath")) {
                 this.isAlive = true;
@@ -194,10 +198,6 @@ class Player extends GameDataLinker {
                 this.pos.y = sPos.y;
             }
         }
-
-        this.setMovementState("slope", "false");
-        super.update(entityManager, deltaTime);
-        this.checkForNearbyLoot(entityManager);
 
         this.vel.x *= this.fric.x;
 
