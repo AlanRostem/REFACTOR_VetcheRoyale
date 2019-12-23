@@ -13,7 +13,7 @@ class LootCrate extends StaticInteractable {
         LootCrate.addStaticValues("level");
     })();
 
-    static DROP_SPEED = 200;
+    static DROP_SPEED = 80;
 
     /**
      * Constructor method

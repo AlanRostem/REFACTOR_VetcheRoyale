@@ -2,6 +2,7 @@ import CEntity from "../CEntity.js";
 import OtherPlayer from "../Player/OtherPlayer.js";
 import UserPlayer from "../Player/UserPlayer.js";
 import CWeapon from "../Weapons/CWeapon.js";
+import CLootCrate from "../CLootCrate.js";
 import CBottle from "../CBottle.js";
 import CPortal from "../CPortal.js";
 import CKE_6H from "../Weapons/CKE_6H/CKE_6H.js";
@@ -62,6 +63,7 @@ EntityTypeSpawner.createSpawner("SEntity", CEntity);
 
 EntityTypeSpawner.createSpawner("Bottle", CBottle);
 EntityTypeSpawner.createSpawner("Portal", CPortal);
+EntityTypeSpawner.createSpawner("LootCrate", CLootCrate);
 
 EntityTypeSpawner.createSpawner("AttackWeapon", CWeapon);
 
