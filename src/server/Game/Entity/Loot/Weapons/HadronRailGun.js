@@ -105,13 +105,13 @@ class HadronParticleLine extends Entity {
     update(game, deltaTime) {
         super.update(game, deltaTime);
         this.doDMG = false;
-        if (this.currentTime <= 0) {
+        if (this.currentTime <= ZERO) {
             this.currentTime = HadronParticleLine.DMG_TICK_TIME;
             this.doDMG = true;
         }
         this.currentTime -= deltaTime;
 
-        if (this.life <= 0) this.remove();
+        if (this.life <= ZERO) this.remove();
         this.life -= deltaTime;
     }
 }

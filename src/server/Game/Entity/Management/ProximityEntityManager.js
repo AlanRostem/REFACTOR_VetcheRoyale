@@ -6,13 +6,16 @@ const Rect = require("./CollisionBoundary.js");
 // entity storage per game world.
 
 class ProximityEntityManager extends EntityManager {
+    static MIN_BOUNDS_X = 32;
+    static MIN_BOUNDS_Y = 32;
+
     constructor(entity) {
         super(false);
         this.entRef = entity;
         this.container = new Set();
         this.collisionBoundary = new Rect(entity.center.x, entity.center.y,
-            32 + entity.width, 32 + entity.height // TODO: Optimize the choice of values
-            //entity.width * 3, entity.height * 3
+            // TODO: Optimize the choice of values
+            ProximityEntityManager.MIN_BOUNDS_X + entity.width, ProximityEntityManager.MIN_BOUNDS_Y + entity.height
         );
         this.shouldFollowEntity = true;
     }

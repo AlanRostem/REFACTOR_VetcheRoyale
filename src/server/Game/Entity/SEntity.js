@@ -75,6 +75,8 @@ class SEntity {
     // should have the least amount of iteration depending on
     // their size in the world.
     setCollisionRange(x, y) {
+        if (x < ProximityEntityManager.MIN_BOUNDS_X) x += ProximityEntityManager.MIN_BOUNDS_X;
+        if (y < ProximityEntityManager.MIN_BOUNDS_Y) y += ProximityEntityManager.MIN_BOUNDS_Y;
         this.entitiesInProximity.collisionBoundary.bounds.x = x;
         this.entitiesInProximity.collisionBoundary.bounds.y = y;
     }

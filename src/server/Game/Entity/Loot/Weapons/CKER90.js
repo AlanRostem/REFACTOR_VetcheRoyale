@@ -9,6 +9,8 @@ const SuperAbility = require("./Base/SuperAbility.js");
 class ATBullet extends Projectile {
     static DAMAGE = 20;
 
+    //static _ = (() => {  })();
+
     constructor(owner, wID, x, y, speed, arc, angle) {
         super(owner, x, y, 2, 2, angle, speed, arc, false);
         this.seek = false;
@@ -16,11 +18,27 @@ class ATBullet extends Projectile {
         this.wID = wID;
         this.findPlayers = false;
         this.weapon = null;
+        this.found = {};
         this.stuck = false;
+    }
+
+    insideProximity(point) {
+        if (!point) return false;
+        let bounds = this.entitiesInProximity.collisionBoundary;
+        return bounds.pos.y + bounds.bounds.y > point.y
+            && bounds.pos.y < point.y
+            && bounds.pos.x + bounds.bounds.x > point.x
+            && bounds.pos.x < point.x;
     }
 
     update(entityManager, deltaTime) {
         super.update(entityManager, deltaTime);
+        for (let id in this.found) {
+            if (!this.insideProximity(this.weapon.found[id])) {
+                this.weapon.found[id] = null;
+                this.found[id] = null;
+            }
+        }
         if (this.stuck) {
             this.vel.x = (this.stuck.center.x - this.center.x) / deltaTime;
             this.vel.y = (this.stuck.center.y - this.center.y) / deltaTime;
@@ -47,12 +65,20 @@ class ATBullet extends Projectile {
         }
     }
 
+    onRemoved() {
+        super.onRemoved();
+        for (let id in this.found) {
+            this.weapon.found[id] = null;
+            this.found[id] = null;
+        }
+    }
+
     forEachNearbyEntity(entity, entityManager, deltaTime) {
         super.forEachNearbyEntity(entity, entityManager, deltaTime);
         if (this.weapon) {
             if (entity instanceof Player) {
                 if (entity.id !== this.weapon.playerID && !this.getOwner().isTeammate(entity)) {
-                    this.weapon.found[entity.id] = entity.center;
+                    this.weapon.found[entity.id] = this.found[entity.id] = entity.center;
                 }
             }
         }
@@ -225,7 +251,6 @@ class CKER90 extends AttackWeapon {
     }
 
     update(entityManager, deltaTime) {
-        this.found = {};
         super.update(entityManager, deltaTime);
     }
 
