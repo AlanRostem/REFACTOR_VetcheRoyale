@@ -8,41 +8,46 @@ const HitScanner = require("../../../Mechanics/Scanners/HitScanner.js");
 const Vector2D = require("../../../../../shared/code/Math/SVector2D.js");
 const Alive = require("../../Traits/Alive.js");
 
+const ZERO = 0;
+const HUNDRED = 100;
+
 class FMPartialChargeShot extends FiringMechanism {
+    static MAX_TICK_TIME = 0.1;
+    static CHARGE_GAIN_TICK = 10;
     constructor(gun) {
         super(gun);
-        this.chargePercent = 0;
-        this.chargePercentGainPerTick = 10;
-        this.currentTick = 0;
-        this.maxTickTime = 0.15;
+        this.chargePercent = ZERO;
+        this.chargePercentGainPerTick = FMPartialChargeShot.CHARGE_GAIN_TICK;
+        this.currentTick = ZERO;
+        this.maxTickTime = FMPartialChargeShot.MAX_TICK_TIME;
         this.canShoot = false;
     }
 
     firingUpdate(weapon, player, entityManager, deltaTime) {
         super.firingUpdate(weapon, player, entityManager, deltaTime);
-        if (weapon.currentFireTime <= 0 && weapon.canFire) {
+        if (weapon.currentFireTime <= ZERO && weapon.canFire) {
             if (this.holdingDownFireButton) {
                 if (!this.canShoot) {
                     this.chargePercent += this.chargePercentGainPerTick;
                 }
                 this.canShoot = true;
-                if (this.chargePercent < 100) {
+                if (this.chargePercent < HUNDRED) {
                     if (this.currentTick >= this.maxTickTime) {
-                        this.currentTick = 0;
+                        this.currentTick = ZERO;
                         this.chargePercent += this.chargePercentGainPerTick;
                     }
                 } else {
-                    this.chargePercent = 100;
-                    this.currentTick = 0;
+                    this.chargePercent = HUNDRED;
+                    this.currentTick = ZERO;
                 }
                 this.currentTick += deltaTime;
             } else {
                 if (this.canShoot) {
                     this.canShoot = false;
                     this.doSingleFire(weapon, player, entityManager, deltaTime);
-                    this.currentTick = 0;
+                    this.currentTick = ZERO;
                 }
-                this.chargePercent = 0;
+                this.chargePercent = ZERO;
             }
         }
     }
@@ -128,7 +133,7 @@ class HadronRailGun extends HitScanWeapon {
 
     fire(player, entityManager, deltaTime, angle) {
         super.fire(player, entityManager, deltaTime, angle);
-        if (this.firerer.chargePercent === 100) {
+        if (this.firerer.chargePercent === HUNDRED) {
             let line = new HadronParticleLine(this.center, this.scanner.end, this.getOwner());
             entityManager.spawnEntity(line.pos.x, line.pos.y, line);
         }
@@ -140,7 +145,7 @@ class HadronRailGun extends HitScanWeapon {
     }
 
     onEntityHit(entity, entityManager, angle) {
-        Damage.inflict(this.getOwner(), entity, entityManager, this.firerer.chargePercent / 100 * HadronRailGun.MAX_DAMAGE | 0);
+        Damage.inflict(this.getOwner(), entity, entityManager, this.firerer.chargePercent / HUNDRED * HadronRailGun.MAX_DAMAGE | ZERO);
     }
 }
 
