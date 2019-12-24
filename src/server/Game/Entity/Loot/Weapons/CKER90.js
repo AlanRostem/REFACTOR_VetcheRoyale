@@ -35,8 +35,12 @@ class ATBullet extends Projectile {
         super.update(entityManager, deltaTime);
         for (let id in this.found) {
             if (!this.insideProximity(this.weapon.found[id])) {
+                delete this.weapon.found[id];
+                delete this.found[id];
+                /*
                 this.weapon.found[id] = null;
                 this.found[id] = null;
+                 */
             }
         }
         if (this.stuck) {
@@ -68,8 +72,12 @@ class ATBullet extends Projectile {
     onRemoved() {
         super.onRemoved();
         for (let id in this.found) {
+            delete this.weapon.found[id];
+            delete this.found[id];
+            /*
             this.weapon.found[id] = null;
             this.found[id] = null;
+             */
         }
     }
 
