@@ -111,7 +111,7 @@ PacketBuffer.validate = function (validObj, obj, objectID) {
 
     for (let key in validObj) {
         if (Object.isJSON(validObj[key]))
-            PacketBuffer.validate(validObj[key], obj[key]), objectID;
+            PacketBuffer.validate(validObj[key], obj[key], objectID);
         else if (typeof obj[key] !== validObj[key])
             console.error("expected typeof '" + validObj[key] + "' value was: '" + typeof obj[key] + "' on Object with ID: " + objectID);
     }
