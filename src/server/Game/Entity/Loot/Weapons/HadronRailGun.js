@@ -1,5 +1,6 @@
 const HitScanWeapon = require("./Base/HitScanWeapon.js");
 const FiringMechanism = require("./Base/FiringMechanism.js");
+const ModAbility = require("./Base/ModAbility.js");
 const SuperAbility = require("./Base/SuperAbility.js");
 const Projectile = require("./AttackEntities/Projectile.js");
 const Entity = require("../../SEntity.js");
@@ -10,7 +11,6 @@ const Alive = require("../../Traits/Alive.js");
 
 const ZERO = 0;
 const HUNDRED = 100;
-
 class FMPartialChargeShot extends FiringMechanism {
     static MAX_TICK_TIME = 0.1;
     static CHARGE_GAIN_TICK = 10;
@@ -57,7 +57,7 @@ class FMPartialChargeShot extends FiringMechanism {
 const ONE = 1;
 class HadronParticleLine extends Entity {
     static _ = (() => {
-        HadronParticleLine.addDynamicValues("p0", "p1");
+        HadronParticleLine.addStaticValues("p0", "p1");
     })();
     static DMG_PER_TICK = 2;
     static DMG_TICK_TIME = 0.2;
