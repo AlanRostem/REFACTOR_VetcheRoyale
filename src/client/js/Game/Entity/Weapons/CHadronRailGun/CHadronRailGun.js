@@ -32,6 +32,8 @@ class CHadronRailGun extends CWeapon {
         if (this.output.equippedToPlayer) {
             if (this.output.id === Scene.clientRef.player.output.invWeaponID) {
                 let amount = 10 - (this.output.chargePercent / 10 | 0);
+                R.drawArc( Scene.clientRef.input.mouse.x, Scene.clientRef.input.mouse.y, amount);
+                /*
                 let color = "White";
                 R.drawRect(color, Scene.clientRef.input.mouse.x, Scene.clientRef.input.mouse.y -
                     amount, 1, 1);
@@ -41,6 +43,7 @@ class CHadronRailGun extends CWeapon {
                     amount, Scene.clientRef.input.mouse.y, 1, 1);
                 R.drawRect(color, Scene.clientRef.input.mouse.x +
                     amount, Scene.clientRef.input.mouse.y, 1, 1);
+                 */
             }
         }
         if (this.laserPower < 20 && this.laserPower !== 0 && this.laserThickness > 0 && this.output.scanHitPos !== null) {

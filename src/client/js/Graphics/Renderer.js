@@ -187,6 +187,31 @@ const R = {
             R.context.restore();
         },
 
+        _circle(color, useCamera, xc, yc, x, y) {
+            R.drawRect(color, xc + x, yc + y, 1, 1, useCamera);
+            R.drawRect(color, xc - x, yc + y, 1, 1, useCamera);
+            R.drawRect(color, xc + x, yc - y, 1, 1, useCamera);
+            R.drawRect(color, xc - x, yc - y, 1, 1, useCamera);
+            R.drawRect(color, xc + y, yc + x, 1, 1, useCamera);
+            R.drawRect(color, xc - y, yc + x, 1, 1, useCamera);
+            R.drawRect(color, xc + y, yc - x, 1, 1, useCamera);
+            R.drawRect(color, xc - y, yc - x, 1, 1, useCamera);
+        },
+
+        drawArc(xc, yc, r, color = "white", useCamera = false) {
+            let x = 0, y = r;
+            let d = 3 - 2 * r;
+            R._circle(color, useCamera, xc, yc, x, y);
+            while (y >= x) {
+                x++;
+                if (d > 0) {
+                    y--;
+                    d = d + 4 * (x - y) + 10;
+                } else
+                    d = d + 4 * x + 6;
+                R._circle(color, useCamera, xc, yc, x, y);
+            }
+        },
 
         drawLine(x0, y0, x1, y1, color = "White", thickness = 1, useCamera = false, space = 0, length = 1) {
 
