@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VetcheSoundMaker</title>
+</head>
+<body>
+<h1> Music Editor for Web Game developing </h1>
+<hr>
+<form enctype="multipart/form-data" id="soundUpload">
+    <input type="file" name="file" id="sound" accept=".ogg" webkitdirectory/>
+</form>
+
+<button type="submit" onclick="uploadSoundFiles(document.getElementById('sound').files)"> Add Sound</button>
+<hr>
+<textarea name="outout" id="output" rows="20" cols="100"></textarea>
+
+<script>
+
+    class MusicElement {
+        constructor(str, startTime, length) {
+            this.str = str;             //Name of the sound clip
+            this.startTime = startTime; // Where to put the clip
+            this.length = length;       // Length in seconds
+        }
+    }
+
+    let musicDiv = {};
+    let audioQueue = {};
+
+    /*   musicDiv["aaa"] = new MusicElement(2, null, "aaa");
+       musicDiv["aab"] = new MusicElement(1, null, "aab");
+       musicDiv["aba"] = new MusicElement(3, null, "aba");
+       musicDiv["baa"] = new MusicElement(7, null, "baa");
+       musicDiv["abb"] = new MusicElement(2, null, "abb");*/
+
+    function uploadSoundFiles(files) {
+        for(var i = 0; i<files.length; i++) {
+            uploadSoundFile(files[i].name);
+        }
+    }
+
+    function uploadSoundFile(fileName) {
+        let audio = new Audio();
+
+        audio.addEventListener('canplaythrough', function () {
+            audioQueue[audio.src] = audio;
+            addElement(audio);
+        }, false);
+
+        audio.addEventListener("error", function () {
+            window.alert("Failed to load file sorry xD");
+            return false;
+        }, false);
+
+        audio.src = "AllSound/" + fileName;
+
+        return true;
+    }
+
+    function readFromFile(fileName) {
+
+        let rawFile = new XMLHttpRequest();
+        let textFile = "";
+        rawFile.open("GET", fileName, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status === 0) {
+                    textFile = rawFile.responseText;
+                }
+            }
+        };
+        rawFile.send(null);
+
+        let lines = textFile.split('\n');
+
+        for (let i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].replace('\r', '');
+            if (lines[i] !== "end") {
+                let split = lines[i].split(",");
+                musicDiv[split[0]] = new MusicElement(split[0], Number(split[1]), Number(split[2]));
+                console.log(musicDiv[split[0]]);
+            } else break;
+        }
+
+    }
+
+    function updateList() {
+        document.getElementById("output").innerHTML = "";
+        let lastKey = null;
+        for (let key in musicDiv) {
+            musicDiv[key].startTime = (lastKey ? Math.round((musicDiv[lastKey].startTime + musicDiv[lastKey].length) * 10) / 10 : 0);
+            lastKey = key;
+            document.getElementById("output").innerHTML += musicDiv[key].str + "," + musicDiv[key].startTime + "," + musicDiv[key].length + "\n";
+        }
+        document.getElementById("output").innerHTML += "end";
+    }
+
+    function addElement(audioEl) {
+        let str = audioEl.src.substring(0, audioEl.src.lastIndexOf("."));
+        str = str.split("/").pop();
+
+        musicDiv[str] = new MusicElement(str, null, audioEl.duration);
+        updateList();
+    }
+
+
+    readFromFile("assets 2.cfg");
+    updateList();
+
+
+</script>
+</body>
+</html>
