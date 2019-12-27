@@ -65,7 +65,7 @@ class FiringMechanism {
             weapon.activateReloadAction()
         }
 
-        if (!this.firing) {
+        if (!weapon.firing) {
             if (this.currentRecoil > 0) {
                 this.currentRecoil -= weapon.constructor.AttackStats.BLOOM_REGULATOR;
             } else {
@@ -82,8 +82,6 @@ class FiringMechanism {
 
     reset() {
         this.currentRecoil = 0;
-        this.burstCount = 0;
-        this.chargeTime = 0;
     }
 
     // Overridable

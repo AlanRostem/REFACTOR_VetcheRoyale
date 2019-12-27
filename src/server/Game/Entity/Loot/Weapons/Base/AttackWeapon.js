@@ -87,6 +87,7 @@ class AttackWeapon extends WeaponItem {
 
         this.currentFireTime = 0;
         this.reloading = false;
+        this.canReload = true;
     }
 
     get superCharge() {
@@ -139,12 +140,6 @@ class AttackWeapon extends WeaponItem {
                 angle, 200));
     }
 
-    configureAccuracy(spread, recoil, accurator) {
-        this.firerer.recoil = recoil;
-        this.firerer.defaultSpread = spread;
-        this.firerer.accurator = accurator;
-    }
-
     // Called when pressing the reload key.
     activateReloadAction() {
         if (this.currentAmmo < this.constructor.AttackStats.CLIP_SIZE) {
@@ -190,7 +185,7 @@ class AttackWeapon extends WeaponItem {
 
         // Reload when inventory ammo is over zero.
         if (player.input.singleKeyPress(82) && !this.reloading) {
-            if (player.inventory.ammo > 0) {
+            if (player.inventory.ammo > 0 && !this.firing && this.canReload) {
                 this.activateReloadAction();
             }
         }

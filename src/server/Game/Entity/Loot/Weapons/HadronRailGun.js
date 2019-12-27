@@ -23,6 +23,14 @@ class FMPartialChargeShot extends FiringMechanism {
         this.canShoot = false;
     }
 
+    reset() {
+        super.reset();
+        this.chargePercent = ZERO;
+        this.currentTick = ZERO;
+        this.canShoot = false;
+        this.holdingDownFireButton = false;
+    }
+
     firingUpdate(weapon, player, entityManager, deltaTime) {
         super.firingUpdate(weapon, player, entityManager, deltaTime);
         if (weapon.currentFireTime <= ZERO && weapon.canFire) {
@@ -41,12 +49,14 @@ class FMPartialChargeShot extends FiringMechanism {
                     this.currentTick = ZERO;
                 }
                 this.currentTick += deltaTime;
+                weapon.canReload = false;
             } else {
                 if (this.canShoot) {
                     this.canShoot = false;
                     this.doSingleFire(weapon, player, entityManager, deltaTime);
                     this.currentTick = ZERO;
                 }
+                weapon.canReload = true;
                 this.chargePercent = ZERO;
             }
         }
